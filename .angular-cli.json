@@ -22,13 +22,11 @@
         "styles.css"
       ],
       "scripts": [
-        "lib/osgjs/vendors/core.js",
-        "lib/osgjs/vendors/rStats.js",
-        "lib/osgjs/vendors/rStats.extras.js",
-        "lib/osgjs/vendors/bluebird.js",
-        "lib/osgjs/vendors/hammer.js",
-        "lib/osgjs/vendors/leap.js",
-        "lib/osgjs/OSG.js"
+        "lib/OSG/vendors/bluebird-2.10.2.js",
+        "lib/OSG/vendors/core.js",
+        "lib/OSG/vendors/hammer-2.0.4.js",
+        "lib/OSG/vendors/gunzip.min.js",
+        "lib/OSG/OSG.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

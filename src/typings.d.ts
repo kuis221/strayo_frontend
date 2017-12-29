@@ -4,6 +4,11 @@ interface NodeModule {
   id: string;
 }
 
+declare module 'pouchdb' {
+	var PouchDB: any;
+	export default PouchDB;
+}
+
 declare var OSG: OSGModule;
 interface OSGModule {
   globalify: () => void;

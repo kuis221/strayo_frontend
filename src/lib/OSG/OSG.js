@@ -11,7 +11,7 @@
 		exports["OSG"] = factory(require("bluebird"), require("zlib"), require("hammerjs"), (function webpackLoadOptionalExternalModule() { try { return require("jquery"); } catch(e) {} }()), require("leapjs"));
 	else
 		root["OSG"] = factory(root["P"], root["Zlib"], root["Hammer"], root["$"], root["Leap"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_47__, __WEBPACK_EXTERNAL_MODULE_50__, __WEBPACK_EXTERNAL_MODULE_131__, __WEBPACK_EXTERNAL_MODULE_203__, __WEBPACK_EXTERNAL_MODULE_222__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_48__, __WEBPACK_EXTERNAL_MODULE_51__, __WEBPACK_EXTERNAL_MODULE_129__, __WEBPACK_EXTERNAL_MODULE_199__, __WEBPACK_EXTERNAL_MODULE_218__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,28 +56,28 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
 	module.exports = __webpack_require__(1);
 
 
-/***/ }),
+/***/ },
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var osgNameSpace = __webpack_require__( 2 );
 	var osg = __webpack_require__( 4 );
-	var osgAnimation = __webpack_require__( 109 );
-	var osgDB = __webpack_require__( 124 );
-	var osgGA = __webpack_require__( 130 );
-	var osgUtil = __webpack_require__( 154 );
-	var osgViewer = __webpack_require__( 214 );
-	var osgShader = __webpack_require__( 162 );
-	var osgShadow = __webpack_require__( 227 );
-	var osgText = __webpack_require__( 237 );
-	var osgWrappers = __webpack_require__( 238 );
+	var osgAnimation = __webpack_require__( 107 );
+	var osgDB = __webpack_require__( 122 );
+	var osgGA = __webpack_require__( 128 );
+	var osgUtil = __webpack_require__( 152 );
+	var osgViewer = __webpack_require__( 210 );
+	var osgShader = __webpack_require__( 160 );
+	var osgShadow = __webpack_require__( 223 );
+	var osgText = __webpack_require__( 233 );
+	var osgWrappers = __webpack_require__( 234 );
 	
 	
 	var openSceneGraph = osgNameSpace;
@@ -106,113 +106,112 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = openSceneGraph;
 
 
-/***/ }),
+/***/ },
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var pkg = __webpack_require__( 3 );
-	
-	module.exports = {
-	    name: pkg.name,
-	    version: pkg.version,
-	    author: pkg.author
-	};
+	var version = __webpack_require__( 3 );
+	module.exports = version;
 
 
-/***/ }),
+/***/ },
 /* 3 */
-/***/ (function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {"devDependencies":{"chai":"^3.5.0","grunt-contrib-connect":"~0.9","grunt-documentation":"*","grunt-jsbeautifier":"^0.2.10","grunt-mocha":"^1.0.2","grunt-release":"^0.10.0","mocha":"^2.5.3","webpack-strip-block":"0.0.1","grunt-plato":"~0.2.1"},"peerDependencies":{"grunt":">=0.4.0"},"dependencies":{"grunt-lib-phantomjs":"^1.0.2","webpack-dev-server":"^1.7.0","webpack":"^1.7.3","raw-loader":"^0.5.1","path":"^0.11.14","leapjs":"^0.6.4","json-loader":"^0.5.4","jquery":"^2.1.3","hammerjs":"^2.0.4","grunt-webpack":"^1.0.8","grunt-shell":"*","grunt-git":"*","grunt-eslint":"^17.1.0","grunt-copy-to":"0.0.12","grunt-contrib-uglify":"*","grunt-contrib-jshint":"*","grunt-contrib-copy":"*","grunt-contrib-clean":"*","grunt":"> 1.0.0","glob":"*","extend":"*","eslint-plugin-private-variables":"^0.1.2","eslint":"^1.3.1"},"contributors":["Paul Cheyrou-Lagrèze <tuan.kuranes@gmail.com>","Jordi Torres <jtorresfabra@gmail.com>","Matt Fontaine <tehqin@gmail.com>","Stephane Ginier <stephane.ginier@gmail.com>"],"version":"0.2.6","author":"Cedric Pinson <trigrou@trigrou.com> (http://cedricpinson.com)","license":"MIT","description":"OpenSceneGraph implementation in javascript","repository":{"url":"git@github.com:cedricpinson/osgjs.git","type":"git"},"name":"OpenSceneGraph"}
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	    return {
+	        name: 'OpenSceneGraph',
+	        version: '0.2.5',
+	        author: 'Cedric Pinson <trigrou@trigrou.com> (http://cedricpinson.com)'
+	    };
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
+
+/***/ },
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var AutoTransform = __webpack_require__( 5 );
-	var BillboardAttribute = __webpack_require__( 54 );
-	var BlendColor = __webpack_require__( 55 );
-	var BlendFunc = __webpack_require__( 39 );
-	var BoundingBox = __webpack_require__( 14 );
-	var BoundingSphere = __webpack_require__( 18 );
-	var BufferArray = __webpack_require__( 40 );
-	var Camera = __webpack_require__( 56 );
-	var ColorMask = __webpack_require__( 58 );
-	var ComputeBoundsVisitor = __webpack_require__( 30 );
-	var ComputeMatrixFromNodePath = __webpack_require__( 28 );
-	var CullFace = __webpack_require__( 59 );
-	var CullingSet = __webpack_require__( 60 );
-	var CullSettings = __webpack_require__( 57 );
-	var CullStack = __webpack_require__( 62 );
-	var CullVisitor = __webpack_require__( 63 );
-	var Depth = __webpack_require__( 86 );
-	var DrawArrayLengths = __webpack_require__( 49 );
-	var DrawArrays = __webpack_require__( 42 );
-	var DrawElements = __webpack_require__( 43 );
-	var EllipsoidModel = __webpack_require__( 87 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var FrameStamp = __webpack_require__( 88 );
-	var Geometry = __webpack_require__( 31 );
-	var GLObject = __webpack_require__( 37 );
-	var Image = __webpack_require__( 36 );
-	var ImageStream = __webpack_require__( 89 );
-	var KdTree = __webpack_require__( 90 );
-	var KdTreeBuilder = __webpack_require__( 96 );
-	var Light = __webpack_require__( 97 );
-	var LightSource = __webpack_require__( 64 );
-	var LineWidth = __webpack_require__( 98 );
-	var Lod = __webpack_require__( 69 );
-	var Map = __webpack_require__( 20 );
-	var Material = __webpack_require__( 51 );
-	var osgjsMath = __webpack_require__( 16 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var Node = __webpack_require__( 12 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var BillboardAttribute = __webpack_require__( 5 );
+	var BlendColor = __webpack_require__( 13 );
+	var BlendFunc = __webpack_require__( 15 );
+	var BoundingBox = __webpack_require__( 16 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var BufferArray = __webpack_require__( 20 );
+	var Camera = __webpack_require__( 22 );
+	var ColorMask = __webpack_require__( 57 );
+	var ComputeBoundsVisitor = __webpack_require__( 34 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
+	var CullFace = __webpack_require__( 58 );
+	var CullingSet = __webpack_require__( 59 );
+	var CullSettings = __webpack_require__( 56 );
+	var CullStack = __webpack_require__( 61 );
+	var CullVisitor = __webpack_require__( 62 );
+	var Depth = __webpack_require__( 84 );
+	var DrawArrayLengths = __webpack_require__( 50 );
+	var DrawArrays = __webpack_require__( 43 );
+	var DrawElements = __webpack_require__( 44 );
+	var EllipsoidModel = __webpack_require__( 85 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var FrameStamp = __webpack_require__( 86 );
+	var Geometry = __webpack_require__( 35 );
+	var GLObject = __webpack_require__( 21 );
+	var Image = __webpack_require__( 40 );
+	var ImageStream = __webpack_require__( 87 );
+	var KdTree = __webpack_require__( 88 );
+	var KdTreeBuilder = __webpack_require__( 94 );
+	var Light = __webpack_require__( 95 );
+	var LightSource = __webpack_require__( 63 );
+	var LineWidth = __webpack_require__( 96 );
+	var Lod = __webpack_require__( 68 );
+	var Map = __webpack_require__( 26 );
+	var Material = __webpack_require__( 52 );
+	var osgjsMath = __webpack_require__( 18 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var Node = __webpack_require__( 24 );
+	var NodeVisitor = __webpack_require__( 27 );
 	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
-	var PagedLOD = __webpack_require__( 71 );
-	var Polytope = __webpack_require__( 61 );
-	var Plane = __webpack_require__( 24 );
-	var PrimitiveFunctor = __webpack_require__( 99 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var Program = __webpack_require__( 100 );
-	var Projection = __webpack_require__( 45 );
-	var Quat = __webpack_require__( 26 );
-	var RenderBin = __webpack_require__( 66 );
-	var RenderLeaf = __webpack_require__( 65 );
-	var RenderStage = __webpack_require__( 67 );
-	var Shader = __webpack_require__( 101 );
-	var Shape = __webpack_require__( 102 );
-	var Stack = __webpack_require__( 103 );
-	var State = __webpack_require__( 104 );
-	var StateAttribute = __webpack_require__( 21 );
+	var Object = __webpack_require__( 12 );
+	var PagedLOD = __webpack_require__( 69 );
+	var Polytope = __webpack_require__( 60 );
+	var Plane = __webpack_require__( 29 );
+	var PrimitiveFunctor = __webpack_require__( 97 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var Program = __webpack_require__( 98 );
+	var Projection = __webpack_require__( 46 );
+	var Quat = __webpack_require__( 30 );
+	var RenderBin = __webpack_require__( 65 );
+	var RenderLeaf = __webpack_require__( 64 );
+	var RenderStage = __webpack_require__( 66 );
+	var Shader = __webpack_require__( 99 );
+	var Shape = __webpack_require__( 100 );
+	var Stack = __webpack_require__( 101 );
+	var State = __webpack_require__( 102 );
+	var StateAttribute = __webpack_require__( 11 );
 	var StateGraph = __webpack_require__( 8 );
-	var StateSet = __webpack_require__( 19 );
-	var Texture = __webpack_require__( 34 );
-	var TextureCubeMap = __webpack_require__( 105 );
-	var Transform = __webpack_require__( 11 );
-	var TriangleIndexFunctor = __webpack_require__( 91 );
-	var Uniform = __webpack_require__( 35 );
-	var UpdateVisitor = __webpack_require__( 106 );
+	var StateSet = __webpack_require__( 25 );
+	var Texture = __webpack_require__( 37 );
+	var TextureCubeMap = __webpack_require__( 103 );
+	var Transform = __webpack_require__( 23 );
+	var TriangleIndexFunctor = __webpack_require__( 89 );
+	var Uniform = __webpack_require__( 38 );
+	var UpdateVisitor = __webpack_require__( 104 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Viewport = __webpack_require__( 107 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Viewport = __webpack_require__( 105 );
 	var osgPool = __webpack_require__( 7 );
-	var TransformEnums = __webpack_require__( 29 );
+	var TransformEnums = __webpack_require__( 33 );
 	var Timer = __webpack_require__( 9 );
-	var TimerGPU = __webpack_require__( 108 );
-	var WebGLCaps = __webpack_require__( 32 );
+	var TimerGPU = __webpack_require__( 106 );
+	var WebGLCaps = __webpack_require__( 36 );
 	
 	
 	var osg = {};
-	osg.AutoTransform = AutoTransform;
 	osg.BillboardAttribute = BillboardAttribute;
 	osg.BlendColor = BlendColor;
 	osg.BlendFunc = BlendFunc;
@@ -300,327 +299,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osg;
 
 
-/***/ }),
+/***/ },
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
 	var MACROUTILS = __webpack_require__( 6 );
-	var Transform = __webpack_require__( 11 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Quat = __webpack_require__( 26 );
-	var Matrix = __webpack_require__( 23 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Node = __webpack_require__( 12 );
+	var StateAttribute = __webpack_require__( 11 );
 	
-	/** AutoTransform is a derived form of Transform that automatically
-	 * scales or rotates to keep its children aligned with screen coordinates.
-	 * W.r.t. AutorotateModes only rotate to screen is supported right now.
-	 * More AutorotateModes modes should be addressed in the future.
-	 * @class AutoTransform
-	 */
 	
-	var AutoTransform = function () {
-	    Transform.call( this );
-	    this._matrix = Matrix.create();
-	    this._position = Vec3.create();
-	    this._matrixDirty = true;
-	    this._scale = Vec3.createAndSet( 1.0, 1.0, 1.0 );
-	    this._minimumScale = 0;
-	    this._maximumScale = Number.MAX_VALUE;
-	    this._rotation = Quat.create();
-	    this._pivotPoint = Vec3.create();
-	    this._autoScaleToScreen = false;
-	    this._autoRotateToScreen = false;
-	    this._cachedMatrix = Matrix.create();
-	    this._firstTimeToInitEyePoint = true;
-	    this._autoScaleTransitionWidthRatio = 0.25;
-	    this._billboardAttribute = undefined;
-	    this._previousWidth = 0.0;
-	    this._previousHeight = 0.0;
-	    this._previousProjection = Matrix.create();
-	    this._previousPosition = Vec3.create();
+	var BillboardAttribute = function () {
+	    StateAttribute.call( this );
+	    this._attributeEnable = false;
 	};
 	
-	/** @lends Autotransform.prototype */
-	AutoTransform.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( Transform.prototype, {
+	BillboardAttribute.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
 	
-	    getMatrix: function () {
-	        return this._matrix;
+	    attributeType: 'Billboard',
+	
+	    cloneType: function () {
+	        return new BillboardAttribute();
 	    },
 	
-	    setMatrix: function ( m ) {
-	        this._matrix = m;
-	        this.dirtyBound();
+	    setEnabled: function ( state ) {
+	        this._attributeEnable = state;
 	    },
 	
-	    setPosition: function ( pos ) {
-	        this._position = pos;
-	        this._matrixDirty = true;
-	        this.dirtyBound();
-	    },
-	    getPosition: function () {
-	        return this._position;
+	    isEnabled: function () {
+	        return this._attributeEnable;
 	    },
 	
-	    setRotation: function ( quat ) {
-	        this._rotation = quat;
-	        this._matrixDirty = true;
-	        this.dirtyBound();
-	    },
+	    apply: function () {}
 	
-	    getRotation: function () {
-	        return this._rotation;
-	    },
+	} ), 'osg', 'Billboard' );
 	
-	    setScale: function ( scale ) {
-	        this.setScaleFromVec3( Vec3.createAndSet( scale, scale, scale ) );
-	    },
-	
-	    setScaleFromVec3: function ( scaleVec ) {
-	        this._scale = scaleVec;
-	        this._matrixDirty = true;
-	        this.dirtyBound();
-	    },
-	
-	    getScale: function () {
-	        return this._scale;
-	    },
-	
-	    setMinimumScale: function ( minimumScale ) {
-	        this._minimumScale = minimumScale;
-	    },
-	
-	    getMinimumScale: function () {
-	        return this._minimumScale;
-	    },
-	
-	    setMaximumScale: function ( maximumScale ) {
-	        this._maximumScale = maximumScale;
-	    },
-	
-	    getMaximumScale: function () {
-	        return this._maximumScale;
-	    },
-	
-	    setAutoScaleToScreen: function ( autoScaleToScreen ) {
-	        this._autoScaleToScreen = autoScaleToScreen;
-	        this._matrixDirty = true;
-	    },
-	
-	    getAutoScaleToScreen: function () {
-	        return this._autoScaleToScreen;
-	    },
-	
-	    setAutoRotateToScreen: function ( value ) {
-	        this._autoRotateToScreen = value;
-	    },
-	
-	    getAutoRotateToScreen: function () {
-	        return this._autoRotateToScreen;
-	    },
-	
-	    setAutoScaleTransitionWidthRatio: function ( autoScaleTransitionWidthRatio ) {
-	        this._autoScaleTransitionWidthRatio = autoScaleTransitionWidthRatio;
-	    },
-	
-	    getAutoScaleTransitionWidthRatio: function () {
-	        return this._autoScaleTransitionWidthRatio;
-	    },
-	
-	    // local to "local world" (not Global World)
-	    computeLocalToWorldMatrix: function ( matrix /*, nodeVisitor */ ) {
-	        if ( this._matrixDirty ) this.computeMatrix();
-	        if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
-	            Matrix.preMult( matrix, this._matrix );
-	        } else {
-	            Matrix.copy( this._matrix, matrix );
-	        }
-	    },
-	
-	    computeMatrix: ( function () {
-	        var neg = Vec3.create();
-	        return function () {
-	            if ( !this._matrixDirty ) return;
-	            Matrix.makeRotateFromQuat( this._rotation, this._matrix );
-	            //_cachedMatrix.postMultTranslate(_position);
-	            Matrix.postMultTranslate( this._matrix, this._position );
-	            Matrix.preMultScale( this._matrix, this._scale );
-	            Matrix.preMultTranslate( this._matrix, Vec3.neg( this._pivotPoint, neg ) );
-	            this._matrixDirty = false;
-	        };
-	
-	    } )(),
-	
-	    computeWorldToLocalMatrix: ( function () {
-	        var neg = Vec3.create();
-	        var rotInverse = Quat.create();
-	        var scaleInverse = Vec3.create();
-	        return function ( matrix /*, nodeVisitor */ ) {
-	            if ( this.scale[ 0 ] === 0.0 && this.scale[ 1 ] === 0.0 && this.scale[ 2 ] === 0.0 ) {
-	                return false;
-	            }
-	            scaleInverse[ 0 ] = 1.0 / this._scale[ 0 ];
-	            scaleInverse[ 1 ] = 1.0 / this._scale[ 1 ];
-	            scaleInverse[ 2 ] = 1.0 / this._scale[ 2 ];
-	            if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
-	                Matrix.postMultTranslate( matrix, Vec3.neg( this._position, neg ) );
-	                if ( !Quat.zeroRotation( this._rotation ) ) {
-	                    Matrix.postMultRotate( matrix, Quat.inverse( this._rotation, rotInverse ) );
-	                }
-	                Matrix.postMultScale( matrix, scaleInverse );
-	                Matrix.postMultTranslate( matrix, this._pivotPoint );
-	            } else { // absolute
-	                Matrix.makeRotateFromQuat( Quat.inverse( this._rotation, rotInverse ), this._matrix );
-	                Matrix.preMultTranslate( matrix, Vec3.neg( this._position, neg ) );
-	                Matrix.postMultScale( matrix, scaleInverse );
-	                Matrix.postMultTranslate( matrix, this._pivotPoint );
-	            }
-	            return true;
-	        };
-	    } )(),
-	
-	    computeBound: ( function () {
-	        var matrix = Matrix.create();
-	        return function ( bSphere ) {
-	            if ( this._autoScaleToScreen && this._firstTimeToInitEyePoint )
-	                return bSphere;
-	            Node.prototype.computeBound.call( this, bSphere );
-	            if ( !bSphere.valid() ) {
-	                return bSphere;
-	            }
-	            Matrix.makeIdentity( matrix );
-	            // local to local world (not Global World)
-	            this.computeLocalToWorldMatrix( matrix );
-	            Matrix.transformBoundingSphere( matrix, bSphere, bSphere );
-	            return bSphere;
-	        };
-	    } )(),
-	
-	    accept: ( function () {
-	
-	        return function ( visitor ) {
-	            if ( visitor.getVisitorType() === NodeVisitor.CULL_VISITOR ) {
-	
-	                var width = visitor.getViewport().width();
-	                var height = visitor.getViewport().height();
-	                var projMat = visitor.getCurrentProjectionMatrix();
-	                var position = this._position;
-	                var doUpdate = this._firstTimeToInitEyePoint;
-	
-	                if ( !this._firstTimeToInitEyePoint ) {
-	                    if ( width !== this._previousWidth || height !== this._previousHeight ) {
-	                        doUpdate = true;
-	                    } else if ( !Matrix.equal( projMat, this._previousProjection ) ) {
-	                        doUpdate = true;
-	                    } else if ( !Vec3.equal( position, this._previousPosition ) ) {
-	                        doUpdate = true;
-	                    }
-	                }
-	                this._firstTimeToInitEyePoint = false;
-	                if ( doUpdate ) {
-	                    if ( this._autoScaleToScreen ) {
-	                        var modelViewMat = visitor.getCurrentModelViewMatrix();
-	                        var viewport = visitor.getViewport();
-	                        var psvector = this.computePixelSizeVector( viewport, projMat, modelViewMat );
-	                        var v = Vec4.createAndSet( this._position[ 0 ], this._position[ 1 ], this._position[ 2 ], 1.0 );
-	                        var pixelSize = Vec4.dot( v, psvector );
-	                        pixelSize = 0.48 / pixelSize;
-	                        var size = 1.0 / pixelSize;
-	                        if ( this._autoScaleTransitionWidthRatio > 0.0 ) {
-	                            var c, b, a;
-	                            if ( this._minimumScale > 0.0 ) {
-	                                var j = this._minimumScale;
-	                                var i = ( this._maximumScale < Number.MAX_VALUE ) ?
-	                                    this._minimumScale + ( this._maximumScale - this._minimumScale ) * this._autoScaleTransitionWidthRatio :
-	                                    this._minimumScale * ( 1.0 + this._autoScaleTransitionWidthRatio );
-	                                c = 1.0 / ( 4.0 * ( i - j ) );
-	                                b = 1.0 - 2.0 * c * i;
-	                                a = j + b * b / ( 4.0 * c );
-	                                var k = -b / ( 2.0 * c );
-	                                if ( size < k ) size = this._minimumScale;
-	                                else if ( size < i ) size = a + b * size + c * ( size * size );
-	                            }
-	                            if ( this._maximumScale < Number.MAX_VALUE ) {
-	                                var n = this._maximumScale;
-	                                var m = ( this._minimumScale > 0.0 ) ?
-	                                    this._maximumScale + ( this._minimumScale - this._maximumScale ) * this._autoScaleTransitionWidthRatio :
-	                                    this._maximumScale * ( 1.0 - this._autoScaleTransitionWidthRatio );
-	                                c = 1.0 / ( 4.0 * ( m - n ) );
-	                                b = 1.0 - 2.0 * c * m;
-	                                a = n + b * b / ( 4.0 * c );
-	                                var p = -b / ( 2.0 * c );
-	
-	                                if ( size > p ) size = this._maximumScale;
-	                                else if ( size > m ) size = a + b * size + c * ( size * size );
-	                            }
-	                        }
-	                        this.setScale( size );
-	                    }
-	                    if ( this._autoRotateToScreen ) {
-	                        var rotation = Quat.create();
-	                        var modelView = visitor.getCurrentModelViewMatrix();
-	                        Matrix.getRotate( modelView, rotation );
-	                        this.setRotation( Quat.inverse( rotation, rotation ) );
-	                    }
-	                    this._previousWidth = width;
-	                    this._previousHeight = height;
-	                    Vec3.copy( position, this._previousPosition );
-	                    Matrix.copy( projMat, this._previousProjection );
-	                }
-	            }
-	
-	            Node.prototype.accept.call( this, visitor );
-	        };
-	    } )(),
-	
-	    computePixelSizeVector: ( function () {
-	        var scale00 = Vec3.create();
-	        var scale10 = Vec3.create();
-	        return function ( W, P, M ) {
-	            // Where W = viewport, P = ProjectionMatrix, M = ModelViewMatrix
-	            // Comment from OSG:
-	            // pre adjust P00,P20,P23,P33 by multiplying them by the viewport window matrix.
-	            // here we do it in short hand with the knowledge of how the window matrix is formed
-	            // note P23,P33 are multiplied by an implicit 1 which would come from the window matrix.
-	
-	            // scaling for horizontal pixels
-	            var P00 = P[ 0 ] * W.width() * 0.5;
-	            var P20_00 = P[ 8 ] * W.width() * 0.5 + P[ 11 ] * W.width() * 0.5;
-	            Vec3.set( M[ 0 ] * P00 + M[ 2 ] * P20_00,
-	                M[ 4 ] * P00 + M[ 6 ] * P20_00,
-	                M[ 8 ] * P00 + M[ 10 ] * P20_00, scale00 );
-	
-	            // scaling for vertical pixels
-	            var P10 = P[ 5 ] * W.height() * 0.5;
-	            var P20_10 = P[ 9 ] * W.height() * 0.5 + P[ 11 ] * W.height() * 0.5;
-	            Vec3.set( M[ 1 ] * P10 + M[ 2 ] * P20_10,
-	                M[ 5 ] * P10 + M[ 6 ] * P20_10,
-	                M[ 9 ] * P10 + M[ 10 ] * P20_10, scale10 );
-	
-	            var P23 = P[ 11 ];
-	            var P33 = P[ 15 ];
-	            var pixelSizeVector = Vec4.createAndSet( M[ 2 ] * P23, M[ 6 ] * P23, M[ 10 ] * P23, M[ 14 ] * P23 + M[ 15 ] * P33 );
-	
-	            var scaleRatio = 0.7071067811 / Math.sqrt( Vec3.length2( scale00 ) + Vec3.length2( scale10 ) );
-	            Vec4.mult( pixelSizeVector, scaleRatio, pixelSizeVector );
-	            return pixelSizeVector;
-	        };
-	    } )()
-	
-	
-	} ), 'osg', 'AutoTransform' );
-	MACROUTILS.setTypeID( AutoTransform );
-	
-	module.exports = AutoTransform;
+	module.exports = BillboardAttribute;
 
 
-/***/ }),
+/***/ },
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var osgPool = __webpack_require__( 7 );
@@ -834,9 +552,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Utils;
 
 
-/***/ }),
+/***/ },
 /* 7 */
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	/**
 	 * Authors:
@@ -942,9 +660,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgPool;
 
 
-/***/ }),
+/***/ },
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var osgPool = __webpack_require__( 7 );
@@ -1098,9 +816,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StateGraph;
 
 
-/***/ }),
+/***/ },
 /* 9 */
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// user performance if available or fallback
 	
@@ -1160,9 +878,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-/***/ }),
+/***/ },
 /* 10 */
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -1316,15 +1034,1453 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Notify;
 
 
-/***/ }),
+/***/ },
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
-	var Matrix = __webpack_require__( 23 );
-	var TransformEnums = __webpack_require__( 29 );
+	var Object = __webpack_require__( 12 );
+	
+	
+	var StateAttribute = function () {
+	    Object.call( this );
+	};
+	
+	StateAttribute.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( Object.prototype, {
+	
+	    getType: function () {
+	        return this.attributeType;
+	    },
+	
+	    // basically, if you want two StateAttribute with the same attributeType in a stateSet/State
+	    // their typeMember should be different
+	    getTypeMember: function () {
+	        return this.attributeType;
+	    },
+	
+	    apply: function () {},
+	
+	    // getHash is used by the compiler to know if a change in a StateAttribute
+	    // must trigger a shader build
+	    // If you create your own attribute you will have to customize this function
+	    // a good rule is to that if you change uniform it should not rebuild a shader
+	    // but if you change a type or representation of your StateAttribute, then it should
+	    // if it impact the rendering.
+	    // check other attributes for examples
+	    getHash: function () {
+	        return this.getTypeMember();
+	    }
+	
+	} ), 'osg', 'StateAttribute' );
+	
+	StateAttribute.OFF = 0;
+	StateAttribute.ON = 1;
+	StateAttribute.OVERRIDE = 2;
+	StateAttribute.PROTECTED = 4;
+	StateAttribute.INHERIT = 8;
+	
+	module.exports = StateAttribute;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	
+	/**
+	 *  Object class
+	 *  @class Object
+	 */
+	var Object = function () {
+	    this._name = undefined;
+	    this._userdata = undefined;
+	    this._instanceID = Object.getInstanceID();
+	};
+	
+	/** @lends Object.prototype */
+	Object.prototype = MACROUTILS.objectLibraryClass( {
+	
+	    // this method works only if constructor is set correctly
+	    // see issue https://github.com/cedricpinson/osgjs/issues/494
+	    cloneType: function () {
+	        var Constructor = this.constructor;
+	        return new Constructor();
+	    },
+	
+	    getInstanceID: function () {
+	        return this._instanceID;
+	    },
+	
+	    setName: function ( name ) {
+	        this._name = name;
+	    },
+	
+	    getName: function () {
+	        return this._name;
+	    },
+	
+	    setUserData: function ( data ) {
+	        this._userdata = data;
+	    },
+	
+	    getUserData: function () {
+	        return this._userdata;
+	    }
+	}, 'osg', 'Object' );
+	
+	
+	// get an instanceID for each object
+	var instanceID = 0;
+	Object.getInstanceID = function () {
+	    instanceID += 1;
+	    return instanceID;
+	};
+	
+	module.exports = Object;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Vec4 = __webpack_require__( 14 );
+	
+	
+	/**
+	 *  Manage BlendColor attribute
+	 *  @class BlendColor
+	 */
+	var BlendColor = function ( color ) {
+	    StateAttribute.call( this );
+	    this._constantColor = Vec4.create();
+	    Vec4.set( 1.0, 1.0, 1.0, 1.0, this._constantColor );
+	    if ( color !== undefined ) {
+	        this.setConstantColor( color );
+	    }
+	};
+	
+	/** @lends BlendColor.prototype */
+	BlendColor.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
+	    attributeType: 'BlendColor',
+	    cloneType: function () {
+	        return new BlendColor();
+	    },
+	    setConstantColor: function ( color ) {
+	        Vec4.copy( color, this._constantColor );
+	    },
+	    getConstantColor: function () {
+	        return this._constantColor;
+	    },
+	    apply: function ( state ) {
+	        var gl = state.getGraphicContext();
+	        gl.blendColor( this._constantColor[ 0 ],
+	            this._constantColor[ 1 ],
+	            this._constantColor[ 2 ],
+	            this._constantColor[ 3 ] );
+	    }
+	} ), 'osg', 'BlendColor' );
+	
+	module.exports = BlendColor;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/** @class Vec4 Operations */
+	var Vec4 = {
+	
+	    create: function () {
+	        return new Float32Array( 4 );
+	    },
+	
+	    createAndSet: function ( x, y, z, w ) {
+	        var out = Vec4.create();
+	        out[ 0 ] = x;
+	        out[ 1 ] = y;
+	        out[ 2 ] = z;
+	        out[ 3 ] = w;
+	        return out;
+	    },
+	
+	    init: function ( a ) {
+	        a[ 0 ] = 0.0;
+	        a[ 1 ] = 0.0;
+	        a[ 2 ] = 0.0;
+	        a[ 3 ] = 0.0;
+	        return a;
+	    },
+	
+	    set: function ( a, b, c, d, r ) {
+	        r[ 0 ] = a;
+	        r[ 1 ] = b;
+	        r[ 2 ] = c;
+	        r[ 3 ] = d;
+	        return r;
+	    },
+	
+	    dot: function ( a, b ) {
+	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ] + a[ 3 ] * b[ 3 ];
+	    },
+	
+	    copy: function ( a, r ) {
+	        r[ 0 ] = a[ 0 ];
+	        r[ 1 ] = a[ 1 ];
+	        r[ 2 ] = a[ 2 ];
+	        r[ 3 ] = a[ 3 ];
+	        return r;
+	    },
+	
+	    sub: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] - b[ 0 ];
+	        r[ 1 ] = a[ 1 ] - b[ 1 ];
+	        r[ 2 ] = a[ 2 ] - b[ 2 ];
+	        r[ 3 ] = a[ 3 ] - b[ 3 ];
+	        return r;
+	    },
+	
+	    mult: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] * b;
+	        r[ 1 ] = a[ 1 ] * b;
+	        r[ 2 ] = a[ 2 ] * b;
+	        r[ 3 ] = a[ 3 ] * b;
+	        return r;
+	    },
+	
+	    add: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] + b[ 0 ];
+	        r[ 1 ] = a[ 1 ] + b[ 1 ];
+	        r[ 2 ] = a[ 2 ] + b[ 2 ];
+	        r[ 3 ] = a[ 3 ] + b[ 3 ];
+	        return r;
+	    },
+	
+	    neg: function ( a, r ) {
+	        r[ 0 ] = -a[ 0 ];
+	        r[ 1 ] = -a[ 1 ];
+	        r[ 2 ] = -a[ 2 ];
+	        r[ 3 ] = -a[ 3 ];
+	        return r;
+	    },
+	
+	    lerp: function ( t, a, b, r ) {
+	        var tmp = 1.0 - t;
+	        r[ 0 ] = a[ 0 ] * tmp + t * b[ 0 ];
+	        r[ 1 ] = a[ 1 ] * tmp + t * b[ 1 ];
+	        r[ 2 ] = a[ 2 ] * tmp + t * b[ 2 ];
+	        r[ 3 ] = a[ 3 ] * tmp + t * b[ 3 ];
+	        return r;
+	    }
+	};
+	
+	module.exports = Vec4;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	var StateAttribute = __webpack_require__( 11 );
+	
+	/**
+	 *  Manage Blending mode
+	 *  @class BlendFunc
+	 */
+	var BlendFunc = function ( sourceRGB, destinationRGB, sourceAlpha, destinationAlpha ) {
+	    StateAttribute.call( this );
+	    this._sourceFactor = BlendFunc.DISABLE;
+	    this._destinationFactor = BlendFunc.DISABLE;
+	    this._sourceFactorAlpha = this._sourceFactor;
+	    this._destinationFactorAlpha = this._destinationFactor;
+	    this._separate = false;
+	    if ( sourceRGB !== undefined ) {
+	        this.setSource( sourceRGB );
+	    }
+	    if ( destinationRGB !== undefined ) {
+	        this.setDestination( destinationRGB );
+	    }
+	
+	    if ( sourceAlpha !== undefined ) {
+	        this.setSourceAlpha( sourceAlpha );
+	    }
+	    if ( destinationAlpha !== undefined ) {
+	        this.setDestinationAlpha( destinationAlpha );
+	    }
+	};
+	
+	BlendFunc.DISABLE = -1;
+	BlendFunc.ZERO = 0;
+	BlendFunc.ONE = 1;
+	BlendFunc.SRC_COLOR = 0x0300;
+	BlendFunc.ONE_MINUS_SRC_COLOR = 0x0301;
+	BlendFunc.SRC_ALPHA = 0x0302;
+	BlendFunc.ONE_MINUS_SRC_ALPHA = 0x0303;
+	BlendFunc.DST_ALPHA = 0x0304;
+	BlendFunc.ONE_MINUS_DST_ALPHA = 0x0305;
+	BlendFunc.DST_COLOR = 0x0306;
+	BlendFunc.ONE_MINUS_DST_COLOR = 0x0307;
+	BlendFunc.SRC_ALPHA_SATURATE = 0x0308;
+	
+	/* Separate Blend Functions */
+	BlendFunc.BLEND_DST_RGB = 0x80C8;
+	BlendFunc.BLEND_SRC_RGB = 0x80C9;
+	BlendFunc.BLEND_DST_ALPHA = 0x80CA;
+	BlendFunc.BLEND_SRC_ALPHA = 0x80CB;
+	BlendFunc.CONSTANT_COLOR = 0x8001;
+	BlendFunc.ONE_MINUS_CONSTANT_COLOR = 0x8002;
+	BlendFunc.CONSTANT_ALPHA = 0x8003;
+	BlendFunc.ONE_MINUS_CONSTANT_ALPHA = 0x8004;
+	BlendFunc.BLEND_COLOR = 0x8005;
+	
+	
+	/** @lends BlendFunc.prototype */
+	BlendFunc.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
+	    /**
+	  StateAttribute type of BlendFunc
+	  @type String
+	   */
+	    attributeType: 'BlendFunc',
+	    /**
+	    Create an instance of this StateAttribute
+	    */
+	    cloneType: function () /**BlendFunc*/ {
+	        return new BlendFunc();
+	    },
+	    setSource: function ( f ) {
+	        this.setSourceRGB( f );
+	        this.setSourceAlpha( f );
+	    },
+	    getSource: function () {
+	        return this._sourceFactor;
+	    },
+	    setDestination: function ( f ) {
+	        this.setDestinationRGB( f );
+	        this.setDestinationAlpha( f );
+	    },
+	    getDestination: function () {
+	        return this._destinationFactor;
+	    },
+	    getSeparate: function () {
+	        return this._separate;
+	    },
+	    checkSeparate: function () {
+	        return ( this._sourceFactor !== this._sourceFactorAlpha ||
+	            this._destinationFactor !== this._destinationFactorAlpha );
+	    },
+	    setSourceRGB: function ( f ) {
+	        if ( typeof f === 'string' ) {
+	            this._sourceFactor = BlendFunc[ f ];
+	        } else {
+	            this._sourceFactor = f;
+	        }
+	        this._separate = this.checkSeparate();
+	    },
+	    getSourceRGB: function () {
+	        return this._sourceFactor;
+	    },
+	    setSourceAlpha: function ( f ) {
+	        if ( typeof f === 'string' ) {
+	            this._sourceFactorAlpha = BlendFunc[ f ];
+	        } else {
+	            this._sourceFactorAlpha = f;
+	        }
+	        this._separate = this.checkSeparate();
+	    },
+	    getSourceAlpha: function () {
+	        return this._sourceFactorAlpha;
+	    },
+	    setDestinationRGB: function ( f ) {
+	        if ( typeof f === 'string' ) {
+	            this._destinationFactor = BlendFunc[ f ];
+	        } else {
+	            this._destinationFactor = f;
+	        }
+	        this._separate = this.checkSeparate();
+	    },
+	    getDestinationRGB: function () {
+	        return this._destinationFactor;
+	    },
+	    setDestinationAlpha: function ( f ) {
+	        if ( typeof f === 'string' ) {
+	            this._destinationFactorAlpha = BlendFunc[ f ];
+	        } else {
+	            this._destinationFactorAlpha = f;
+	        }
+	        this._separate = this.checkSeparate();
+	    },
+	    getDestinationAlpha: function () {
+	        return this._destinationFactorAlpha;
+	    },
+	
+	    /**
+	      Apply the mode, must be called in the draw traversal
+	      @param state
+	  */
+	    apply: function ( state ) {
+	        var gl = state.getGraphicContext();
+	        if ( this._sourceFactor === BlendFunc.DISABLE || this._destinationFactor === BlendFunc.DISABLE ) {
+	            gl.disable( gl.BLEND );
+	        } else {
+	            gl.enable( gl.BLEND );
+	            if ( this._separate ) {
+	                gl.blendFuncSeparate( this._sourceFactor, this._destinationFactor,
+	                    this._sourceFactorAlpha, this._destinationFactorAlpha );
+	            } else {
+	                gl.blendFunc( this._sourceFactor, this._destinationFactor );
+	            }
+	        }
+	    }
+	} ), 'osg', 'BlendFunc' );
+	
+	module.exports = BlendFunc;
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Notify = __webpack_require__( 10 );
+	var MACROUTILS = __webpack_require__( 6 );
+	var Vec3 = __webpack_require__( 17 );
+	
+	
+	var BoundingBox = function () {
+	    this._min = Vec3.create();
+	    this._max = Vec3.create();
+	    this.init();
+	};
+	BoundingBox.prototype = MACROUTILS.objectLibraryClass( {
+	
+	    init: function () {
+	        Vec3.copy( Vec3.infinity, this._min );
+	        Vec3.copy( Vec3.negativeInfinity, this._max );
+	    },
+	
+	    copy: function ( bbox ) {
+	        var min = this._min;
+	        var bmin = bbox._min;
+	        min[ 0 ] = bmin[ 0 ];
+	        min[ 1 ] = bmin[ 1 ];
+	        min[ 2 ] = bmin[ 2 ];
+	
+	        var max = this._max;
+	        var bmax = bbox._max;
+	        max[ 0 ] = bmax[ 0 ];
+	        max[ 1 ] = bmax[ 1 ];
+	        max[ 2 ] = bmax[ 2 ];
+	    },
+	
+	    valid: function () {
+	        return ( this._max[ 0 ] >= this._min[ 0 ] && this._max[ 1 ] >= this._min[ 1 ] && this._max[ 2 ] >= this._min[ 2 ] );
+	    },
+	
+	    expandByBoundingSphere: function ( bs ) {
+	        if ( !bs.valid() ) {
+	            return;
+	        }
+	        var max = this._max;
+	        var min = this._min;
+	        min[ 0 ] = Math.min( min[ 0 ], bs._center[ 0 ] - bs._radius );
+	        min[ 1 ] = Math.min( min[ 1 ], bs._center[ 1 ] - bs._radius );
+	        min[ 2 ] = Math.min( min[ 2 ], bs._center[ 2 ] - bs._radius );
+	
+	        max[ 0 ] = Math.max( max[ 0 ], bs._center[ 0 ] + bs._radius );
+	        max[ 1 ] = Math.max( max[ 1 ], bs._center[ 1 ] + bs._radius );
+	        max[ 2 ] = Math.max( max[ 2 ], bs._center[ 2 ] + bs._radius );
+	    },
+	
+	    expandBySphere: function ( bs ) {
+	        Notify.log( 'BoundingBox.expandBySphere is deprecated, use instead BoundBox.expandByBoundingSphere' );
+	        return this.expandByBoundingSphere( bs );
+	    },
+	
+	    expandByVec3: function ( v ) {
+	        var min = this._min;
+	        var max = this._max;
+	        min[ 0 ] = Math.min( min[ 0 ], v[ 0 ] );
+	        min[ 1 ] = Math.min( min[ 1 ], v[ 1 ] );
+	        min[ 2 ] = Math.min( min[ 2 ], v[ 2 ] );
+	
+	        max[ 0 ] = Math.max( max[ 0 ], v[ 0 ] );
+	        max[ 1 ] = Math.max( max[ 1 ], v[ 1 ] );
+	        max[ 2 ] = Math.max( max[ 2 ], v[ 2 ] );
+	    },
+	
+	    expandByBoundingBox: function ( bb ) {
+	        if ( !bb.valid() )
+	            return;
+	
+	        var min = this._min;
+	        var max = this._max;
+	        var bbmin = bb._min;
+	        var bbmax = bb._max;
+	
+	        if ( bbmin[ 0 ] < min[ 0 ] ) min[ 0 ] = bbmin[ 0 ];
+	        if ( bbmax[ 0 ] > max[ 0 ] ) max[ 0 ] = bbmax[ 0 ];
+	
+	        if ( bbmin[ 1 ] < min[ 1 ] ) min[ 1 ] = bbmin[ 1 ];
+	        if ( bbmax[ 1 ] > max[ 1 ] ) max[ 1 ] = bbmax[ 1 ];
+	
+	        if ( bbmin[ 2 ] < min[ 2 ] ) min[ 2 ] = bbmin[ 2 ];
+	        if ( bbmax[ 2 ] > max[ 2 ] ) max[ 2 ] = bbmax[ 2 ];
+	    },
+	
+	    center: function ( result ) {
+	        var min = this._min;
+	        var max = this._max;
+	        if ( result === undefined ) {
+	            // TODO: deprecated warning?
+	            Notify.warn( 'deprecated use center( result ) instead !' );
+	            result = Vec3.create();
+	        }
+	        Vec3.set( ( min[ 0 ] + max[ 0 ] ) * 0.5, ( min[ 1 ] + max[ 1 ] ) * 0.5, ( min[ 2 ] + max[ 2 ] ) * 0.5, result );
+	        return result;
+	    },
+	
+	    radius: function () {
+	        return Math.sqrt( this.radius2() );
+	    },
+	
+	    radius2: function () {
+	        var min = this._min;
+	        var max = this._max;
+	        var dx = max[ 0 ] - min[ 0 ];
+	        var dy = max[ 1 ] - min[ 1 ];
+	        var dz = max[ 2 ] - min[ 2 ];
+	        return 0.25 * ( dx * dx + dy * dy + dz * dz );
+	    },
+	
+	    getMin: function () {
+	        return this._min;
+	    },
+	
+	    getMax: function () {
+	        return this._max;
+	    },
+	
+	    setMin: function ( min ) {
+	        Vec3.copy( min, this._min );
+	        return this;
+	    },
+	
+	    setMax: function ( max ) {
+	        Vec3.copy( max, this._max );
+	        return this;
+	    },
+	
+	    xMax: function () {
+	        return this._max[ 0 ];
+	    },
+	
+	    yMax: function () {
+	        return this._max[ 1 ];
+	    },
+	
+	    zMax: function () {
+	        return this._max[ 2 ];
+	    },
+	
+	    xMin: function () {
+	        return this._min[ 0 ];
+	    },
+	
+	    yMin: function () {
+	        return this._min[ 1 ];
+	    },
+	
+	    zMin: function () {
+	        return this._min[ 2 ];
+	    },
+	
+	    corner: function ( pos, resultVec ) {
+	        /*jshint bitwise: false */
+	        var ret = resultVec;
+	        if ( ret === undefined ) {
+	            Notify.warn( 'no Vector destination !' );
+	            ret = Vec3.create();
+	        }
+	
+	        if ( pos & 1 ) {
+	            ret[ 0 ] = this._max[ 0 ];
+	        } else {
+	            ret[ 0 ] = this._min[ 0 ];
+	        }
+	        if ( pos & 2 ) {
+	            ret[ 1 ] = this._max[ 1 ];
+	        } else {
+	            ret[ 1 ] = this._min[ 1 ];
+	        }
+	        if ( pos & 4 ) {
+	            ret[ 2 ] = this._max[ 2 ];
+	        } else {
+	            ret[ 2 ] = this._min[ 2 ];
+	        }
+	        return ret;
+	        /*jshint bitwise: true */
+	    }
+	}, 'osg', 'BoundingBox' );
+	
+	module.exports = BoundingBox;
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var osgMath = __webpack_require__( 18 );
+	
+	
+	/** @class Vec3 Operations */
+	var Vec3 = {
+	
+	    create: function () {
+	        return new Float32Array( 3 );
+	    },
+	
+	    createAndSet: function ( x, y, z ) {
+	        var out = Vec3.create();
+	        out[ 0 ] = x;
+	        out[ 1 ] = y;
+	        out[ 2 ] = z;
+	        return out;
+	    },
+	
+	    init: function ( a ) {
+	        a[ 0 ] = 0.0;
+	        a[ 1 ] = 0.0;
+	        a[ 2 ] = 0.0;
+	        return a;
+	    },
+	
+	    set: function ( a, b, c, r ) {
+	        r[ 0 ] = a;
+	        r[ 1 ] = b;
+	        r[ 2 ] = c;
+	        return r;
+	    },
+	
+	    copy: function ( a, r ) {
+	        r[ 0 ] = a[ 0 ];
+	        r[ 1 ] = a[ 1 ];
+	        r[ 2 ] = a[ 2 ];
+	        return r;
+	    },
+	
+	    cross: function ( a, b, r ) {
+	        var x = a[ 1 ] * b[ 2 ] - a[ 2 ] * b[ 1 ];
+	        var y = a[ 2 ] * b[ 0 ] - a[ 0 ] * b[ 2 ];
+	        var z = a[ 0 ] * b[ 1 ] - a[ 1 ] * b[ 0 ];
+	        r[ 0 ] = x;
+	        r[ 1 ] = y;
+	        r[ 2 ] = z;
+	        return r;
+	    },
+	
+	    valid: function ( a ) {
+	        if ( osgMath.isNaN( a[ 0 ] ) ) return false;
+	        if ( osgMath.isNaN( a[ 1 ] ) ) return false;
+	        if ( osgMath.isNaN( a[ 2 ] ) ) return false;
+	        return true;
+	    },
+	
+	    mult: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] * b;
+	        r[ 1 ] = a[ 1 ] * b;
+	        r[ 2 ] = a[ 2 ] * b;
+	        return r;
+	    },
+	
+	    length2: function ( a ) {
+	        return a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ];
+	    },
+	
+	    length: function ( a ) {
+	        return Math.sqrt( a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ] );
+	    },
+	
+	    distance2: function ( a, b ) {
+	        var x = a[ 0 ] - b[ 0 ];
+	        var y = a[ 1 ] - b[ 1 ];
+	        var z = a[ 2 ] - b[ 2 ];
+	        return x * x + y * y + z * z;
+	    },
+	
+	    distance: function ( a, b ) {
+	        var x = a[ 0 ] - b[ 0 ];
+	        var y = a[ 1 ] - b[ 1 ];
+	        var z = a[ 2 ] - b[ 2 ];
+	        return Math.sqrt( x * x + y * y + z * z );
+	    },
+	
+	    normalize: function ( a, r ) {
+	        var norm = this.length2( a );
+	        if ( norm > 0.0 ) {
+	            var inv = 1.0 / Math.sqrt( norm );
+	            r[ 0 ] = a[ 0 ] * inv;
+	            r[ 1 ] = a[ 1 ] * inv;
+	            r[ 2 ] = a[ 2 ] * inv;
+	        } else {
+	            r[ 0 ] = a[ 0 ];
+	            r[ 1 ] = a[ 1 ];
+	            r[ 2 ] = a[ 2 ];
+	        }
+	        return r;
+	    },
+	
+	    dot: function ( a, b ) {
+	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
+	    },
+	
+	    sub: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] - b[ 0 ];
+	        r[ 1 ] = a[ 1 ] - b[ 1 ];
+	        r[ 2 ] = a[ 2 ] - b[ 2 ];
+	        return r;
+	    },
+	
+	    add: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] + b[ 0 ];
+	        r[ 1 ] = a[ 1 ] + b[ 1 ];
+	        r[ 2 ] = a[ 2 ] + b[ 2 ];
+	        return r;
+	    },
+	
+	    neg: function ( a, r ) {
+	        r[ 0 ] = -a[ 0 ];
+	        r[ 1 ] = -a[ 1 ];
+	        r[ 2 ] = -a[ 2 ];
+	        return r;
+	    },
+	
+	    lerp: function ( t, a, b, r ) {
+	        r[ 0 ] = a[ 0 ] + ( b[ 0 ] - a[ 0 ] ) * t;
+	        r[ 1 ] = a[ 1 ] + ( b[ 1 ] - a[ 1 ] ) * t;
+	        r[ 2 ] = a[ 2 ] + ( b[ 2 ] - a[ 2 ] ) * t;
+	        return r;
+	    }
+	
+	};
+	
+	Vec3.zero = Vec3.create();
+	Vec3.one = Vec3.createAndSet( 1.0, 1.0, 1.0 );
+	Vec3.infinity = Vec3.createAndSet( Infinity, Infinity, Infinity );
+	Vec3.negativeInfinity = Vec3.createAndSet( -Infinity, -Infinity, -Infinity );
+	
+	module.exports = Vec3;
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var clamp = function ( x, min, max ) {
+	    // http://jsperf.com/math-clamp
+	    // http://jsperf.com/clamping-methods/2
+	    return Math.min( max, Math.max( min, x ) );
+	};
+	
+	var smoothStep = function ( edge0, edge1, x ) {
+	    var t = clamp( ( x - edge0 ) / ( edge1 - edge0 ), 0.0, 1.0 );
+	    return t * t * ( 3.0 - 2.0 * t );
+	};
+	
+	// native isNaN is slow (e.g: https://jsperf.com/isnan-performance/2)
+	// note : native isNaN will return true for undefined but
+	// this function assume that x is a number
+	var fastIsNaN = function ( x ) {
+	    return x !== x;
+	};
+	
+	module.exports = {
+	    clamp: clamp,
+	    smoothStep: smoothStep,
+	    isNaN: fastIsNaN
+	};
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var BoundingBox = __webpack_require__( 16 );
+	var Notify = __webpack_require__( 10 );
+	var Vec3 = __webpack_require__( 17 );
+	
+	
+	var BoundingSphere = function () {
+	    this._center = Vec3.create();
+	    this._radius = -1.0;
+	};
+	
+	BoundingSphere.prototype = {
+	    init: function () {
+	        Vec3.init( this._center );
+	        this._radius = -1.0;
+	    },
+	    valid: function () {
+	        return this._radius >= 0.0;
+	    },
+	    set: function ( center, radius ) {
+	        this._center = center;
+	        this._radius = radius;
+	    },
+	    center: function () {
+	        return this._center;
+	    },
+	    radius: function () {
+	        return this._radius;
+	    },
+	    radius2: function () {
+	        return this._radius * this._radius;
+	    },
+	
+	    expandByBoundingBox: ( function () {
+	        var v = Vec3.create();
+	        var newbb = new BoundingBox();
+	        return function ( bb ) {
+	            if ( !bb.valid() )
+	                return;
+	
+	            var c;
+	            if ( this.valid() ) {
+	                newbb._min[ 0 ] = bb._min[ 0 ];
+	                newbb._min[ 1 ] = bb._min[ 1 ];
+	                newbb._min[ 2 ] = bb._min[ 2 ];
+	                newbb._max[ 0 ] = bb._max[ 0 ];
+	                newbb._max[ 1 ] = bb._max[ 1 ];
+	                newbb._max[ 2 ] = bb._max[ 2 ];
+	
+	                for ( var i = 0; i < 8; i++ ) {
+	                    Vec3.sub( bb.corner( c ), this._center, v ); // get the direction vector from corner
+	                    Vec3.normalize( v, v ); // normalise it.
+	                    v[ 0 ] *= -this._radius; // move the vector in the opposite direction distance radius.
+	                    v[ 1 ] *= -this._radius; // move the vector in the opposite direction distance radius.
+	                    v[ 2 ] *= -this._radius; // move the vector in the opposite direction distance radius.
+	                    v[ 0 ] += this._center[ 0 ]; // move to absolute position.
+	                    v[ 1 ] += this._center[ 1 ]; // move to absolute position.
+	                    v[ 2 ] += this._center[ 2 ]; // move to absolute position.
+	                    newbb.expandByVec3( v ); // add it into the new bounding box.
+	                }
+	
+	                c = newbb.center( v );
+	                this._center[ 0 ] = c[ 0 ];
+	                this._center[ 1 ] = c[ 1 ];
+	                this._center[ 2 ] = c[ 2 ];
+	                this._radius = newbb.radius();
+	            } else {
+	                c = bb.center( v );
+	                this._center[ 0 ] = c[ 0 ];
+	                this._center[ 1 ] = c[ 1 ];
+	                this._center[ 2 ] = c[ 2 ];
+	                this._radius = bb.radius();
+	            }
+	        };
+	    } )(),
+	
+	    expandByBox: function ( bb ) {
+	        Notify.log( 'BoundingSphere.expandByBox is deprecated, use instead BoundingSphere.expandByBoundingBox' );
+	        return this.expandByBoundingBox( bb );
+	    },
+	
+	    expandByVec3: ( function () {
+	        var dv = Vec3.create();
+	        return function ( v ) {
+	            if ( this.valid() ) {
+	                Vec3.sub( v, this.center( dv ), dv );
+	                var r = Vec3.length( dv );
+	                if ( r > this.radius() ) {
+	                    var dr = ( r - this.radius() ) * 0.5;
+	                    this._center[ 0 ] += dv[ 0 ] * ( dr / r );
+	                    this._center[ 1 ] += dv[ 1 ] * ( dr / r );
+	                    this._center[ 2 ] += dv[ 2 ] * ( dr / r );
+	                    this._radius += dr;
+	                }
+	            } else {
+	                this._center[ 0 ] = v[ 0 ];
+	                this._center[ 1 ] = v[ 1 ];
+	                this._center[ 2 ] = v[ 2 ];
+	                this._radius = 0.0;
+	            }
+	        };
+	    } )(),
+	
+	    expandRadiusBySphere: function ( sh ) {
+	        if ( sh.valid() ) {
+	            if ( this.valid() ) {
+	                var r = Vec3.distance( sh._center, this._center ) + sh._radius;
+	                if ( r > this._radius ) {
+	                    this._radius = r;
+	                }
+	                // else do nothing as vertex is within sphere.
+	            } else {
+	                Vec3.copy( sh._center, this._center );
+	                this._radius = sh._radius;
+	            }
+	        }
+	    },
+	
+	    expandBy: function ( bs ) {
+	        Notify.log( 'BoundingSphere.expandBy is deprecated, use instead BoundingSphere.expandByBoundingSphere' );
+	        this.expandByBoundingSphere( bs );
+	    },
+	
+	    expandByBoundingSphere: function ( sh ) {
+	        // ignore operation if incomming BoundingSphere is invalid.
+	        if ( !sh.valid() ) {
+	            return;
+	        }
+	
+	        // This sphere is not set so use the inbound sphere
+	        if ( !this.valid() ) {
+	            this._center[ 0 ] = sh._center[ 0 ];
+	            this._center[ 1 ] = sh._center[ 1 ];
+	            this._center[ 2 ] = sh._center[ 2 ];
+	            this._radius = sh.radius();
+	
+	            return;
+	        }
+	
+	        // Calculate d == The distance between the sphere centers
+	        var d = Vec3.distance( this.center(), sh.center() );
+	
+	        // New sphere is already inside this one
+	        if ( d + sh.radius() <= this.radius() ) {
+	            return;
+	        }
+	
+	        //  New sphere completely contains this one
+	        if ( d + this.radius() <= sh.radius() ) {
+	            this._center[ 0 ] = sh._center[ 0 ];
+	            this._center[ 1 ] = sh._center[ 1 ];
+	            this._center[ 2 ] = sh._center[ 2 ];
+	            this._radius = sh._radius;
+	            return;
+	        }
+	
+	
+	        // Build a new sphere that completely contains the other two:
+	        //
+	        // The center point lies halfway along the line between the furthest
+	        // points on the edges of the two spheres.
+	        //
+	        // Computing those two points is ugly - so we'll use similar triangles
+	        var newRadius = ( this.radius() + d + sh.radius() ) * 0.5;
+	        var ratio = ( newRadius - this.radius() ) / d;
+	
+	        this._center[ 0 ] += ( sh._center[ 0 ] - this._center[ 0 ] ) * ratio;
+	        this._center[ 1 ] += ( sh._center[ 1 ] - this._center[ 1 ] ) * ratio;
+	        this._center[ 2 ] += ( sh._center[ 2 ] - this._center[ 2 ] ) * ratio;
+	
+	        this._radius = newRadius;
+	    },
+	    contains: function ( v ) {
+	        if ( !this.valid() )
+	            return false;
+	        return Vec3.distance2( v, this.center() ) <= this.radius2();
+	    },
+	    intersects: function ( bs ) {
+	        if ( !this.valid() || !bs.valid() )
+	            return false;
+	        var r = this.radius() + bs.radius();
+	        return Vec3.distance2( this.center(), bs.center() ) <= r * r;
+	    }
+	};
+	
+	module.exports = BoundingSphere;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	var Notify = __webpack_require__( 10 );
+	var Object = __webpack_require__( 12 );
+	var GLObject = __webpack_require__( 21 );
+	var Timer = __webpack_require__( 9 );
+	
+	
+	var getAttributeType = function ( array ) {
+	    var type;
+	
+	    if ( array instanceof MACROUTILS.Float32Array ) type = 0x1406;
+	    if ( array instanceof MACROUTILS.Uint32Array ) type = 0x1405;
+	    if ( array instanceof MACROUTILS.Uint16Array ) type = 0x1403;
+	    if ( array instanceof MACROUTILS.Uint8Array ) type = 0x1401;
+	
+	    return type;
+	};
+	
+	/**
+	 * BufferArray manage vertex / normal / ... array used by webgl.
+	 * osgjs automatically converts array buffers to Float32Array and
+	 * element array buffers to Uint16Array if not said explicitly with
+	 * preserveArrayType variable in constructor.
+	 * @class BufferArray
+	 */
+	
+	var BufferArray = function ( target, elements, itemSize, preserveArrayType ) {
+	
+	    GLObject.call( this );
+	    // maybe could inherit from Object
+	    this._instanceID = Object.getInstanceID();
+	
+	    this.dirty();
+	
+	    this._itemSize = itemSize;
+	    this._target = typeof target === 'string' ? BufferArray[ target ] : target;
+	
+	    // initialized by setElements
+	    this._type = undefined;
+	    this._normalize = false;
+	
+	    if ( elements !== undefined ) {
+	        var typedArray = elements;
+	        if ( !preserveArrayType ) {
+	            if ( this._target === BufferArray.ELEMENT_ARRAY_BUFFER ) {
+	                typedArray = elements instanceof MACROUTILS.Uint16Array ? elements : new MACROUTILS.Uint16Array( elements );
+	            } else {
+	                typedArray = elements instanceof MACROUTILS.Float32Array ? elements : new MACROUTILS.Float32Array( elements );
+	            }
+	        }
+	        this.setElements( typedArray );
+	    }
+	};
+	
+	BufferArray.ELEMENT_ARRAY_BUFFER = 0x8893;
+	BufferArray.ARRAY_BUFFER = 0x8892;
+	
+	// static cache of glBuffers flagged for deletion, which will actually
+	// be deleted in the correct GL context.
+	BufferArray._sDeletedGLBufferArrayCache = new window.Map();
+	
+	// static method to delete Program
+	BufferArray.deleteGLBufferArray = function ( gl, buffer ) {
+	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) )
+	        BufferArray._sDeletedGLBufferArrayCache.set( gl, [] );
+	    BufferArray._sDeletedGLBufferArrayCache.get( gl ).push( buffer );
+	};
+	
+	// static method to flush all the cached glPrograms which need to be deleted in the GL context specified
+	BufferArray.flushDeletedGLBufferArrays = function ( gl, availableTime ) {
+	    // if no time available don't try to flush objects.
+	    if ( availableTime <= 0.0 ) return availableTime;
+	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) ) return availableTime;
+	    var elapsedTime = 0.0;
+	    var beginTime = Timer.instance().tick();
+	    var deleteList = BufferArray._sDeletedGLBufferArrayCache.get( gl );
+	    var numBuffers = deleteList.length;
+	    for ( var i = numBuffers - 1; i >= 0 && elapsedTime < availableTime; i-- ) {
+	        gl.deleteBuffer( deleteList[ i ] );
+	        deleteList.splice( i, 1 );
+	        elapsedTime = Timer.instance().deltaS( beginTime, Timer.instance().tick() );
+	    }
+	    return availableTime - elapsedTime;
+	};
+	
+	BufferArray.flushAllDeletedGLBufferArrays = function ( gl ) {
+	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) ) return;
+	    var deleteList = BufferArray._sDeletedGLBufferArrayCache.get( gl );
+	    var numBuffers = deleteList.length;
+	    for ( var i = numBuffers - 1; i >= 0; i-- ) {
+	        gl.deleteBuffer( deleteList[ i ] );
+	        deleteList.splice( i, 1 );
+	    }
+	};
+	
+	/** @lends BufferArray.prototype */
+	BufferArray.prototype = MACROUTILS.objectInherit( GLObject.prototype, {
+	    getInstanceID: function () {
+	        return this._instanceID;
+	    },
+	    setItemSize: function ( size ) {
+	        this._itemSize = size;
+	    },
+	    isValid: function () {
+	        if ( this._buffer !== undefined ||
+	            this._elements !== undefined ) {
+	            return true;
+	        }
+	        return false;
+	    },
+	
+	    releaseGLObjects: function () {
+	        if ( this._buffer !== undefined && this._buffer !== null && this._gl !== undefined ) {
+	            BufferArray.deleteGLBufferArray( this._gl, this._buffer );
+	        }
+	        this._buffer = undefined;
+	    },
+	
+	    setNormalize: function ( normalize ) {
+	        this._normalize = normalize;
+	    },
+	
+	    getNormalize: function () {
+	        return this._normalize;
+	    },
+	
+	    bind: function ( gl ) {
+	        if ( !this._gl ) this.setGraphicContext( gl );
+	        var target = this._target;
+	        var buffer = this._buffer;
+	
+	        if ( buffer ) {
+	            gl.bindBuffer( target, buffer );
+	            return;
+	        }
+	
+	        if ( !buffer && this._elements.length > 0 ) {
+	            this._buffer = gl.createBuffer();
+	            this._numItems = this._elements.length / this._itemSize;
+	            gl.bindBuffer( target, this._buffer );
+	        }
+	    },
+	    getItemSize: function () {
+	        return this._itemSize;
+	    },
+	    dirty: function () {
+	        this._dirty = true;
+	    },
+	    isDirty: function () {
+	        return this._dirty;
+	    },
+	    compile: function ( gl ) {
+	        if ( this._dirty ) {
+	            MACROUTILS.timeStamp( 'osgjs.metrics:bufferData' );
+	            gl.bufferData( this._target, this._elements, gl.STATIC_DRAW );
+	            this._dirty = false;
+	        }
+	    },
+	    getElements: function () {
+	        return this._elements;
+	    },
+	    setElements: function ( elements ) {
+	        this._elements = elements;
+	        this._type = getAttributeType( elements );
+	        this._dirty = true;
+	    },
+	    getType: function () {
+	        return this._type;
+	    }
+	
+	} );
+	
+	BufferArray.create = function ( type, elements, itemSize ) {
+	    Notify.log( 'BufferArray.create is deprecated, use new BufferArray with same arguments instead' );
+	    return new BufferArray( type, elements, itemSize );
+	};
+	
+	module.exports = BufferArray;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// Base class for GLResources: Textures, Buffers, Programs, Shaders, FrameBuffers and RenderBuffers
+	// It holds a reference to the graphic context that is needed for resource deletion
+	
+	var GLObject = function () {
+	    this._gl = undefined;
+	};
+	
+	GLObject.prototype = {
+	    setGraphicContext: function ( gl ) {
+	        this._gl = gl;
+	    },
+	    getGraphicContext: function () {
+	        return this._gl;
+	    }
+	};
+	
+	module.exports = GLObject;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	var Transform = __webpack_require__( 23 );
+	var CullSettings = __webpack_require__( 56 );
+	var Matrix = __webpack_require__( 28 );
+	var Texture = __webpack_require__( 37 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec4 = __webpack_require__( 14 );
+	
+	
+	/**
+	 * Camera - is a subclass of Transform which represents encapsulates the settings of a Camera.
+	 * @class Camera
+	 * @inherits Transform CullSettings
+	 */
+	var Camera = function () {
+	    Transform.call( this );
+	    CullSettings.call( this );
+	
+	    this.viewport = undefined;
+	    this._graphicContext = undefined;
+	    this.setClearColor( Vec4.createAndSet( 0, 0, 0, 1.0 ) );
+	    this.setClearDepth( 1.0 );
+	
+	    /*jshint bitwise: false */
+	    this.setClearMask( Camera.COLOR_BUFFER_BIT | Camera.DEPTH_BUFFER_BIT );
+	    /*jshint bitwise: true */
+	
+	    this.setViewMatrix( Matrix.create() );
+	    this.setProjectionMatrix( Matrix.create() );
+	    this.renderOrder = Camera.NESTED_RENDER;
+	    this.renderOrderNum = 0;
+	
+	    this._view = undefined;
+	    this._renderer = undefined;
+	    this._attachments = {};
+	};
+	
+	Camera.PRE_RENDER = 0;
+	Camera.NESTED_RENDER = 1;
+	Camera.POST_RENDER = 2;
+	
+	Camera.COLOR_BUFFER_BIT = 0x00004000;
+	Camera.DEPTH_BUFFER_BIT = 0x00000100;
+	Camera.STENCIL_BUFFER_BIT = 0x00000400;
+	
+	/** @lends Camera.prototype */
+	Camera.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit(
+	    CullSettings.prototype,
+	    MACROUTILS.objectInherit( Transform.prototype, {
+	        // at which view this camera is attached
+	        getView: function () {
+	            return this._view;
+	        },
+	
+	        setView: function ( view ) {
+	            this._view = view;
+	        },
+	
+	        getRenderer: function () {
+	            return this._renderer;
+	        },
+	
+	        setRenderer: function ( renderer ) {
+	            this._renderer = renderer;
+	        },
+	
+	        // Set the final draw callback for custom operations
+	        // to be done after the drawing of
+	        // the camera's subgraph and pre render stages.
+	        setFinalDrawCallback: function ( cb ) {
+	
+	            this._finalDrawCallback = cb;
+	
+	        },
+	
+	        getFinalDrawCallback: function () {
+	
+	            return this._finalDrawCallback;
+	
+	        },
+	
+	        // Set the initial draw callback for custom operations
+	        // to be done before the drawing of
+	        // the camera's subgraph and pre render stages.
+	        setInitialDrawCallback: function ( cb ) {
+	
+	            this._initialDrawCallback = cb;
+	
+	        },
+	
+	        getInitialDrawCallback: function () {
+	
+	            return this._initialDrawCallback;
+	
+	        },
+	
+	
+	        getAttachments: function () {
+	            return this._attachments;
+	        },
+	
+	        setGraphicContext: function ( gc ) {
+	            this._graphicContext = gc;
+	        },
+	        getGraphicContext: function () {
+	            return this._graphicContext;
+	        },
+	        setClearDepth: function ( depth ) {
+	            this.clearDepth = depth;
+	        },
+	        getClearDepth: function () {
+	            return this.clearDepth;
+	        },
+	
+	        setClearMask: function ( mask ) {
+	            this.clearMask = mask;
+	        },
+	        getClearMask: function () {
+	            return this.clearMask;
+	        },
+	
+	        setClearColor: function ( color ) {
+	            this.clearColor = color;
+	        },
+	        getClearColor: function () {
+	            return this.clearColor;
+	        },
+	
+	        setViewport: function ( vp ) {
+	            this.viewport = vp;
+	            this.getOrCreateStateSet().setAttributeAndModes( vp );
+	        },
+	        getViewport: function () {
+	            return this.viewport;
+	        },
+	
+	
+	        setViewMatrix: function ( matrix ) {
+	            this.modelviewMatrix = matrix;
+	        },
+	        setViewMatrixAsLookAt: function ( eye, center, up ) {
+	            Matrix.makeLookAt( eye, center, up, this.getViewMatrix() );
+	        },
+	        setProjectionMatrix: function ( matrix ) {
+	            this.projectionMatrix = matrix;
+	        },
+	
+	        /** Set to an orthographic projection. See OpenGL glOrtho for documentation further details.*/
+	        setProjectionMatrixAsOrtho: function ( left, right,
+	            bottom, top,
+	            zNear, zFar ) {
+	            Matrix.makeOrtho( left, right, bottom, top, zNear, zFar, this.getProjectionMatrix() );
+	        },
+	        isRenderToTextureCamera: function () {
+	            return window.Object.keys( this._attachments ).length > 0;
+	        },
+	
+	        getViewMatrix: function () {
+	            return this.modelviewMatrix;
+	        },
+	        getProjectionMatrix: function () {
+	            return this.projectionMatrix;
+	        },
+	        getRenderOrder: function () {
+	            return this.renderOrder;
+	        },
+	        setRenderOrder: function ( order, orderNum ) {
+	            this.renderOrder = order;
+	            this.renderOrderNum = orderNum;
+	        },
+	
+	        detachAll: function () {
+	            this._attachments = {};
+	
+	            if ( this.frameBufferObject ) {
+	                this.frameBufferObject.dirty();
+	            }
+	        },
+	
+	        // TODO: fix in case of shared fbo
+	        // TODO: fix adding a resize case
+	        resetAttachments: function () {
+	
+	
+	            if ( this.frameBufferObject ) {
+	
+	                this.frameBufferObject.reset();
+	                // remove framebuffer
+	                this.frameBufferObject = 0;
+	            }
+	
+	            // removes camera attachement
+	            this._attachments = {};
+	
+	        },
+	
+	        attachTexture: function ( bufferComponent, texture, textureTarget ) {
+	            if ( this.frameBufferObject ) {
+	                this.frameBufferObject.dirty();
+	            }
+	
+	            // because before the argument was level and the spec says
+	            // it must always be 0 ! is valid for 0 or undefined
+	            if ( !textureTarget ) {
+	                textureTarget = Texture.TEXTURE_2D;
+	            }
+	
+	            this._attachments[ bufferComponent ] = {
+	                'attachment': bufferComponent,
+	                'texture': texture,
+	                'textureTarget': textureTarget
+	            };
+	        },
+	
+	        attachRenderBuffer: function ( bufferComponent, internalFormat ) {
+	            if ( this.frameBufferObject ) {
+	                this.frameBufferObject.dirty();
+	            }
+	            this._attachments[ bufferComponent ] = {
+	                'format': internalFormat,
+	                'attachment': bufferComponent
+	            };
+	        },
+	
+	        computeLocalToWorldMatrix: function ( matrix /*,nodeVisitor*/ ) {
+	            if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
+	                Matrix.preMult( matrix, this.modelviewMatrix );
+	            } else { // absolute
+	                Matrix.copy( this.modelviewMatrix, matrix );
+	            }
+	            return true;
+	        },
+	
+	        computeWorldToLocalMatrix: ( function () {
+	            var minverse = Matrix.create();
+	            return function ( matrix /*, nodeVisitor */ ) {
+	                Matrix.inverse( this.modelviewMatrix, minverse );
+	                if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
+	                    Matrix.postMult( minverse, matrix );
+	                } else {
+	                    Matrix.copy( minverse, matrix );
+	                }
+	                return true;
+	            };
+	        } )()
+	
+	    } ) ), 'osg', 'Camera' );
+	
+	MACROUTILS.setTypeID( Camera );
+	
+	module.exports = Camera;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var MACROUTILS = __webpack_require__( 6 );
+	var Node = __webpack_require__( 24 );
+	var Matrix = __webpack_require__( 28 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	/**
 	 * Transform - base class for Transform type node ( Camera, MatrixTransform )
@@ -1365,21 +2521,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Transform;
 
 
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var BoundingBox = __webpack_require__( 14 );
-	var BoundingSphere = __webpack_require__( 18 );
-	var StateSet = __webpack_require__( 19 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var ComputeMatrixFromNodePath = __webpack_require__( 28 );
-	var TransformEnums = __webpack_require__( 29 );
+	var Object = __webpack_require__( 12 );
+	var BoundingBox = __webpack_require__( 16 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var StateSet = __webpack_require__( 25 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	
 	/**
@@ -1618,7 +2774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    computeBoundingBox: function ( bbox ) {
 	
 	        // circular dependency... not sure if the global visitor instance should be instancied here
-	        var ComputeBoundsVisitor = __webpack_require__( 30 );
+	        var ComputeBoundsVisitor = __webpack_require__( 34 );
 	        var cbv = ComputeBoundsVisitor.instance = ComputeBoundsVisitor.instance || new ComputeBoundsVisitor();
 	        cbv.setNodeMaskOverride( ~0x0 ); // traverse everything to be consistent with computeBoundingSphere
 	        cbv.reset();
@@ -1690,7 +2846,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        } );
 	        var collected = new CollectParentPaths();
-	        collected.setNodeMaskOverride( ~0x0 ); // traverse everything
 	
 	        return function ( halt, matrixCreate ) {
 	            collected.reset();
@@ -1789,633 +2944,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Node;
 
 
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	
-	/**
-	 *  Object class
-	 *  @class Object
-	 */
-	var Object = function () {
-	    this._name = undefined;
-	    this._userdata = undefined;
-	    this._instanceID = Object.getInstanceID();
-	};
-	
-	/** @lends Object.prototype */
-	Object.prototype = MACROUTILS.objectLibraryClass( {
-	
-	    // this method works only if constructor is set correctly
-	    // see issue https://github.com/cedricpinson/osgjs/issues/494
-	    cloneType: function () {
-	        var Constructor = this.constructor;
-	        return new Constructor();
-	    },
-	
-	    getInstanceID: function () {
-	        return this._instanceID;
-	    },
-	
-	    setName: function ( name ) {
-	        this._name = name;
-	    },
-	
-	    getName: function () {
-	        return this._name;
-	    },
-	
-	    setUserData: function ( data ) {
-	        this._userdata = data;
-	    },
-	
-	    getUserData: function () {
-	        return this._userdata;
-	    }
-	}, 'osg', 'Object' );
-	
-	
-	// get an instanceID for each object
-	var instanceID = 0;
-	Object.getInstanceID = function () {
-	    instanceID += 1;
-	    return instanceID;
-	};
-	
-	module.exports = Object;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
+	var Map = __webpack_require__( 26 );
 	var Notify = __webpack_require__( 10 );
-	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	
-	
-	var BoundingBox = function () {
-	    this._min = Vec3.create();
-	    this._max = Vec3.create();
-	    this.init();
-	};
-	BoundingBox.prototype = MACROUTILS.objectLibraryClass( {
-	
-	    init: function () {
-	        Vec3.copy( Vec3.infinity, this._min );
-	        Vec3.copy( Vec3.negativeInfinity, this._max );
-	    },
-	
-	    copy: function ( bbox ) {
-	        var min = this._min;
-	        var bmin = bbox._min;
-	        min[ 0 ] = bmin[ 0 ];
-	        min[ 1 ] = bmin[ 1 ];
-	        min[ 2 ] = bmin[ 2 ];
-	
-	        var max = this._max;
-	        var bmax = bbox._max;
-	        max[ 0 ] = bmax[ 0 ];
-	        max[ 1 ] = bmax[ 1 ];
-	        max[ 2 ] = bmax[ 2 ];
-	    },
-	
-	    valid: function () {
-	        return ( this._max[ 0 ] >= this._min[ 0 ] && this._max[ 1 ] >= this._min[ 1 ] && this._max[ 2 ] >= this._min[ 2 ] );
-	    },
-	
-	    expandByBoundingSphere: function ( bs ) {
-	        if ( !bs.valid() ) {
-	            return;
-	        }
-	        var max = this._max;
-	        var min = this._min;
-	        min[ 0 ] = Math.min( min[ 0 ], bs._center[ 0 ] - bs._radius );
-	        min[ 1 ] = Math.min( min[ 1 ], bs._center[ 1 ] - bs._radius );
-	        min[ 2 ] = Math.min( min[ 2 ], bs._center[ 2 ] - bs._radius );
-	
-	        max[ 0 ] = Math.max( max[ 0 ], bs._center[ 0 ] + bs._radius );
-	        max[ 1 ] = Math.max( max[ 1 ], bs._center[ 1 ] + bs._radius );
-	        max[ 2 ] = Math.max( max[ 2 ], bs._center[ 2 ] + bs._radius );
-	    },
-	
-	    expandBySphere: function ( bs ) {
-	        Notify.log( 'BoundingBox.expandBySphere is deprecated, use instead BoundBox.expandByBoundingSphere' );
-	        return this.expandByBoundingSphere( bs );
-	    },
-	
-	    expandByVec3: function ( v ) {
-	        var min = this._min;
-	        var max = this._max;
-	        min[ 0 ] = Math.min( min[ 0 ], v[ 0 ] );
-	        min[ 1 ] = Math.min( min[ 1 ], v[ 1 ] );
-	        min[ 2 ] = Math.min( min[ 2 ], v[ 2 ] );
-	
-	        max[ 0 ] = Math.max( max[ 0 ], v[ 0 ] );
-	        max[ 1 ] = Math.max( max[ 1 ], v[ 1 ] );
-	        max[ 2 ] = Math.max( max[ 2 ], v[ 2 ] );
-	    },
-	
-	    expandByBoundingBox: function ( bb ) {
-	        if ( !bb.valid() )
-	            return;
-	
-	        var min = this._min;
-	        var max = this._max;
-	        var bbmin = bb._min;
-	        var bbmax = bb._max;
-	
-	        if ( bbmin[ 0 ] < min[ 0 ] ) min[ 0 ] = bbmin[ 0 ];
-	        if ( bbmax[ 0 ] > max[ 0 ] ) max[ 0 ] = bbmax[ 0 ];
-	
-	        if ( bbmin[ 1 ] < min[ 1 ] ) min[ 1 ] = bbmin[ 1 ];
-	        if ( bbmax[ 1 ] > max[ 1 ] ) max[ 1 ] = bbmax[ 1 ];
-	
-	        if ( bbmin[ 2 ] < min[ 2 ] ) min[ 2 ] = bbmin[ 2 ];
-	        if ( bbmax[ 2 ] > max[ 2 ] ) max[ 2 ] = bbmax[ 2 ];
-	    },
-	
-	    center: function ( result ) {
-	        var min = this._min;
-	        var max = this._max;
-	        if ( result === undefined ) {
-	            // TODO: deprecated warning?
-	            Notify.warn( 'deprecated use center( result ) instead !' );
-	            result = Vec3.create();
-	        }
-	        Vec3.set( ( min[ 0 ] + max[ 0 ] ) * 0.5, ( min[ 1 ] + max[ 1 ] ) * 0.5, ( min[ 2 ] + max[ 2 ] ) * 0.5, result );
-	        return result;
-	    },
-	
-	    radius: function () {
-	        return Math.sqrt( this.radius2() );
-	    },
-	
-	    radius2: function () {
-	        var min = this._min;
-	        var max = this._max;
-	        var dx = max[ 0 ] - min[ 0 ];
-	        var dy = max[ 1 ] - min[ 1 ];
-	        var dz = max[ 2 ] - min[ 2 ];
-	        return 0.25 * ( dx * dx + dy * dy + dz * dz );
-	    },
-	
-	    getMin: function () {
-	        return this._min;
-	    },
-	
-	    getMax: function () {
-	        return this._max;
-	    },
-	
-	    setMin: function ( min ) {
-	        Vec3.copy( min, this._min );
-	        return this;
-	    },
-	
-	    setMax: function ( max ) {
-	        Vec3.copy( max, this._max );
-	        return this;
-	    },
-	
-	    xMax: function () {
-	        return this._max[ 0 ];
-	    },
-	
-	    yMax: function () {
-	        return this._max[ 1 ];
-	    },
-	
-	    zMax: function () {
-	        return this._max[ 2 ];
-	    },
-	
-	    xMin: function () {
-	        return this._min[ 0 ];
-	    },
-	
-	    yMin: function () {
-	        return this._min[ 1 ];
-	    },
-	
-	    zMin: function () {
-	        return this._min[ 2 ];
-	    },
-	
-	    corner: function ( pos, ret ) {
-	        /*jshint bitwise: false */
-	        if ( pos & 1 ) {
-	            ret[ 0 ] = this._max[ 0 ];
-	        } else {
-	            ret[ 0 ] = this._min[ 0 ];
-	        }
-	        if ( pos & 2 ) {
-	            ret[ 1 ] = this._max[ 1 ];
-	        } else {
-	            ret[ 1 ] = this._min[ 1 ];
-	        }
-	        if ( pos & 4 ) {
-	            ret[ 2 ] = this._max[ 2 ];
-	        } else {
-	            ret[ 2 ] = this._min[ 2 ];
-	        }
-	        return ret;
-	        /*jshint bitwise: true */
-	    }
-	}, 'osg', 'BoundingBox' );
-	
-	module.exports = BoundingBox;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var osgMath = __webpack_require__( 16 );
-	var config = __webpack_require__( 17 );
-	
-	var ArrayType = config.ArrayType;
-	
-	
-	/** @class Vec3 Operations */
-	var Vec3 = {
-	
-	    create: function () {
-	        var out = new ArrayType( 3 );
-	        out[ 0 ] = 0.0;
-	        out[ 1 ] = 0.0;
-	        out[ 2 ] = 0.0;
-	        return out;
-	    },
-	
-	    createAndSet: function ( x, y, z ) {
-	        var out = new ArrayType( 3 );
-	        out[ 0 ] = x;
-	        out[ 1 ] = y;
-	        out[ 2 ] = z;
-	        return out;
-	    },
-	
-	    init: function ( a ) {
-	        a[ 0 ] = 0.0;
-	        a[ 1 ] = 0.0;
-	        a[ 2 ] = 0.0;
-	        return a;
-	    },
-	
-	    set: function ( a, b, c, r ) {
-	        r[ 0 ] = a;
-	        r[ 1 ] = b;
-	        r[ 2 ] = c;
-	        return r;
-	    },
-	
-	    copy: function ( a, r ) {
-	        r[ 0 ] = a[ 0 ];
-	        r[ 1 ] = a[ 1 ];
-	        r[ 2 ] = a[ 2 ];
-	        return r;
-	    },
-	
-	    cross: function ( a, b, r ) {
-	        var x = a[ 1 ] * b[ 2 ] - a[ 2 ] * b[ 1 ];
-	        var y = a[ 2 ] * b[ 0 ] - a[ 0 ] * b[ 2 ];
-	        var z = a[ 0 ] * b[ 1 ] - a[ 1 ] * b[ 0 ];
-	        r[ 0 ] = x;
-	        r[ 1 ] = y;
-	        r[ 2 ] = z;
-	        return r;
-	    },
-	
-	    valid: function ( a ) {
-	        if ( osgMath.isNaN( a[ 0 ] ) ) return false;
-	        if ( osgMath.isNaN( a[ 1 ] ) ) return false;
-	        if ( osgMath.isNaN( a[ 2 ] ) ) return false;
-	        return true;
-	    },
-	
-	    mult: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] * b;
-	        r[ 1 ] = a[ 1 ] * b;
-	        r[ 2 ] = a[ 2 ] * b;
-	        return r;
-	    },
-	
-	    length2: function ( a ) {
-	        return a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ];
-	    },
-	
-	    length: function ( a ) {
-	        return Math.sqrt( a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ] );
-	    },
-	
-	    distance2: function ( a, b ) {
-	        var x = a[ 0 ] - b[ 0 ];
-	        var y = a[ 1 ] - b[ 1 ];
-	        var z = a[ 2 ] - b[ 2 ];
-	        return x * x + y * y + z * z;
-	    },
-	
-	    distance: function ( a, b ) {
-	        var x = a[ 0 ] - b[ 0 ];
-	        var y = a[ 1 ] - b[ 1 ];
-	        var z = a[ 2 ] - b[ 2 ];
-	        return Math.sqrt( x * x + y * y + z * z );
-	    },
-	
-	    normalize: function ( a, r ) {
-	        var norm = this.length2( a );
-	        if ( norm > 0.0 ) {
-	            var inv = 1.0 / Math.sqrt( norm );
-	            r[ 0 ] = a[ 0 ] * inv;
-	            r[ 1 ] = a[ 1 ] * inv;
-	            r[ 2 ] = a[ 2 ] * inv;
-	        } else {
-	            r[ 0 ] = a[ 0 ];
-	            r[ 1 ] = a[ 1 ];
-	            r[ 2 ] = a[ 2 ];
-	        }
-	        return r;
-	    },
-	
-	    dot: function ( a, b ) {
-	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
-	    },
-	
-	    sub: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] - b[ 0 ];
-	        r[ 1 ] = a[ 1 ] - b[ 1 ];
-	        r[ 2 ] = a[ 2 ] - b[ 2 ];
-	        return r;
-	    },
-	
-	    add: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] + b[ 0 ];
-	        r[ 1 ] = a[ 1 ] + b[ 1 ];
-	        r[ 2 ] = a[ 2 ] + b[ 2 ];
-	        return r;
-	    },
-	
-	    neg: function ( a, r ) {
-	        r[ 0 ] = -a[ 0 ];
-	        r[ 1 ] = -a[ 1 ];
-	        r[ 2 ] = -a[ 2 ];
-	        return r;
-	    },
-	
-	    lerp: function ( t, a, b, r ) {
-	        r[ 0 ] = a[ 0 ] + ( b[ 0 ] - a[ 0 ] ) * t;
-	        r[ 1 ] = a[ 1 ] + ( b[ 1 ] - a[ 1 ] ) * t;
-	        r[ 2 ] = a[ 2 ] + ( b[ 2 ] - a[ 2 ] ) * t;
-	        return r;
-	    },
-	    equal: function ( a, b ) {
-	        return a[ 0 ] === b[ 0 ] && a[ 1 ] === b[ 1 ] && a[ 2 ] === b[ 2 ];
-	    }
-	};
-	
-	Vec3.zero = Vec3.create();
-	Vec3.one = Vec3.createAndSet( 1.0, 1.0, 1.0 );
-	Vec3.infinity = Vec3.createAndSet( Infinity, Infinity, Infinity );
-	Vec3.negativeInfinity = Vec3.createAndSet( -Infinity, -Infinity, -Infinity );
-	
-	module.exports = Vec3;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	var clamp = function ( x, min, max ) {
-	    // http://jsperf.com/math-clamp
-	    // http://jsperf.com/clamping-methods/2
-	    return Math.min( max, Math.max( min, x ) );
-	};
-	
-	var smoothStep = function ( edge0, edge1, x ) {
-	    var t = clamp( ( x - edge0 ) / ( edge1 - edge0 ), 0.0, 1.0 );
-	    return t * t * ( 3.0 - 2.0 * t );
-	};
-	
-	// native isNaN is slow (e.g: https://jsperf.com/isnan-performance/2)
-	// note : native isNaN will return true for undefined but
-	// this function assume that x is a number
-	var fastIsNaN = function ( x ) {
-	    return x !== x;
-	};
-	
-	module.exports = {
-	    clamp: clamp,
-	    smoothStep: smoothStep,
-	    isNaN: fastIsNaN
-	};
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	    ArrayType: Float64Array
-	};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var BoundingBox = __webpack_require__( 14 );
-	var Notify = __webpack_require__( 10 );
-	var Vec3 = __webpack_require__( 15 );
-	
-	
-	var BoundingSphere = function () {
-	    this._center = Vec3.create();
-	    this._radius = -1.0;
-	};
-	
-	BoundingSphere.prototype = {
-	    init: function () {
-	        Vec3.init( this._center );
-	        this._radius = -1.0;
-	    },
-	    valid: function () {
-	        return this._radius >= 0.0;
-	    },
-	    set: function ( center, radius ) {
-	        this._center = center;
-	        this._radius = radius;
-	    },
-	    center: function () {
-	        return this._center;
-	    },
-	    radius: function () {
-	        return this._radius;
-	    },
-	    radius2: function () {
-	        return this._radius * this._radius;
-	    },
-	
-	    expandByBoundingBox: ( function () {
-	        var v = Vec3.create();
-	        var newbb = new BoundingBox();
-	
-	        return function ( bb ) {
-	            if ( !bb.valid() )
-	                return;
-	
-	            if ( this.valid() ) {
-	                Vec3.copy( bb._min, newbb._min );
-	                Vec3.copy( bb._max, newbb._max );
-	
-	                for ( var i = 0; i < 8; i++ ) {
-	                    Vec3.sub( bb.corner( i, v ), this._center, v ); // get the direction vector from corner
-	                    Vec3.normalize( v, v ); // normalise it.
-	                    Vec3.mult( v, -this._radius, v ); // move the vector in the opposite direction distance radius.
-	                    Vec3.add( v, this._center, v ); // move to absolute position.
-	                    newbb.expandByVec3( v ); // add it into the new bounding box.
-	                }
-	
-	                newbb.center( this._center );
-	                this._radius = newbb.radius();
-	            } else {
-	                bb.center( this._center );
-	                this._radius = bb.radius();
-	            }
-	        };
-	    } )(),
-	
-	    expandByBox: function ( bb ) {
-	        Notify.log( 'BoundingSphere.expandByBox is deprecated, use instead BoundingSphere.expandByBoundingBox' );
-	        return this.expandByBoundingBox( bb );
-	    },
-	
-	    expandByVec3: ( function () {
-	        var dv = Vec3.create();
-	        return function ( v ) {
-	            if ( this.valid() ) {
-	                Vec3.sub( v, this.center( dv ), dv );
-	                var r = Vec3.length( dv );
-	                if ( r > this.radius() ) {
-	                    var dr = ( r - this.radius() ) * 0.5;
-	                    this._center[ 0 ] += dv[ 0 ] * ( dr / r );
-	                    this._center[ 1 ] += dv[ 1 ] * ( dr / r );
-	                    this._center[ 2 ] += dv[ 2 ] * ( dr / r );
-	                    this._radius += dr;
-	                }
-	            } else {
-	                this._center[ 0 ] = v[ 0 ];
-	                this._center[ 1 ] = v[ 1 ];
-	                this._center[ 2 ] = v[ 2 ];
-	                this._radius = 0.0;
-	            }
-	        };
-	    } )(),
-	
-	    expandRadiusBySphere: function ( sh ) {
-	        if ( sh.valid() ) {
-	            if ( this.valid() ) {
-	                var r = Vec3.distance( sh._center, this._center ) + sh._radius;
-	                if ( r > this._radius ) {
-	                    this._radius = r;
-	                }
-	                // else do nothing as vertex is within sphere.
-	            } else {
-	                Vec3.copy( sh._center, this._center );
-	                this._radius = sh._radius;
-	            }
-	        }
-	    },
-	
-	    expandBy: function ( bs ) {
-	        Notify.log( 'BoundingSphere.expandBy is deprecated, use instead BoundingSphere.expandByBoundingSphere' );
-	        this.expandByBoundingSphere( bs );
-	    },
-	
-	    expandByBoundingSphere: function ( sh ) {
-	        // ignore operation if incomming BoundingSphere is invalid.
-	        if ( !sh.valid() ) {
-	            return;
-	        }
-	
-	        // This sphere is not set so use the inbound sphere
-	        if ( !this.valid() ) {
-	            this._center[ 0 ] = sh._center[ 0 ];
-	            this._center[ 1 ] = sh._center[ 1 ];
-	            this._center[ 2 ] = sh._center[ 2 ];
-	            this._radius = sh.radius();
-	
-	            return;
-	        }
-	
-	        // Calculate d == The distance between the sphere centers
-	        var d = Vec3.distance( this.center(), sh.center() );
-	
-	        // New sphere is already inside this one
-	        if ( d + sh.radius() <= this.radius() ) {
-	            return;
-	        }
-	
-	        //  New sphere completely contains this one
-	        if ( d + this.radius() <= sh.radius() ) {
-	            this._center[ 0 ] = sh._center[ 0 ];
-	            this._center[ 1 ] = sh._center[ 1 ];
-	            this._center[ 2 ] = sh._center[ 2 ];
-	            this._radius = sh._radius;
-	            return;
-	        }
-	
-	
-	        // Build a new sphere that completely contains the other two:
-	        //
-	        // The center point lies halfway along the line between the furthest
-	        // points on the edges of the two spheres.
-	        //
-	        // Computing those two points is ugly - so we'll use similar triangles
-	        var newRadius = ( this.radius() + d + sh.radius() ) * 0.5;
-	        var ratio = ( newRadius - this.radius() ) / d;
-	
-	        this._center[ 0 ] += ( sh._center[ 0 ] - this._center[ 0 ] ) * ratio;
-	        this._center[ 1 ] += ( sh._center[ 1 ] - this._center[ 1 ] ) * ratio;
-	        this._center[ 2 ] += ( sh._center[ 2 ] - this._center[ 2 ] ) * ratio;
-	
-	        this._radius = newRadius;
-	    },
-	    contains: function ( v ) {
-	        if ( !this.valid() )
-	            return false;
-	        return Vec3.distance2( v, this.center() ) <= this.radius2();
-	    },
-	    intersects: function ( bs ) {
-	        if ( !this.valid() || !bs.valid() )
-	            return false;
-	        var r = this.radius() + bs.radius();
-	        return Vec3.distance2( this.center(), bs.center() ) <= r * r;
-	    }
-	};
-	
-	module.exports = BoundingSphere;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var Map = __webpack_require__( 20 );
-	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
-	var StateAttribute = __webpack_require__( 21 );
+	var Object = __webpack_require__( 12 );
+	var StateAttribute = __webpack_require__( 11 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	
@@ -2676,9 +3213,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StateSet;
 
 
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -2749,58 +3286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Map;
 
 
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	
-	
-	var StateAttribute = function () {
-	    Object.call( this );
-	};
-	
-	StateAttribute.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( Object.prototype, {
-	
-	    getType: function () {
-	        return this.attributeType;
-	    },
-	
-	    // basically, if you want two StateAttribute with the same attributeType in a stateSet/State
-	    // their typeMember should be different
-	    getTypeMember: function () {
-	        return this.attributeType;
-	    },
-	
-	    apply: function () {},
-	
-	    // getHash is used by the compiler to know if a change in a StateAttribute
-	    // must trigger a shader build
-	    // If you create your own attribute you will have to customize this function
-	    // a good rule is to that if you change uniform it should not rebuild a shader
-	    // but if you change a type or representation of your StateAttribute, then it should
-	    // if it impact the rendering.
-	    // check other attributes for examples
-	    getHash: function () {
-	        return this.getTypeMember();
-	    }
-	
-	} ), 'osg', 'StateAttribute' );
-	
-	StateAttribute.OFF = 0;
-	StateAttribute.ON = 1;
-	StateAttribute.OVERRIDE = 2;
-	StateAttribute.PROTECTED = 4;
-	StateAttribute.INHERIT = 8;
-	
-	module.exports = StateAttribute;
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -2927,20 +3415,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = NodeVisitor;
 
 
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var osgMath = __webpack_require__( 16 );
-	var BoundingBox = __webpack_require__( 14 );
-	var Plane = __webpack_require__( 24 );
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
-	var config = __webpack_require__( 17 );
-	
-	var ArrayType = config.ArrayType;
+	var osgMath = __webpack_require__( 18 );
+	var BoundingBox = __webpack_require__( 16 );
+	var Plane = __webpack_require__( 29 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
 	
 	
 	var Mabs = Math.abs;
@@ -2952,23 +3438,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Matrix.create = function... ;
 	// Matrix.func2 = function... ;
 	var matrixCreate = function () {
-	    var out = new ArrayType( 16 );
-	    out[ 0 ] = 1.0;
-	    out[ 1 ] = 0.0;
-	    out[ 2 ] = 0.0;
-	    out[ 3 ] = 0.0;
-	    out[ 4 ] = 0.0;
-	    out[ 5 ] = 1.0;
-	    out[ 6 ] = 0.0;
-	    out[ 7 ] = 0.0;
-	    out[ 8 ] = 0.0;
-	    out[ 9 ] = 0.0;
-	    out[ 10 ] = 1.0;
-	    out[ 11 ] = 0.0;
-	    out[ 12 ] = 0.0;
-	    out[ 13 ] = 0.0;
-	    out[ 14 ] = 0.0;
-	    out[ 15 ] = 1.0;
+	    var out = new Float32Array( 16 );
+	    out[ 0 ] = out[ 5 ] = out[ 10 ] = out[ 15 ] = 1.0;
 	    return out;
 	};
 	
@@ -2976,28 +3447,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Matrix = {
 	
 	    create: function () {
-	        var out = new ArrayType( 16 );
-	        out[ 0 ] = 1.0;
-	        out[ 1 ] = 0.0;
-	        out[ 2 ] = 0.0;
-	        out[ 3 ] = 0.0;
-	        out[ 4 ] = 0.0;
-	        out[ 5 ] = 1.0;
-	        out[ 6 ] = 0.0;
-	        out[ 7 ] = 0.0;
-	        out[ 8 ] = 0.0;
-	        out[ 9 ] = 0.0;
-	        out[ 10 ] = 1.0;
-	        out[ 11 ] = 0.0;
-	        out[ 12 ] = 0.0;
-	        out[ 13 ] = 0.0;
-	        out[ 14 ] = 0.0;
-	        out[ 15 ] = 1.0;
+	        var out = new Float32Array( 16 );
+	        out[ 0 ] = out[ 5 ] = out[ 10 ] = out[ 15 ] = 1.0;
 	        return out;
 	    },
 	
 	    createAndSet: function ( x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15 ) {
-	        var out = new ArrayType( 16 );
+	        var out = Matrix.create();
 	        out[ 0 ] = x0;
 	        out[ 1 ] = x1;
 	        out[ 2 ] = x2;
@@ -3065,13 +3521,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return matrix;
 	    },
 	
-	    equal: function ( a, b ) {
-	        return a[ 0 ] === b[ 0 ] && a[ 1 ] === b[ 1 ] && a[ 2 ] === b[ 2 ] && a[ 3 ] === b[ 3 ] &&
-	            a[ 4 ] === b[ 4 ] && a[ 5 ] === b[ 5 ] && a[ 6 ] === b[ 6 ] && a[ 7 ] === b[ 7 ] &&
-	            a[ 8 ] === b[ 8 ] && a[ 9 ] === b[ 9 ] && a[ 10 ] === b[ 10 ] && a[ 11 ] === b[ 11 ] &&
-	            a[ 12 ] === b[ 12 ] && a[ 13 ] === b[ 13 ] && a[ 14 ] === b[ 14 ] && a[ 15 ] === b[ 15 ];
-	    },
-	
 	    /**
 	     * @param {Number} x position
 	     * @param {Number} y position
@@ -3079,6 +3528,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {Array} matrix to write result
 	     */
 	    makeTranslate: function ( x, y, z, matrix ) {
+	        if ( matrix === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            matrix = Matrix.create();
+	            Matrix.setRow( matrix, 3, x, y, z, 1.0 );
+	            return matrix;
+	        }
 	        Matrix.setRow( matrix, 0, 1.0, 0.0, 0.0, 0.0 );
 	        Matrix.setRow( matrix, 1, 0.0, 1.0, 0.0, 0.0 );
 	        Matrix.setRow( matrix, 2, 0.0, 0.0, 1.0, 0.0 );
@@ -3143,8 +3598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return a;
 	    },
 	
-	    // do a * b and store the result in b
-	    // Be aware of the change w.r.t OSG as b holds the result!
+	    // do a * b and result in b
 	    postMult: function ( a, b ) {
 	        var btmp0, btmp1, btmp2, btmp3;
 	        // post mult
@@ -3186,13 +3640,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        return b;
 	    },
-	
 	    multa: function ( a, b, r ) {
 	        if ( r === a ) {
 	            return Matrix.preMult( a, b );
 	        } else if ( r === b ) {
 	            return Matrix.postMult( a, b );
 	        } else {
+	            if ( r === undefined ) {
+	                Notify.warn( 'no matrix destination !' );
+	                r = Matrix.create();
+	            }
 	            r[ 0 ] = b[ 0 ] * a[ 0 ] + b[ 1 ] * a[ 4 ] + b[ 2 ] * a[ 8 ] + b[ 3 ] * a[ 12 ];
 	            r[ 1 ] = b[ 0 ] * a[ 1 ] + b[ 1 ] * a[ 5 ] + b[ 2 ] * a[ 9 ] + b[ 3 ] * a[ 13 ];
 	            r[ 2 ] = b[ 0 ] * a[ 2 ] + b[ 1 ] * a[ 6 ] + b[ 2 ] * a[ 10 ] + b[ 3 ] * a[ 14 ];
@@ -3305,6 +3762,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return b;
 	            //return Matrix.postMult(r, a);
 	        }
+	        if ( r === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            r = Matrix.create();
+	        }
 	
 	        var s00 = b[ 0 ];
 	        var s01 = b[ 1 ];
@@ -3369,6 +3830,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var neg = Vec3.create();
 	
 	        return function ( eye, eyeDir, up, result ) {
+	            if ( result === undefined ) {
+	                Notify.warn( 'no matrix destination !' );
+	                result = Matrix.create();
+	            }
 	            var f = eyeDir;
 	            Vec3.cross( f, up, s );
 	            Vec3.normalize( s, s );
@@ -3406,6 +3871,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var f = Vec3.create();
 	
 	        return function ( eye, center, up, result ) {
+	            if ( result === undefined ) {
+	                Notify.warn( 'no matrix destination !' );
+	                result = Matrix.create();
+	            }
+	
+	
 	            Vec3.sub( center, eye, f );
 	            Vec3.normalize( f, f );
 	            this.makeLookFromDirection( eye, f, up, result );
@@ -3413,6 +3884,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    } )(),
 	    makeOrtho: function ( left, right, bottom, top, zNear, zFar, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        // note transpose of Matrix_implementation wr.t OpenGL documentation, since the OSG use post multiplication rather than pre.
 	        // we will change this convention later
 	        var tx = -( right + left ) / ( right - left );
@@ -3453,6 +3928,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var tq = Quat.create();
 	
 	        return function ( mat, quatResult ) {
+	            if ( quatResult === undefined ) {
+	                Notify.warn( 'no quat destination !' );
+	                quatResult = Quat.create();
+	            }
+	
 	            var s;
 	            var i, j;
 	
@@ -3470,6 +3950,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            for ( i = 1; i < 4; i++ ) {
 	                if ( ( tq[ i ] > tq[ j ] ) ) {
 	                    j = i;
+	                } else {
+	                    j = j;
 	                }
 	            }
 	
@@ -3536,36 +4018,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return mat;
 	    },
 	
-	    postMultTranslate: function ( mat, translate ) {
-	        var val;
-	        if ( translate[ 0 ] !== 0.0 ) {
-	            val = translate[ 0 ];
-	            mat[ 0 ] += val * mat[ 3 ];
-	            mat[ 4 ] += val * mat[ 7 ];
-	            mat[ 8 ] += val * mat[ 11 ];
-	            mat[ 12 ] += val * mat[ 15 ];
-	        }
-	
-	        if ( translate[ 1 ] !== 0.0 ) {
-	            val = translate[ 1 ];
-	            mat[ 1 ] += val * mat[ 3 ];
-	            mat[ 5 ] += val * mat[ 7 ];
-	            mat[ 9 ] += val * mat[ 11 ];
-	            mat[ 13 ] += val * mat[ 15 ];
-	        }
-	
-	        if ( translate[ 2 ] !== 0.0 ) {
-	            val = translate[ 2 ];
-	            mat[ 2 ] += val * mat[ 3 ];
-	            mat[ 6 ] += val * mat[ 7 ];
-	            mat[ 10 ] += val * mat[ 11 ];
-	            mat[ 14 ] += val * mat[ 15 ];
-	        }
-	        return mat;
-	    },
-	
 	    // result = Matrix M * Matrix Translate
 	    multTranslate: function ( mat, translate, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        if ( result !== mat ) {
 	            Matrix.copy( mat, result );
 	        }
@@ -3601,62 +4059,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var qtemp = Quat.create();
 	
 	        return function ( angle, x, y, z, result ) {
+	            if ( result === undefined ) {
+	                Notify.warn( 'no matrix destination !' );
+	                result = Matrix.create();
+	            }
 	            return Matrix.makeRotateFromQuat( Quat.makeRotate( angle, x, y, z, qtemp ), result );
 	        };
 	    } )(),
 	
-	    preMultRotate: ( function () {
-	        var r = matrixCreate();
-	        return function ( matrix, quat ) {
-	            Matrix.makeRotateFromQuat( quat, r );
-	            Matrix.preMult( matrix, r );
-	            return matrix;
-	        };
-	    } )(),
-	
-	    postMultRotate: ( function () {
-	        var r = matrixCreate();
-	        return function ( matrix, quat ) {
-	            Matrix.makeRotateFromQuat( quat, r );
-	            Matrix.postMult( r, matrix );
-	            return matrix;
-	        };
-	    } )(),
-	
 	    transform3x3: function ( m, v, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
+	
 	        result[ 0 ] = m[ 0 ] * v[ 0 ] + m[ 1 ] * v[ 1 ] + m[ 2 ] * v[ 2 ];
 	        result[ 1 ] = m[ 4 ] * v[ 0 ] + m[ 5 ] * v[ 1 ] + m[ 6 ] * v[ 2 ];
 	        result[ 2 ] = m[ 8 ] * v[ 0 ] + m[ 9 ] * v[ 1 ] + m[ 10 ] * v[ 2 ];
 	        return result;
 	    },
 	
-	    transformVec3: function ( matrix, vector, result ) {
-	        var x = vector[ 0 ];
-	        var y = vector[ 1 ];
-	        var z = vector[ 2 ];
+	    transformVec3: ( function () {
+	        var tmpVec = Vec3.create();
 	
-	        var d = 1.0 / ( matrix[ 3 ] * x + matrix[ 7 ] * y + matrix[ 11 ] * z + matrix[ 15 ] );
+	        return function ( matrix, vector, result ) {
+	            if ( result === undefined ) {
+	                Notify.warn( 'no vec3 destination !' );
+	                result = Vec3.create();
+	            }
 	
-	        result[ 0 ] = ( matrix[ 0 ] * x + matrix[ 4 ] * y + matrix[ 8 ] * z + matrix[ 12 ] ) * d;
-	        result[ 1 ] = ( matrix[ 1 ] * x + matrix[ 5 ] * y + matrix[ 9 ] * z + matrix[ 13 ] ) * d;
-	        result[ 2 ] = ( matrix[ 2 ] * x + matrix[ 6 ] * y + matrix[ 10 ] * z + matrix[ 14 ] ) * d;
+	            var d = 1.0 / ( matrix[ 3 ] * vector[ 0 ] + matrix[ 7 ] * vector[ 1 ] + matrix[ 11 ] * vector[ 2 ] + matrix[ 15 ] );
 	
-	        return result;
-	    },
+	            var tmp;
+	            if ( result === vector ) {
+	                tmp = tmpVec;
+	            } else {
+	                tmp = result;
+	            }
+	            tmp[ 0 ] = ( matrix[ 0 ] * vector[ 0 ] + matrix[ 4 ] * vector[ 1 ] + matrix[ 8 ] * vector[ 2 ] + matrix[ 12 ] ) * d;
+	            tmp[ 1 ] = ( matrix[ 1 ] * vector[ 0 ] + matrix[ 5 ] * vector[ 1 ] + matrix[ 9 ] * vector[ 2 ] + matrix[ 13 ] ) * d;
+	            tmp[ 2 ] = ( matrix[ 2 ] * vector[ 0 ] + matrix[ 6 ] * vector[ 1 ] + matrix[ 10 ] * vector[ 2 ] + matrix[ 14 ] ) * d;
 	
-	    transformVec4: function ( matrix, vector, result ) {
-	        var x = vector[ 0 ];
-	        var y = vector[ 1 ];
-	        var z = vector[ 2 ];
-	        var w = vector[ 3 ];
+	            if ( result === vector ) {
+	                Vec3.copy( tmp, result );
+	            }
+	            return result;
+	        };
+	    } )(),
 	
-	        result[ 0 ] = matrix[ 0 ] * x + matrix[ 4 ] * y + matrix[ 8 ] * z + matrix[ 12 ] * w;
-	        result[ 1 ] = matrix[ 1 ] * x + matrix[ 5 ] * y + matrix[ 9 ] * z + matrix[ 13 ] * w;
-	        result[ 2 ] = matrix[ 2 ] * x + matrix[ 6 ] * y + matrix[ 10 ] * z + matrix[ 14 ] * w;
-	        result[ 3 ] = matrix[ 3 ] * x + matrix[ 7 ] * y + matrix[ 11 ] * z + matrix[ 15 ] * w;
+	    transformVec4: ( function () {
+	        var tmpVec = Vec4.create();
 	
-	        return result;
-	    },
+	        return function ( matrix, vector, result ) {
+	
+	            if ( result === undefined ) {
+	                Notify.warn( 'no Vec4 destination !' );
+	                result = Vec4.create();
+	            }
+	            var tmp;
+	            if ( result === vector ) {
+	                tmp = tmpVec;
+	            } else {
+	                tmp = result;
+	            }
+	            tmp[ 0 ] = ( matrix[ 0 ] * vector[ 0 ] + matrix[ 4 ] * vector[ 1 ] + matrix[ 8 ] * vector[ 2 ] + matrix[ 12 ] * vector[ 3 ] );
+	            tmp[ 1 ] = ( matrix[ 1 ] * vector[ 0 ] + matrix[ 5 ] * vector[ 1 ] + matrix[ 9 ] * vector[ 2 ] + matrix[ 13 ] * vector[ 3 ] );
+	            tmp[ 2 ] = ( matrix[ 2 ] * vector[ 0 ] + matrix[ 6 ] * vector[ 1 ] + matrix[ 10 ] * vector[ 2 ] + matrix[ 14 ] * vector[ 3 ] );
+	            tmp[ 3 ] = ( matrix[ 3 ] * vector[ 0 ] + matrix[ 7 ] * vector[ 1 ] + matrix[ 11 ] * vector[ 2 ] + matrix[ 15 ] * vector[ 3 ] );
+	
+	            if ( result === vector ) {
+	                Vec4.copy( tmp, result );
+	            }
+	            return result;
+	        };
+	    } )(),
 	
 	    // http://dev.theomader.com/transform-bounding-boxes/
 	    // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
@@ -3720,19 +4196,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    } )(),
 	
-	    transformVec4PostMult: function ( matrix, vector, result ) {
-	        var x = vector[ 0 ];
-	        var y = vector[ 1 ];
-	        var z = vector[ 2 ];
-	        var w = vector[ 3 ];
+	    transformVec4PostMult: ( function () {
+	        var tmpVec = Vec4.create();
 	
-	        result[ 0 ] = matrix[ 0 ] * x + matrix[ 1 ] * y + matrix[ 2 ] * z + matrix[ 3 ] * w;
-	        result[ 1 ] = matrix[ 4 ] * x + matrix[ 5 ] * y + matrix[ 6 ] * z + matrix[ 7 ] * w;
-	        result[ 2 ] = matrix[ 8 ] * x + matrix[ 9 ] * y + matrix[ 10 ] * z + matrix[ 11 ] * w;
-	        result[ 3 ] = matrix[ 12 ] * x + matrix[ 13 ] * y + matrix[ 14 ] * z + matrix[ 15 ] * w;
+	        return function ( matrix, vector, result ) {
 	
-	        return result;
-	    },
+	            if ( result === undefined ) {
+	                Notify.warn( 'no Vec4 destination !' );
+	                result = Vec4.create();
+	            }
+	            var tmp;
+	            if ( result === vector ) {
+	                tmp = tmpVec;
+	            } else {
+	                tmp = result;
+	            }
+	            tmp[ 0 ] = ( matrix[ 0 ] * vector[ 0 ] + matrix[ 1 ] * vector[ 1 ] + matrix[ 2 ] * vector[ 2 ] + matrix[ 3 ] * vector[ 3 ] );
+	            tmp[ 1 ] = ( matrix[ 4 ] * vector[ 0 ] + matrix[ 5 ] * vector[ 1 ] + matrix[ 6 ] * vector[ 2 ] + matrix[ 7 ] * vector[ 3 ] );
+	            tmp[ 2 ] = ( matrix[ 8 ] * vector[ 0 ] + matrix[ 9 ] * vector[ 1 ] + matrix[ 10 ] * vector[ 2 ] + matrix[ 11 ] * vector[ 3 ] );
+	            tmp[ 3 ] = ( matrix[ 12 ] * vector[ 0 ] + matrix[ 13 ] * vector[ 1 ] + matrix[ 14 ] * vector[ 2 ] + matrix[ 15 ] * vector[ 3 ] );
+	
+	            if ( result === vector ) {
+	                Vec4.copy( tmp, result );
+	            }
+	            return result;
+	        };
+	    } )(),
 	
 	    copy: function ( matrix, result ) {
 	        result[ 0 ] = matrix[ 0 ];
@@ -4023,18 +4512,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	                a13 = mat[ 7 ];
 	            var a23 = mat[ 11 ];
 	
-	            dest[ 1 ] = mat[ 4 ];
-	            dest[ 2 ] = mat[ 8 ];
-	            dest[ 3 ] = mat[ 12 ];
-	            dest[ 4 ] = a01;
-	            dest[ 6 ] = mat[ 9 ];
-	            dest[ 7 ] = mat[ 13 ];
-	            dest[ 8 ] = a02;
-	            dest[ 9 ] = a12;
-	            dest[ 11 ] = mat[ 14 ];
-	            dest[ 12 ] = a03;
-	            dest[ 13 ] = a13;
-	            dest[ 14 ] = a23;
+	            mat[ 1 ] = mat[ 4 ];
+	            mat[ 2 ] = mat[ 8 ];
+	            mat[ 3 ] = mat[ 12 ];
+	            mat[ 4 ] = a01;
+	            mat[ 6 ] = mat[ 9 ];
+	            mat[ 7 ] = mat[ 13 ];
+	            mat[ 8 ] = a02;
+	            mat[ 9 ] = a12;
+	            mat[ 11 ] = mat[ 14 ];
+	            mat[ 12 ] = a03;
+	            mat[ 13 ] = a13;
+	            mat[ 14 ] = a23;
+	            return mat;
 	        } else {
 	            dest[ 0 ] = mat[ 0 ];
 	            dest[ 1 ] = mat[ 4 ];
@@ -4052,8 +4542,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            dest[ 13 ] = mat[ 7 ];
 	            dest[ 14 ] = mat[ 11 ];
 	            dest[ 15 ] = mat[ 15 ];
+	            return dest;
 	        }
-	        return dest;
 	    },
 	
 	    getFrustumPlanes: ( function () {
@@ -4119,6 +4609,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } )(),
 	
 	    makePerspective: function ( fovy, aspect, znear, zfar, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        var ymax = znear * Math.tan( fovy * Math.PI / 360.0 );
 	        var ymin = -ymax;
 	        var xmin = ymin * aspect;
@@ -4210,32 +4704,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    },
 	
-	    postMultScale: function ( m, scale ) {
-	
-	        var x = scale[ 0 ];
-	        var y = scale[ 1 ];
-	        var z = scale[ 2 ];
-	
-	        m[ 0 ] *= x;
-	        m[ 1 ] *= y;
-	        m[ 2 ] *= z;
-	
-	        m[ 4 ] *= x;
-	        m[ 5 ] *= y;
-	        m[ 6 ] *= z;
-	
-	        m[ 8 ] *= x;
-	        m[ 9 ] *= y;
-	        m[ 10 ] *= z;
-	
-	        m[ 12 ] *= x;
-	        m[ 13 ] *= y;
-	        m[ 14 ] *= z;
-	
-	        return m;
-	    },
-	
 	    makeScale: function ( x, y, z, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        Matrix.setRow( result, 0, x, 0.0, 0.0, 0.0 );
 	        Matrix.setRow( result, 1, 0.0, y, 0.0, 0.0 );
 	        Matrix.setRow( result, 2, 0.0, 0.0, z, 0.0 );
@@ -4401,6 +4874,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //http://www.geometry.caltech.edu/pubs/UD12.pdf
 	    // drop-in, just remove the one below, and rename this one
 	    makeFrustumInfinite: function ( left, right, bottom, top, znear, zfar, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        var X = 2.0 * znear / ( right - left );
 	        var Y = 2.0 * znear / ( top - bottom );
 	        var A = ( right + left ) / ( right - left );
@@ -4414,6 +4891,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    makeFrustum: function ( left, right, bottom, top, znear, zfar, result ) {
+	        if ( result === undefined ) {
+	            Notify.warn( 'no matrix destination !' );
+	            result = Matrix.create();
+	        }
 	        var X = 2.0 * znear / ( right - left );
 	        var Y = 2.0 * znear / ( top - bottom );
 	        var A = ( right + left ) / ( right - left );
@@ -4507,15 +4988,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Matrix;
 
 
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Matrix = __webpack_require__( 23 );
+	var Matrix = __webpack_require__( 28 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec4 = __webpack_require__( 25 );
-	var Vec3 = __webpack_require__( 15 );
+	var Vec4 = __webpack_require__( 14 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	/** @class Plane Operations */
@@ -4647,119 +5128,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Plane;
 
 
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var config = __webpack_require__( 17 );
-	
-	var ArrayType = config.ArrayType;
-	
-	/** @class Vec4 Operations */
-	var Vec4 = {
-	
-	    create: function () {
-	        var out = new ArrayType( 4 );
-	        out[ 0 ] = 0.0;
-	        out[ 1 ] = 0.0;
-	        out[ 2 ] = 0.0;
-	        out[ 3 ] = 0.0;
-	        return out;
-	    },
-	
-	    createAndSet: function ( x, y, z, w ) {
-	        var out = new ArrayType( 4 );
-	        out[ 0 ] = x;
-	        out[ 1 ] = y;
-	        out[ 2 ] = z;
-	        out[ 3 ] = w;
-	        return out;
-	    },
-	
-	    init: function ( a ) {
-	        a[ 0 ] = 0.0;
-	        a[ 1 ] = 0.0;
-	        a[ 2 ] = 0.0;
-	        a[ 3 ] = 0.0;
-	        return a;
-	    },
-	
-	    set: function ( a, b, c, d, r ) {
-	        r[ 0 ] = a;
-	        r[ 1 ] = b;
-	        r[ 2 ] = c;
-	        r[ 3 ] = d;
-	        return r;
-	    },
-	
-	    dot: function ( a, b ) {
-	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ] + a[ 3 ] * b[ 3 ];
-	    },
-	
-	    copy: function ( a, r ) {
-	        r[ 0 ] = a[ 0 ];
-	        r[ 1 ] = a[ 1 ];
-	        r[ 2 ] = a[ 2 ];
-	        r[ 3 ] = a[ 3 ];
-	        return r;
-	    },
-	
-	    sub: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] - b[ 0 ];
-	        r[ 1 ] = a[ 1 ] - b[ 1 ];
-	        r[ 2 ] = a[ 2 ] - b[ 2 ];
-	        r[ 3 ] = a[ 3 ] - b[ 3 ];
-	        return r;
-	    },
-	
-	    mult: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] * b;
-	        r[ 1 ] = a[ 1 ] * b;
-	        r[ 2 ] = a[ 2 ] * b;
-	        r[ 3 ] = a[ 3 ] * b;
-	        return r;
-	    },
-	
-	    add: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] + b[ 0 ];
-	        r[ 1 ] = a[ 1 ] + b[ 1 ];
-	        r[ 2 ] = a[ 2 ] + b[ 2 ];
-	        r[ 3 ] = a[ 3 ] + b[ 3 ];
-	        return r;
-	    },
-	
-	    neg: function ( a, r ) {
-	        r[ 0 ] = -a[ 0 ];
-	        r[ 1 ] = -a[ 1 ];
-	        r[ 2 ] = -a[ 2 ];
-	        r[ 3 ] = -a[ 3 ];
-	        return r;
-	    },
-	
-	    lerp: function ( t, a, b, r ) {
-	        var tmp = 1.0 - t;
-	        r[ 0 ] = a[ 0 ] * tmp + t * b[ 0 ];
-	        r[ 1 ] = a[ 1 ] * tmp + t * b[ 1 ];
-	        r[ 2 ] = a[ 2 ] * tmp + t * b[ 2 ];
-	        r[ 3 ] = a[ 3 ] * tmp + t * b[ 3 ];
-	        return r;
-	    }
-	};
-	
-	module.exports = Vec4;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var config = __webpack_require__( 17 );
-	
-	var ArrayType = config.ArrayType;
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Notify = __webpack_require__( 10 );
 	
 	
 	var Msqrt = Math.sqrt;
@@ -4769,10 +5145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Quat = {
 	
 	    create: function () {
-	        var out = new ArrayType( 4 );
-	        out[ 0 ] = 0.0;
-	        out[ 1 ] = 0.0;
-	        out[ 2 ] = 0.0;
+	        var out = new Float32Array( 4 );
 	        out[ 3 ] = 1.0;
 	        return out;
 	    },
@@ -4804,9 +5177,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ] + a[ 3 ] * a[ 3 ];
 	    },
 	
-	    zeroRotation: function ( q ) {
-	        return q[ 0 ] === 0.0 && q[ 1 ] === 0.0 && q[ 2 ] === 0.0 && q[ 3 ] === 1.0;
-	    },
 	
 	    length: function ( a ) {
 	        return Math.sqrt( a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] + a[ 2 ] * a[ 2 ] + a[ 3 ] * a[ 3 ] );
@@ -5028,7 +5398,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( r > 0.00001 ) {
 	            s = et * Math.sin( r ) / r;
 	        }
-	
+	        if ( res === undefined ) {
+	            Notify.warn( 'no quat destination !' );
+	            res = Quat.create();
+	        }
 	        res[ 0 ] = s * a[ 0 ];
 	        res[ 1 ] = s * a[ 1 ];
 	        res[ 2 ] = s * a[ 2 ];
@@ -5043,7 +5416,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( r > 0.00001 ) {
 	            t = Math.atan2( r, a[ 3 ] ) / r;
 	        }
-	
+	        if ( res === undefined ) {
+	            Notify.warn( 'no quat destination !' );
+	            res = Quat.create();
+	        }
 	        n += a[ 3 ] * a[ 3 ];
 	        res[ 0 ] = t * a[ 0 ];
 	        res[ 1 ] = t * a[ 1 ];
@@ -5073,8 +5449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        // first step
 	        var invq = this.inv( qcur );
-	        var qa = this.create();
-	        var qb = this.create();
+	        var qa, qb;
 	
 	        this.mult( q2, invq, qa );
 	        this.ln( qa, qa );
@@ -5141,12 +5516,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Quat;
 
 
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Matrix = __webpack_require__( 23 );
+	var Matrix = __webpack_require__( 28 );
 	
 	
 	/**
@@ -5199,13 +5574,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = MatrixMemoryPool;
 
 
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Matrix = __webpack_require__( 23 );
-	var TransformEnums = __webpack_require__( 29 );
+	var Matrix = __webpack_require__( 28 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	
 	// TODO: GC PERF: add a result Matrix Parameter.
@@ -5258,9 +5633,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
 
 	'use strict';
 	module.exports = {
@@ -5269,17 +5644,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BoundingBox = __webpack_require__( 14 );
-	var Geometry = __webpack_require__( 31 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var Transform = __webpack_require__( 11 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var BoundingBox = __webpack_require__( 16 );
+	var Geometry = __webpack_require__( 35 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var NodeVisitor = __webpack_require__( 27 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	
@@ -5331,7 +5706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    apply: function ( node ) {
 	
-	        if ( node instanceof Transform ) {
+	        if ( node instanceof MatrixTransform ) {
 	            this.applyTransform( node );
 	            return;
 	
@@ -5381,17 +5756,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ComputeBoundsVisitor;
 
 
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
+	var Node = __webpack_require__( 24 );
 	var Notify = __webpack_require__( 10 );
-	var WebGLCaps = __webpack_require__( 32 );
-	var DrawElements = __webpack_require__( 43 );
-	var BufferArrayProxy = __webpack_require__( 53 );
+	var WebGLCaps = __webpack_require__( 36 );
+	var DrawElements = __webpack_require__( 44 );
+	var BufferArrayProxy = __webpack_require__( 55 );
 	
 	/**
 	 * Geometry manage array and primitives to draw a geometry.
@@ -5421,8 +5796,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        } );
 	
-	        var push = function () {
-	            this.push.apply( this, arguments );
+	        var push = function ( value ) {
+	            this.push( value );
 	            self.dirty();
 	
 	        }.bind( this._primitives );
@@ -5783,8 +6158,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    computeBoundingBox: function ( boundingBox ) {
 	
-	        boundingBox.init();
-	
 	        var vertexArray = this.getVertexAttributeList().Vertex;
 	        if ( vertexArray && vertexArray.getElements() && vertexArray.getItemSize() > 2 ) {
 	            var vertexes = vertexArray.getElements();
@@ -5823,7 +6196,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            max[ 1 ] = maxy;
 	            max[ 2 ] = maxz;
 	        }
-	
 	        return boundingBox;
 	    },
 	
@@ -5861,19 +6233,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Geometry;
 
 
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var WebGLUtils = __webpack_require__( 33 );
-	var Texture;
+	var Texture = __webpack_require__( 37 );
+	var WebGLUtils = __webpack_require__( 54 );
+	
 	
 	var WebGLCaps = function () {
-	
-	    // circular deps with texture
-	    if ( !Texture ) Texture = __webpack_require__( 34 );
 	
 	    this._checkRTT = {};
 	    this._webGLExtensions = {};
@@ -5919,7 +6289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            // make sure we don't break webglinspector
 	            // with our webglcaps canvas
-	            var webglInspector = typeof window !== 'undefined' && window.gli;
+	            var webglInspector = typeof window !== undefined && window.gli;
 	
 	            if ( webglInspector ) {
 	
@@ -5988,8 +6358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._gl = gl;
 	
 	        // Takes care of circular dependencies on Texture
-	        // Texture should be resolved at this point
-	        // Texture = require( 'osg/Texture' );
+	        Texture = __webpack_require__( 37 );
 	
 	        // get extensions
 	        this.initWebGLExtensions( gl );
@@ -6017,7 +6386,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._isGL2 = typeof window.WebGL2RenderingContext !== 'undefined' && gl instanceof window.WebGL2RenderingContext;
 	
 	        if ( this._isGL2 ) {
-	
 	
 	            // osgjs code is webgl1, so we fake webgl2 capabilities
 	            // and calls for retrocompatibility with webgl1
@@ -6255,240 +6623,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 	
+	
 	module.exports = WebGLCaps;
 
 
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-	// jshint ignore: start
-	
-	/*
-	 * Copyright 2010, Google Inc.
-	 * All rights reserved.
-	 *
-	 * Redistribution and use in source and binary forms, with or without
-	 * modification, are permitted provided that the following conditions are
-	 * met:
-	 *
-	 *     * Redistributions of source code must retain the above copyright
-	 * notice, this list of conditions and the following disclaimer.
-	 *     * Redistributions in binary form must reproduce the above
-	 * copyright notice, this list of conditions and the following disclaimer
-	 * in the documentation and/or other materials provided with the
-	 * distribution.
-	 *     * Neither the name of Google Inc. nor the names of its
-	 * contributors may be used to endorse or promote products derived from
-	 * this software without specific prior written permission.
-	 *
-	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-	 * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-	 * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-	 * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-	 * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-	 * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-	 * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-	 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	 */
-	
-	
-	/**
-	 * @fileoverview This file contains functions every webgl program will need
-	 * a version of one way or another.
-	 *
-	 * Instead of setting up a context manually it is recommended to
-	 * use. This will check for success or failure. On failure it
-	 * will attempt to present an approriate message to the user.
-	 *
-	 *       gl = WebGLUtils.setupWebGL(canvas);
-	 *
-	 * For animated WebGL apps use of setTimeout or setInterval are
-	 * discouraged. It is recommended you structure your rendering
-	 * loop like this.
-	 *
-	 *       function render() {
-	 *         window.requestAnimationFrame(render, canvas);
-	 *
-	 *         // do rendering
-	 *         ...
-	 *       }
-	 *       render();
-	 *
-	 * This will call your rendering function up to the refresh rate
-	 * of your display but will stop rendering if your app is not
-	 * visible.
-	 */
-	
-	'use strict';
-	var WebGLUtils = function () {
-	
-	    /**
-	     * Creates the HTLM for a failure message
-	     * @param {string} canvasContainerId id of container of th
-	     *        canvas.
-	     * @return {string} The html.
-	     */
-	    var makeFailHTML = function ( msg ) {
-	        return '' +
-	            '<div style="margin: auto; width:500px;z-index:10000;margin-top:20em;text-align:center;">' + msg + '</div>';
-	        // return '' +
-	        //   '<table style="background-color: #8CE; width: 100%; height: 100%;"><tr>' +
-	        //   '<td align="center">' +
-	        //   '<div style="display: table-cell; vertical-align: middle;">' +
-	        //   '<div style="">' + msg + '</div>' +
-	        //   '</div>' +
-	        //   '</td></tr></table>';
-	    };
-	
-	    /**
-	     * Mesasge for getting a webgl browser
-	     * @type {string}
-	     */
-	    var GET_A_WEBGL_BROWSER = '' +
-	        'This page requires a browser that supports WebGL.<br/>' +
-	        '<a href="http://get.webgl.org">Click here to upgrade your browser.</a>';
-	
-	    /**
-	     * Mesasge for need better hardware
-	     * @type {string}
-	     */
-	    var OTHER_PROBLEM = '' +
-	        "It doesn't appear your computer can support WebGL.<br/>" +
-	        '<a href="http://get.webgl.org">Click here for more information.</a>';
-	
-	    /**
-	     * Creates a webgl context. If creation fails it will
-	     * change the contents of the container of the <canvas>
-	     * tag to an error message with the correct links for WebGL.
-	     * @return {WebGLRenderingContext} The created context.
-	     */
-	    var setupWebGL = function (
-	        /** Element */
-	        canvas,
-	        /** WebGLContextCreationAttirbutes */
-	        opt_attribs,
-	        /** function:(msg) */
-	        opt_onError ) {
-	        function handleCreationError( msg ) {
-	            if ( msg.indexOf( 'WebGL2' ) !== -1 ) return;
-	            var container = document.getElementsByTagName( "body" )[ 0 ];
-	            //var container = canvas.parentNode;
-	            if ( container ) {
-	                var str = window.WebGLRenderingContext ?
-	                    OTHER_PROBLEM :
-	                    GET_A_WEBGL_BROWSER;
-	                if ( msg ) {
-	                    str += "<br/><br/>Status: " + msg;
-	                }
-	                container.innerHTML = makeFailHTML( str );
-	            }
-	        }
-	
-	        opt_onError = opt_onError || handleCreationError;
-	
-	        if ( canvas.addEventListener ) {
-	            canvas.addEventListener( "webglcontextcreationerror", function ( event ) {
-	                opt_onError( event.statusMessage );
-	            }, false );
-	        }
-	        var context = create3DContext( canvas, opt_attribs );
-	        if ( !context ) {
-	            //if ( !window.WebGLRenderingContext )
-	            opt_onError( "" );
-	        }
-	
-	        return context;
-	    };
-	
-	    /**
-	     * Creates a webgl context.
-	     * @param {!Canvas} canvas The canvas tag to get context
-	     *     from. If one is not passed in one will be created.
-	     * @return {!WebGLContext} The created context.
-	     */
-	    var create3DContext = function ( canvas, opt_attribs ) {
-	
-	        // only try to enable if URl options ?webgl2=1
-	        var names = [];
-	        if ( opt_attribs && opt_attribs.webgl2 ) {
-	            names = names.concat( [ "webgl2", "experimental-webgl2" ] );
-	        }
-	        names = names.concat( [ "webgl", "experimental-webgl", "webkit-3d", "moz-webgl" ] );
-	
-	        var context = null;
-	        for ( var ii = 0; ii < names.length; ++ii ) {
-	            try {
-	                context = canvas.getContext( names[ ii ], opt_attribs );
-	            } catch ( e ) {}
-	            if ( context ) {
-	                break;
-	            }
-	        }
-	        return context;
-	    };
-	
-	    return {
-	        create3DContext: create3DContext,
-	        setupWebGL: setupWebGL
-	    };
-	}();
-	
-	/**
-	 * Provides requestAnimationFrame in a cross browser
-	 * way.
-	 */
-	if ( !window.requestAnimationFrame ) {
-	    window.requestAnimationFrame = ( function () {
-	        return window.requestAnimationFrame ||
-	            window.webkitRequestAnimationFrame ||
-	            window.mozRequestAnimationFrame ||
-	            window.oRequestAnimationFrame ||
-	            window.msRequestAnimationFrame ||
-	            function ( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-	                window.setTimeout( callback, 1000 / 60 );
-	            };
-	    } )();
-	}
-	
-	if ( !window.cancelRequestAnimFrame ) {
-	    window.cancelRequestAnimFrame = ( function () {
-	        return window.cancelAnimationFrame ||
-	            window.webkitCancelRequestAnimationFrame ||
-	            window.mozCancelRequestAnimationFrame ||
-	            window.oCancelRequestAnimationFrame ||
-	            window.msCancelRequestAnimationFrame ||
-	            clearTimeout;
-	    } )();
-	}
-	
-	if ( !Date.now ) {
-	    Date.now = function now() {
-	        return new Date().getTime();
-	    };
-	}
-	
-	module.exports = WebGLUtils;
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Uniform = __webpack_require__( 35 );
-	var Image = __webpack_require__( 36 );
-	var GLObject = __webpack_require__( 37 );
-	var ReaderParser = __webpack_require__( 38 );
-	var CustomMap = __webpack_require__( 20 );
-	var TextureManager = __webpack_require__( 52 );
-	var WebglCaps = __webpack_require__( 32 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Uniform = __webpack_require__( 38 );
+	var Image = __webpack_require__( 40 );
+	var GLObject = __webpack_require__( 21 );
+	var ReaderParser = __webpack_require__( 41 );
+	var CustomMap = __webpack_require__( 26 );
+	var TextureManager = __webpack_require__( 53 );
+	var WebglCaps = __webpack_require__( 36 );
 	
 	
 	// helper
@@ -6718,27 +6871,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        var maxSize = WebglCaps.instance().getWebGLParameter( 'MAX_TEXTURE_SIZE' );
 	
-	        if ( w !== this._textureWidth || h !== this._textureHeight )
-	            this.dirty();
-	
 	        if ( w !== undefined ) {
 	            if ( w > maxSize ) {
 	                Notify.error( 'width (' + w + ') too big for GPU. Max Texture Size is "' + maxSize + '"' );
-	                this._textureWidth = maxSize;
-	            } else {
-	                this._textureWidth = w;
 	            }
+	            this._textureWidth = w;
 	        }
-	
 	        if ( h !== undefined ) {
 	            if ( h > maxSize ) {
 	                Notify.error( 'height (' + h + ') too big for GPU. Max Texture Size is "' + maxSize + '"' );
-	                this._textureHeight = maxSize;
-	            } else {
-	                this._textureHeight = h;
 	            }
+	            this._textureHeight = h;
 	        }
-	
 	        this._textureNull = false;
 	    },
 	
@@ -7239,12 +7383,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Texture;
 
 
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
 	
 	
 	/**
@@ -7252,7 +7400,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @class Uniform
 	 */
 	var Uniform = function ( name ) {
-	    this._data = undefined;
 	    this._transpose = false;
 	    this._glCall = '';
 	    this._cache = undefined;
@@ -7289,7 +7436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    set: function ( array ) {
-	        Notify.log( 'deprecated use setFloat/setInt instead' );
+	        Notify.log( 'deprecated use setInternalArray or setFloat/setInt instead' );
 	        var value = array;
 	        if ( !Array.isArray( value ) && value.byteLength === undefined )
 	            this._data[ 0 ] = value;
@@ -7308,7 +7455,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._cache.call( gl, location, this._data );
 	    },
 	
-	    // no type checking, so array should be valid
+	    // set the internal array use but the uniform
+	    // the setFloat/setVecX/setMatrixX will be copied to the
+	    // internal array. Consider using this function as an optimization
+	    // to avoid copy. It's possible inside StateAttribute code but it's
+	    // safer to not do that in users code unless you know what you are doing
 	    setInternalArray: function ( array ) {
 	        this._data = array;
 	    },
@@ -7317,12 +7468,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this._data;
 	    },
 	
-	    setFloat: function ( f ) {
-	        this._data[ 0 ] = f;
-	    },
-	
 	    setFloat1: function ( f ) {
 	        this._data[ 0 ] = f[ 0 ];
+	    },
+	
+	    setFloat: function ( f ) {
+	        this._data[ 0 ] = f;
 	    },
 	
 	    setFloat2: function ( f ) {
@@ -7386,41 +7537,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	Uniform.prototype.setInt4 = Uniform.prototype.setFloat4;
 	
 	
-	var createUniformX = function ( dataOrName, uniformName, defaultConstructor, glSignature, type, isMatrix ) {
-	    var data = uniformName === undefined ? undefined : dataOrName;
-	    var uniform = new Uniform( uniformName === undefined ? dataOrName : uniformName );
+	var createUniformX = function ( data, uniformName, defaultConstructor, glSignature, type, isMatrix ) {
+	    var value = data;
+	    var name = uniformName;
+	    if ( name === undefined ) {
+	        name = value;
+	        value = defaultConstructor();
+	    }
+	    var uniform = new Uniform( name );
 	
-	    uniform._data = defaultConstructor();
-	
-	    if ( data !== undefined ) {
-	        if ( data.length ) {
-	            for ( var i = 0, nbElts = data.length; i < nbElts; ++i )
-	                uniform._data[ i ] = data[ i ];
-	        } else {
-	            uniform._data[ 0 ] = data;
-	        }
+	    // if argument is not an array or typed array, create one
+	    if ( !Array.isArray( value ) && value.byteLength === undefined ) {
+	        value = defaultConstructor();
+	        value[ 0 ] = data;
 	    }
 	
+	    uniform.setInternalArray( value );
 	    uniform._glCall = glSignature;
 	    uniform._type = type;
-	    uniform._isMatrix = !!isMatrix;
+	    uniform._isMatrix = Boolean( isMatrix );
 	    return uniform;
 	};
 	
 	var constructorFloat = function () {
 	    return new Float32Array( 1 );
-	};
-	
-	var constructorFloat2 = function () {
-	    return new Float32Array( 2 );
-	};
-	
-	var constructorFloat3 = function () {
-	    return new Float32Array( 3 );
-	};
-	
-	var constructorFloat4 = function () {
-	    return new Float32Array( 4 );
 	};
 	
 	var constructorInt = function () {
@@ -7440,20 +7580,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var constructorMat2 = function () {
-	    var out = new Float32Array( 4 );
-	    out[ 0 ] = out[ 3 ] = 1.0;
-	    return out;
+	    return Vec4.createAndSet( 1.0, 0.0, 0.0, 1.0 );
 	};
 	
 	var constructorMat3 = function () {
 	    var out = new Float32Array( 9 );
 	    out[ 0 ] = out[ 4 ] = out[ 8 ] = 1.0;
-	    return out;
-	};
-	
-	var constructorMat4 = function () {
-	    var out = new Float32Array( 16 );
-	    out[ 0 ] = out[ 5 ] = out[ 10 ] = out[ 15 ] = 1.0;
 	    return out;
 	};
 	
@@ -7467,7 +7599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	Uniform.createFloat2 = function ( data, uniformName ) {
-	    return createUniformX( data, uniformName, constructorFloat2, 'uniform2fv', 'vec2' );
+	    return createUniformX( data, uniformName, Vec2.create, 'uniform2fv', 'vec2' );
 	};
 	
 	Uniform.createInt2 = function ( data, uniformName ) {
@@ -7475,7 +7607,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	Uniform.createFloat3 = function ( data, uniformName ) {
-	    return createUniformX( data, uniformName, constructorFloat3, 'uniform3fv', 'vec3' );
+	    return createUniformX( data, uniformName, Vec3.create, 'uniform3fv', 'vec3' );
 	};
 	
 	Uniform.createInt3 = function ( data, uniformName ) {
@@ -7483,7 +7615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	Uniform.createFloat4 = function ( data, uniformName ) {
-	    return createUniformX( data, uniformName, constructorFloat4, 'uniform4fv', 'vec4' );
+	    return createUniformX( data, uniformName, Vec4.create, 'uniform4fv', 'vec4' );
 	};
 	
 	Uniform.createInt4 = function ( data, uniformName ) {
@@ -7499,7 +7631,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	Uniform.createMatrix4 = function ( data, uniformName ) {
-	    return createUniformX( data, uniformName, constructorMat4, 'uniformMatrix4fv', 'mat4', true );
+	    return createUniformX( data, uniformName, Matrix.create, 'uniformMatrix4fv', 'mat4', true );
 	};
 	
 	// alias
@@ -7508,6 +7640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	Uniform.vec2 = Uniform.createFloat2Array = Uniform.createFloat2;
 	Uniform.vec2i = Uniform.createInt2Array = Uniform.createInt2;
+	
 	
 	Uniform.vec3 = Uniform.createFloat3Array = Uniform.createFloat3;
 	Uniform.vec3i = Uniform.createInt3Array = Uniform.createInt3;
@@ -7522,14 +7655,135 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Uniform;
 
 
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var osgMath = __webpack_require__( 18 );
+	
+	
+	/** @class Vec2 Operations */
+	var Vec2 = {
+	    create: function () {
+	        return new Float32Array( 2 );
+	    },
+	
+	    createAndSet: function ( x, y ) {
+	        var out = Vec2.create();
+	        out[ 0 ] = x;
+	        out[ 1 ] = y;
+	        return out;
+	    },
+	
+	    copy: function ( a, r ) {
+	        r[ 0 ] = a[ 0 ];
+	        r[ 1 ] = a[ 1 ];
+	        return r;
+	    },
+	
+	    set: function ( a, b, r ) {
+	        r[ 0 ] = a;
+	        r[ 1 ] = b;
+	        return r;
+	    },
+	
+	    valid: function ( a ) {
+	        if ( osgMath.isNaN( a[ 0 ] ) ) return false;
+	        if ( osgMath.isNaN( a[ 1 ] ) ) return false;
+	        return true;
+	    },
+	
+	    mult: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] * b;
+	        r[ 1 ] = a[ 1 ] * b;
+	        return r;
+	    },
+	
+	    length2: function ( a ) {
+	        return a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ];
+	    },
+	
+	    length: function ( a ) {
+	        return Math.sqrt( a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] );
+	    },
+	
+	    distance2: function ( a, b ) {
+	        var x = a[ 0 ] - b[ 0 ];
+	        var y = a[ 1 ] - b[ 1 ];
+	        return x * x + y * y;
+	    },
+	
+	    distance: function ( a, b ) {
+	        var x = a[ 0 ] - b[ 0 ];
+	        var y = a[ 1 ] - b[ 1 ];
+	        return Math.sqrt( x * x + y * y );
+	    },
+	
+	    /**
+	      normalize an Array of 2 elements and write it in r
+	   */
+	    normalize: function ( a, r ) {
+	        var norm = this.length2( a );
+	        if ( norm > 0.0 ) {
+	            var inv = 1.0 / Math.sqrt( norm );
+	            r[ 0 ] = a[ 0 ] * inv;
+	            r[ 1 ] = a[ 1 ] * inv;
+	        } else {
+	            r[ 0 ] = a[ 0 ];
+	            r[ 1 ] = a[ 1 ];
+	        }
+	        return r;
+	    },
+	
+	    /**
+	      Compute the dot product
+	  */
+	    dot: function ( a, b ) {
+	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ];
+	    },
+	
+	    /**
+	     Compute a - b and put the result in r
+	   */
+	    sub: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] - b[ 0 ];
+	        r[ 1 ] = a[ 1 ] - b[ 1 ];
+	        return r;
+	    },
+	
+	    add: function ( a, b, r ) {
+	        r[ 0 ] = a[ 0 ] + b[ 0 ];
+	        r[ 1 ] = a[ 1 ] + b[ 1 ];
+	        return r;
+	    },
+	
+	    neg: function ( a, r ) {
+	        r[ 0 ] = -a[ 0 ];
+	        r[ 1 ] = -a[ 1 ];
+	        return r;
+	    },
+	
+	    lerp: function ( t, a, b, r ) {
+	        var tmp = 1.0 - t;
+	        r[ 0 ] = a[ 0 ] * tmp + t * b[ 0 ];
+	        r[ 1 ] = a[ 1 ] * tmp + t * b[ 1 ];
+	        return r;
+	    }
+	
+	};
+	
+	module.exports = Vec2;
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
+	var Object = __webpack_require__( 12 );
 	
 	
 	var ImageObject = function ( image ) {
@@ -7762,50 +8016,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ImageObject;
 
 
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	// Base class for GLResources: Textures, Buffers, Programs, Shaders, FrameBuffers and RenderBuffers
-	// It holds a reference to the graphic context that is needed for resource deletion
-	
-	var GLObject = function () {
-	    this._gl = undefined;
-	};
-	
-	GLObject.prototype = {
-	    setGraphicContext: function ( gl ) {
-	        this._gl = gl;
-	    },
-	    getGraphicContext: function () {
-	        return this._gl;
-	    }
-	};
-	
-	module.exports = GLObject;
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Uniform = __webpack_require__( 35 );
-	var BlendFunc = __webpack_require__( 39 );
-	var Geometry = __webpack_require__( 31 );
-	var BufferArray = __webpack_require__( 40 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var DrawArrays = __webpack_require__( 42 );
-	var DrawElements = __webpack_require__( 43 );
-	var StateSet = __webpack_require__( 19 );
-	var Node = __webpack_require__( 12 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var Projection = __webpack_require__( 45 );
+	var Uniform = __webpack_require__( 38 );
+	var BlendFunc = __webpack_require__( 15 );
+	var Geometry = __webpack_require__( 35 );
+	var BufferArray = __webpack_require__( 20 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var DrawArrays = __webpack_require__( 43 );
+	var DrawElements = __webpack_require__( 44 );
+	var StateSet = __webpack_require__( 25 );
+	var Node = __webpack_require__( 24 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var Projection = __webpack_require__( 46 );
 	
 	
 	var ReaderParser = {};
@@ -7827,7 +8056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	ReaderParser.registry = function () {
-	    var Input = __webpack_require__( 46 );
+	    var Input = __webpack_require__( 47 );
 	    if ( ReaderParser.registry._input === undefined ) {
 	        ReaderParser.registry._input = new Input();
 	    }
@@ -7940,7 +8169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    Notify.log( 'no texture on unit ' + t + ' skip it' );
 	                    continue;
 	                }
-	                var Texture = __webpack_require__( 34 );
+	                var Texture = __webpack_require__( 37 );
 	                var tex = new Texture();
 	                setTexture( tex, textures[ t ] );
 	
@@ -7958,7 +8187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        var material = getFieldBackwardCompatible( 'Material', json );
 	        if ( material ) {
-	            var Material = __webpack_require__( 51 );
+	            var Material = __webpack_require__( 52 );
 	            var newmaterial = new Material();
 	            setMaterial( newmaterial, material );
 	            osgjs.setAttributeAndModes( newmaterial );
@@ -8056,355 +8285,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ReaderParser;
 
 
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	
-	/**
-	 *  Manage Blending mode
-	 *  @class BlendFunc
-	 */
-	var BlendFunc = function ( sourceRGB, destinationRGB, sourceAlpha, destinationAlpha ) {
-	    StateAttribute.call( this );
-	    this._sourceFactor = BlendFunc.DISABLE;
-	    this._destinationFactor = BlendFunc.DISABLE;
-	    this._sourceFactorAlpha = this._sourceFactor;
-	    this._destinationFactorAlpha = this._destinationFactor;
-	    this._separate = false;
-	    if ( sourceRGB !== undefined ) {
-	        this.setSource( sourceRGB );
-	    }
-	    if ( destinationRGB !== undefined ) {
-	        this.setDestination( destinationRGB );
-	    }
-	
-	    if ( sourceAlpha !== undefined ) {
-	        this.setSourceAlpha( sourceAlpha );
-	    }
-	    if ( destinationAlpha !== undefined ) {
-	        this.setDestinationAlpha( destinationAlpha );
-	    }
-	};
-	
-	BlendFunc.DISABLE = -1;
-	BlendFunc.ZERO = 0;
-	BlendFunc.ONE = 1;
-	BlendFunc.SRC_COLOR = 0x0300;
-	BlendFunc.ONE_MINUS_SRC_COLOR = 0x0301;
-	BlendFunc.SRC_ALPHA = 0x0302;
-	BlendFunc.ONE_MINUS_SRC_ALPHA = 0x0303;
-	BlendFunc.DST_ALPHA = 0x0304;
-	BlendFunc.ONE_MINUS_DST_ALPHA = 0x0305;
-	BlendFunc.DST_COLOR = 0x0306;
-	BlendFunc.ONE_MINUS_DST_COLOR = 0x0307;
-	BlendFunc.SRC_ALPHA_SATURATE = 0x0308;
-	
-	/* Separate Blend Functions */
-	BlendFunc.BLEND_DST_RGB = 0x80C8;
-	BlendFunc.BLEND_SRC_RGB = 0x80C9;
-	BlendFunc.BLEND_DST_ALPHA = 0x80CA;
-	BlendFunc.BLEND_SRC_ALPHA = 0x80CB;
-	BlendFunc.CONSTANT_COLOR = 0x8001;
-	BlendFunc.ONE_MINUS_CONSTANT_COLOR = 0x8002;
-	BlendFunc.CONSTANT_ALPHA = 0x8003;
-	BlendFunc.ONE_MINUS_CONSTANT_ALPHA = 0x8004;
-	BlendFunc.BLEND_COLOR = 0x8005;
-	
-	
-	/** @lends BlendFunc.prototype */
-	BlendFunc.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
-	    /**
-	  StateAttribute type of BlendFunc
-	  @type String
-	   */
-	    attributeType: 'BlendFunc',
-	    /**
-	    Create an instance of this StateAttribute
-	    */
-	    cloneType: function () /**BlendFunc*/ {
-	        return new BlendFunc();
-	    },
-	    setSource: function ( f ) {
-	        this.setSourceRGB( f );
-	        this.setSourceAlpha( f );
-	    },
-	    getSource: function () {
-	        return this._sourceFactor;
-	    },
-	    setDestination: function ( f ) {
-	        this.setDestinationRGB( f );
-	        this.setDestinationAlpha( f );
-	    },
-	    getDestination: function () {
-	        return this._destinationFactor;
-	    },
-	    getSeparate: function () {
-	        return this._separate;
-	    },
-	    checkSeparate: function () {
-	        return ( this._sourceFactor !== this._sourceFactorAlpha ||
-	            this._destinationFactor !== this._destinationFactorAlpha );
-	    },
-	    setSourceRGB: function ( f ) {
-	        if ( typeof f === 'string' ) {
-	            this._sourceFactor = BlendFunc[ f ];
-	        } else {
-	            this._sourceFactor = f;
-	        }
-	        this._separate = this.checkSeparate();
-	    },
-	    getSourceRGB: function () {
-	        return this._sourceFactor;
-	    },
-	    setSourceAlpha: function ( f ) {
-	        if ( typeof f === 'string' ) {
-	            this._sourceFactorAlpha = BlendFunc[ f ];
-	        } else {
-	            this._sourceFactorAlpha = f;
-	        }
-	        this._separate = this.checkSeparate();
-	    },
-	    getSourceAlpha: function () {
-	        return this._sourceFactorAlpha;
-	    },
-	    setDestinationRGB: function ( f ) {
-	        if ( typeof f === 'string' ) {
-	            this._destinationFactor = BlendFunc[ f ];
-	        } else {
-	            this._destinationFactor = f;
-	        }
-	        this._separate = this.checkSeparate();
-	    },
-	    getDestinationRGB: function () {
-	        return this._destinationFactor;
-	    },
-	    setDestinationAlpha: function ( f ) {
-	        if ( typeof f === 'string' ) {
-	            this._destinationFactorAlpha = BlendFunc[ f ];
-	        } else {
-	            this._destinationFactorAlpha = f;
-	        }
-	        this._separate = this.checkSeparate();
-	    },
-	    getDestinationAlpha: function () {
-	        return this._destinationFactorAlpha;
-	    },
-	
-	    /**
-	      Apply the mode, must be called in the draw traversal
-	      @param state
-	  */
-	    apply: function ( state ) {
-	        var gl = state.getGraphicContext();
-	        if ( this._sourceFactor === BlendFunc.DISABLE || this._destinationFactor === BlendFunc.DISABLE ) {
-	            gl.disable( gl.BLEND );
-	        } else {
-	            gl.enable( gl.BLEND );
-	            if ( this._separate ) {
-	                gl.blendFuncSeparate( this._sourceFactor, this._destinationFactor,
-	                    this._sourceFactorAlpha, this._destinationFactorAlpha );
-	            } else {
-	                gl.blendFunc( this._sourceFactor, this._destinationFactor );
-	            }
-	        }
-	    }
-	} ), 'osg', 'BlendFunc' );
-	
-	module.exports = BlendFunc;
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
-	var GLObject = __webpack_require__( 37 );
-	var Timer = __webpack_require__( 9 );
-	
-	
-	var getAttributeType = function ( array ) {
-	    var type;
-	
-	    if ( array instanceof MACROUTILS.Float32Array ) type = 0x1406;
-	    if ( array instanceof MACROUTILS.Uint32Array ) type = 0x1405;
-	    if ( array instanceof MACROUTILS.Uint16Array ) type = 0x1403;
-	    if ( array instanceof MACROUTILS.Uint8Array ) type = 0x1401;
-	
-	    return type;
-	};
-	
-	/**
-	 * BufferArray manage vertex / normal / ... array used by webgl.
-	 * osgjs automatically converts array buffers to Float32Array and
-	 * element array buffers to Uint16Array if not said explicitly with
-	 * preserveArrayType variable in constructor.
-	 * @class BufferArray
-	 */
-	
-	var BufferArray = function ( target, elements, itemSize, preserveArrayType ) {
-	
-	    GLObject.call( this );
-	    // maybe could inherit from Object
-	    this._instanceID = Object.getInstanceID();
-	
-	    this.dirty();
-	
-	    this._itemSize = itemSize;
-	    this._target = typeof target === 'string' ? BufferArray[ target ] : target;
-	
-	    // initialized by setElements
-	    this._type = undefined;
-	    this._normalize = false;
-	
-	    if ( elements !== undefined ) {
-	        var typedArray = elements;
-	        if ( !preserveArrayType ) {
-	            if ( this._target === BufferArray.ELEMENT_ARRAY_BUFFER ) {
-	                typedArray = elements instanceof MACROUTILS.Uint16Array ? elements : new MACROUTILS.Uint16Array( elements );
-	            } else {
-	                typedArray = elements instanceof MACROUTILS.Float32Array ? elements : new MACROUTILS.Float32Array( elements );
-	            }
-	        }
-	        this.setElements( typedArray );
-	    }
-	};
-	
-	BufferArray.ELEMENT_ARRAY_BUFFER = 0x8893;
-	BufferArray.ARRAY_BUFFER = 0x8892;
-	
-	// static cache of glBuffers flagged for deletion, which will actually
-	// be deleted in the correct GL context.
-	BufferArray._sDeletedGLBufferArrayCache = new window.Map();
-	
-	// static method to delete Program
-	BufferArray.deleteGLBufferArray = function ( gl, buffer ) {
-	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) )
-	        BufferArray._sDeletedGLBufferArrayCache.set( gl, [] );
-	    BufferArray._sDeletedGLBufferArrayCache.get( gl ).push( buffer );
-	};
-	
-	// static method to flush all the cached glPrograms which need to be deleted in the GL context specified
-	BufferArray.flushDeletedGLBufferArrays = function ( gl, availableTime ) {
-	    // if no time available don't try to flush objects.
-	    if ( availableTime <= 0.0 ) return availableTime;
-	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) ) return availableTime;
-	    var elapsedTime = 0.0;
-	    var beginTime = Timer.instance().tick();
-	    var deleteList = BufferArray._sDeletedGLBufferArrayCache.get( gl );
-	    var numBuffers = deleteList.length;
-	    for ( var i = numBuffers - 1; i >= 0 && elapsedTime < availableTime; i-- ) {
-	        gl.deleteBuffer( deleteList[ i ] );
-	        deleteList.splice( i, 1 );
-	        elapsedTime = Timer.instance().deltaS( beginTime, Timer.instance().tick() );
-	    }
-	    return availableTime - elapsedTime;
-	};
-	
-	BufferArray.flushAllDeletedGLBufferArrays = function ( gl ) {
-	    if ( !BufferArray._sDeletedGLBufferArrayCache.has( gl ) ) return;
-	    var deleteList = BufferArray._sDeletedGLBufferArrayCache.get( gl );
-	    var numBuffers = deleteList.length;
-	    for ( var i = numBuffers - 1; i >= 0; i-- ) {
-	        gl.deleteBuffer( deleteList[ i ] );
-	        deleteList.splice( i, 1 );
-	    }
-	};
-	
-	/** @lends BufferArray.prototype */
-	BufferArray.prototype = MACROUTILS.objectInherit( GLObject.prototype, {
-	    getInstanceID: function () {
-	        return this._instanceID;
-	    },
-	    setItemSize: function ( size ) {
-	        this._itemSize = size;
-	    },
-	    isValid: function () {
-	        if ( this._buffer !== undefined ||
-	            this._elements !== undefined ) {
-	            return true;
-	        }
-	        return false;
-	    },
-	
-	    releaseGLObjects: function () {
-	        if ( this._buffer !== undefined && this._buffer !== null && this._gl !== undefined ) {
-	            BufferArray.deleteGLBufferArray( this._gl, this._buffer );
-	        }
-	        this._buffer = undefined;
-	    },
-	
-	    setNormalize: function ( normalize ) {
-	        this._normalize = normalize;
-	    },
-	
-	    getNormalize: function () {
-	        return this._normalize;
-	    },
-	
-	    bind: function ( gl ) {
-	        if ( !this._gl ) this.setGraphicContext( gl );
-	        var target = this._target;
-	        var buffer = this._buffer;
-	
-	        if ( buffer ) {
-	            gl.bindBuffer( target, buffer );
-	            return;
-	        }
-	
-	        if ( !buffer && this._elements.length > 0 ) {
-	            this._buffer = gl.createBuffer();
-	            this._numItems = this._elements.length / this._itemSize;
-	            gl.bindBuffer( target, this._buffer );
-	        }
-	    },
-	    getItemSize: function () {
-	        return this._itemSize;
-	    },
-	    dirty: function () {
-	        this._dirty = true;
-	    },
-	    isDirty: function () {
-	        return this._dirty;
-	    },
-	    compile: function ( gl ) {
-	        if ( this._dirty ) {
-	            MACROUTILS.timeStamp( 'osgjs.metrics:bufferData' );
-	            gl.bufferData( this._target, this._elements, gl.STATIC_DRAW );
-	            this._dirty = false;
-	        }
-	    },
-	    getElements: function () {
-	        return this._elements;
-	    },
-	    setElements: function ( elements ) {
-	        this._elements = elements;
-	        this._type = getAttributeType( elements );
-	        this._dirty = true;
-	    },
-	    getType: function () {
-	        return this._type;
-	    }
-	
-	} );
-	
-	BufferArray.create = function ( type, elements, itemSize ) {
-	    Notify.log( 'BufferArray.create is deprecated, use new BufferArray with same arguments instead' );
-	    return new BufferArray( type, elements, itemSize );
-	};
-	
-	module.exports = BufferArray;
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
+/***/ },
+/* 42 */
+/***/ function(module, exports) {
 
 	'use strict';
 	var PrimitiveSet = {};
@@ -8419,13 +8302,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PrimitiveSet;
 
 
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var PrimitiveSet = __webpack_require__( 41 );
+	var PrimitiveSet = __webpack_require__( 42 );
 	
 	
 	/**
@@ -8478,13 +8361,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DrawArrays;
 
 
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var PrimitiveSet = __webpack_require__( 41 );
+	var PrimitiveSet = __webpack_require__( 42 );
 	
 	
 	/**
@@ -8565,15 +8448,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DrawElements;
 
 
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Matrix = __webpack_require__( 23 );
-	var Transform = __webpack_require__( 11 );
-	var TransformEnums = __webpack_require__( 29 );
+	var Matrix = __webpack_require__( 28 );
+	var Transform = __webpack_require__( 23 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	
 	/**
@@ -8627,14 +8510,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = MatrixTransform;
 
 
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
-	var Matrix = __webpack_require__( 23 );
+	var Node = __webpack_require__( 24 );
+	var Matrix = __webpack_require__( 28 );
 	
 	var Projection = function () {
 	    Node.call( this );
@@ -8654,22 +8537,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Projection;
 
 
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
+	var P = __webpack_require__( 48 );
 	var MACROUTILS = __webpack_require__( 6 );
 	var osgNameSpace = __webpack_require__( 2 );
-	var Options = __webpack_require__( 48 );
+	var Options = __webpack_require__( 49 );
 	var Notify = __webpack_require__( 10 );
-	var Image = __webpack_require__( 36 );
-	var BufferArray = __webpack_require__( 40 );
-	var DrawArrays = __webpack_require__( 42 );
-	var DrawArrayLengths = __webpack_require__( 49 );
-	var DrawElements = __webpack_require__( 43 );
-	var PrimitiveSet = __webpack_require__( 41 );
+	var Image = __webpack_require__( 40 );
+	var BufferArray = __webpack_require__( 20 );
+	var DrawArrays = __webpack_require__( 43 );
+	var DrawArrayLengths = __webpack_require__( 50 );
+	var DrawElements = __webpack_require__( 44 );
+	var PrimitiveSet = __webpack_require__( 42 );
 	
 	
 	var Input = function ( json, identifier ) {
@@ -8928,7 +8811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        var self = this;
 	
-	        var ReaderParser = __webpack_require__( 38 );
+	        var ReaderParser = __webpack_require__( 41 );
 	
 	        var readSceneGraph = function ( data ) {
 	
@@ -9017,7 +8900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        // check magic number 1f8b
 	        if ( typedArray[ 0 ] === 0x1f && typedArray[ 1 ] === 0x8b ) {
-	            var zlib = __webpack_require__( 50 );
+	            var zlib = __webpack_require__( 51 );
 	
 	            if ( !zlib ) {
 	                Notify.error( 'osg failed to use a gunzip.min.js to uncompress a gz file.\n You can add this vendors to enable this feature or adds the good header in your gzip file served by your server' );
@@ -9162,11 +9045,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else if ( jsonObj.Array.Uint8Array ) {
 	                vb = jsonObj.Array.Uint8Array;
 	                type = 'Uint8Array';
-	            }
-	
-	            if ( vb === undefined ) {
+	            } else {
 	                Notify.warn( 'Typed Array ' + window.Object.keys( jsonObj.Array )[ 0 ] );
-	                return P.reject();
+	                type = 'Float32Array';
 	            }
 	
 	            if ( vb.File ) {
@@ -9306,7 +9187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return P.reject();
 	        }
 	
-	        var ReaderParser = __webpack_require__( 38 );
+	        var ReaderParser = __webpack_require__( 41 );
 	        var scope = ReaderParser.ObjectWrapper.serializers;
 	
 	        if ( this._cacheReadObject[ prop ] ) {
@@ -9339,15 +9220,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Input;
 
 
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_47__;
-
-/***/ }),
+/***/ },
 /* 48 */
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_48__;
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
 
 	'use strict';
 	var defaultOptions = {
@@ -9381,9 +9262,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = defaultOptions;
 
 
-/***/ }),
-/* 49 */
-/***/ (function(module, exports) {
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -9438,22 +9319,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DrawArrayLengths;
 
 
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_50__;
-
-/***/ }),
+/***/ },
 /* 51 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_51__;
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Vec4 = __webpack_require__( 25 );
-	var Uniform = __webpack_require__( 35 );
-	var Map = __webpack_require__( 20 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Vec4 = __webpack_require__( 14 );
+	var Uniform = __webpack_require__( 38 );
+	var Map = __webpack_require__( 26 );
 	
 	// Define a material attribute
 	var Material = function () {
@@ -9544,10 +9425,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    apply: function () {
 	        var uniforms = this.getOrCreateUniforms();
 	
-	        uniforms.ambient.setFloat4( this._ambient );
-	        uniforms.diffuse.setFloat4( this._diffuse );
-	        uniforms.specular.setFloat4( this._specular );
-	        uniforms.emission.setFloat4( this._emission );
+	        uniforms.ambient.setInternalArray( this._ambient );
+	        uniforms.diffuse.setInternalArray( this._diffuse );
+	        uniforms.specular.setInternalArray( this._specular );
+	        uniforms.emission.setInternalArray( this._emission );
 	        uniforms.shininess.setFloat( this._shininess );
 	
 	    }
@@ -9558,9 +9439,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Material;
 
 
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -9584,7 +9465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            textureProfile._height === this._height;
 	    },
 	    computeSize: function () {
-	        var Texture = __webpack_require__( 34 );
+	        var Texture = __webpack_require__( 37 );
 	
 	        var numBitsPerTexel = 0;
 	        switch ( this._internalFormat ) {
@@ -9836,12 +9717,231 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TextureManager;
 
 
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	// jshint ignore: start
+	
+	/*
+	 * Copyright 2010, Google Inc.
+	 * All rights reserved.
+	 *
+	 * Redistribution and use in source and binary forms, with or without
+	 * modification, are permitted provided that the following conditions are
+	 * met:
+	 *
+	 *     * Redistributions of source code must retain the above copyright
+	 * notice, this list of conditions and the following disclaimer.
+	 *     * Redistributions in binary form must reproduce the above
+	 * copyright notice, this list of conditions and the following disclaimer
+	 * in the documentation and/or other materials provided with the
+	 * distribution.
+	 *     * Neither the name of Google Inc. nor the names of its
+	 * contributors may be used to endorse or promote products derived from
+	 * this software without specific prior written permission.
+	 *
+	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+	 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+	 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+	 * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	 * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	 * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+	 * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+	 * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+	 * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 */
+	
+	
+	/**
+	 * @fileoverview This file contains functions every webgl program will need
+	 * a version of one way or another.
+	 *
+	 * Instead of setting up a context manually it is recommended to
+	 * use. This will check for success or failure. On failure it
+	 * will attempt to present an approriate message to the user.
+	 *
+	 *       gl = WebGLUtils.setupWebGL(canvas);
+	 *
+	 * For animated WebGL apps use of setTimeout or setInterval are
+	 * discouraged. It is recommended you structure your rendering
+	 * loop like this.
+	 *
+	 *       function render() {
+	 *         window.requestAnimationFrame(render, canvas);
+	 *
+	 *         // do rendering
+	 *         ...
+	 *       }
+	 *       render();
+	 *
+	 * This will call your rendering function up to the refresh rate
+	 * of your display but will stop rendering if your app is not
+	 * visible.
+	 */
+	
+	'use strict';
+	var WebGLUtils = function () {
+	
+	    /**
+	     * Creates the HTLM for a failure message
+	     * @param {string} canvasContainerId id of container of th
+	     *        canvas.
+	     * @return {string} The html.
+	     */
+	    var makeFailHTML = function ( msg ) {
+	        return '' +
+	            '<div style="margin: auto; width:500px;z-index:10000;margin-top:20em;text-align:center;">' + msg + '</div>';
+	        // return '' +
+	        //   '<table style="background-color: #8CE; width: 100%; height: 100%;"><tr>' +
+	        //   '<td align="center">' +
+	        //   '<div style="display: table-cell; vertical-align: middle;">' +
+	        //   '<div style="">' + msg + '</div>' +
+	        //   '</div>' +
+	        //   '</td></tr></table>';
+	    };
+	
+	    /**
+	     * Mesasge for getting a webgl browser
+	     * @type {string}
+	     */
+	    var GET_A_WEBGL_BROWSER = '' +
+	        'This page requires a browser that supports WebGL.<br/>' +
+	        '<a href="http://get.webgl.org">Click here to upgrade your browser.</a>';
+	
+	    /**
+	     * Mesasge for need better hardware
+	     * @type {string}
+	     */
+	    var OTHER_PROBLEM = '' +
+	        "It doesn't appear your computer can support WebGL.<br/>" +
+	        '<a href="http://get.webgl.org">Click here for more information.</a>';
+	
+	    /**
+	     * Creates a webgl context. If creation fails it will
+	     * change the contents of the container of the <canvas>
+	     * tag to an error message with the correct links for WebGL.
+	     * @return {WebGLRenderingContext} The created context.
+	     */
+	    var setupWebGL = function (
+	        /** Element */
+	        canvas,
+	        /** WebGLContextCreationAttirbutes */
+	        opt_attribs,
+	        /** function:(msg) */
+	        opt_onError ) {
+	        function handleCreationError( msg ) {
+	            if ( msg.indexOf( 'WebGL2' ) !== -1 ) return;
+	            var container = document.getElementsByTagName( "body" )[ 0 ];
+	            //var container = canvas.parentNode;
+	            if ( container ) {
+	                var str = window.WebGLRenderingContext ?
+	                    OTHER_PROBLEM :
+	                    GET_A_WEBGL_BROWSER;
+	                if ( msg ) {
+	                    str += "<br/><br/>Status: " + msg;
+	                }
+	                container.innerHTML = makeFailHTML( str );
+	            }
+	        }
+	
+	        opt_onError = opt_onError || handleCreationError;
+	
+	        if ( canvas.addEventListener ) {
+	            canvas.addEventListener( "webglcontextcreationerror", function ( event ) {
+	                opt_onError( event.statusMessage );
+	            }, false );
+	        }
+	        var context = create3DContext( canvas, opt_attribs );
+	        if ( !context ) {
+	            if ( !window.WebGLRenderingContext ) {
+	                opt_onError( "" );
+	            } else {
+	                opt_onError( "" );
+	            }
+	        }
+	
+	        return context;
+	    };
+	
+	    /**
+	     * Creates a webgl context.
+	     * @param {!Canvas} canvas The canvas tag to get context
+	     *     from. If one is not passed in one will be created.
+	     * @return {!WebGLContext} The created context.
+	     */
+	    var create3DContext = function ( canvas, opt_attribs ) {
+	
+	        // only try to enable if URl options ?webgl2=1
+	        var names = [];
+	        if ( opt_attribs && opt_attribs.webgl2 ) {
+	            names = names.concat( [ "webgl2", "experimental-webgl2" ] );
+	        }
+	        names = names.concat( [ "webgl", "experimental-webgl", "webkit-3d", "moz-webgl" ] );
+	
+	        var context = null;
+	        for ( var ii = 0; ii < names.length; ++ii ) {
+	            try {
+	                context = canvas.getContext( names[ ii ], opt_attribs );
+	            } catch ( e ) {}
+	            if ( context ) {
+	                break;
+	            }
+	        }
+	        return context;
+	    };
+	
+	    return {
+	        create3DContext: create3DContext,
+	        setupWebGL: setupWebGL
+	    };
+	}();
+	
+	/**
+	 * Provides requestAnimationFrame in a cross browser
+	 * way.
+	 */
+	if ( !window.requestAnimationFrame ) {
+	    window.requestAnimationFrame = ( function () {
+	        return window.requestAnimationFrame ||
+	            window.webkitRequestAnimationFrame ||
+	            window.mozRequestAnimationFrame ||
+	            window.oRequestAnimationFrame ||
+	            window.msRequestAnimationFrame ||
+	            function ( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+	                window.setTimeout( callback, 1000 / 60 );
+	            };
+	    } )();
+	}
+	
+	if ( !window.cancelRequestAnimFrame ) {
+	    window.cancelRequestAnimFrame = ( function () {
+	        return window.cancelAnimationFrame ||
+	            window.webkitCancelRequestAnimationFrame ||
+	            window.mozCancelRequestAnimationFrame ||
+	            window.oCancelRequestAnimationFrame ||
+	            window.msCancelRequestAnimationFrame ||
+	            clearTimeout;
+	    } )();
+	}
+	
+	if ( !Date.now ) {
+	    Date.now = function now() {
+	        return new Date().getTime();
+	    };
+	}
+	
+	module.exports = WebGLUtils;
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BufferArray = __webpack_require__( 40 );
+	var BufferArray = __webpack_require__( 20 );
 	
 	
 	var BufferArrayProxy = function ( bufferArray ) {
@@ -9882,359 +9982,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = BufferArrayProxy;
 
 
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	
-	
-	var BillboardAttribute = function () {
-	    StateAttribute.call( this );
-	    this._attributeEnable = false;
-	};
-	
-	BillboardAttribute.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
-	
-	    attributeType: 'Billboard',
-	
-	    cloneType: function () {
-	        return new BillboardAttribute();
-	    },
-	
-	    setEnabled: function ( state ) {
-	        this._attributeEnable = state;
-	    },
-	
-	    isEnabled: function () {
-	        return this._attributeEnable;
-	    },
-	
-	    apply: function () {}
-	
-	} ), 'osg', 'Billboard' );
-	
-	module.exports = BillboardAttribute;
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Vec4 = __webpack_require__( 25 );
-	
-	/**
-	 *  Manage BlendColor attribute
-	 *  @class
-	 *  @memberOf osg
-	 *  @extends StateAttribute
-	 */
-	var BlendColor = function ( color ) {
-	    StateAttribute.call( this );
-	    this._constantColor = Vec4.create();
-	    Vec4.set( 1.0, 1.0, 1.0, 1.0, this._constantColor );
-	    if ( color !== undefined ) {
-	        this.setConstantColor( color );
-	    }
-	};
-	
-	/**
-	 * @lends BlendColor.prototype
-	 */
-	BlendColor.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( StateAttribute.prototype, {
-	    attributeType: 'BlendColor',
-	    cloneType: function () {
-	        return new BlendColor();
-	    },
-	
-	    /**
-	     *
-	     * @param {} color
-	     */
-	    setConstantColor: function ( color ) {
-	        Vec4.copy( color, this._constantColor );
-	    },
-	    getConstantColor: function () {
-	        return this._constantColor;
-	    },
-	    apply: function ( state ) {
-	        var gl = state.getGraphicContext();
-	        gl.blendColor( this._constantColor[ 0 ],
-	            this._constantColor[ 1 ],
-	            this._constantColor[ 2 ],
-	            this._constantColor[ 3 ] );
-	    }
-	} ), 'osg', 'BlendColor' );
-	
-	module.exports = BlendColor;
-
-
-/***/ }),
+/***/ },
 /* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var Transform = __webpack_require__( 11 );
-	var CullSettings = __webpack_require__( 57 );
-	var Matrix = __webpack_require__( 23 );
-	var Texture = __webpack_require__( 34 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Vec4 = __webpack_require__( 25 );
-	
-	
-	/**
-	 * Camera - is a subclass of Transform which represents encapsulates the settings of a Camera.
-	 * @class Camera
-	 * @inherits Transform CullSettings
-	 */
-	var Camera = function () {
-	    Transform.call( this );
-	    CullSettings.call( this );
-	
-	    this.viewport = undefined;
-	    this._graphicContext = undefined;
-	    this.setClearColor( Vec4.createAndSet( 0, 0, 0, 1.0 ) );
-	    this.setClearDepth( 1.0 );
-	
-	    /*jshint bitwise: false */
-	    this.setClearMask( Camera.COLOR_BUFFER_BIT | Camera.DEPTH_BUFFER_BIT );
-	    /*jshint bitwise: true */
-	
-	    this.setViewMatrix( Matrix.create() );
-	    this.setProjectionMatrix( Matrix.create() );
-	    this.renderOrder = Camera.NESTED_RENDER;
-	    this.renderOrderNum = 0;
-	
-	    this._view = undefined;
-	    this._renderer = undefined;
-	    this._attachments = {};
-	};
-	
-	Camera.PRE_RENDER = 0;
-	Camera.NESTED_RENDER = 1;
-	Camera.POST_RENDER = 2;
-	
-	Camera.COLOR_BUFFER_BIT = 0x00004000;
-	Camera.DEPTH_BUFFER_BIT = 0x00000100;
-	Camera.STENCIL_BUFFER_BIT = 0x00000400;
-	
-	/** @lends Camera.prototype */
-	Camera.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit(
-	    CullSettings.prototype,
-	    MACROUTILS.objectInherit( Transform.prototype, {
-	        // at which view this camera is attached
-	        getView: function () {
-	            return this._view;
-	        },
-	
-	        setView: function ( view ) {
-	            this._view = view;
-	        },
-	
-	        getRenderer: function () {
-	            return this._renderer;
-	        },
-	
-	        setRenderer: function ( renderer ) {
-	            this._renderer = renderer;
-	        },
-	
-	        // Set the final draw callback for custom operations
-	        // to be done after the drawing of
-	        // the camera's subgraph and pre render stages.
-	        setFinalDrawCallback: function ( cb ) {
-	
-	            this._finalDrawCallback = cb;
-	
-	        },
-	
-	        getFinalDrawCallback: function () {
-	
-	            return this._finalDrawCallback;
-	
-	        },
-	
-	        // Set the initial draw callback for custom operations
-	        // to be done before the drawing of
-	        // the camera's subgraph and pre render stages.
-	        setInitialDrawCallback: function ( cb ) {
-	
-	            this._initialDrawCallback = cb;
-	
-	        },
-	
-	        getInitialDrawCallback: function () {
-	
-	            return this._initialDrawCallback;
-	
-	        },
-	
-	
-	        getAttachments: function () {
-	            return this._attachments;
-	        },
-	
-	        setGraphicContext: function ( gc ) {
-	            this._graphicContext = gc;
-	        },
-	        getGraphicContext: function () {
-	            return this._graphicContext;
-	        },
-	        setClearDepth: function ( depth ) {
-	            this.clearDepth = depth;
-	        },
-	        getClearDepth: function () {
-	            return this.clearDepth;
-	        },
-	
-	        setClearMask: function ( mask ) {
-	            this.clearMask = mask;
-	        },
-	        getClearMask: function () {
-	            return this.clearMask;
-	        },
-	
-	        setClearColor: function ( color ) {
-	            this.clearColor = color;
-	        },
-	        getClearColor: function () {
-	            return this.clearColor;
-	        },
-	
-	        setViewport: function ( vp ) {
-	            this.viewport = vp;
-	            this.getOrCreateStateSet().setAttributeAndModes( vp );
-	        },
-	        getViewport: function () {
-	            return this.viewport;
-	        },
-	
-	
-	        setViewMatrix: function ( matrix ) {
-	            this.modelviewMatrix = matrix;
-	        },
-	        setViewMatrixAsLookAt: function ( eye, center, up ) {
-	            Matrix.makeLookAt( eye, center, up, this.getViewMatrix() );
-	        },
-	        setProjectionMatrix: function ( matrix ) {
-	            this.projectionMatrix = matrix;
-	        },
-	
-	        /** Set to an orthographic projection. See OpenGL glOrtho for documentation further details.*/
-	        setProjectionMatrixAsOrtho: function ( left, right,
-	            bottom, top,
-	            zNear, zFar ) {
-	            Matrix.makeOrtho( left, right, bottom, top, zNear, zFar, this.getProjectionMatrix() );
-	        },
-	        isRenderToTextureCamera: function () {
-	            return window.Object.keys( this._attachments ).length > 0;
-	        },
-	
-	        getViewMatrix: function () {
-	            return this.modelviewMatrix;
-	        },
-	        getProjectionMatrix: function () {
-	            return this.projectionMatrix;
-	        },
-	        getRenderOrder: function () {
-	            return this.renderOrder;
-	        },
-	        setRenderOrder: function ( order, orderNum ) {
-	            this.renderOrder = order;
-	            this.renderOrderNum = orderNum;
-	        },
-	
-	        detachAll: function () {
-	            this._attachments = {};
-	
-	            if ( this.frameBufferObject ) {
-	                this.frameBufferObject.dirty();
-	            }
-	        },
-	
-	        // TODO: fix in case of shared fbo
-	        // TODO: fix adding a resize case
-	        resetAttachments: function () {
-	
-	
-	            if ( this.frameBufferObject ) {
-	
-	                this.frameBufferObject.reset();
-	                // remove framebuffer
-	                this.frameBufferObject = 0;
-	            }
-	
-	            // removes camera attachement
-	            this._attachments = {};
-	
-	        },
-	
-	        attachTexture: function ( bufferComponent, texture, textureTarget ) {
-	            if ( this.frameBufferObject ) {
-	                this.frameBufferObject.dirty();
-	            }
-	
-	            // because before the argument was level and the spec says
-	            // it must always be 0 ! is valid for 0 or undefined
-	            if ( !textureTarget ) {
-	                textureTarget = Texture.TEXTURE_2D;
-	            }
-	
-	            this._attachments[ bufferComponent ] = {
-	                'attachment': bufferComponent,
-	                'texture': texture,
-	                'textureTarget': textureTarget
-	            };
-	        },
-	
-	        attachRenderBuffer: function ( bufferComponent, internalFormat ) {
-	            if ( this.frameBufferObject ) {
-	                this.frameBufferObject.dirty();
-	            }
-	            this._attachments[ bufferComponent ] = {
-	                'format': internalFormat,
-	                'attachment': bufferComponent
-	            };
-	        },
-	
-	        computeLocalToWorldMatrix: function ( matrix /*,nodeVisitor*/ ) {
-	            if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
-	                Matrix.preMult( matrix, this.modelviewMatrix );
-	            } else { // absolute
-	                Matrix.copy( this.modelviewMatrix, matrix );
-	            }
-	            return true;
-	        },
-	
-	        computeWorldToLocalMatrix: ( function () {
-	            var minverse = Matrix.create();
-	            return function ( matrix /*, nodeVisitor */ ) {
-	                Matrix.inverse( this.modelviewMatrix, minverse );
-	                if ( this.referenceFrame === TransformEnums.RELATIVE_RF ) {
-	                    Matrix.postMult( minverse, matrix );
-	                } else {
-	                    Matrix.copy( minverse, matrix );
-	                }
-	                return true;
-	            };
-	        } )()
-	
-	    } ) ), 'osg', 'Camera' );
-	
-	MACROUTILS.setTypeID( Camera );
-	
-	module.exports = Camera;
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -10333,13 +10083,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CullSettings;
 
 
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	
 	var ColorMask = function ( red, green, blue, alpha ) {
@@ -10383,13 +10133,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ColorMask;
 
 
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	
 	/**
@@ -10440,12 +10190,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CullFace;
 
 
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Polytope = __webpack_require__( 61 );
+	var Polytope = __webpack_require__( 60 );
 	
 	var CullingSet = function () {
 	
@@ -10527,15 +10277,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CullingSet;
 
 
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Object = __webpack_require__( 13 );
-	var Plane = __webpack_require__( 24 );
+	var Object = __webpack_require__( 12 );
+	var Plane = __webpack_require__( 29 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec4 = __webpack_require__( 25 );
+	var Vec4 = __webpack_require__( 14 );
 	/*jshint bitwise: false */
 	/**
 	 * Polytope class for representing convex clipping volumes made up of a set of planes.
@@ -10882,23 +10632,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Polytope;
 
 
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var BoundingSphere = __webpack_require__( 18 );
-	var Camera = __webpack_require__( 56 );
-	var ComputeMatrixFromNodePath = __webpack_require__( 28 );
-	var CullSettings = __webpack_require__( 57 );
-	var CullingSet = __webpack_require__( 60 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var Transform = __webpack_require__( 11 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Camera = __webpack_require__( 22 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
+	var CullSettings = __webpack_require__( 56 );
+	var CullingSet = __webpack_require__( 59 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var MatrixTransform = __webpack_require__( 45 );
 	var Notify = __webpack_require__( 10 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Vec3 = __webpack_require__( 15 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	var CullStack = function () {
 	
@@ -11022,6 +10772,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this._viewportStack[ this._viewportStack.length - 1 ];
 	    },
 	    getLookVectorLocal: function ( outLookVector ) {
+	        if ( !outLookVector ) {
+	            Notify.warn( 'no matrix destination !' );
+	            outLookVector = Vec3.create();
+	        }
+	
 	        var lookVectorLocal = this.getCurrentModelViewMatrix();
 	        return Vec3.set( -lookVectorLocal[ 2 ], -lookVectorLocal[ 6 ], -lookVectorLocal[ 10 ], outLookVector );
 	    },
@@ -11098,7 +10853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                // tricky: change push be before isculled, and pop in case of culling
 	                // strange bug for now on frustum culling sample with that
 	
-	                if ( node instanceof Transform ) {
+	                if ( node instanceof MatrixTransform ) {
 	
 	                    // tricky: MatrixTransform getBound is already transformed to
 	                    // its local space whereas nodepath also have its matrix ...
@@ -11215,37 +10970,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CullStack;
 
 
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var osgMath = __webpack_require__( 16 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var CullSettings = __webpack_require__( 57 );
-	var CullStack = __webpack_require__( 62 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var AutoTransform = __webpack_require__( 5 );
-	var Projection = __webpack_require__( 45 );
-	var LightSource = __webpack_require__( 64 );
+	var osgMath = __webpack_require__( 18 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var CullSettings = __webpack_require__( 56 );
+	var CullStack = __webpack_require__( 61 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var Projection = __webpack_require__( 46 );
+	var LightSource = __webpack_require__( 63 );
 	var osgPool = __webpack_require__( 7 );
-	var Geometry = __webpack_require__( 31 );
-	var RenderLeaf = __webpack_require__( 65 );
-	var RenderBin = __webpack_require__( 66 );
-	var RenderStage = __webpack_require__( 67 );
-	var Node = __webpack_require__( 12 );
-	var Lod = __webpack_require__( 69 );
-	var PagedLOD = __webpack_require__( 71 );
-	var Camera = __webpack_require__( 56 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Vec3 = __webpack_require__( 15 );
-	var Skeleton = __webpack_require__( 72 );
-	var RigGeometry = __webpack_require__( 78 );
-	var Bone = __webpack_require__( 74 );
-	var MorphGeometry = __webpack_require__( 79 );
+	var Geometry = __webpack_require__( 35 );
+	var RenderLeaf = __webpack_require__( 64 );
+	var RenderBin = __webpack_require__( 65 );
+	var RenderStage = __webpack_require__( 66 );
+	var Node = __webpack_require__( 24 );
+	var Lod = __webpack_require__( 68 );
+	var PagedLOD = __webpack_require__( 69 );
+	var Camera = __webpack_require__( 22 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec3 = __webpack_require__( 17 );
+	var Skeleton = __webpack_require__( 70 );
+	var RigGeometry = __webpack_require__( 76 );
+	var Bone = __webpack_require__( 72 );
+	var MorphGeometry = __webpack_require__( 77 );
 	
 	/**
 	 * CullVisitor traverse the tree and collect Matrix/State for the rendering traverse
@@ -11734,9 +11488,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.pushCurrentMask();
 	
 	    var matrix = this._reservedMatrixStack.get();
-	    var lastMatrixStack = this.getCurrentModelViewMatrix();
-	    Matrix.copy( lastMatrixStack, matrix );
-	    node.computeLocalToWorldMatrix( matrix );
+	
+	    if ( node.getReferenceFrame() === TransformEnums.RELATIVE_RF ) {
+	
+	        var lastMatrixStack = this.getCurrentModelViewMatrix();
+	        Matrix.mult( lastMatrixStack, node.getMatrix(), matrix );
+	
+	    } else {
+	        // absolute
+	        Matrix.copy( node.getMatrix(), matrix );
+	    }
 	    this.pushModelViewMatrix( matrix );
 	
 	
@@ -11797,9 +11558,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // pop the culling mode.
 	    this.popCurrentMask();
 	};
-	
-	// same code like MatrixTransform
-	CullVisitor.prototype[ AutoTransform.typeID ] = CullVisitor.prototype[ MatrixTransform.typeID ];
 	
 	// same code like Node
 	CullVisitor.prototype[ Lod.typeID ] = CullVisitor.prototype[ Node.typeID ];
@@ -11889,15 +11647,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CullVisitor;
 
 
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Vec3 = __webpack_require__( 15 );
+	var Node = __webpack_require__( 24 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	/**
 	 *  LightSource is a positioned node to use with StateAttribute Light
@@ -11948,9 +11706,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LightSource;
 
 
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var StateGraph = __webpack_require__( 8 );
@@ -11976,7 +11734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( this.modelWorldUniform !== undefined ) {
 	            functionStr.push( 'if ( matrixModelViewChanged ) {' );
 	            functionStr.push( '    var modelWorldMatrix = state.modelWorldMatrix;' );
-	            functionStr.push( '    modelWorldMatrix.setMatrix4( modelworld );' );
+	            functionStr.push( '    modelWorldMatrix.setInternalArray( modelworld );' );
 	            functionStr.push( '    modelWorldMatrix.apply( gl, this.modelWorldUniform);' );
 	            functionStr.push( '};' );
 	        }
@@ -11984,7 +11742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( this.viewUniform !== undefined ) {
 	            functionStr.push( 'if ( matrixModelViewChanged ) {' );
 	            functionStr.push( '    var viewMatrix = state.viewMatrix;' );
-	            functionStr.push( '    viewMatrix.setMatrix4( view );' );
+	            functionStr.push( '    viewMatrix.setInternalArray( view );' );
 	            functionStr.push( '    viewMatrix.apply( gl, this.viewUniform);' );
 	            functionStr.push( '};' );
 	        }
@@ -12168,15 +11926,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RenderLeaf;
 
 
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
 	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
-	var osgMath = __webpack_require__( 16 );
+	var Object = __webpack_require__( 12 );
+	var osgMath = __webpack_require__( 18 );
 	
 	
 	/**
@@ -12495,17 +12253,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RenderBin;
 
 
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Camera = __webpack_require__( 56 );
-	var FrameBufferObject = __webpack_require__( 68 );
+	var Camera = __webpack_require__( 22 );
+	var FrameBufferObject = __webpack_require__( 67 );
 	var Notify = __webpack_require__( 10 );
-	var RenderBin = __webpack_require__( 66 );
-	var Vec4 = __webpack_require__( 25 );
+	var RenderBin = __webpack_require__( 65 );
+	var Vec4 = __webpack_require__( 14 );
 	
 	
 	/**
@@ -12796,17 +12554,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RenderStage;
 
 
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var GLObject = __webpack_require__( 37 );
-	var StateAttribute = __webpack_require__( 21 );
+	var GLObject = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	var Timer = __webpack_require__( 9 );
-	var WebglCaps = __webpack_require__( 32 );
+	var WebglCaps = __webpack_require__( 36 );
 	
 	/**
 	 * FrameBufferObject manage fbo / rtt
@@ -13140,18 +12898,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FrameBufferObject;
 
 
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
-	var BoundingSphere = __webpack_require__( 18 );
+	var Node = __webpack_require__( 24 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var BoundingSphere = __webpack_require__( 19 );
 	
 	/**
 	 *  Lod that can contains child node
@@ -13323,142 +13081,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Lod;
 
 
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var osgMath = __webpack_require__( 16 );
-	var config = __webpack_require__( 17 );
-	
-	var ArrayType = config.ArrayType;
-	
-	/** @class Vec2 Operations */
-	var Vec2 = {
-	    create: function () {
-	        var out = new ArrayType( 2 );
-	        out[ 0 ] = 0.0;
-	        out[ 1 ] = 0.0;
-	        return out;
-	    },
-	
-	    createAndSet: function ( x, y ) {
-	        var out = new ArrayType( 2 );
-	        out[ 0 ] = x;
-	        out[ 1 ] = y;
-	        return out;
-	    },
-	
-	    copy: function ( a, r ) {
-	        r[ 0 ] = a[ 0 ];
-	        r[ 1 ] = a[ 1 ];
-	        return r;
-	    },
-	
-	    set: function ( a, b, r ) {
-	        r[ 0 ] = a;
-	        r[ 1 ] = b;
-	        return r;
-	    },
-	
-	    valid: function ( a ) {
-	        if ( osgMath.isNaN( a[ 0 ] ) ) return false;
-	        if ( osgMath.isNaN( a[ 1 ] ) ) return false;
-	        return true;
-	    },
-	
-	    mult: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] * b;
-	        r[ 1 ] = a[ 1 ] * b;
-	        return r;
-	    },
-	
-	    length2: function ( a ) {
-	        return a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ];
-	    },
-	
-	    length: function ( a ) {
-	        return Math.sqrt( a[ 0 ] * a[ 0 ] + a[ 1 ] * a[ 1 ] );
-	    },
-	
-	    distance2: function ( a, b ) {
-	        var x = a[ 0 ] - b[ 0 ];
-	        var y = a[ 1 ] - b[ 1 ];
-	        return x * x + y * y;
-	    },
-	
-	    distance: function ( a, b ) {
-	        var x = a[ 0 ] - b[ 0 ];
-	        var y = a[ 1 ] - b[ 1 ];
-	        return Math.sqrt( x * x + y * y );
-	    },
-	
-	    /**
-	      normalize an Array of 2 elements and write it in r
-	   */
-	    normalize: function ( a, r ) {
-	        var norm = this.length2( a );
-	        if ( norm > 0.0 ) {
-	            var inv = 1.0 / Math.sqrt( norm );
-	            r[ 0 ] = a[ 0 ] * inv;
-	            r[ 1 ] = a[ 1 ] * inv;
-	        } else {
-	            r[ 0 ] = a[ 0 ];
-	            r[ 1 ] = a[ 1 ];
-	        }
-	        return r;
-	    },
-	
-	    /**
-	      Compute the dot product
-	  */
-	    dot: function ( a, b ) {
-	        return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ];
-	    },
-	
-	    /**
-	     Compute a - b and put the result in r
-	   */
-	    sub: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] - b[ 0 ];
-	        r[ 1 ] = a[ 1 ] - b[ 1 ];
-	        return r;
-	    },
-	
-	    add: function ( a, b, r ) {
-	        r[ 0 ] = a[ 0 ] + b[ 0 ];
-	        r[ 1 ] = a[ 1 ] + b[ 1 ];
-	        return r;
-	    },
-	
-	    neg: function ( a, r ) {
-	        r[ 0 ] = -a[ 0 ];
-	        r[ 1 ] = -a[ 1 ];
-	        return r;
-	    },
-	
-	    lerp: function ( t, a, b, r ) {
-	        var tmp = 1.0 - t;
-	        r[ 0 ] = a[ 0 ] * tmp + t * b[ 0 ];
-	        r[ 1 ] = a[ 1 ] * tmp + t * b[ 1 ];
-	        return r;
-	    }
-	
-	};
-	
-	module.exports = Vec2;
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Lod = __webpack_require__( 69 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
+	var Lod = __webpack_require__( 68 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	/**
@@ -13699,17 +13331,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PagedLOD;
 
 
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var UpdateSkeleton = __webpack_require__( 73 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var UpdateMatrixTransform = __webpack_require__( 76 );
-	var Bone = __webpack_require__( 74 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var UpdateSkeleton = __webpack_require__( 71 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var UpdateMatrixTransform = __webpack_require__( 74 );
+	var Bone = __webpack_require__( 72 );
 	
 	
 	var ResetRestPoseVisitor = function () {
@@ -13754,16 +13386,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Skeleton;
 
 
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Bone = __webpack_require__( 74 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var Bone = __webpack_require__( 72 );
+	var NodeVisitor = __webpack_require__( 27 );
 	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
+	var Object = __webpack_require__( 12 );
 	
 	
 	/**
@@ -13844,17 +13476,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateSkeleton;
 
 
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var BoundingBox = __webpack_require__( 14 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var UpdateBone = __webpack_require__( 75 );
+	var Vec3 = __webpack_require__( 17 );
+	var BoundingBox = __webpack_require__( 16 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var UpdateBone = __webpack_require__( 73 );
 	
 	
 	/**
@@ -13934,16 +13566,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Bone;
 
 
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
 	var Notify = __webpack_require__( 10 );
-	var UpdateMatrixTransform = __webpack_require__( 76 );
-	var Matrix = __webpack_require__( 23 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var UpdateMatrixTransform = __webpack_require__( 74 );
+	var Matrix = __webpack_require__( 28 );
+	var NodeVisitor = __webpack_require__( 27 );
 	
 	
 	/**
@@ -13987,14 +13619,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateBone;
 
 
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Matrix = __webpack_require__( 23 );
-	var AnimationUpdateCallback = __webpack_require__( 77 );
+	var Matrix = __webpack_require__( 28 );
+	var AnimationUpdateCallback = __webpack_require__( 75 );
 	
 	
 	/**
@@ -14044,15 +13676,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateMatrixTransform;
 
 
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var MatrixTransform = __webpack_require__( 44 );
+	var Object = __webpack_require__( 12 );
+	var MatrixTransform = __webpack_require__( 45 );
 	
 	
 	/**
@@ -14108,22 +13740,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = AnimationUpdateCallback;
 
 
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var Geometry = __webpack_require__( 31 );
+	var Vec3 = __webpack_require__( 17 );
+	var Geometry = __webpack_require__( 35 );
 	var Notify = __webpack_require__( 10 );
-	var Matrix = __webpack_require__( 23 );
-	var StateSet = __webpack_require__( 19 );
-	var MorphGeometry = __webpack_require__( 79 );
-	var UpdateRigGeometry = __webpack_require__( 81 );
-	var RigTransformHardware = __webpack_require__( 83 );
-	var AnimationUpdateCallback = __webpack_require__( 77 );
-	var ComputeMatrixFromNodePath = __webpack_require__( 28 );
+	var Matrix = __webpack_require__( 28 );
+	var StateSet = __webpack_require__( 25 );
+	var MorphGeometry = __webpack_require__( 77 );
+	var UpdateRigGeometry = __webpack_require__( 79 );
+	var RigTransformHardware = __webpack_require__( 81 );
+	var AnimationUpdateCallback = __webpack_require__( 75 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
 	
 	
 	// RigGeometry is a Geometry deformed by bones
@@ -14196,8 +13828,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    computeBoundingBox: function ( boundingBox ) {
-	
-	        boundingBox.init();
 	
 	        var vertexArray = this.getVertexAttributeList().Vertex;
 	        var weightsArray = this.getVertexAttributeList().Weights;
@@ -14495,8 +14125,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                m10 += palette[ idBone + 10 ] * w;
 	                m14 += palette[ idBone + 11 ] * w;
 	
-	                m15 += w;
 	                doSkin = true;
+	
 	            }
 	
 	            w = vWeights[ idr + 3 ];
@@ -14549,20 +14179,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RigGeometry;
 
 
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var BufferArrayProxy = __webpack_require__( 53 );
+	var BufferArrayProxy = __webpack_require__( 55 );
 	var Notify = __webpack_require__( 10 );
-	var Vec3 = __webpack_require__( 15 );
-	var Geometry = __webpack_require__( 31 );
-	var StateSet = __webpack_require__( 19 );
-	var MorphAttribute = __webpack_require__( 80 );
-	var StateAttribute = __webpack_require__( 21 );
-	var BoundingBox = __webpack_require__( 14 );
+	var Vec3 = __webpack_require__( 17 );
+	var Geometry = __webpack_require__( 35 );
+	var StateSet = __webpack_require__( 25 );
+	var MorphAttribute = __webpack_require__( 78 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	
 	/**
@@ -14629,22 +14258,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this._targetWeights;
 	    },
 	
-	    computeBoundingBox: ( function () {
-	        var tmpBox = new BoundingBox();
+	    computeBoundingBox: function ( boundingBox ) {
+	        Geometry.prototype.computeBoundingBox.call( this, boundingBox );
 	
-	        return function ( boundingBox ) {
-	            Geometry.prototype.computeBoundingBox.call( this, boundingBox );
+	        // expand bb with targets
+	        // Note : if the morphs have many many targets it can be done more smartly in
+	        // the UpdateMorph on each frame by just taking into account the "active morphs"
+	        for ( var i = 0, l = this._targets.length; i < l; i++ ) {
+	            this._targets[ i ].computeBoundingBox( boundingBox );
+	        }
 	
-	            // expand bb with targets
-	            // Note : if the morphs have many many targets it can be done more smartly in
-	            // the UpdateMorph on each frame by just taking into account the "active morphs"
-	            for ( var i = 0, l = this._targets.length; i < l; i++ ) {
-	                boundingBox.expandByBoundingBox( this._targets[ i ].computeBoundingBox( tmpBox ) );
-	            }
-	
-	            return boundingBox;
-	        };
-	    } )(),
+	        return boundingBox;
+	    },
 	
 	    mergeChildrenVertexAttributeList: function () {
 	
@@ -14760,15 +14385,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = MorphGeometry;
 
 
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Map = __webpack_require__( 20 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Uniform = __webpack_require__( 35 );
+	var Map = __webpack_require__( 26 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Uniform = __webpack_require__( 38 );
 	
 	
 	/**
@@ -14851,7 +14476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( !this._enable ) return;
 	
 	        var uniformMap = this.getOrCreateUniforms();
-	        uniformMap.uTargetWeights.setFloat4( this._targetWeights );
+	        uniformMap.uTargetWeights.setInternalArray( this._targetWeights );
 	
 	    }
 	
@@ -14862,15 +14487,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = MorphAttribute;
 
 
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
 	var Notify = __webpack_require__( 10 );
-	var ObjectBase = __webpack_require__( 13 );
-	var FindNearestParentSkeleton = __webpack_require__( 82 );
+	var ObjectBase = __webpack_require__( 12 );
+	var FindNearestParentSkeleton = __webpack_require__( 80 );
 	
 	
 	// converted from C++ probably it could be merged into RigGeometry
@@ -14921,14 +14546,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateRigGeometry;
 
 
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Skeleton = __webpack_require__( 72 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Skeleton = __webpack_require__( 70 );
 	
 	
 	/**
@@ -14962,15 +14587,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FindNearestParentSkeleton;
 
 
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Matrix = __webpack_require__( 23 );
-	var StateAttribute = __webpack_require__( 21 );
-	var SkinningAttribute = __webpack_require__( 84 );
-	var CollectBoneVisitor = __webpack_require__( 85 );
+	var Matrix = __webpack_require__( 28 );
+	var StateAttribute = __webpack_require__( 11 );
+	var SkinningAttribute = __webpack_require__( 82 );
+	var CollectBoneVisitor = __webpack_require__( 83 );
 	
 	
 	/**
@@ -15104,15 +14729,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RigTransformHardware;
 
 
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Map = __webpack_require__( 20 );
+	var Map = __webpack_require__( 26 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Uniform = __webpack_require__( 35 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Uniform = __webpack_require__( 38 );
 	
 	
 	/**
@@ -15155,7 +14780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( obj.uniforms[ unifHash ] ) return obj.uniforms[ unifHash ];
 	
 	        var uniforms = {};
-	        uniforms.uBones = Uniform.createFloat4Array( 'uBones' );
+	        uniforms.uBones = Uniform.createFloat4Array( new Float32Array( unifHash * 4 ), 'uBones' );
 	        obj.uniforms[ unifHash ] = new Map( uniforms );
 	
 	        return obj.uniforms[ unifHash ];
@@ -15206,15 +14831,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SkinningAttribute;
 
 
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var NodeVisitor = __webpack_require__( 27 );
 	var Notify = __webpack_require__( 10 );
-	var Bone = __webpack_require__( 74 );
+	var Bone = __webpack_require__( 72 );
 	
 	
 	var CollectBoneVisitor = function () {
@@ -15249,13 +14874,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CollectBoneVisitor;
 
 
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	var Depth = function ( func, near, far, writeMask ) {
 	    StateAttribute.call( this );
@@ -15327,14 +14952,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Depth;
 
 
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	var EllipsoidModel = function () {
@@ -15479,9 +15104,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = EllipsoidModel;
 
 
-/***/ }),
-/* 88 */
-/***/ (function(module, exports) {
+/***/ },
+/* 86 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -15522,14 +15147,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FrameStamp;
 
 
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
+	var P = __webpack_require__( 48 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Image = __webpack_require__( 36 );
+	var Image = __webpack_require__( 40 );
 	
 	
 	var ImageStream = function ( video ) {
@@ -15553,15 +15178,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        // event at the end of the stream
 	        video.addEventListener( 'ended', function () {
-	            if ( !this._imageObject.loop )
-	                this.stop();
+	            this._status = ImageStream.PAUSE;
 	        }.bind( this ), true );
 	
 	        this.dirty();
-	    },
-	
-	    setLooping: function ( bool ) {
-	        this._imageObject.loop = bool;
 	    },
 	
 	    play: function () {
@@ -15596,18 +15216,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ImageStream;
 
 
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var BoundingBox = __webpack_require__( 14 );
-	var TriangleIndexFunctor = __webpack_require__( 91 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var KdTreeRayIntersector = __webpack_require__( 92 );
-	var KdTreeSphereIntersector = __webpack_require__( 94 );
+	var Vec3 = __webpack_require__( 17 );
+	var BoundingBox = __webpack_require__( 16 );
+	var TriangleIndexFunctor = __webpack_require__( 89 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var KdTreeRayIntersector = __webpack_require__( 90 );
+	var KdTreeSphereIntersector = __webpack_require__( 92 );
 	
 	
 	// **** GENERAL INFO ON KDTREE ****
@@ -16034,12 +15654,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = KdTree;
 
 
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var PrimitiveSet = __webpack_require__( 41 );
+	var PrimitiveSet = __webpack_require__( 42 );
 	var Notify = __webpack_require__( 10 );
 	
 	// This class can be used to visit all the triangles of a geometry
@@ -16145,13 +15765,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TriangleIndexFunctor;
 
 
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var TriangleIntersector = __webpack_require__( 93 );
+	var Vec3 = __webpack_require__( 17 );
+	var TriangleIntersector = __webpack_require__( 91 );
 	var Notify = __webpack_require__( 10 );
 	
 	var KdTreeRayIntersector = function () {
@@ -16264,10 +15884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // If so... it clip the ray so that the start and end point of the ray are
 	    // snapped to the bounding box of the nodes
 	    intersectAndClip: ( function () {
-	
-	        // needed because of precision picking
-	        var tmp = new Float64Array( 3 );
-	
+	        var tmp = Vec3.create();
 	        return function ( s, e, bb ) {
 	            var min = bb._min;
 	            var xmin = min[ 0 ];
@@ -16392,13 +16009,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = KdTreeRayIntersector;
 
 
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var TriangleIndexFunctor = __webpack_require__( 91 );
+	var Vec3 = __webpack_require__( 17 );
+	var TriangleIndexFunctor = __webpack_require__( 89 );
 	var Notify = __webpack_require__( 10 );
 	
 	var TriangleIntersection = function ( normal, i1, i2, i3, r1, r2, r3 ) {
@@ -16551,15 +16168,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TriangleIntersector;
 
 
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var KdTreeRayIntersector = __webpack_require__( 92 );
-	var TriangleSphereIntersector = __webpack_require__( 95 );
+	var Vec3 = __webpack_require__( 17 );
+	var KdTreeRayIntersector = __webpack_require__( 90 );
+	var TriangleSphereIntersector = __webpack_require__( 93 );
 	
 	
 	var KdTreeSphereIntersector = function () {
@@ -16648,14 +16265,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = KdTreeSphereIntersector;
 
 
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var TriangleIntersector = __webpack_require__( 93 );
+	var Vec3 = __webpack_require__( 17 );
+	var TriangleIntersector = __webpack_require__( 91 );
 	var Notify = __webpack_require__( 10 );
 	
 	var TriangleIntersection = function ( normal, i1, i2, i3 ) {
@@ -16896,14 +16513,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TriangleSphereIntersector;
 
 
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var KdTree = __webpack_require__( 90 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var KdTree = __webpack_require__( 88 );
 	
 	
 	var KdTreeBuilder = function ( options ) {
@@ -16934,18 +16551,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = KdTreeBuilder;
 
 
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Uniform = __webpack_require__( 35 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Map = __webpack_require__( 20 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Uniform = __webpack_require__( 38 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Map = __webpack_require__( 26 );
 	var Notify = __webpack_require__( 10 );
 	
 	
@@ -17264,22 +16881,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        var uniformMap = this.getOrCreateUniforms();
 	
-	        uniformMap.position.setFloat4( this._position );
+	        uniformMap.position.setInternalArray( this._position );
 	
 	        if ( this.isSpotLight() ) {
 	            var spotsize = Math.cos( this._spotCutoff * Math.PI / 180.0 );
 	            uniformMap.spotCutOff.setFloat( spotsize );
 	            uniformMap.spotBlend.setFloat( ( 1.0 - spotsize ) * this._spotBlend );
-	            uniformMap.direction.setFloat3( this._direction );
+	            uniformMap.direction.setInternalArray( this._direction );
 	        }
 	
 	        if ( this.isHemiLight() )
-	            uniformMap.ground.setFloat4( this._ground );
+	            uniformMap.ground.setInternalArray( this._ground );
 	
-	        uniformMap.attenuation.setFloat4( this._attenuation );
-	        uniformMap.diffuse.setFloat4( this._diffuse );
-	        uniformMap.specular.setFloat4( this._specular );
-	        uniformMap.ambient.setFloat4( this._ambient );
+	        uniformMap.attenuation.setInternalArray( this._attenuation );
+	        uniformMap.diffuse.setInternalArray( this._diffuse );
+	        uniformMap.specular.setInternalArray( this._specular );
+	        uniformMap.ambient.setInternalArray( this._ambient );
 	    }
 	
 	} ), 'osg', 'Light' );
@@ -17289,13 +16906,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Light;
 
 
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	var LineWidth = function ( lineWidth ) {
 	    StateAttribute.call( this );
@@ -17317,13 +16934,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LineWidth;
 
 
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var PrimitiveSet = __webpack_require__( 41 );
+	var Vec3 = __webpack_require__( 17 );
+	var PrimitiveSet = __webpack_require__( 42 );
 	
 	/**
 	 * PrimitiveFunctor emulates the TemplatePrimitiveFunctor class in OSG and can
@@ -17727,16 +17344,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PrimitiveFunctor;
 
 
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
 	var Notify = __webpack_require__( 10 );
-	var GLObject = __webpack_require__( 37 );
-	var StateAttribute = __webpack_require__( 21 );
-	var CustomMap = __webpack_require__( 20 );
+	var GLObject = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
+	var CustomMap = __webpack_require__( 26 );
 	var Timer = __webpack_require__( 9 );
 	
 	/**
@@ -18032,15 +17649,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Program;
 
 
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
 	var Timer = __webpack_require__( 9 );
-	var GLObject = __webpack_require__( 37 );
+	var GLObject = __webpack_require__( 21 );
 	
 	
 	/**
@@ -18216,20 +17833,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Shader;
 
 
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Vec3 = __webpack_require__( 15 );
-	var BufferArray = __webpack_require__( 40 );
-	var Geometry = __webpack_require__( 31 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var DrawArrays = __webpack_require__( 42 );
-	var DrawElements = __webpack_require__( 43 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
+	var Vec3 = __webpack_require__( 17 );
+	var BufferArray = __webpack_require__( 20 );
+	var Geometry = __webpack_require__( 35 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var DrawArrays = __webpack_require__( 43 );
+	var DrawElements = __webpack_require__( 44 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	
@@ -18969,9 +18586,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 103 */
-/***/ (function(module, exports) {
+/***/ },
+/* 101 */
+/***/ function(module, exports) {
 
 	'use strict';
 	var Stack = function () {
@@ -19007,21 +18624,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Stack;
 
 
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Map = __webpack_require__( 20 );
-	var Matrix = __webpack_require__( 23 );
+	var Map = __webpack_require__( 26 );
+	var Matrix = __webpack_require__( 28 );
 	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
-	var Program = __webpack_require__( 100 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Stack = __webpack_require__( 103 );
-	var Uniform = __webpack_require__( 35 );
+	var Object = __webpack_require__( 12 );
+	var Program = __webpack_require__( 98 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Stack = __webpack_require__( 101 );
+	var Uniform = __webpack_require__( 38 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var WebGLCaps = __webpack_require__( 32 );
+	var WebGLCaps = __webpack_require__( 36 );
 	
 	var State = function ( shaderGeneratorProxy ) {
 	    Object.call( this );
@@ -19233,7 +18850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var gc = this.getGraphicContext();
 	            if ( mul ) {
 	
-	                mu.setMatrix4( matrix );
+	                mu.setInternalArray( matrix );
 	                mu.apply( gc, mul );
 	            }
 	
@@ -19272,7 +18889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    Matrix.inverse( normal, normal );
 	                    Matrix.transpose( normal, normal );
 	
-	                    mu.setMatrix4( normal );
+	                    mu.setInternalArray( normal );
 	                    mu.apply( gc, mul );
 	                }
 	            }
@@ -19313,7 +18930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var mul = program.getUniformsCache().ModelViewMatrix;
 	            if ( mul ) {
 	
-	                mu.setMatrix4( matrix );
+	                mu.setInternalArray( matrix );
 	                mu.apply( this.getGraphicContext(), mul );
 	            }
 	
@@ -19361,7 +18978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        Matrix.transpose( normal, normal );
 	                    }
 	
-	                    mu.setMatrix4( normal );
+	                    mu.setInternalArray( normal );
 	                    mu.apply( this.getGraphicContext(), mul );
 	                }
 	            }
@@ -19382,7 +18999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var mul = program.getUniformsCache()[ mu.getName() ];
 	        if ( mul ) {
 	
-	            mu.setMatrix4( matrix );
+	            mu.setInternalArray( matrix );
 	            mu.apply( this.getGraphicContext(), mul );
 	
 	        }
@@ -20229,15 +19846,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = State;
 
 
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Image = __webpack_require__( 36 );
+	var Image = __webpack_require__( 40 );
 	var Notify = __webpack_require__( 10 );
-	var Texture = __webpack_require__( 34 );
+	var Texture = __webpack_require__( 37 );
 	
 	
 	/**
@@ -20465,13 +20082,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TextureCubeMap;
 
 
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var NodeVisitor = __webpack_require__( 27 );
 	
 	
 	var UpdateVisitor = function () {
@@ -20522,15 +20139,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateVisitor;
 
 
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Matrix = __webpack_require__( 23 );
-	
+	var StateAttribute = __webpack_require__( 11 );
+	var Matrix = __webpack_require__( 28 );
+	var Notify = __webpack_require__( 10 );
 	
 	var Viewport = function ( x, y, w, h ) {
 	    StateAttribute.call( this );
@@ -20581,6 +20198,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var translate = Matrix.create();
 	        var scale = Matrix.create();
 	        return function ( destination ) {
+	
+	            if ( !destination ) {
+	                Notify.warn( 'no matrix destination !' );
+	                destination = Matrix.create();
+	            }
+	
 	            // res = Matrix offset * Matrix scale * Matrix translate
 	            Matrix.makeTranslate( 1.0, 1.0, 1.0, translate );
 	            Matrix.makeScale( 0.5 * this._width, 0.5 * this._height, 0.5, scale );
@@ -20597,9 +20220,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Viewport;
 
 
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -20918,34 +20541,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TimerGPU;
 
 
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Animation = __webpack_require__( 110 );
-	var SkinningAttribute = __webpack_require__( 84 );
-	var AnimationUpdateCallback = __webpack_require__( 77 );
-	var BasicAnimationManager = __webpack_require__( 114 );
-	var Bone = __webpack_require__( 74 );
-	var Channel = __webpack_require__( 111 );
-	var CollectAnimationUpdateCallbackVisitor = __webpack_require__( 116 );
-	var Easing = __webpack_require__( 118 );
-	var Interpolator = __webpack_require__( 115 );
-	var MorphAttribute = __webpack_require__( 80 );
-	var MorphGeometry = __webpack_require__( 79 );
-	var RigGeometry = __webpack_require__( 78 );
-	var Skeleton = __webpack_require__( 72 );
-	var StackedMatrix = __webpack_require__( 119 );
-	var StackedQuaternion = __webpack_require__( 120 );
-	var StackedRotateAxis = __webpack_require__( 121 );
-	var StackedScale = __webpack_require__( 122 );
-	var StackedTranslate = __webpack_require__( 123 );
-	var UpdateBone = __webpack_require__( 75 );
-	var UpdateMatrixTransform = __webpack_require__( 76 );
-	var UpdateMorph = __webpack_require__( 117 );
-	var UpdateSkeleton = __webpack_require__( 73 );
+	var Animation = __webpack_require__( 108 );
+	var SkinningAttribute = __webpack_require__( 82 );
+	var AnimationUpdateCallback = __webpack_require__( 75 );
+	var BasicAnimationManager = __webpack_require__( 112 );
+	var Bone = __webpack_require__( 72 );
+	var Channel = __webpack_require__( 109 );
+	var CollectAnimationUpdateCallbackVisitor = __webpack_require__( 114 );
+	var Easing = __webpack_require__( 116 );
+	var Interpolator = __webpack_require__( 113 );
+	var MorphAttribute = __webpack_require__( 78 );
+	var MorphGeometry = __webpack_require__( 77 );
+	var RigGeometry = __webpack_require__( 76 );
+	var Skeleton = __webpack_require__( 70 );
+	var StackedMatrix = __webpack_require__( 117 );
+	var StackedQuaternion = __webpack_require__( 118 );
+	var StackedRotateAxis = __webpack_require__( 119 );
+	var StackedScale = __webpack_require__( 120 );
+	var StackedTranslate = __webpack_require__( 121 );
+	var UpdateBone = __webpack_require__( 73 );
+	var UpdateMatrixTransform = __webpack_require__( 74 );
+	var UpdateMorph = __webpack_require__( 115 );
+	var UpdateSkeleton = __webpack_require__( 71 );
 	
 	
 	var osgAnimation = {};
@@ -20976,12 +20599,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgAnimation;
 
 
-/***/ }),
-/* 110 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Channel = __webpack_require__( 111 );
+	var Channel = __webpack_require__( 109 );
 	
 	
 	// create Animation data
@@ -21049,15 +20672,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Animation;
 
 
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var Quat = __webpack_require__( 26 );
-	var Target = __webpack_require__( 112 );
-	var channelType = __webpack_require__( 113 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var Target = __webpack_require__( 110 );
+	var channelType = __webpack_require__( 111 );
 	
 	
 	var Channel = {};
@@ -21300,15 +20923,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Channel;
 
 
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Matrix = __webpack_require__( 23 );
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
-	var channelType = __webpack_require__( 113 );
+	var Matrix = __webpack_require__( 28 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
+	var channelType = __webpack_require__( 111 );
 	
 	
 	var target = {};
@@ -21357,9 +20980,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = target;
 
 
-/***/ }),
-/* 113 */
-/***/ (function(module, exports) {
+/***/ },
+/* 111 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -21376,23 +20999,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 114 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var BaseObject = __webpack_require__( 13 );
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
-	var Matrix = __webpack_require__( 23 );
-	var Channel = __webpack_require__( 111 );
-	var Animation = __webpack_require__( 110 );
-	var Interpolator = __webpack_require__( 115 );
-	var CollectAnimationUpdateCallbackVisitor = __webpack_require__( 116 );
-	var Target = __webpack_require__( 112 );
-	var UpdateMorph = __webpack_require__( 117 );
+	var BaseObject = __webpack_require__( 12 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
+	var Matrix = __webpack_require__( 28 );
+	var Channel = __webpack_require__( 109 );
+	var Animation = __webpack_require__( 108 );
+	var Interpolator = __webpack_require__( 113 );
+	var CollectAnimationUpdateCallbackVisitor = __webpack_require__( 114 );
+	var Target = __webpack_require__( 110 );
+	var UpdateMorph = __webpack_require__( 115 );
 	
 	
 	var Float = {
@@ -22079,14 +21702,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = BasicAnimationManager;
 
 
-/***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 113 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var Quat = __webpack_require__( 26 );
-	var Channel = __webpack_require__( 111 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var Channel = __webpack_require__( 109 );
 	
 	
 	var Vec3CopyKeyFrame = function ( i, keys, result ) {
@@ -22413,14 +22036,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = moduleInterpolator;
 
 
-/***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 114 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var AnimationUpdateCallback = __webpack_require__( 77 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var AnimationUpdateCallback = __webpack_require__( 75 );
 	
 	
 	// search into a subgraph all target
@@ -22454,17 +22077,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CollectAnimationUpdateCallbackVisitor;
 
 
-/***/ }),
-/* 117 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var BufferArray = __webpack_require__( 40 );
-	var RigGeometry = __webpack_require__( 78 );
-	var AnimationUpdateCallback = __webpack_require__( 77 );
-	var Target = __webpack_require__( 112 );
-	var MorphGeometry = __webpack_require__( 79 );
+	var BufferArray = __webpack_require__( 20 );
+	var RigGeometry = __webpack_require__( 76 );
+	var AnimationUpdateCallback = __webpack_require__( 75 );
+	var Target = __webpack_require__( 110 );
+	var MorphGeometry = __webpack_require__( 77 );
 	
 	var UpdateMorph = function () {
 	    AnimationUpdateCallback.call( this );
@@ -22731,9 +22354,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = UpdateMorph;
 
 
-/***/ }),
-/* 118 */
-/***/ (function(module, exports) {
+/***/ },
+/* 116 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -22793,15 +22416,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 117 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var Matrix = __webpack_require__( 23 );
-	var Target = __webpack_require__( 112 );
+	var Object = __webpack_require__( 12 );
+	var Matrix = __webpack_require__( 28 );
+	var Target = __webpack_require__( 110 );
 	
 	
 	var StackedMatrix = function ( name, matrix ) {
@@ -22842,16 +22465,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StackedMatrix;
 
 
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 118 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var Matrix = __webpack_require__( 23 );
-	var Quat = __webpack_require__( 26 );
-	var Target = __webpack_require__( 112 );
+	var Object = __webpack_require__( 12 );
+	var Matrix = __webpack_require__( 28 );
+	var Quat = __webpack_require__( 30 );
+	var Target = __webpack_require__( 110 );
 	
 	
 	var StackedQuaternion = function ( name, quat ) {
@@ -22894,17 +22517,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StackedQuaternion;
 
 
-/***/ }),
-/* 121 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
-	var Quat = __webpack_require__( 26 );
-	var Target = __webpack_require__( 112 );
+	var Object = __webpack_require__( 12 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var Target = __webpack_require__( 110 );
 	
 	
 	var StackedRotateAxis = function ( name, axis, angle ) {
@@ -22960,16 +22583,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StackedRotateAxis;
 
 
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
-	var Target = __webpack_require__( 112 );
+	var Object = __webpack_require__( 12 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
+	var Target = __webpack_require__( 110 );
 	
 	
 	var StackedScale = function ( name, scale ) {
@@ -23012,16 +22635,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StackedScale;
 
 
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec3 = __webpack_require__( 15 );
-	var Target = __webpack_require__( 112 );
+	var Object = __webpack_require__( 12 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec3 = __webpack_require__( 17 );
+	var Target = __webpack_require__( 110 );
 	
 	
 	/**
@@ -23061,18 +22684,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StackedTranslate;
 
 
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 122 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Input = __webpack_require__( 46 );
-	var ReaderParser = __webpack_require__( 38 );
-	var DatabasePager = __webpack_require__( 125 );
-	var osgWrappers = __webpack_require__( 126 );
-	var osgAnimationWrappers = __webpack_require__( 127 );
-	var osgTextWrappers = __webpack_require__( 128 );
+	var Input = __webpack_require__( 47 );
+	var ReaderParser = __webpack_require__( 41 );
+	var DatabasePager = __webpack_require__( 123 );
+	var osgWrappers = __webpack_require__( 124 );
+	var osgAnimationWrappers = __webpack_require__( 125 );
+	var osgTextWrappers = __webpack_require__( 126 );
 	
 	var osgDB = {};
 	osgDB.Input = Input;
@@ -23085,15 +22708,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgDB;
 
 
-/***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 123 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
+	var P = __webpack_require__( 48 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var PagedLOD = __webpack_require__( 71 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var PagedLOD = __webpack_require__( 69 );
 	var Timer = __webpack_require__( 9 );
 	
 	/**
@@ -23402,7 +23025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    loadNodeFromURL: function ( url ) {
-	        var ReaderParser = __webpack_require__( 38 );
+	        var ReaderParser = __webpack_require__( 41 );
 	        // Call to ReaderParser just in case there is a custom readNodeURL Callback
 	        // See osgDB/Options.js and/or osgDB/Input.js
 	        // TODO: We should study if performance can be improved if separating the XHTTP request from
@@ -23486,13 +23109,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DatabasePager;
 
 
-/***/ }),
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
-	var TransformEnums = __webpack_require__( 29 );
+	var P = __webpack_require__( 48 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	var osgWrapper = {};
 	
@@ -23838,21 +23461,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgWrapper;
 
 
-/***/ }),
-/* 127 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 125 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
+	var P = __webpack_require__( 48 );
 	var Notify = __webpack_require__( 10 );
-	var osgWrapper = __webpack_require__( 126 );
-	var Channel = __webpack_require__( 111 );
-	var Animation = __webpack_require__( 110 );
-	var ReaderParser = __webpack_require__( 38 );
-	var StackedMatrix = __webpack_require__( 119 );
-	var StackedScale = __webpack_require__( 122 );
-	var MorphGeometry = __webpack_require__( 79 );
-	var Geometry = __webpack_require__( 31 );
+	var osgWrapper = __webpack_require__( 124 );
+	var Channel = __webpack_require__( 109 );
+	var Animation = __webpack_require__( 108 );
+	var ReaderParser = __webpack_require__( 41 );
+	var StackedMatrix = __webpack_require__( 117 );
+	var StackedScale = __webpack_require__( 120 );
+	var MorphGeometry = __webpack_require__( 77 );
+	var Geometry = __webpack_require__( 35 );
 	
 	
 	/*eslint new-cap: [2, {"capIsNewExceptions": ["Geometry", "MatrixTransform", "StandardVec3Channel", "StandardQuatChannel", "StandardFloatChannel", "MorphGeometry"]}]*/
@@ -24329,15 +23952,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgAnimationWrapper;
 
 
-/***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 126 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var P = __webpack_require__( 47 );
-	var osgWrapper = __webpack_require__( 126 );
+	var P = __webpack_require__( 48 );
+	var osgWrapper = __webpack_require__( 124 );
 	var Notify = __webpack_require__( 10 );
-	var Text = __webpack_require__( 129 );
+	var Text = __webpack_require__( 127 );
 	
 	var osgTextWrapper = {};
 	
@@ -24384,20 +24007,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgTextWrapper;
 
 
-/***/ }),
-/* 129 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 127 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Matrix = __webpack_require__( 23 );
-	var AutoTransform = __webpack_require__( 5 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var Shape = __webpack_require__( 102 );
-	var Texture = __webpack_require__( 34 );
-	var BlendFunc = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var Shape = __webpack_require__( 100 );
+	var Texture = __webpack_require__( 37 );
+	var StateAttribute = __webpack_require__( 11 );
+	var BillboardAttribute = __webpack_require__( 5 );
+	var BlendFunc = __webpack_require__( 15 );
 	
 	
 	/**
@@ -24405,21 +24029,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  Notes: The OSGjs Text has been implemented like OSG osgText::Text as much as possible. However there are some
 	 *  things that should be noted:
 	 *  - This Text is far more simple than OSG ones, it only supports basic functionality.
-	 *  - In contrast to OSG, Text inherits from AutoTransform in osgjs.
+	 *  - In contrast to OSG, Text inherits from MatrixTransform in osgjs.
 	 *  - Supported fonts are not the same in HTML than in OSG/C++.
 	 *  - Vertical layout is not supported right now.
 	 *  - BaseLine alignments are not supported, instead they are converted to supported ones if parsing a osgjs file.
 	 *  - Set the color in the range [ 0 - 1 ], as if you were working with OSG.
 	 *  - Texts are generated as a canvas 2D texture sticked in a quad. The size of the texture is the next power of two of the current size of the
 	 *    text so the bigger is your characterSize, the more memory it will consume.
+	 *  - The only supported CharacterSizeMode is OBJECT_COORDS, others should be addresed in the future.
 	 */
 	var Text = function ( text ) {
-	    AutoTransform.call( this );
+	    MatrixTransform.call( this );
 	    // create a canvas element
 	    this._canvas = document.createElement( 'canvas' );
 	    this._context = this._canvas.getContext( '2d' );
-	    this._matrixTransform = new MatrixTransform();
-	    this.addChild( this._matrixTransform );
+	
 	    this._text = '';
 	    if ( text !== undefined ) this._text = text;
 	    this._font = 'monospace';
@@ -24435,7 +24059,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._textY = undefined;
 	    // Size of the textured quad in meters.
 	    this._charactherSize = 1;
-	    this._charactherSizeMode = Text.OBJECT_COORDS;
 	    // Font resolution
 	    this._fontSize = 32;
 	    this._geometry = undefined;
@@ -24449,11 +24072,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.drawText();
 	    this._dirty = false;
 	};
-	
-	// CharacterSizeMode
-	Text.OBJECT_COORDS = 0;
-	Text.SCREEN_COORDS = 1;
-	Text.OBJECT_COORDS_WITH_MAXIMUM_SCREEN_SIZE_CAPPED_BY_FONT_HEIGHT = 2;
 	
 	// Layout enum
 	Text.LEFT_TO_RIGHT = 'ltr';
@@ -24473,11 +24091,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	Text.RIGHT_BOTTOM = 8;
 	
 	/** @lends Text.prototype */
-	Text.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( AutoTransform.prototype, {
+	Text.prototype = MACROUTILS.objectLibraryClass( MACROUTILS.objectInherit( MatrixTransform.prototype, {
 	
 	    drawText: function () {
 	        if ( this._geometry !== undefined ) {
-	            this._matrixTransform.removeChild( this._geometry );
+	            this.removeChild( this._geometry );
 	            // The text could be dynamic, so we need to remove GL objects
 	            this._geometry.releaseGLObjects();
 	        }
@@ -24510,7 +24128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        stateset.setTextureAttributeAndModes( 0, texture );
 	        stateset.setRenderingHint( 'TRANSPARENT_BIN' );
 	        stateset.setAttributeAndModes( new BlendFunc( BlendFunc.ONE, BlendFunc.ONE_MINUS_SRC_ALPHA ) );
-	        this._matrixTransform.addChild( this._geometry );
+	        this.addChild( this._geometry );
 	        this.dirtyBound();
 	    },
 	
@@ -24544,35 +24162,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    setCharacterSize: function ( size ) {
 	        this._charactherSize = size;
-	        if ( this._charactherSizeMode !== Text.OBJECT_COORDS ) {
-	            Matrix.makeScale( this._charactherSize, this._charactherSize, this._charactherSize, this._matrixTransform.getMatrix() );
-	            if ( this._charactherSizeMode === Text.OBJECT_COORDS_WITH_MAXIMUM_SCREEN_SIZE_CAPPED_BY_FONT_HEIGHT )
-	                this.setMaximumScale( this._charactherSize );
-	        }
 	        this._dirty = true;
 	    },
 	
 	    getCharacterSize: function () {
 	        return this._charactherSize;
-	    },
-	
-	    setCharacterSizeMode: function ( mode ) {
-	        this._charactherSizeMode = mode;
-	        if ( this._charactherSizeMode !== Text.OBJECT_COORDS ) {
-	            Matrix.makeScale( this._charactherSize, this._charactherSize, this._charactherSize, this._matrixTransform.getMatrix() );
-	            this.setAutoScaleToScreen( true );
-	            this.setMaximumScale( Number.MAX_VALUE );
-	            if ( this._charactherSizeMode === Text.OBJECT_COORDS_WITH_MAXIMUM_SCREEN_SIZE_CAPPED_BY_FONT_HEIGHT )
-	                this.setMaximumScale( this._charactherSize );
-	        } else {
-	            this._matrixTransform.setMatrix( Matrix.create() );
-	            this.setAutoScaleToScreen( false );
-	        }
-	        this._dirty = true;
-	    },
-	
-	    getCharacterSizeMode: function () {
-	        return this._charactherSizeMode;
 	    },
 	
 	    setFontResolution: function ( resolution ) {
@@ -24601,7 +24195,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    setAutoRotateToScreen: function ( value ) {
-	        AutoTransform.prototype.setAutoRotateToScreen.call( this, value );
+	        this._autoRotateToScreen = value;
+	        if ( !this._billboardAttribute ) {
+	            this._billboardAttribute = new BillboardAttribute();
+	        }
+	        var stateset = this.getOrCreateStateSet();
+	        if ( value ) {
+	            // Temporary hack because StateAttribute.ON does not work right now
+	            this._billboardAttribute.setEnabled( true );
+	            stateset.setAttributeAndModes( this._billboardAttribute, StateAttribute.ON );
+	        } else {
+	            // Temporary hack because StateAttribute.OFF does not work right now
+	            this._billboardAttribute.setEnabled( false );
+	            stateset.setAttributeAndModes( this._billboardAttribute, StateAttribute.OFF );
+	        }
 	        this._dirty = true;
 	    },
 	
@@ -24631,14 +24238,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getAlignment: function () {
 	        return this._alignment;
 	    },
-	
-	
 	    traverse: function ( visitor ) {
 	        if ( this._dirty ) {
 	            this.drawText();
 	            this._dirty = false;
 	        }
-	        AutoTransform.prototype.traverse.call( this, visitor );
+	        MatrixTransform.prototype.traverse.call( this, visitor );
 	    },
 	
 	    _setAlignmentValues: function ( alignment ) {
@@ -24722,30 +24327,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Text;
 
 
-/***/ }),
-/* 130 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Hammer = __webpack_require__( 131 );
-	var CADManipulator = __webpack_require__( 132 );
-	var CADManipulatorStandardMouseKeyboardController = __webpack_require__( 147 );
-	var CADManipulatorHammerController = __webpack_require__( 148 );
-	var FirstPersonManipulator = __webpack_require__( 149 );
-	var FirstPersonManipulatorDeviceOrientationController = __webpack_require__( 136 );
-	var FirstPersonManipulatorHammerController = __webpack_require__( 150 );
-	var FirstPersonManipulatorStandardMouseKeyboardController = __webpack_require__( 152 );
-	var FirstPersonManipulatorWebVRController = __webpack_require__( 151 );
-	var Manipulator = __webpack_require__( 133 );
-	var OrbitManipulator = __webpack_require__( 134 );
-	var OrbitManipulatorDeviceOrientationController = __webpack_require__( 135 );
-	var OrbitManipulatorGamePadController = __webpack_require__( 137 );
-	var OrbitManipulatorHammerController = __webpack_require__( 138 );
-	var OrbitManipulatorLeapMotionController = __webpack_require__( 139 );
-	var OrbitManipulatorStandardMouseKeyboardController = __webpack_require__( 140 );
-	var OrbitManipulatorWebVRController = __webpack_require__( 142 );
-	var SwitchManipulator = __webpack_require__( 153 );
-	var OrbitManipulatorEnums = __webpack_require__( 141 );
+	var Hammer = __webpack_require__( 129 );
+	var CADManipulator = __webpack_require__( 130 );
+	var CADManipulatorStandardMouseKeyboardController = __webpack_require__( 145 );
+	var CADManipulatorHammerController = __webpack_require__( 146 );
+	var FirstPersonManipulator = __webpack_require__( 147 );
+	var FirstPersonManipulatorDeviceOrientationController = __webpack_require__( 134 );
+	var FirstPersonManipulatorHammerController = __webpack_require__( 148 );
+	var FirstPersonManipulatorStandardMouseKeyboardController = __webpack_require__( 150 );
+	var FirstPersonManipulatorWebVRController = __webpack_require__( 149 );
+	var Manipulator = __webpack_require__( 131 );
+	var OrbitManipulator = __webpack_require__( 132 );
+	var OrbitManipulatorDeviceOrientationController = __webpack_require__( 133 );
+	var OrbitManipulatorGamePadController = __webpack_require__( 135 );
+	var OrbitManipulatorHammerController = __webpack_require__( 136 );
+	var OrbitManipulatorLeapMotionController = __webpack_require__( 137 );
+	var OrbitManipulatorStandardMouseKeyboardController = __webpack_require__( 138 );
+	var OrbitManipulatorWebVRController = __webpack_require__( 140 );
+	var SwitchManipulator = __webpack_require__( 151 );
+	var OrbitManipulatorEnums = __webpack_require__( 139 );
 	
 	
 	var osgGA = {};
@@ -24802,30 +24407,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgGA;
 
 
-/***/ }),
-/* 131 */
-/***/ (function(module, exports) {
+/***/ },
+/* 129 */
+/***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_131__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_129__;
 
-/***/ }),
-/* 132 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 130 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Manipulator = __webpack_require__( 133 );
-	var OrbitManipulator = __webpack_require__( 134 );
-	var IntersectionVisitor = __webpack_require__( 143 );
-	var LineSegmentIntersector = __webpack_require__( 144 );
-	var PolytopeIntersector = __webpack_require__( 145 );
-	var ComputeMatrixFromNodePath = __webpack_require__( 28 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
-	var Quat = __webpack_require__( 26 );
-	var CADManipulatorStandardMouseKeyboardController = __webpack_require__( 147 );
-	var CADManipulatorHammerController = __webpack_require__( 148 );
+	var Manipulator = __webpack_require__( 131 );
+	var OrbitManipulator = __webpack_require__( 132 );
+	var IntersectionVisitor = __webpack_require__( 141 );
+	var LineSegmentIntersector = __webpack_require__( 142 );
+	var PolytopeIntersector = __webpack_require__( 143 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var CADManipulatorStandardMouseKeyboardController = __webpack_require__( 145 );
+	var CADManipulatorHammerController = __webpack_require__( 146 );
 	
 	/**
 	 *  CADManipulator
@@ -25350,13 +24955,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CADManipulator;
 
 
-/***/ }),
-/* 133 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BoundingSphere = __webpack_require__( 18 );
-	var Matrix = __webpack_require__( 23 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Matrix = __webpack_require__( 28 );
 	var Notify = __webpack_require__( 10 );
 	
 	
@@ -25444,21 +25049,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Manipulator;
 
 
-/***/ }),
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 132 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var Matrix = __webpack_require__( 23 );
-	var Manipulator = __webpack_require__( 133 );
-	var OrbitManipulatorDeviceOrientationController = __webpack_require__( 135 );
-	var OrbitManipulatorGamePadController = __webpack_require__( 137 );
-	var OrbitManipulatorHammerController = __webpack_require__( 138 );
-	var OrbitManipulatorLeapMotionController = __webpack_require__( 139 );
-	var OrbitManipulatorStandardMouseKeyboardController = __webpack_require__( 140 );
-	var OrbitManipulatorWebVRController = __webpack_require__( 142 );
+	var Vec3 = __webpack_require__( 17 );
+	var Matrix = __webpack_require__( 28 );
+	var Manipulator = __webpack_require__( 131 );
+	var OrbitManipulatorDeviceOrientationController = __webpack_require__( 133 );
+	var OrbitManipulatorGamePadController = __webpack_require__( 135 );
+	var OrbitManipulatorHammerController = __webpack_require__( 136 );
+	var OrbitManipulatorLeapMotionController = __webpack_require__( 137 );
+	var OrbitManipulatorStandardMouseKeyboardController = __webpack_require__( 138 );
+	var OrbitManipulatorWebVRController = __webpack_require__( 140 );
 	
 	
 	/**
@@ -25884,15 +25489,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulator;
 
 
-/***/ }),
-/* 135 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
 	
-	var FirstPersonDeviceOrientation = __webpack_require__( 136 );
+	var FirstPersonDeviceOrientation = __webpack_require__( 134 );
 	
 	
 	var OrbitManipulatorDeviceOrientationController = function ( manipulator ) {
@@ -25920,13 +25525,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorDeviceOrientationController;
 
 
-/***/ }),
-/* 136 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	var degtorad = Math.PI / 180.0; // Degree-to-Radian conversion
 	
@@ -26069,12 +25674,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FirstPersonManipulatorDeviceOrientationController;
 
 
-/***/ }),
-/* 137 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec2 = __webpack_require__( 70 );
+	var Vec2 = __webpack_require__( 39 );
 	
 	
 	var OrbitManipulatorGamePadController = function ( manipulator ) {
@@ -26188,9 +25793,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorGamePadController;
 
 
-/***/ }),
-/* 138 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -26356,14 +25961,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorHammerController;
 
 
-/***/ }),
-/* 139 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	var OrbitManipulatorLeapMotionController = function ( manipulator ) {
@@ -26543,13 +26148,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorLeapMotionController;
 
 
-/***/ }),
-/* 140 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 138 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var osgMath = __webpack_require__( 16 );
-	var OrbitManipulatorEnums = __webpack_require__( 141 );
+	var osgMath = __webpack_require__( 18 );
+	var OrbitManipulatorEnums = __webpack_require__( 139 );
 	
 	
 	var OrbitManipulatorStandardMouseKeyboardController = function ( manipulator ) {
@@ -26706,9 +26311,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorStandardMouseKeyboardController;
 
 
-/***/ }),
-/* 141 */
-/***/ (function(module, exports) {
+/***/ },
+/* 139 */
+/***/ function(module, exports) {
 
 	'use strict';
 	module.exports = {
@@ -26718,9 +26323,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 142 */
-/***/ (function(module, exports) {
+/***/ },
+/* 140 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -26739,16 +26344,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = OrbitManipulatorWebVRController;
 
 
-/***/ }),
-/* 143 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var TransformEnums = __webpack_require__( 29 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var TransformEnums = __webpack_require__( 33 );
 	
 	
 	var IntersectionVisitor = function () {
@@ -26756,12 +26361,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // We could need to use a stack of intersectors in case we want
 	    // to use several intersectors. Right now we use only one.
 	    this._intersector = undefined;
-	    this._projectionStack = [ Matrix.identity ];
-	    this._modelStack = [ Matrix.identity ];
-	    this._viewStack = [ Matrix.identity ];
-	    this._windowStack = [ Matrix.identity ];
-	
-	    this.reset();
+	    this._projectionStack = [];
+	    this._modelStack = [];
+	    this._viewStack = [];
+	    this._windowStack = [];
 	};
 	
 	IntersectionVisitor.prototype = MACROUTILS.objectInherit( NodeVisitor.prototype, {
@@ -26824,17 +26427,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getTransformation: ( function () {
 	        // We should move this to the intersector when we need to use different coordinate frames
 	        // Now we only support WINDOW coordinate frame
-	
-	        // /!\ 64 bit precision because the picking is jittery otherwise
-	        // It's probably caused by one of the camera matrix that has too big/small values
-	        // but currently it's the ony fix we have
-	        var mat = new Float64Array( 16 );
-	
+	        var mat = Matrix.create();
+	        var matid = Matrix.create();
 	        return function () {
-	            Matrix.copy( this.getWindowMatrix() || Matrix.identity, mat );
-	            Matrix.preMult( mat, this.getProjectionMatrix() || Matrix.identity );
-	            Matrix.preMult( mat, this.getViewMatrix() || Matrix.identity );
-	            Matrix.preMult( mat, this.getModelMatrix() || Matrix.identity );
+	            Matrix.copy( this.getWindowMatrix() || matid, mat );
+	            Matrix.preMult( mat, this.getProjectionMatrix() || matid );
+	            Matrix.preMult( mat, this.getViewMatrix() || matid );
+	            Matrix.preMult( mat, this.getModelMatrix() || matid );
 	
 	            return mat;
 	        };
@@ -26942,14 +26541,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = IntersectionVisitor;
 
 
-/***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var Matrix = __webpack_require__( 23 );
-	var TriangleIntersector = __webpack_require__( 93 );
+	var Vec3 = __webpack_require__( 17 );
+	var Matrix = __webpack_require__( 28 );
+	var TriangleIntersector = __webpack_require__( 91 );
 	
 	
 	var LineSegmentIntersector = function () {
@@ -27072,15 +26671,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LineSegmentIntersector;
 
 
-/***/ }),
-/* 145 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 143 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var PolytopePrimitiveIntersector = __webpack_require__( 146 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec4 = __webpack_require__( 25 );
-	var Vec3 = __webpack_require__( 15 );
+	var PolytopePrimitiveIntersector = __webpack_require__( 144 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec4 = __webpack_require__( 14 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	/** Concrete class for implementing polytope intersections with the scene graph.
 	 * To be used in conjunction with IntersectionVisitor. */
@@ -27232,14 +26831,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PolytopeIntersector;
 
 
-/***/ }),
-/* 146 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var osgMath = __webpack_require__( 16 );
-	var Vec3 = __webpack_require__( 15 );
-	var PrimitiveFunctor = __webpack_require__( 99 );
+	var osgMath = __webpack_require__( 18 );
+	var Vec3 = __webpack_require__( 17 );
+	var PrimitiveFunctor = __webpack_require__( 97 );
 	
 	
 	var PolytopeIntersection = function ( index, candidates, candidatesMasks, referencePlane, nodePath ) {
@@ -27656,12 +27255,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PolytopePrimitiveIntersector;
 
 
-/***/ }),
-/* 147 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var OrbitManipulator = __webpack_require__( 134 );
+	var OrbitManipulator = __webpack_require__( 132 );
 	
 	var CADManipulatorStandardMouseKeyboardController = function ( manipulator ) {
 	    this._manipulator = manipulator;
@@ -27848,9 +27447,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CADManipulatorStandardMouseKeyboardController;
 
 
-/***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 146 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -28058,22 +27657,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CADManipulatorHammerController;
 
 
-/***/ }),
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Manipulator = __webpack_require__( 133 );
-	var OrbitManipulator = __webpack_require__( 134 );
-	var Matrix = __webpack_require__( 23 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
-	var Quat = __webpack_require__( 26 );
-	var FirstPersonManipulatorDeviceOrientationController = __webpack_require__( 136 );
-	var FirstPersonManipulatorHammerController = __webpack_require__( 150 );
-	var FirstPersonManipulatorWebVRController = __webpack_require__( 151 );
-	var FirstPersonManipulatorStandardMouseKeyboardController = __webpack_require__( 152 );
+	var Manipulator = __webpack_require__( 131 );
+	var OrbitManipulator = __webpack_require__( 132 );
+	var Matrix = __webpack_require__( 28 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var FirstPersonManipulatorDeviceOrientationController = __webpack_require__( 134 );
+	var FirstPersonManipulatorHammerController = __webpack_require__( 148 );
+	var FirstPersonManipulatorWebVRController = __webpack_require__( 149 );
+	var FirstPersonManipulatorStandardMouseKeyboardController = __webpack_require__( 150 );
 	
 	
 	/**
@@ -28281,11 +27880,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.strafe( vec[ 1 ] * timeFactor - pan[ 0 ] * directFactor );
 	            this.strafeVertical( -pan[ 1 ] * directFactor );
 	
-	            if ( this._vrEnable ) {
+	            if ( this._vrEnable )
 	                Vec3.add( this._eye, this._vrTrans, this._eye );
-	                // in case setPoseVR skips some frame (possible if tracking is lost temporarily)
-	                Vec3.init( this._vrTrans );
-	            }
 	        };
 	    } )(),
 	
@@ -28353,20 +27949,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FirstPersonManipulator;
 
 
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var OrbitManipulatorHammerController = __webpack_require__( 138 );
+	var OrbitManipulatorHammerController = __webpack_require__( 136 );
 	
 	
 	module.exports = OrbitManipulatorHammerController;
 
 
-/***/ }),
-/* 151 */
-/***/ (function(module, exports) {
+/***/ },
+/* 149 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -28385,9 +27981,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FirstPersonManipulatorWebVRController;
 
 
-/***/ }),
-/* 152 */
-/***/ (function(module, exports) {
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -28496,9 +28092,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = FirstPersonManipulatorStandardMouseKeyboardController;
 
 
-/***/ }),
-/* 153 */
-/***/ (function(module, exports) {
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -28587,27 +28183,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SwitchManipulator;
 
 
-/***/ }),
-/* 154 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Composer = __webpack_require__( 155 );
-	var DisplayNormalVisitor = __webpack_require__( 156 );
-	var DisplayGeometryVisitor = __webpack_require__( 166 );
-	var DisplayGraph = __webpack_require__( 200 );
-	var IntersectionVisitor = __webpack_require__( 143 );
-	var LineSegmentIntersector = __webpack_require__( 144 );
-	var NodeGizmo = __webpack_require__( 207 );
-	var GizmoGeometry = __webpack_require__( 208 );
-	var ParameterVisitor = __webpack_require__( 209 );
-	var PolytopeIntersector = __webpack_require__( 145 );
-	var PolytopePrimitiveIntersector = __webpack_require__( 146 );
-	var SphereIntersector = __webpack_require__( 210 );
-	var TangentSpaceGenerator = __webpack_require__( 211 );
-	var TriangleIntersect = __webpack_require__( 93 );
-	var WebVRCustom = __webpack_require__( 212 );
-	var WebVR = __webpack_require__( 213 );
+	var Composer = __webpack_require__( 153 );
+	var DisplayNormalVisitor = __webpack_require__( 154 );
+	var DisplayGeometryVisitor = __webpack_require__( 164 );
+	var DisplayGraph = __webpack_require__( 196 );
+	var IntersectionVisitor = __webpack_require__( 141 );
+	var LineSegmentIntersector = __webpack_require__( 142 );
+	var NodeGizmo = __webpack_require__( 203 );
+	var GizmoGeometry = __webpack_require__( 204 );
+	var ParameterVisitor = __webpack_require__( 205 );
+	var PolytopeIntersector = __webpack_require__( 143 );
+	var PolytopePrimitiveIntersector = __webpack_require__( 144 );
+	var SphereIntersector = __webpack_require__( 206 );
+	var TangentSpaceGenerator = __webpack_require__( 207 );
+	var TriangleIntersect = __webpack_require__( 91 );
+	var WebVRCustom = __webpack_require__( 208 );
+	var WebVR = __webpack_require__( 209 );
 	
 	
 	var osgUtil = {};
@@ -28632,29 +28228,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgUtil;
 
 
-/***/ }),
-/* 155 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 12 );
-	var CullFace = __webpack_require__( 59 );
-	var Depth = __webpack_require__( 86 );
-	var Texture = __webpack_require__( 34 );
-	var Camera = __webpack_require__( 56 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var Viewport = __webpack_require__( 107 );
-	var Matrix = __webpack_require__( 23 );
-	var Uniform = __webpack_require__( 35 );
-	var StateSet = __webpack_require__( 19 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
-	var Shape = __webpack_require__( 102 );
-	var TransformEnums = __webpack_require__( 29 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
+	var Node = __webpack_require__( 24 );
+	var CullFace = __webpack_require__( 58 );
+	var Depth = __webpack_require__( 84 );
+	var Texture = __webpack_require__( 37 );
+	var Camera = __webpack_require__( 22 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var Viewport = __webpack_require__( 105 );
+	var Matrix = __webpack_require__( 28 );
+	var Uniform = __webpack_require__( 38 );
+	var StateSet = __webpack_require__( 25 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
+	var Shape = __webpack_require__( 100 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	/*
@@ -28806,10 +28402,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var inputTexture = stateSet.getTextureAttribute( 0, 'Texture' );
 	                if ( inputTexture === undefined ) {
 	                    Notify.warn( 'Composer can\'t find any information to setup texture output size' );
-	                } else {
-	                    w = inputTexture.getWidth();
-	                    h = inputTexture.getHeight();
 	                }
+	                w = inputTexture.getWidth();
+	                h = inputTexture.getHeight();
 	            }
 	
 	            // is it the last filter and we want to render to screen ?
@@ -29841,16 +29436,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        if ( options.radius !== undefined )
 	            radius = options.radius;
-	        var textureNormal = options.normal;
-	        var texturePosition = options.position;
-	        var w = textureNormal.getWidth();
-	        var h = textureNormal.getHeight();
-	        this._size = Vec2.createAndSet( w, h );
-	
-	        stateSet.setTextureAttributeAndModes( 0, textureNormal );
-	        stateSet.setTextureAttributeAndModes( 1, texturePosition );
 	    }
 	
+	    var textureNormal = options.normal;
+	    var texturePosition = options.position;
 	    this._radius = radius;
 	    this._nbSamples = nbSamples;
 	    this._noiseTextureSize = 16;
@@ -29862,6 +29451,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    stateSet.addUniform( Uniform.createInt1( 1, 'Texture1' ) );
 	    stateSet.addUniform( Uniform.createInt1( 2, 'Texture2' ) );
 	    stateSet.addUniform( Uniform.createFloat1( 0.1, 'AngleLimit' ) );
+	
+	    var w = textureNormal.getWidth();
+	    var h = textureNormal.getHeight();
+	    this._size = Vec2.createAndSet( w, h );
+	
+	    stateSet.setTextureAttributeAndModes( 0, textureNormal );
+	    stateSet.setTextureAttributeAndModes( 1, texturePosition );
 	
 	    this.initNoise();
 	    this._fragmentName = 'SSAO';
@@ -30222,26 +29818,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Composer;
 
 
-/***/ }),
-/* 156 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 154 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Geometry = __webpack_require__( 31 );
-	var BufferArray = __webpack_require__( 40 );
-	var DrawArrays = __webpack_require__( 42 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var StateSet = __webpack_require__( 19 );
-	var Uniform = __webpack_require__( 35 );
-	var Depth = __webpack_require__( 86 );
-	var Vec3 = __webpack_require__( 15 );
-	var ShaderGenerator = __webpack_require__( 157 );
-	var Compiler = __webpack_require__( 158 );
-	var RigGeometry = __webpack_require__( 78 );
-	var MorphGeometry = __webpack_require__( 79 );
-	var UpdateMorph = __webpack_require__( 117 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Geometry = __webpack_require__( 35 );
+	var BufferArray = __webpack_require__( 20 );
+	var DrawArrays = __webpack_require__( 43 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var StateSet = __webpack_require__( 25 );
+	var Uniform = __webpack_require__( 38 );
+	var Depth = __webpack_require__( 84 );
+	var Vec3 = __webpack_require__( 17 );
+	var ShaderGenerator = __webpack_require__( 155 );
+	var Compiler = __webpack_require__( 156 );
+	var RigGeometry = __webpack_require__( 76 );
+	var MorphGeometry = __webpack_require__( 77 );
+	var UpdateMorph = __webpack_require__( 115 );
 	
 	
 	////////////////////////
@@ -30500,17 +30096,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DisplayNormalVisitor;
 
 
-/***/ }),
-/* 157 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 155 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
-	var Map = __webpack_require__( 20 );
-	var Compiler = __webpack_require__( 158 );
-	var ShaderProcessor = __webpack_require__( 167 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
+	var Map = __webpack_require__( 26 );
+	var Compiler = __webpack_require__( 156 );
+	var ShaderProcessor = __webpack_require__( 165 );
 	
 	// this is the list of attributes type we support by default to generate shader
 	// if you need to adjust for your need provide or modify this list
@@ -30747,16 +30343,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShaderGenerator;
 
 
-/***/ }),
-/* 158 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Light = __webpack_require__( 97 );
+	var Light = __webpack_require__( 95 );
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Uniform = __webpack_require__( 35 );
-	var factory = __webpack_require__( 159 );
+	var Uniform = __webpack_require__( 38 );
+	var factory = __webpack_require__( 157 );
 	
 	var Compiler = function ( attributes, textureAttributes, shaderProcessor ) {
 	    this._attributes = attributes;
@@ -30857,9 +30453,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	            } else if ( type === 'Material' ) {
+	
 	                this._material = attributes[ i ];
+	
+	
 	            } else if ( type === 'ShadowReceiveAttribute' ) {
+	
 	                shadows.push( attributes[ i ] );
+	
 	            } else if ( type === 'Billboard' ) {
 	                this._isBillboard = !!attributes[ i ];
 	            } else if ( type === 'SkinningAttribute' ) {
@@ -31438,9 +31039,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            if ( texture.getType() === 'Texture' ) {
 	
-	                var texCoordUnit = this.getTexCoordUnit( t );
-	                if ( texCoordUnit !== undefined )
-	                    this.declareTexture( texCoordUnit, texture );
+	                this.declareTexture( this.getTexCoordUnit( t ), texture );
 	            }
 	
 	        }
@@ -31967,13 +31566,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return outputVertex;
 	    },
 	    morphTransformVec3: function ( inputVertex, outputVertex, targetName ) {
-	        // Comented as this code is not reachable
-	        // var approx = false; // on mobile ?
-	        // var morph = this._morphAttribute;
+	
+	        var approx = false; // on mobile ?
+	        var morph = this._morphAttribute;
 	        // compute morph tangent (getOrCreateNormalAttribute will create the 'normalMorph' variable)
-	        // if ( approx && targetName === 'Tangent' && this.getOrCreateNormalAttribute() && morph && morph.hasTarget( 'Normal' ) ) {
-	        //     return this.morphTangentApproximation( inputVertex, outputVertex );
-	        // }
+	        if ( approx && targetName === 'Tangent' && this.getOrCreateNormalAttribute() && morph && morph.hasTarget( 'Normal' ) ) {
+	            return this.morphTangentApproximation( inputVertex, outputVertex );
+	        }
 	
 	        var inputs = {
 	            vertex: inputVertex,
@@ -32118,16 +31717,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } ).outputs( {
 	            vec: glPosition
 	        } );
+	
 	    },
 	
 	    declareVertexTransformBillboard: function ( glPosition ) {
 	        this.getOrCreateInputPosition();
-	        this.getNode( 'Billboard' ).inputs( {
-	            Vertex: this.getOrCreateAttribute( 'vec3', 'Vertex' ),
+	        var billboard = [ '%glPosition = %ProjectionMatrix * ( vec4( %Vertex, 1.0 ) + vec4( %ModelViewMatrix[ 3 ].xyz, 0.0 ) );', ];
+	        this.getNode( 'InlineCode' ).code( billboard.join( '\n' ) ).inputs( {
 	            ModelViewMatrix: this.getOrCreateUniform( 'mat4', 'ModelViewMatrix' ),
+	            Vertex: this.getOrCreateAttribute( 'vec3', 'Vertex' ),
 	            ProjectionMatrix: this.getOrCreateUniform( 'mat4', 'ProjectionMatrix' )
 	        } ).outputs( {
-	            vec: glPosition
+	            glPosition: glPosition
 	        } );
 	    },
 	
@@ -32162,7 +31763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Transform Position into NDC
 	    // but keep intermediary result
 	    // FragEye which is in Camera/Eye space
-	    // (most light computation is in eye space)
+	    // (most light computation are in eye space)
 	    // (better precision, particulary if camera is far from World 0.0.0)
 	    declareTransformWithEyeSpace: function ( glPosition ) {
 	
@@ -32561,21 +32162,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Compiler;
 
 
-/***/ }),
-/* 159 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var skinning = __webpack_require__( 160 );
-	var data = __webpack_require__( 193 );
-	var functions = __webpack_require__( 195 );
-	var lights = __webpack_require__( 196 );
-	var shadows = __webpack_require__( 198 );
-	var operations = __webpack_require__( 197 );
-	var textures = __webpack_require__( 194 );
-	var morph = __webpack_require__( 191 );
-	var billboard = __webpack_require__( 199 );
+	var skinning = __webpack_require__( 158 );
+	var data = __webpack_require__( 190 );
+	var functions = __webpack_require__( 192 );
+	var lights = __webpack_require__( 193 );
+	var shadows = __webpack_require__( 195 );
+	var operations = __webpack_require__( 194 );
+	var textures = __webpack_require__( 191 );
+	var morph = __webpack_require__( 188 );
 	
 	var Factory = function () {
 	
@@ -32589,7 +32189,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.registerNodes( morph );
 	    this.registerNodes( shadows );
 	    this.registerNodes( operations );
-	    this.registerNodes( billboard );
 	};
 	
 	Factory.prototype = {
@@ -32637,14 +32236,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = instance;
 
 
-/***/ }),
-/* 160 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var ShaderUtils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var ShaderUtils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var Skinning = function () {
 	    Node.call( this );
@@ -32670,9 +32269,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -32764,7 +32363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//         }
 	var callFunction = function ( funcName, output, inputs ) {
 	
-	    var osgShader = __webpack_require__( 162 );
+	    var osgShader = __webpack_require__( 160 );
 	
 	    var debug = [];
 	    var callString = '';
@@ -32820,18 +32419,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 162 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Compiler = __webpack_require__( 158 );
-	var ShaderGenerator = __webpack_require__( 157 );
-	var ShaderGeneratorProxy = __webpack_require__( 163 );
-	var ShaderProcessor = __webpack_require__( 167 );
-	var nodeFactory = __webpack_require__( 159 );
-	var node = __webpack_require__( 190 );
-	var utils = __webpack_require__( 161 );
+	var Compiler = __webpack_require__( 156 );
+	var ShaderGenerator = __webpack_require__( 155 );
+	var ShaderGeneratorProxy = __webpack_require__( 161 );
+	var ShaderProcessor = __webpack_require__( 165 );
+	var nodeFactory = __webpack_require__( 157 );
+	var node = __webpack_require__( 187 );
+	var utils = __webpack_require__( 159 );
 	
 	
 	var lib = {};
@@ -32852,15 +32451,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = lib;
 
 
-/***/ }),
-/* 163 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var ShaderGenerator = __webpack_require__( 157 );
-	var ShadowCastShaderGenerator = __webpack_require__( 164 );
-	var DisplayNormalVisitor = __webpack_require__( 156 );
-	var DisplayGeometryVisitor = __webpack_require__( 166 );
+	var ShaderGenerator = __webpack_require__( 155 );
+	var ShadowCastShaderGenerator = __webpack_require__( 162 );
+	var DisplayNormalVisitor = __webpack_require__( 154 );
+	var DisplayGeometryVisitor = __webpack_require__( 164 );
 	
 	var ShaderGeneratorProxy = function () {
 	
@@ -32898,13 +32497,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShaderGeneratorProxy;
 
 
-/***/ }),
-/* 164 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var ShaderGenerator = __webpack_require__( 157 );
-	var ShadowCompiler = __webpack_require__( 165 );
+	var ShaderGenerator = __webpack_require__( 155 );
+	var ShadowCompiler = __webpack_require__( 163 );
 	
 	var ShaderGeneratorShadowCast = function () {
 	
@@ -32921,13 +32520,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShaderGeneratorShadowCast;
 
 
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Compiler = __webpack_require__( 158 );
+	var Compiler = __webpack_require__( 156 );
 	
 	
 	var CompilerShadowCast = function () {
@@ -33007,25 +32606,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CompilerShadowCast;
 
 
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Geometry = __webpack_require__( 31 );
-	var RigGeometry = __webpack_require__( 78 );
-	var Uniform = __webpack_require__( 35 );
-	var StateSet = __webpack_require__( 19 );
-	var Vec3 = __webpack_require__( 15 );
-	var ShaderGenerator = __webpack_require__( 157 );
-	var Compiler = __webpack_require__( 158 );
-	var BufferArray = __webpack_require__( 40 );
-	var DrawArrays = __webpack_require__( 42 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var Depth = __webpack_require__( 86 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Geometry = __webpack_require__( 35 );
+	var RigGeometry = __webpack_require__( 76 );
+	var Uniform = __webpack_require__( 38 );
+	var StateSet = __webpack_require__( 25 );
+	var Vec3 = __webpack_require__( 17 );
+	var ShaderGenerator = __webpack_require__( 155 );
+	var Compiler = __webpack_require__( 156 );
+	var BufferArray = __webpack_require__( 20 );
+	var DrawArrays = __webpack_require__( 43 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var Depth = __webpack_require__( 84 );
 	
 	
 	////////////////////////
@@ -33243,14 +32842,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = GeometryColorDebugVisitor;
 
 
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var shaderLib = __webpack_require__( 168 );
-	var shadowShaderLib = __webpack_require__( 176 );
+	var shaderLib = __webpack_require__( 166 );
+	var shadowShaderLib = __webpack_require__( 173 );
 	
 	
 	//     Shader as vert/frag/glsl files Using requirejs text plugin
@@ -33466,89 +33065,82 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShaderProcessor;
 
 
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var functions = __webpack_require__( 169 );
-	var lights = __webpack_require__( 170 );
-	var skinning = __webpack_require__( 171 );
-	var textures = __webpack_require__( 172 );
-	var colorEncode = __webpack_require__( 173 );
-	var noise = __webpack_require__( 174 );
-	var billboard = __webpack_require__( 175 );
+	var functions = __webpack_require__( 167 );
+	var lights = __webpack_require__( 168 );
+	var skinning = __webpack_require__( 169 );
+	var textures = __webpack_require__( 170 );
+	var colorEncode = __webpack_require__( 171 );
+	var noise = __webpack_require__( 172 );
+	
 	module.exports = {
 	    'functions.glsl': functions,
 	    'lights.glsl': lights,
 	    'skinning.glsl': skinning,
 	    'textures.glsl': textures,
 	    'colorEncode.glsl': colorEncode,
-	    'noise.glsl': noise,
-	    'billboard.glsl': billboard
+	    'noise.glsl': noise
 	};
 
 
-/***/ }),
-/* 169 */
-/***/ (function(module, exports) {
+/***/ },
+/* 167 */
+/***/ function(module, exports) {
 
 	module.exports = "// the approximation :\n// http://chilliant.blogspot.fr/2012/08/srgb-approximations-for-hlsl.html\n// introduced slightly darker colors and more slight banding in the darks.\n// The reference implementation (or even a single pow approx) did not introduced these effects.\n\n// so for now we stick with the reference implementation :\n// https://www.khronos.org/registry/gles/extensions/EXT/EXT_sRGB.txt\n// with the slight changes :\n// - we always assume the color is >= 0.0 (so no check)\n// - unlike the previous approximation, linear to srgb is monotonic so we don't need to check if the color is > 1\n\n#define LIN_SRGB(x) x < 0.0031308 ? x * 12.92 : 1.055 * pow(x, 1.0/2.4) - 0.055\nfloat linearTosRGB(const in float c) {\n    return LIN_SRGB(c);\n}\nvec3 linearTosRGB(const in vec3 c) {\n    return vec3(LIN_SRGB(c.r), LIN_SRGB(c.g), LIN_SRGB(c.b));\n}\nvec4 linearTosRGB(const in vec4 c) {\n    return vec4(LIN_SRGB(c.r), LIN_SRGB(c.g), LIN_SRGB(c.b), c.a);\n}\n\n#define SRGB_LIN(x) x < 0.04045 ? x * (1.0 / 12.92) : pow((x + 0.055) * (1.0 / 1.055), 2.4)\nfloat sRGBToLinear(const in float c) {\n    return SRGB_LIN(c);\n}\nvec3 sRGBToLinear(const in vec3 c) {\n    return vec3(SRGB_LIN(c.r), SRGB_LIN(c.g), SRGB_LIN(c.b));\n}\nvec4 sRGBToLinear(const in vec4 c) {\n    return vec4(SRGB_LIN(c.r), SRGB_LIN(c.g), SRGB_LIN(c.b), c.a);\n}\n\n//http://graphicrants.blogspot.fr/2009/04/rgbm-color-encoding.html\nvec3 RGBMToRGB( const in vec4 rgba ) {\n    const float maxRange = 8.0;\n    return rgba.rgb * maxRange * rgba.a;\n}\n\nconst mat3 LUVInverse = mat3( 6.0013,    -2.700,   -1.7995,\n                              -1.332,    3.1029,   -5.7720,\n                              0.3007,    -1.088,    5.6268 );\n\nvec3 LUVToRGB( const in vec4 vLogLuv ) {\n    float Le = vLogLuv.z * 255.0 + vLogLuv.w;\n    vec3 Xp_Y_XYZp;\n    Xp_Y_XYZp.y = exp2((Le - 127.0) / 2.0);\n    Xp_Y_XYZp.z = Xp_Y_XYZp.y / vLogLuv.y;\n    Xp_Y_XYZp.x = vLogLuv.x * Xp_Y_XYZp.z;\n    vec3 vRGB = LUVInverse * Xp_Y_XYZp;\n    return max(vRGB, 0.0);\n}\n\n// http://graphicrants.blogspot.fr/2009/04/rgbm-color-encoding.html\nvec4 encodeRGBM(const in vec3 col, const in float range) {\n    if(range <= 0.0)\n        return vec4(col, 1.0);\n    vec4 rgbm;\n    vec3 color = col / range;\n    rgbm.a = clamp( max( max( color.r, color.g ), max( color.b, 1e-6 ) ), 0.0, 1.0 );\n    rgbm.a = ceil( rgbm.a * 255.0 ) / 255.0;\n    rgbm.rgb = color / rgbm.a;\n    return rgbm;\n}\n\nvec3 decodeRGBM(const in vec4 col, const in float range) {\n    if(range <= 0.0)\n        return col.rgb;\n    return range * col.rgb * col.a;\n}"
 
-/***/ }),
-/* 170 */
-/***/ (function(module, exports) {
+/***/ },
+/* 168 */
+/***/ function(module, exports) {
 
 	module.exports = "////////////////\n// ATTENUATION\n/////////////\nfloat getLightAttenuation(const in float dist, const in vec4 lightAttenuation)\n{\n    // lightAttenuation(constantEnabled, linearEnabled, quadraticEnabled)\n    // TODO find a vector alu instead of 4 scalar\n    float constant = lightAttenuation.x;\n    float linear = lightAttenuation.y*dist;\n    float quadratic = lightAttenuation.z*dist*dist;\n    return 1.0 / ( constant + linear + quadratic );\n}\n//\n// LIGHTING EQUATION TERMS\n///\nvoid specularCookTorrance(const in vec3 n, const in vec3 l, const in vec3 v, const in float hard, const in vec3 materialSpecular, const in vec3 lightSpecular, out vec3 specularContrib)\n{\n    vec3 h = normalize(v + l);\n    float nh = dot(n, h);\n    float specfac = 0.0;\n\n    if(nh > 0.0) {\n        float nv = max( dot(n, v), 0.0 );\n        float i = pow(nh, hard);\n        i = i / (0.1 + nv);\n        specfac = i;\n    }\n    // ugly way to fake an energy conservation (mainly to avoid super bright stuffs with low glossiness)\n    float att = hard > 100.0 ? 1.0 : smoothstep(0.0, 1.0, hard * 0.01);\n    specularContrib = specfac*materialSpecular*lightSpecular*att;\n}\n\nvoid lambert(const in float ndl,  const in vec3 materialDiffuse, const in vec3 lightDiffuse, out vec3 diffuseContrib)\n{\n    diffuseContrib = ndl*materialDiffuse*lightDiffuse;\n}\n////////////////////////\n/// Main func\n///////////////////////\n\n/// for each light\n//direction, dist, NDL, attenuation, compute diffuse, compute specular\n\nvec3 computeSpotLightShading(\n                             const in vec3 normal,\n                             const in vec3 eyeVector,\n\n                             const in vec3 materialAmbient,\n                             const in vec3 materialDiffuse,\n                             const in vec3 materialSpecular,\n                             const in float materialShininess,\n\n                             const in vec3 lightAmbient,\n                             const in vec3 lightDiffuse,\n                             const in vec3 lightSpecular,\n\n                             const in vec3  lightSpotDirection,\n                             const in vec4  lightAttenuation,\n                             const in vec4  lightSpotPosition,\n                             const in float lightCosSpotCutoff,\n                             const in float lightSpotBlend,\n\n                             const in mat4 lightMatrix,\n                             const in mat4 lightInvMatrix,\n\n                             out vec3 eyeLightPos,\n                             out vec3 eyeLightDir,\n                             out float NdotL,\n                             out bool lighted)\n{\n    lighted = false;\n    eyeLightPos = vec3(lightMatrix * lightSpotPosition);\n    eyeLightDir = eyeLightPos - FragEyeVector.xyz;\n    // compute dist\n    float dist = length(eyeLightDir);\n    // compute attenuation\n    float attenuation = getLightAttenuation(dist, lightAttenuation);\n    if (attenuation != 0.0)\n        {\n            // compute direction\n            eyeLightDir = dist > 0.0 ? eyeLightDir / dist :  vec3( 0.0, 1.0, 0.0 );\n            if (lightCosSpotCutoff > 0.0)\n                {\n                    //compute lightSpotBlend\n                    vec3 lightSpotDirectionEye = normalize(mat3(vec3(lightInvMatrix[0]), vec3(lightInvMatrix[1]), vec3(lightInvMatrix[2]))*lightSpotDirection);\n\n                    float cosCurAngle = dot(-eyeLightDir, lightSpotDirectionEye);\n                    float diffAngle = cosCurAngle - lightCosSpotCutoff;\n                    float spot = 1.0;\n                    if ( diffAngle < 0.0 ) {\n                        spot = 0.0;\n                    } else {\n                        if ( lightSpotBlend > 0.0 )\n                            spot = cosCurAngle * smoothstep(0.0, 1.0, (cosCurAngle - lightCosSpotCutoff) / (lightSpotBlend));\n                    }\n\n                    if (spot > 0.0)\n                        {\n                            // compute NdL\n                            NdotL = dot(eyeLightDir, normal);\n                            if (NdotL > 0.0)\n                                {\n                                    lighted = true;\n                                    vec3 diffuseContrib;\n                                    lambert(NdotL, materialDiffuse, lightDiffuse, diffuseContrib);\n                                    vec3 specularContrib;\n                                    specularCookTorrance(normal, eyeLightDir, eyeVector, materialShininess, materialSpecular, lightSpecular, specularContrib);\n                                    return spot * attenuation * (diffuseContrib + specularContrib);\n                                }\n                        }\n                }\n        }\n    return vec3(0.0);\n}\n\nvec3 computePointLightShading(\n                              const in vec3 normal,\n                              const in vec3 eyeVector,\n\n                              const in vec3 materialAmbient,\n                              const in vec3 materialDiffuse,\n                              const in vec3 materialSpecular,\n                              const in float materialShininess,\n\n                              const in vec3 lightAmbient,\n                              const in vec3 lightDiffuse,\n                              const in vec3 lightSpecular,\n\n                              const in vec4 lightPosition,\n                              const in vec4 lightAttenuation,\n\n                              const in mat4 lightMatrix,\n\n                              out vec3 eyeLightPos,\n                              out vec3 eyeLightDir,\n                              out float NdotL,\n                              out bool lighted)\n{\n\n    eyeLightPos =  vec3(lightMatrix * lightPosition);\n    eyeLightDir = eyeLightPos - FragEyeVector.xyz;\n    float dist = length(eyeLightDir);\n    // compute dist\n    // compute attenuation\n    float attenuation = getLightAttenuation(dist, lightAttenuation);\n    if (attenuation != 0.0)\n        {\n            // compute direction\n            eyeLightDir = dist > 0.0 ? eyeLightDir / dist :  vec3( 0.0, 1.0, 0.0 );\n            // compute NdL\n            NdotL = dot(eyeLightDir, normal);\n            if (NdotL > 0.0)\n                {\n                    lighted = true;\n                    vec3 diffuseContrib;\n                    lambert(NdotL, materialDiffuse, lightDiffuse, diffuseContrib);\n                    vec3 specularContrib;\n                    specularCookTorrance(normal, eyeLightDir, eyeVector, materialShininess, materialSpecular, lightSpecular, specularContrib);\n                    return attenuation * (diffuseContrib + specularContrib);\n                }\n        }\n    return vec3(0.0);\n}\n\nvec3 computeSunLightShading(\n\n                            const in vec3 normal,\n                            const in vec3 eyeVector,\n\n                            const in vec3 materialAmbient,\n                            const in vec3 materialDiffuse,\n                            const in vec3 materialSpecular,\n                            const in float materialShininess,\n\n                            const in vec3 lightAmbient,\n                            const in vec3 lightDiffuse,\n                            const in vec3 lightSpecular,\n\n                            const in vec4 lightPosition,\n\n                            const in mat4 lightMatrix,\n\n                            out vec3 eyeLightDir,\n                            out float NdotL,\n                            out bool lighted)\n{\n\n    lighted = false;\n    eyeLightDir = normalize( vec3(lightMatrix * lightPosition ) );\n    // compute NdL   // compute NdL\n    NdotL = dot(eyeLightDir, normal);\n    if (NdotL > 0.0)\n        {\n            lighted = true;\n            vec3 diffuseContrib;\n            lambert(NdotL, materialDiffuse, lightDiffuse, diffuseContrib);\n            vec3 specularContrib;\n            specularCookTorrance(normal, eyeLightDir, eyeVector, materialShininess, materialSpecular, lightSpecular, specularContrib);\n            return (diffuseContrib + specularContrib);\n        }\n    return vec3(0.0);\n}\n\nvec3 computeHemiLightShading(\n\n    const in vec3 normal,\n    const in vec3 eyeVector,\n\n    const in vec3 materialDiffuse,\n    const in vec3 materialSpecular,\n    const in float materialShininess,\n\n    const in vec3 lightDiffuse,\n    const in vec3 lightGround,\n\n    const in vec4 lightPosition,\n\n    const in mat4 lightMatrix,\n\n    out vec3 eyeLightDir,\n    out float NdotL,\n    out bool lighted)\n{\n    lighted = false;\n\n    eyeLightDir = normalize( vec3(lightMatrix * lightPosition ) );\n    NdotL = dot(eyeLightDir, normal);\n    float weight = 0.5 * NdotL + 0.5;\n    vec3 diffuseContrib = materialDiffuse * mix(lightGround, lightDiffuse, weight);\n\n    // same cook-torrance as above for sky/ground\n    float skyWeight = 0.5 * dot(normal, normalize(eyeVector + eyeLightDir)) + 0.5;\n    float gndWeight = 0.5 * dot(normal, normalize(eyeVector - eyeLightDir)) + 0.5;\n    float skySpec = pow(skyWeight, materialShininess);\n    float skyGround = pow(gndWeight, materialShininess);\n    float divisor = (0.1 + max( dot(normal, eyeVector), 0.0 ));\n    float att = materialShininess > 100.0 ? 1.0 : smoothstep(0.0, 1.0, materialShininess * 0.01);\n    vec3 specularContrib = lightDiffuse * materialSpecular * weight * att * (skySpec + skyGround) / divisor;\n\n    return diffuseContrib + specularContrib;\n}\n"
 
-/***/ }),
-/* 171 */
-/***/ (function(module, exports) {
+/***/ },
+/* 169 */
+/***/ function(module, exports) {
 
 	module.exports = "//////////////////////////////\n// OPTIMIZED VERSION (NO IF)\n//////////////////////////////\nmat4 skeletalTransform( const in vec4 weightsVec, const in vec4 bonesIdx ) {\n    mat4 outMat_1;\n    mat4 tmpMat_2;\n    highp ivec4 tmpvar_3;\n    tmpvar_3 = (3 * ivec4(bonesIdx));\n    tmpMat_2 = mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);\n    vec4 tmpvar_4;\n    tmpvar_4 = -(abs(weightsVec));\n    tmpMat_2[0] = uBones[tmpvar_3.x];\n    tmpMat_2[1] = uBones[(tmpvar_3.x + 1)];\n    tmpMat_2[2] = uBones[(tmpvar_3.x + 2)];\n    outMat_1 = ((float(\n    ((tmpvar_4.x + tmpvar_4.y) >= -((tmpvar_4.z + tmpvar_4.w)))\n    ) * mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0)) + (weightsVec.x * tmpMat_2));\n    tmpMat_2[0] = uBones[tmpvar_3.y];\n    tmpMat_2[1] = uBones[(tmpvar_3.y + 1)];\n    tmpMat_2[2] = uBones[(tmpvar_3.y + 2)];\n    outMat_1 = (outMat_1 + (weightsVec.y * tmpMat_2));\n    tmpMat_2[0] = uBones[tmpvar_3.z];\n    tmpMat_2[1] = uBones[(tmpvar_3.z + 1)];\n    tmpMat_2[2] = uBones[(tmpvar_3.z + 2)];\n    outMat_1 = (outMat_1 + (weightsVec.z * tmpMat_2));\n    tmpMat_2[0] = uBones[tmpvar_3.w];\n    tmpMat_2[1] = uBones[(tmpvar_3.w + 1)];\n    tmpMat_2[2] = uBones[(tmpvar_3.w + 2)];\n    outMat_1 = (outMat_1 + (weightsVec.w * tmpMat_2));\n\n    return outMat_1;\n}\n\n//////////////////////////////\n// UN-OPTIMIZED VERSION (WITH IF)\n//////////////////////////////\n\n// //http://http.developer.nvidia.com/GPUGems/gpugems_ch04.html\n// mat4 getMat4FromVec4( const int index, inout mat4 myMat ) {\n//     // We have to use a global variable because we can't access dynamically\n//     // matrix is transpose so we should do vec * matrix\n//     myMat[0] = uBones[ index ];\n//     myMat[1] = uBones[ index + 1];\n//     myMat[2] = uBones[ index + 2];\n//     return myMat;\n// }\n\n// mat4 skeletalTransform( const in vec4 weightsVec, const in vec4 bonesIdx ) {\n//     ivec4 idx =  3 * ivec4(bonesIdx);\n//     mat4 tmpMat = mat4(1.0);\n//     mat4 outMat = mat4(0.0);\n\n//     // we handle negative weights\n//     if(all(equal(weightsVec, vec4(0.0)))) return tmpMat;\n\n//     if(weightsVec.x != 0.0) outMat += weightsVec.x * getMat4FromVec4( idx.x, tmpMat );\n//     if(weightsVec.y != 0.0) outMat += weightsVec.y * getMat4FromVec4( idx.y, tmpMat );\n//     if(weightsVec.z != 0.0) outMat += weightsVec.z * getMat4FromVec4( idx.z, tmpMat );\n//     if(weightsVec.w != 0.0) outMat += weightsVec.w * getMat4FromVec4( idx.w, tmpMat );\n//     return outMat;\n// }\n\n//////////////////////////////\n// UN-OPTIMIZED VERSION (NO IF)\n//////////////////////////////\n\n// mat4 skeletalTransform( const in vec4 weightsVec, const in vec4 bonesIdx ) {\n//     ivec4 idx =  3 * ivec4(bonesIdx);\n//     mat4 tmpMat = mat4(1.0);\n\n//     // if sum is 0, return identity\n//     vec4 absWeights = -abs(weightsVec);\n//     mat4 outMat = step(0.0, absWeights.x + absWeights.y + absWeights.z + absWeights.w) * tmpMat;\n\n//     // we handle negative weights\n//     // outMat[3][3] += weightsVec.x + weightsVec.y + weightsVec.z + weightsVec.w;\n\n//     tmpMat[0] = uBones[ idx.x ];\n//     tmpMat[1] = uBones[ idx.x + 1];\n//     tmpMat[2] = uBones[ idx.x + 2];\n//     outMat += weightsVec.x * tmpMat;\n\n//     tmpMat[0] = uBones[ idx.y ];\n//     tmpMat[1] = uBones[ idx.y + 1];\n//     tmpMat[2] = uBones[ idx.y + 2];\n//     outMat += weightsVec.y * tmpMat;\n\n//     tmpMat[0] = uBones[ idx.z ];\n//     tmpMat[1] = uBones[ idx.z + 1];\n//     tmpMat[2] = uBones[ idx.z + 2];\n//     outMat += weightsVec.z * tmpMat;\n\n//     tmpMat[0] = uBones[ idx.w ];\n//     tmpMat[1] = uBones[ idx.w + 1];\n//     tmpMat[2] = uBones[ idx.w + 2];\n//     outMat += weightsVec.w * tmpMat;\n\n//     return outMat;\n// }\n"
 
-/***/ }),
-/* 172 */
-/***/ (function(module, exports) {
+/***/ },
+/* 170 */
+/***/ function(module, exports) {
 
 	module.exports = "vec3 textureRGB(const in sampler2D texture, const in vec2 uv) {\n    return texture2D(texture, uv.xy ).rgb;\n}\n\nvec4 textureRGBA(const in sampler2D texture, const in vec2 uv) {\n    return texture2D(texture, uv.xy ).rgba;\n}\n\nfloat textureIntensity(const in sampler2D texture, const in vec2 uv) {\n    return texture2D(texture, uv).r;\n}\n\nfloat textureAlpha(const in sampler2D texture, const in vec2 uv) {\n    return texture2D(texture, uv.xy ).a;\n}\n"
 
-/***/ }),
-/* 173 */
-/***/ (function(module, exports) {
+/***/ },
+/* 171 */
+/***/ function(module, exports) {
 
 	module.exports = "\nfloat decodeFloatRGBA( vec4 rgba ) {\n    return dot( rgba, vec4(1.0, 1.0/255.0, 1.0/65025.0, 1.0/160581375.0) );\n}\n\nvec4 encodeFloatRGBA( float v ) {\n    vec4 enc = vec4(1.0, 255.0, 65025.0, 160581375.0) * v;\n    enc = fract(enc);\n    enc -= enc.yzww * vec4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);\n    return enc;\n}\n\nvec2 decodeHalfFloatRGBA( vec4 rgba ) {\n    return vec2(rgba.x + (rgba.y / 255.0), rgba.z + (rgba.w / 255.0));\n}\n\nvec4 encodeHalfFloatRGBA( vec2 v ) {\n    const vec2 bias = vec2(1.0 / 255.0, 0.0);\n    vec4 enc;\n    enc.xy = vec2(v.x, fract(v.x * 255.0));\n    enc.xy = enc.xy - (enc.yy * bias);\n\n    enc.zw = vec2(v.y, fract(v.y * 255.0));\n    enc.zw = enc.zw - (enc.ww * bias);\n    return enc;\n}\n"
 
-/***/ }),
-/* 174 */
-/***/ (function(module, exports) {
+/***/ },
+/* 172 */
+/***/ function(module, exports) {
 
 	module.exports = "#pragma include \"hash.glsl\"\n\n//// noise glsl\n\n// Based on Morgan McGuire @morgan3d\n// https://www.shadertoy.com/view/4dS3Wd\nfloat noise2D(const in vec2 x) {\n    vec2 i = floor(x);\n    vec2 f = fract(x);\n\n    // Four corners in 2D of a tile\n    float a = hash21(i);\n    float b = hash21(i + vec2(1.0, 0.0));\n    float c = hash21(i + vec2(0.0, 1.0));\n    float d = hash21(i + vec2(1.0, 1.0));\n\n    vec2 u = f * f * (3.0 - 2.0 * f);\n    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;\n}\n\n//// end noise glsl\n"
 
-/***/ }),
-/* 175 */
-/***/ (function(module, exports) {
-
-	module.exports = "vec3 getScale( const in mat4 matrix ) {\n      // Only working with positive scales.\n      float xs = matrix[0][0] * matrix[0][1] * matrix[0][2] * matrix[0][3] < 0. ? -1. : 1.;\n      float ys = matrix[1][0] * matrix[1][1] * matrix[1][2] * matrix[1][3] < 0. ? -1. : 1.;\n      float zs = matrix[2][0] * matrix[2][1] * matrix[2][2] * matrix[2][3] < 0. ? -1. : 1.;\n      vec3 scale;\n      scale.x = xs * sqrt( matrix[0][0] * matrix[0][0] + matrix[0][1] * matrix[0][1] + matrix[0][2] * matrix[0][2]);\n      scale.y = ys * sqrt( matrix[1][0] * matrix[1][0] + matrix[1][1] * matrix[1][1] + matrix[1][2] * matrix[1][2]);\n      scale.z = zs * sqrt( matrix[2][0] * matrix[2][0] + matrix[2][1] * matrix[2][1] + matrix[2][2] * matrix[2][2]);\n      return scale;\n}\n\nvec4 billboard( const in vec3 vertex, const in mat4 modelViewMatrix, const in mat4 projectionMatrix ) {\n      vec3 scale = getScale( modelViewMatrix );\n      return projectionMatrix * ( vec4( scale.x* vertex.x , scale.y * vertex.y, scale.z * vertex.z, 1.0 ) + vec4( modelViewMatrix[ 3 ].xyz, 0.0 ) );\n}\n"
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var shadowsCastFrag = __webpack_require__( 177 );
-	var shadowsReceive = __webpack_require__( 178 );
-	var shadowsReceiveMain = __webpack_require__( 179 );
-	var shadowLinearSoft = __webpack_require__( 180 );
-	var pcf = __webpack_require__( 181 );
-	var bandPCF = __webpack_require__( 182 );
-	var tapPCF = __webpack_require__( 183 );
-	var hash = __webpack_require__( 184 );
-	var arrayPoisson = __webpack_require__( 185 );
-	var poissonPCF = __webpack_require__( 186 );
-	var esm = __webpack_require__( 187 );
-	var vsm = __webpack_require__( 188 );
-	var evsm = __webpack_require__( 189 );
+	var shadowsCastFrag = __webpack_require__( 174 );
+	var shadowsReceive = __webpack_require__( 175 );
+	var shadowsReceiveMain = __webpack_require__( 176 );
+	var shadowLinearSoft = __webpack_require__( 177 );
+	var pcf = __webpack_require__( 178 );
+	var bandPCF = __webpack_require__( 179 );
+	var tapPCF = __webpack_require__( 180 );
+	var hash = __webpack_require__( 181 );
+	var arrayPoisson = __webpack_require__( 182 );
+	var poissonPCF = __webpack_require__( 183 );
+	var esm = __webpack_require__( 184 );
+	var vsm = __webpack_require__( 185 );
+	var evsm = __webpack_require__( 186 );
 	
 	module.exports = {
 	    'shadowsCastFrag.glsl': shadowsCastFrag,
@@ -33567,98 +33159,98 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
+/***/ },
+/* 174 */
+/***/ function(module, exports) {
 
 	module.exports = "\n#pragma include \"colorEncode.glsl\"\n\n// see shadowSettings.js header for shadow algo param explanations\n\n#ifdef _EVSM\n// Convert depth to EVSM coefficients\n// Input depth should be in [0, 1]\nvec2 warpDepth(const in float depth, const in vec2 exponents) {\n    float pos =  exp( exponents.x * depth);\n    float neg = -exp(-exponents.y * depth);\n    return vec2(pos, neg);\n}\n\n// Convert depth value to EVSM representation\nvec4 shadowDepthToEVSM(const in float depth, const in float expo0, const in float expo1) {\n    vec2 warpedDepth = warpDepth(depth, vec2(expo0, expo1));\n    return vec4(warpedDepth.xy, warpedDepth.xy * warpedDepth.xy);\n}\n#endif // _EVSM\n\n\n#if defined(_NONE) ||  defined(_PCF)\nvec4 computeShadowDepth(const in vec4 fragEye,\n                        const in vec4 shadowRange)\n#else\nvec4 computeShadowDepth(const in vec4 fragEye,\n                        const in vec4 shadowRange,\n                        const in float expo0,\n                        const in float expo1)\n#endif\n{\n    // distance to camera\n    float depth =  -fragEye.z * fragEye.w;\n    // most precision near 0, make sure we are near 0 and in  [0,1]\n    depth = (depth - shadowRange.x ) * shadowRange.w;\n\n    vec4 outputFrag;\n\n#if defined (_FLOATTEX) && defined(_PCF)\n    outputFrag = vec4(depth, 0.0, 0.0, 1.0);\n#elif defined (_FLOATTEX)  && defined(_ESM)\n    float depthScale = expo1;\n    depth = exp(-depth * depthScale);\n    outputFrag = vec4(depth, 0.0, 0.0, 1.0);\n#elif defined (_FLOATTEX)  && defined(_VSM)\n    outputFrag = vec4(depth, depth * depth, 0.0, 1.0);\n#elif defined (_FLOATTEX)  && defined(_EVSM)\n    outputFrag = shadowDepthToEVSM(depth, expo0, expo1);\n#elif defined (_FLOATTEX) // && defined(_NONE)\n    outputFrag = vec4(depth, 0.0, 0.0, 1.0);\n#elif defined(_PCF)\n    outputFrag = encodeFloatRGBA(depth);\n#elif defined(_ESM)\n    float depthScale = expo1;\n    depthScale = exp(-depth * depthScale);\n    outputFrag = encodeFloatRGBA(depthScale);\n#elif defined(_VSM)\n    outputFrag = encodeHalfFloatRGBA(vec2(depth, depth* depth));\n#else // NONE\n    outputFrag = encodeFloatRGBA(depth);\n\n#endif\n\n    return outputFrag;\n}\n"
 
-/***/ }),
-/* 178 */
-/***/ (function(module, exports) {
+/***/ },
+/* 175 */
+/***/ function(module, exports) {
 
 	module.exports = "//begin shadows\n\n#pragma include \"colorEncode.glsl\"\n\n// see shadowSettings.js header for shadow algo param explanations\n\n// end Float codec\nfloat getSingleFloatFromTex(const in sampler2D depths, const in vec2 uv){\n#ifndef _FLOATTEX\n    return  decodeFloatRGBA(texture2D(depths, uv));\n#else\n    return texture2D(depths, uv).x;\n#endif\n}\n\nvec2 getDoubleFloatFromTex(const in sampler2D depths, const in vec2 uv){\n#ifndef _FLOATTEX\n    return decodeHalfFloatRGBA(texture2D(depths, uv));\n#else\n    return texture2D(depths, uv).xy;\n#endif\n}\n\nvec4 getQuadFloatFromTex(const in sampler2D depths, const in vec2 uv){\n    return texture2D(depths, uv).xyzw;\n}\n// end Float codec\n\n\n#pragma include \"vsm.glsl\" \"_VSM\"\n\n#pragma include \"evsm.glsl\" \"_EVSM\"\n\n#pragma include \"esm.glsl\" \"_ESM\"\n\n#pragma include \"pcf.glsl\" \"_NONE\" \"_PCF\""
 
-/***/ }),
-/* 179 */
-/***/ (function(module, exports) {
+/***/ },
+/* 176 */
+/***/ function(module, exports) {
 
 	module.exports = "\n    if (!lighted)\n        return 1.;\n\n    if (depthRange.x == depthRange.y)\n        return 1.;\n\n    vec4 shadowVertexEye = shadowViewMatrix *  vec4(vertexWorld, 1.0);\n    float shadowReceiverZ =  - shadowVertexEye.z;\n\n    if( shadowReceiverZ < 0.0)\n        return 1.0; // notably behind camera\n\n    vec4 shadowVertexProjected = shadowProjectionMatrix * shadowVertexEye;\n    if (shadowVertexProjected.w < 0.0)\n        return 1.0; // notably behind camera\n\n    vec2 shadowUV;\n\n    shadowUV.xy = shadowVertexProjected.xy / shadowVertexProjected.w;\n    shadowUV.xy = shadowUV.xy * 0.5 + 0.5;// mad like\n\n    bool outFrustum = any(bvec4 ( shadowUV.x > 1., shadowUV.x < 0., shadowUV.y > 1., shadowUV.y < 0. ));\n    if (outFrustum )\n        return 1.0;// limits of light frustum\n    // most precision near 0, make sure we are near 0 and in [0,1]\n    shadowReceiverZ =  (shadowReceiverZ - depthRange.x)* depthRange.w;\n\n    // depth bias: fighting shadow acne (depth imprecsion z-fighting)\n    float shadowBias = 0.0;\n    // cosTheta is dot( n, l ), clamped between 0 and 1\n    //float shadowBias = 0.005*tan(acos(N_Dot_L));\n    // same but 4 cycles instead of 15\n    shadowBias += 0.05 *  sqrt( 1. -  N_Dot_L*N_Dot_L) / clamp(N_Dot_L, 0.0005,  1.0);\n\n    //That makes sure that plane perpendicular to light doesn't flicker due to\n    //selfshadowing and 1 = dot(Normal, Light) using a min bias\n    shadowBias = clamp(shadowBias, 0.00005,  bias);\n\n    // shadowZ must be clamped to [0,1]\n    // otherwise it's not comparable to\n    // shadow caster depth map\n    // which is clamped to [0,1]\n    // Not doing that makes ALL shadowReceiver > 1.0 black\n    // because they ALL becomes behind any point in Caster depth map\n    shadowReceiverZ = clamp(shadowReceiverZ, 0., 1. - shadowBias);\n\n    shadowReceiverZ -= shadowBias;\n\n    // Now computes Shadow\n\n    // Calculate shadow amount\n    float shadow = 1.0;\n\n    // return 0.0 for black;\n    // return 1.0 for light;\n\n#ifdef _NONE\n\n    float shadowDepth = getSingleFloatFromTex(tex, shadowUV.xy);\n    // shadowReceiverZ : receiver depth in light view\n    // shadowDepth : caster depth in light view\n    // receiver is shadowed if its depth is superior to the caster\n    shadow = ( shadowReceiverZ > shadowDepth ) ? 0.0 : 1.0;\n\n#elif defined( _PCF )\n    // pcf pbias to add on offset\n    vec2 shadowBiasPCF = vec2(0.);\n\n\n// looks like derivative is broken on some mac + intel cg ...\n#ifdef GL_OES_standard_derivatives\n\n    shadowBiasPCF.x = clamp(dFdx(shadowReceiverZ)* shadowMapSize.z, -1.0, 1.0 );\n    shadowBiasPCF.y = clamp(dFdy(shadowReceiverZ)* shadowMapSize.w, -1.0, 1.0 );\n    \n#endif\n\n\n    shadow = getShadowPCF(tex, shadowMapSize, shadowUV, shadowReceiverZ, shadowBiasPCF);\n\n#elif defined( _ESM )\n\n    shadow = fetchESM(tex, shadowMapSize, shadowUV, shadowReceiverZ, exponent0, exponent1);\n\n#elif  defined( _VSM )\n\n    vec2 moments = getDoubleFloatFromTex(tex, shadowUV.xy);\n    shadow = chebyshevUpperBound(moments, shadowReceiverZ, epsilonVSM);\n\n#elif  defined( _EVSM )\n\n    vec4 occluder = getQuadFloatFromTex(tex, shadowUV.xy);\n    vec2 exponents = vec2(exponent0, exponent1);\n    vec2 warpedDepth = warpDepth(shadowReceiverZ, exponents);\n\n    float derivationEVSM = epsilonVSM;\n    // Derivative of warping at depth\n    vec2 depthScale = derivationEVSM * exponents * warpedDepth;\n    vec2 minVariance = depthScale * depthScale;\n\n    float epsilonEVSM = -epsilonVSM;\n\n    // Compute the upper bounds of the visibility function both for x and y\n    float posContrib = chebyshevUpperBound(occluder.xz, -warpedDepth.x, minVariance.x);\n    float negContrib = chebyshevUpperBound(occluder.yw, warpedDepth.y, minVariance.y);\n\n    shadow = min(posContrib, negContrib);\n\n#endif\n\n\n    return shadow;\n"
 
-/***/ }),
-/* 180 */
-/***/ (function(module, exports) {
+/***/ },
+/* 177 */
+/***/ function(module, exports) {
 
 	module.exports = "\n// simulation of texture2Dshadow glsl call on HW\n// http://codeflow.org/entries/2013/feb/15/soft-shadow-mapping/\nfloat texture2DCompare(const in sampler2D depths, const in vec2 uv, const in float compare){\n\n    float depth = getSingleFloatFromTex(depths, uv);\n    return step(compare, depth);\n\n}\n\n// simulates linear fetch like texture2d shadow\nfloat texture2DShadowLerp(const in sampler2D depths, const in vec4 size, const in vec2 uv, const in float compare){\n\n#if defined(_FAKE_PCF)\n    // CHEAT: it's wrong, but 4x faster\n    // wronb because http://www.eng.utah.edu/~cs5610/handouts/reeves87.pdf p2\n    return texture2DCompare(depths, uv, compare);\n#else\n    vec2 f = fract(uv*size.xy+0.5);\n    vec2 centroidUV = floor(uv*size.xy+0.5)*size.zw;\n\n    float lb = texture2DCompare(depths, centroidUV+size.zw*vec2(0.0, 0.0), compare);\n    float lt = texture2DCompare(depths, centroidUV+size.zw*vec2(0.0, 1.0), compare);\n    float rb = texture2DCompare(depths, centroidUV+size.zw*vec2(1.0, 0.0), compare);\n    float rt = texture2DCompare(depths, centroidUV+size.zw*vec2(1.0, 1.0), compare);\n    float a = mix(lb, lt, f.y);\n    float b = mix(rb, rt, f.y);\n    float c = mix(a, b, f.x);\n    return c;\n#endif\n\n}\n"
 
-/***/ }),
-/* 181 */
-/***/ (function(module, exports) {
+/***/ },
+/* 178 */
+/***/ function(module, exports) {
 
 	module.exports = "\n#pragma include \"bandPCF.glsl\" \"_BAND_PCF\"\n#pragma include \"poissonPCF.glsl\" \"_POISSON_PCF\"\n#pragma include \"tapPCF.glsl\" \"_TAP_PCF\"\n\nfloat computeShadow(const in bool lighted,\n                    const in sampler2D tex,\n                    const in vec4 shadowMapSize,\n                    const in mat4 shadowProjectionMatrix,\n                    const in mat4 shadowViewMatrix,\n                    const in vec4 depthRange,\n                    const in float N_Dot_L,\n                    const in vec3 vertexWorld,\n                    const in float bias\n    )\n{\n    #pragma include \"shadowsReceiveMain.glsl\" \"_PCF\" \"_NONE\"\n\n\n\n}\n"
 
-/***/ }),
-/* 182 */
-/***/ (function(module, exports) {
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
 
 	module.exports = "\n\n\nfloat getShadowPCF(const in sampler2D tex, const in vec4 size, const in vec2 uv, const in float shadowZ, const in vec2 biasPCF) {\n\n    float shadowed = 0.0;\n\n    #define TSF(off1, off2) getSingleFloatFromTex( tex, uv.xy + vec2(off1, off2) + biasPCF )\n\n    float dx0 = -size.z;\n    float dy0 = -size.w;\n    float dx1 = size.z;\n    float dy1 = size.w;\n\n    // fastest but gives banding\n#if defined(_PCFx4)\n\n    vec4 sV;\n\n    // vector ops faster alu\n    sV.x = TSF( dx0, dy0 );\n    sV.y = TSF( dx1, dy0 );\n    sV.z = TSF( dx1, dy0 );\n    sV.w = TSF( dx1, dy1 );\n    sV = vec4(lessThan(vec4(shadowZ), sV  ));\n    shadowed = dot(sV, vec4(0.25));\n\n    // here still didn't querying the real shadow at uv.\n    // This could be a single func checking for branching\n    // like before going to x9, x16 or anything\n    // or even complex \"blurring\"\n    if (shadowed != 0.0) // we're on an edge\n    {\n        shadowed += step(shadowZ, TSF(0.0, 0.0));\n        shadowed *= 0.5;\n    }\n\n#elif defined(_PCFx9)\n\n\n    mat3 kern;\n    mat3 depthKernel;\n\n\n    depthKernel[0][0] = TSF( dx0, dy0 );\n    depthKernel[0][1] = TSF( dx0, 0.0 );\n    depthKernel[0][2] = TSF( dx0, dy1 );\n    depthKernel[1][0] = TSF( 0.0, dy0 );\n    depthKernel[1][1] = TSF( 0.0, 0.0 );\n    depthKernel[1][2] = TSF( 0.0, dy1 );\n    depthKernel[2][0] = TSF( dx1, dy0 );\n    depthKernel[2][1] = TSF( dx1, 0.0 );\n    depthKernel[2][2] = TSF( dx1, dy1 );\n\n    // using 4 vector ops to save ALU\n    // filter is done post dept/shadow compare\n    vec3 shadowZ3 = vec3( shadowZ );\n    kern[0] = vec3(lessThan(shadowZ3, depthKernel[0]  ));\n    kern[0] *= vec3(0.25);\n\n    kern[1] = vec3(lessThan(shadowZ3, depthKernel[1] ));\n    kern[1] *= vec3(0.25);\n\n    kern[2] = vec3(lessThan(shadowZ3, depthKernel[2] ));\n    kern[2] *= vec3(0.25);\n\n    vec2 fractCoord = 1.0 - fract( uv.xy );\n\n    kern[0] = mix( kern[1], kern[0], fractCoord.x );\n    kern[1] = mix( kern[2], kern[1], fractCoord.x );\n\n    vec4 sV;\n    sV.x = mix( kern[0][1], kern[0][0], fractCoord.y );\n    sV.y = mix( kern[0][2], kern[0][1], fractCoord.y );\n    sV.z = mix( kern[1][1], kern[1][0], fractCoord.y );\n    sV.w = mix( kern[1][2], kern[1][1], fractCoord.x );\n\n    shadowed = dot( sV, vec4( 1.0 ) );\n\n#elif defined(_PCFx16)\n\n    float dx2 = -2.0 * size.z;\n    float dy2 = -2.0 * size.w;\n    float dx3 = 2.0 * size.z;\n    float dy3 = 2.0 * size.w;\n\n    shadowed += step(shadowZ , TSF(dx2, dy2));\n    shadowed += step(shadowZ , TSF(dx0, dy2));\n    shadowed += step(shadowZ , TSF(dx1, dy2));\n    shadowed += step(shadowZ , TSF(dx3, dy2));\n\n    shadowed += step(shadowZ , TSF(dx2, dy0));\n    shadowed += step(shadowZ , TSF(dx0, dy0));\n    shadowed += step(shadowZ , TSF(dx1, dy0));\n    shadowed += step(shadowZ , TSF(dx3, dy0));\n\n    shadowed += step(shadowZ , TSF(dx2, dy1));\n    shadowed += step(shadowZ , TSF(dx0, dy1));\n    shadowed += step(shadowZ , TSF(dx1, dy1));\n    shadowed += step(shadowZ , TSF(dx3, dy1));\n\n    shadowed += step(shadowZ , TSF(dx2, dy3));\n    shadowed += step(shadowZ , TSF(dx0, dy3));\n    shadowed += step(shadowZ , TSF(dx1, dy3));\n    shadowed += step(shadowZ , TSF(dx3, dy3));\n\n    shadowed = shadowed / 16.0;\n#endif // pcfx16\n    return shadowed;\n\n}\n"
 
-/***/ }),
-/* 183 */
-/***/ (function(module, exports) {
+/***/ },
+/* 180 */
+/***/ function(module, exports) {
 
 	module.exports = "\n#pragma include \"noise.glsl\" \"_ROTATE_OFFSET\"\n\n#pragma include \"shadowLinearSoft.glsl\"\n\nfloat getShadowPCF(const in sampler2D depths, const in vec4 size, const in vec2 uv, const in float compare, const in vec2 biasPCF)\n{\n\n     float res = 0.0;\n\n#if defined(_ROTATE_OFFSET)\n     res += texture2DShadowLerp(depths, size,   uv + size.zw*(noise2D(uv*gl_FragCoord.xy)*2.0 - 1.0) + biasPCF, compare);\n#else\n     res += texture2DShadowLerp(depths, size,   uv + biasPCF, compare);\n#endif\n\n\n#if defined(_PCFx1)\n\n#else\n\n    float dx0 = -size.z;\n    float dy0 = -size.w;\n    float dx1 = size.z;\n    float dy1 = size.w;\n\n#define TSF(o1,o2) texture2DShadowLerp(depths, size, uv + vec2(o1, o2) + biasPCF,  compare)\n\n    res += TSF(dx0, dx0);\n    res += TSF(dx0, .0);\n    res += TSF(dx0, dx1);\n\n#if defined(_PCFx4)\n\n    res /=4.0;\n\n#elif defined(_PCFx9)\n    res += TSF(.0, dx0);\n    res += TSF(.0, dx1);\n\n    res += TSF(dx1, dx0);\n    res += TSF(dx1, .0);\n    res += TSF(dx1, dx1);\n\n\n    res /=9.0;\n\n#elif defined(_PCFx25)\n\n    float dx02 = -2.0*size.z;\n    float dy02 = -2.0*size.w;\n    float dx2 = 2.0*size.z;\n    float dy2 = 2.0*size.w;\n\n    // complete row above\n    res += TSF(dx0, dx02);\n    res += TSF(dx0, dx2);\n\n    res += TSF(.0, dx02);\n    res += TSF(.0, dx2);\n\n    res += TSF(dx1, dx02);\n    res += TSF(dx1, dx2);\n\n    // two new col\n    res += TSF(dx02, dx02);\n    res += TSF(dx02, dx0);\n    res += TSF(dx02, .0);\n    res += TSF(dx02, dx1);\n    res += TSF(dx02, dx2);\n\n    res += TSF(dx2, dx02);\n    res += TSF(dx2, dx0);\n    res += TSF(dx2, .0);\n    res += TSF(dx2, dx1);\n    res += TSF(dx2, dx2);\n\n\n    res/=25.0;\n\n#endif\n\n#undef TSF\n\n#endif\n    return res;\n}\n/////// end Tap\n"
 
-/***/ }),
-/* 184 */
-/***/ (function(module, exports) {
+/***/ },
+/* 181 */
+/***/ function(module, exports) {
 
 	module.exports = "//// hash glsl\n\n// Dave Hoskins: hash without sin\n//https://www.shadertoy.com/view/4djSRW\n#define MOD2 vec2(443.8975,397.2973)\n//----------------------------------------------------------------------------------------\n//  1 out, 1 in...\n//note: normalized uniform random, [0;1[\nfloat hash11(const in float p)\n{\n    vec2 p2 = fract(vec2(p) * MOD2);\n    p2 += dot(p2.yx, p2.xy+19.19);\n    return fract(p2.x * p2.y);\n}\n//note: normalized uniform random, [0;1[\n//  2 out, 1 in...\nfloat hash21(const in vec2 p)\n{\n    vec2 p2 = fract(p * MOD2);\n    p2 += dot(p2.yx, p2.xy+19.19);\n    return fract(p2.x * p2.y);\n}\n\n\n// Based on Morgan McGuire @morgan3d\n// https://www.shadertoy.com/view/4dS3Wd\n// using Sin\n//  1 out, 1 in...\nfloat hashSin11( const in float n )\n{\n    return fract(sin(n)*43758.5453);\n}\n\n//note: normalized uniform random, [0;1[\n//  2 out, 1 in...\nfloat hashSin21( const in vec2 n ) {\n    return fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453);\n}\n\n// note: [-1;1]\n// iq: https://www.shadertoy.com/view/Xsl3Dl\n// note: value noise\n//  2 out, 2 in...\nvec2 hashSin22( const in vec2 n )\n{\n    return fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* vec2(43758.5453,35458.5734));\n}\n//  3 out, 3 in...\nvec3 hashSin33( in vec3 p )\n{\n    p = vec3( dot(p,vec3(127.1,311.7, 74.7)),\n              dot(p,vec3(269.5,183.3,246.1)),\n              dot(p,vec3(113.5,271.9,124.6)));\n    return fract(sin(p)*43758.5453123);\n}\n\n// Returns a random number based on a vec3 and an int.\nfloat hashSin41(const in vec4 seed){\n    return fract(sin(dot(seed, vec4(12.9898,78.233,45.164,94.673)) * 43758.5453));\n}\n\n/////// end hash\n"
 
-/***/ }),
-/* 185 */
-/***/ (function(module, exports) {
+/***/ },
+/* 182 */
+/***/ function(module, exports) {
 
 	module.exports = "vec2 poissonDisk[64];\n\npoissonDisk[0] = vec2(-0.613392, 0.617481);\npoissonDisk[1] = vec2(0.170019, -0.040254);\npoissonDisk[2] = vec2(-0.299417, 0.791925);\npoissonDisk[3] = vec2(0.645680, 0.493210);\npoissonDisk[4] = vec2(-0.651784, 0.717887);\npoissonDisk[5] = vec2(0.421003, 0.027070);\npoissonDisk[6] = vec2(-0.817194, -0.271096);\npoissonDisk[7] = vec2(-0.705374, -0.668203);\npoissonDisk[8] = vec2(0.977050, -0.108615);\npoissonDisk[9] = vec2(0.063326, 0.142369);\npoissonDisk[10] = vec2(0.203528, 0.214331);\npoissonDisk[11] = vec2(-0.667531, 0.326090);\npoissonDisk[12] = vec2(-0.098422, -0.295755);\npoissonDisk[13] = vec2(-0.885922, 0.215369);\npoissonDisk[14] = vec2(0.566637, 0.605213);\npoissonDisk[15] = vec2(0.039766, -0.396100);\npoissonDisk[16] = vec2(0.751946, 0.453352);\npoissonDisk[17] = vec2(0.078707, -0.715323);\npoissonDisk[18] = vec2(-0.075838, -0.529344);\npoissonDisk[19] = vec2(0.724479, -0.580798);\npoissonDisk[20] = vec2(0.222999, -0.215125);\npoissonDisk[21] = vec2(-0.467574, -0.405438);\npoissonDisk[22] = vec2(-0.248268, -0.814753);\npoissonDisk[23] = vec2(0.354411, -0.887570);\npoissonDisk[24] = vec2(0.175817, 0.382366);\npoissonDisk[25] = vec2(0.487472, -0.063082);\npoissonDisk[26] = vec2(-0.084078, 0.898312);\npoissonDisk[27] = vec2(0.488876, -0.783441);\npoissonDisk[28] = vec2(0.470016, 0.217933);\npoissonDisk[29] = vec2(-0.696890, -0.549791);\npoissonDisk[30] = vec2(-0.149693, 0.605762);\npoissonDisk[31] = vec2(0.034211, 0.979980);\npoissonDisk[32] = vec2(0.503098, -0.308878);\npoissonDisk[33] = vec2(-0.016205, -0.872921);\npoissonDisk[34] = vec2(0.385784, -0.393902);\npoissonDisk[35] = vec2(-0.146886, -0.859249);\npoissonDisk[36] = vec2(0.643361, 0.164098);\npoissonDisk[37] = vec2(0.634388, -0.049471);\npoissonDisk[38] = vec2(-0.688894, 0.007843);\npoissonDisk[39] = vec2(0.464034, -0.188818);\npoissonDisk[40] = vec2(-0.440840, 0.137486);\npoissonDisk[41] = vec2(0.364483, 0.511704);\npoissonDisk[42] = vec2(0.034028, 0.325968);\npoissonDisk[43] = vec2(0.099094, -0.308023);\npoissonDisk[44] = vec2(0.693960, -0.366253);\npoissonDisk[45] = vec2(0.678884, -0.204688);\npoissonDisk[46] = vec2(0.001801, 0.780328);\npoissonDisk[47] = vec2(0.145177, -0.898984);\npoissonDisk[48] = vec2(0.062655, -0.611866);\npoissonDisk[49] = vec2(0.315226, -0.604297);\npoissonDisk[50] = vec2(-0.780145, 0.486251);\npoissonDisk[51] = vec2(-0.371868, 0.882138);\npoissonDisk[52] = vec2(0.200476, 0.494430);\npoissonDisk[53] = vec2(-0.494552, -0.711051);\npoissonDisk[54] = vec2(0.612476, 0.705252);\npoissonDisk[55] = vec2(-0.578845, -0.768792);\npoissonDisk[56] = vec2(-0.772454, -0.090976);\npoissonDisk[57] = vec2(0.504440, 0.372295);\npoissonDisk[58] = vec2(0.155736, 0.065157);\npoissonDisk[59] = vec2(0.391522, 0.849605);\npoissonDisk[60] = vec2(-0.620106, -0.328104);\npoissonDisk[61] = vec2(0.789239, -0.419965);\npoissonDisk[62] = vec2(-0.545396, 0.538133);\npoissonDisk[63] = vec2(-0.178564, -0.596057);\n"
 
-/***/ }),
-/* 186 */
-/***/ (function(module, exports) {
+/***/ },
+/* 183 */
+/***/ function(module, exports) {
 
 	module.exports = "\n\n#pragma include \"shadowLinearSoft.glsl\"\n\n#pragma include \"hash.glsl\"\n\nfloat getShadowPCF(const in sampler2D tex, const in vec4 size, const in vec2 uv, const in float shadowZ, const in vec2 biasPCF) {\n\n    vec2 o = size.zw;\n    float s = 0.0;\n\n// Not Good, as it needs the lerp things\n#pragma include \"arrayPoisson.glsl\"\n\n    int idx = 0;\n\n    // Not Good, as it needs the lerp things\n#define TSF_BASE(p, m) texture2DShadowLerp(tex, size, uv + m*poissonDisk[p]*o + biasPCF,  shadowZ)\n\n// fixed pattern in the shadow, no noise\n#define TSF_FIXED(i) TSF_BASE(i, 1.0)\n\n    // rand  using screenpos: No banding,\"moves\" camera\n#define TSF_SCREEN(i) TSF_BASE(i, hashSin22( float(i)*gl_FragCoord.xy ))\n\n//rand using worl proj +depth as world psace xyez\n#define TSF_SPACE(i)  TSF_BASE(i, hashSin41(vec4(uv.xy, shadowZ, float(i))))\n\n#define TSF(k) TSF_SPACE(k)\n\n\n    s += TSF(1);\n    s += TSF(2);\n    s += TSF(3);\n    s += TSF(4);\n\n#ifdef _PCFx4\n    const float kernSize = 4.;\n#else\n    s += TSF(5);\n    s += TSF(6);\n    s += TSF(7);\n    s += TSF(8);\n#ifdef _PCFx9\n    const float kernSize = 8.;\n#else\n    s += TSF(9);\n    s += TSF(10);\n    s += TSF(11);\n    s += TSF(12);\n    s += TSF(13);\n    s += TSF(14);\n    s += TSF(15);\n    s += TSF(16);\n#ifdef _PCFx16\n    const float kernSize = 16.;\n#else\n    s += TSF(17);\n    s += TSF(18);\n    s += TSF(19);\n    s += TSF(20);\n    s += TSF(21);\n    s += TSF(22);\n    s += TSF(23);\n    s += TSF(24);\n    s += TSF(25);\n#ifdef _PCFx25\n    const float kernSize = 25.;\n#else\n    s += TSF(26);\n    s += TSF(27);\n    s += TSF(28);\n    s += TSF(29);\n    s += TSF(30);\n    s += TSF(31);\n    s += TSF(32);\n#ifdef _PCFx32\n    const float kernSize = 32.;\n#endif // 32\n#endif // 25\n#endif // 16\n#endif // 8\n#endif // 4\n\n    s /= kernSize;\n    return s;\n}\n// end poisson\n#undef TSF\n"
 
-/***/ }),
-/* 187 */
-/***/ (function(module, exports) {
+/***/ },
+/* 184 */
+/***/ function(module, exports) {
 
 	module.exports = "////////////////////////////////////////////////\n// ESM\nfloat fetchESM(const in sampler2D tex, const in vec4 shadowMapSize, const in vec2 shadowUV, const in float shadowZ,  const in float exponent0, const in float exponent1) {\n\n\n#if defined(_FLOATTEX) && (!defined(_FLOATLINEAR))\n    // emulate bilinear filtering (not needed if webgm/GPU support filtering FP32/FP16 textures)\n    vec2 unnormalized = shadowUV * shadowMapSize.xy;\n    vec2 fractional = fract(unnormalized);\n    unnormalized = floor(unnormalized);\n\n    vec4 occluder4;\n    occluder4.x = getSingleFloatFromTex(tex, (unnormalized + vec2( -0.5,  0.5 ))* shadowMapSize.zw );\n    occluder4.y = getSingleFloatFromTex(tex, (unnormalized + vec2( 0.5,   0.5 ))* shadowMapSize.zw );\n    occluder4.z = getSingleFloatFromTex(tex, (unnormalized + vec2( 0.5,  -0.5 ))* shadowMapSize.zw );\n    occluder4.w = getSingleFloatFromTex(tex, (unnormalized + vec2( -0.5, -0.5 ))* shadowMapSize.zw );\n\n    float occluder = (occluder4.w + (occluder4.x - occluder4.w) * fractional.y);\n    occluder = occluder + ((occluder4.z + (occluder4.y - occluder4.z) * fractional.y) - occluder)*fractional.x;\n\n#else\n    float occluder = getSingleFloatFromTex(tex, shadowUV);\n#endif\n\n\n    // we're on an edge\n    float depthScale = exponent1;\n    float over_darkening_factor = exponent0;\n    float receiver = depthScale * ( shadowZ);\n    return 1.0 - clamp(over_darkening_factor*(occluder*exp(receiver)), 0.0, 1.0);\n}\n\n\nfloat computeShadow(const in bool lighted,\n                    const in sampler2D tex,\n                    const in vec4 shadowMapSize,\n                    const in mat4 shadowProjectionMatrix,\n                    const in mat4 shadowViewMatrix,\n                    const in vec4 depthRange,\n                    const in float N_Dot_L,\n                    const in vec3 vertexWorld,\n                    const in float bias,\n                    const in float exponent0,\n                    const in float exponent1\n    )\n{\n    #pragma include \"shadowsReceiveMain.glsl\" \"_ESM\"\n}\n\n// end ESM\n"
 
-/***/ }),
-/* 188 */
-/***/ (function(module, exports) {
+/***/ },
+/* 185 */
+/***/ function(module, exports) {
 
 	module.exports = "//////VSM\n//http://en.wikipedia.org/wiki/Chebyshev%27s_inequality\nfloat chebychevInequality (const in vec2 moments, const in float t)\n{\n    // No shadow if depth of fragment is in front\n    if ( t <= moments.x )\n        return 1.0;\n\n    // Calculate variance, which is actually the amount of\n    // error due to precision loss from fp32 to RG/BA\n    // (moment1 / moment2)\n    float variance = moments.y - (moments.x * moments.x);\n    variance = max(variance, 0.02);\n\n    // Calculate the upper bound\n    float d = t - moments.x;\n    return variance / (variance + d * d);\n}\n\n// http://http.developer.nvidia.com/GPUGems3/gpugems3_ch08.html\nfloat chebyshevUpperBound(const in vec2 moments, const in float mean, const in float minVariance)\n{\n    float d = mean - moments.x;\n    if ( d <= 0.0 )\n        return 1.0;\n    // Compute variance\n    float variance = moments.y - (moments.x * moments.x);\n    variance = max(variance, minVariance);\n\n    // Compute probabilistic upper bound\n    //p represent an upper bound on the visibility percentage of the receiver. This value //attempts to estimate how much of the distribution of occluders at the surface location is //beyond the surface's distance from the light. If it is 0, then there is no probability //that the fragment is partially lit, so it will be fully in shadow. If it is a value in the //[0, 1] range, it represent the penumbrae value of the shadow edge.\n    float p = smoothstep(mean, mean, moments.x);\n\n    // Remove the [0, Amount] tail and linearly rescale (Amount, 1].\n    /// light bleeding when shadows overlap.\n\n    float pMax = smoothstep(0.2, 1.0, variance / (variance + d*d));\n    // One-tailed chebyshev\n    return clamp(max(p, pMax), 0.0, 1.0);\n}\n\n// might be included for EVSM\n#ifdef _VSM\nfloat computeShadow(const in bool lighted,\n                    const in sampler2D tex,\n                    const in vec4 shadowMapSize,\n                    const in mat4 shadowProjectionMatrix,\n                    const in mat4 shadowViewMatrix,\n                    const in vec4 depthRange,\n                    const in float N_Dot_L,\n                    const in vec3 vertexWorld,\n                    const in float bias,\n                    const in float epsilonVSM\n    )\n{\n#pragma include \"shadowsReceiveMain.glsl\" \"_VSM\"\n}\n#endif // _VSM\n\n// end VSM\n"
 
-/***/ }),
-/* 189 */
-/***/ (function(module, exports) {
+/***/ },
+/* 186 */
+/***/ function(module, exports) {
 
 	module.exports = "// EVSM\n\n#pragma include \"vsm.glsl\"\n\n// Convert depth to EVSM coefficients\n// Input depth should be in [0, 1]\nvec2 warpDepth(const in float depth, const in vec2 exponents)\n{\n    float pos =  exp( exponents.x * depth);\n    float neg = -exp(-exponents.y * depth);\n    return vec2(pos, neg);\n}\n\n\nfloat computeShadow(const in bool lighted,\n                    const in sampler2D tex,\n                    const in vec4 shadowMapSize,\n                    const in mat4 shadowProjectionMatrix,\n                    const in mat4 shadowViewMatrix,\n                    const in vec4 depthRange,\n                    const in float N_Dot_L,\n                    const in vec3 vertexWorld,\n                    const in float bias,\n                    const in float epsilonVSM,\n                    const in float exponent0,\n                    const in float exponent1\n    )\n{\n    #pragma include \"shadowsReceiveMain.glsl\" \"_EVSM\"\n}\n\n// _EVSM\n"
 
-/***/ }),
-/* 190 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var subnamespace = [
-	    __webpack_require__( 160 ),
+	    __webpack_require__( 158 ),
+	    __webpack_require__( 188 ),
+	    __webpack_require__( 190 ),
 	    __webpack_require__( 191 ),
+	    __webpack_require__( 192 ),
 	    __webpack_require__( 193 ),
-	    __webpack_require__( 194 ),
-	    __webpack_require__( 195 ),
-	    __webpack_require__( 196 ),
-	    __webpack_require__( 197 )
+	    __webpack_require__( 194 )
 	];
 	
 	var lib = {};
@@ -33683,14 +33275,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = lib;
 
 
-/***/ }),
-/* 191 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var ShaderUtils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var ShaderUtils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var Morph = function () {
 	    Node.call( this );
@@ -33764,9 +33356,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -33929,14 +33521,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Node;
 
 
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var utils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var utils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var sprintf = utils.sprintf;
 	
@@ -34120,14 +33712,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 194 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var utils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var utils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var NodeTextures = function () {
 	    Node.call( this );
@@ -34221,14 +33813,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var utils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var utils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var sprintf = utils.sprintf;
 	
@@ -34369,14 +33961,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var shaderUtils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var shaderUtils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	// base class for all point based light: Point/Directional/Spot/Hemi
 	// avoid duplicate code
@@ -34650,15 +34242,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Node = __webpack_require__( 192 );
-	var utils = __webpack_require__( 161 );
+	var Node = __webpack_require__( 189 );
+	var utils = __webpack_require__( 159 );
 	
 	var sprintf = utils.sprintf;
 	
@@ -34928,14 +34520,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var ShaderUtils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
+	var ShaderUtils = __webpack_require__( 159 );
+	var Node = __webpack_require__( 189 );
 	
 	var ShadowReceive = function () {
 	    Node.call( this );
@@ -35038,56 +34630,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var MACROUTILS = __webpack_require__( 6 );
-	var ShaderUtils = __webpack_require__( 161 );
-	var Node = __webpack_require__( 192 );
-	
-	var Billboard = function () {
-	    Node.apply( this );
-	};
-	
-	Billboard.prototype = MACROUTILS.objectInherit( Node.prototype, {
-	    type: 'Billboard',
-	    validInputs: [ 'Vertex', 'ModelViewMatrix', 'ProjectionMatrix' ],
-	    validOutputs: [ 'vec' ],
-	
-	    globalFunctionDeclaration: function () {
-	        return '#pragma include "billboard.glsl"';
-	    },
-	    computeShader: function () {
-	        return ShaderUtils.callFunction( 'billboard', this._outputs.vec, [ this._inputs.Vertex, this._inputs.ModelViewMatrix, this._inputs.ProjectionMatrix ] );
-	    }
-	} );
-	
-	module.exports = {
-	    Billboard: Billboard
-	};
-
-
-/***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var DisplayGraphRenderer = __webpack_require__( 201 );
-	var DisplayGraphNode = __webpack_require__( 202 );
-	var Notify = __webpack_require__( 10 );
+	var DisplayGraphRenderer = __webpack_require__( 197 );
+	var DisplayGraphNode = __webpack_require__( 198 );
 	
 	var $;
 	
-	var init$ = function () {
-	    try {
-	        $ = __webpack_require__( 203 );
-	    } catch ( e ) {
-	        Notify.warn( 'You will not be able to use osgUtil.DisplayGraph until you add jQuery in your page' );
-	    }
-	};
+	// Make the jquery dependency optional
+	try {
+	    $ = __webpack_require__( 199 );
+	} catch ( e ) {
+	    throw new Error( 'jQuery is required to use the DisplayGraph' );
+	}
 	
 	// Simple tooltips implementation
 	var SimpleTooltips = function ( options ) {
@@ -35129,8 +34688,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	SimpleTooltips.prototype = {
 	    showTooltip: function ( e ) {
-	        if ( !$ ) return;
-	
 	        var target = e.currentTarget;
 	        this.el.innerHTML = target.getAttribute( 'title' );
 	        this.el.style.display = 'block';
@@ -35143,9 +34700,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var DisplayGraph = function () {
-	
-	    init$();
-	    if ( !$ ) return;
 	
 	    // indexed with instanceID, references nodes, stateSet, sourceGeometry...
 	    // referenced with strings !
@@ -35183,8 +34737,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    reset: function () {
-	        if ( !$ ) return;
-	
 	        this._selectables.clear();
 	        this._$svg.empty();
 	        this._focusedElement = 'scene';
@@ -35202,7 +34754,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    createGraph: function ( root ) {
-	        if ( !$ ) return;
 	        this.reset();
 	
 	        this._displayNode = !!root;
@@ -35215,13 +34766,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.displayGraph();
 	        } else {
 	            // circular dependency
-	            __webpack_require__( 204 ).debugGraph = true;
+	            __webpack_require__( 200 ).debugGraph = true;
 	        }
 	    },
 	
 	    // Create and display a dagre d3 graph
 	    displayGraph: function () {
-	        if ( !$ ) return;
 	        if ( window.d3 && window.dagreD3 ) {
 	            this._createGraphApply();
 	            return;
@@ -35323,9 +34873,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        target.childNodes[ 0 ].style.fill = '#f00';
 	
 	        window.activeNode = elt;
-	        Notify.info( 'window.activeNode is set with the node below !' );
-	        Notify.log( window.activeNode );
-	        Notify.log( '\n' );
+	        console.info( 'window.activeNode is set with the node below !' );
+	        console.log( window.activeNode );
+	        console.log( '\n' );
 	
 	        if ( this._cbSelect )
 	            this._cbSelect( elt );
@@ -35368,13 +34918,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DisplayGraph;
 
 
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var DisplayGraphNode = __webpack_require__( 202 );
-	var RenderBin = __webpack_require__( 66 );
+	var DisplayGraphNode = __webpack_require__( 198 );
+	var RenderBin = __webpack_require__( 65 );
 	
 	var DisplayGraphRenderer = function ( selectables ) {
 	
@@ -35607,14 +35157,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DisplayGraphRenderer;
 
 
-/***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var MorphGeometry = __webpack_require__( 79 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var MorphGeometry = __webpack_require__( 77 );
 	
 	var DisplayGraphNode = function ( selectables ) {
 	    NodeVisitor.call( this, NodeVisitor.TRAVERSE_ALL_CHILDREN );
@@ -35814,28 +35364,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DisplayGraphNode;
 
 
-/***/ }),
-/* 203 */
-/***/ (function(module, exports) {
+/***/ },
+/* 199 */
+/***/ function(module, exports) {
 
-	if(typeof __WEBPACK_EXTERNAL_MODULE_203__ === 'undefined') {var e = new Error("Cannot find module \"undefined\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
-	module.exports = __WEBPACK_EXTERNAL_MODULE_203__;
+	if(typeof __WEBPACK_EXTERNAL_MODULE_199__ === 'undefined') {var e = new Error("Cannot find module \"undefined\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
+	module.exports = __WEBPACK_EXTERNAL_MODULE_199__;
 
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var CullSettings = __webpack_require__( 57 );
-	var CullVisitor = __webpack_require__( 63 );
-	var Object = __webpack_require__( 13 );
-	var RenderStage = __webpack_require__( 67 );
-	var State = __webpack_require__( 104 );
+	var CullSettings = __webpack_require__( 56 );
+	var CullVisitor = __webpack_require__( 62 );
+	var Object = __webpack_require__( 12 );
+	var RenderStage = __webpack_require__( 66 );
+	var State = __webpack_require__( 102 );
 	var StateGraph = __webpack_require__( 8 );
-	var Vec4 = __webpack_require__( 25 );
-	var osgShader = __webpack_require__( 162 );
-	var DisplayGraph = __webpack_require__( 200 );
+	var Vec4 = __webpack_require__( 14 );
+	var osgShader = __webpack_require__( 160 );
+	var DisplayGraph = __webpack_require__( 196 );
 	
 	
 	var Renderer = function ( camera ) {
@@ -35960,7 +35510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        camera.getBound();
 	
 	        var light = view.getLight();
-	        var View = __webpack_require__( 205 );
+	        var View = __webpack_require__( 201 );
 	
 	        if ( light ) {
 	
@@ -36042,28 +35592,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Renderer;
 
 
-/***/ }),
-/* 205 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BufferArray = __webpack_require__( 40 );
-	var Camera = __webpack_require__( 56 );
-	var FrameStamp = __webpack_require__( 88 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var Light = __webpack_require__( 97 );
-	var Matrix = __webpack_require__( 23 );
-	var Texture = __webpack_require__( 34 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
-	var Vec3 = __webpack_require__( 15 );
-	var Viewport = __webpack_require__( 107 );
-	var WebGLCaps = __webpack_require__( 32 );
-	var IntersectionVisitor = __webpack_require__( 143 );
-	var LineSegmentIntersector = __webpack_require__( 144 );
-	var Renderer = __webpack_require__( 204 );
-	var Scene = __webpack_require__( 206 );
-	var DisplayGraph = __webpack_require__( 200 );
+	var BufferArray = __webpack_require__( 20 );
+	var Camera = __webpack_require__( 22 );
+	var FrameStamp = __webpack_require__( 86 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var Light = __webpack_require__( 95 );
+	var Matrix = __webpack_require__( 28 );
+	var Texture = __webpack_require__( 37 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
+	var Vec3 = __webpack_require__( 17 );
+	var Viewport = __webpack_require__( 105 );
+	var WebGLCaps = __webpack_require__( 36 );
+	var IntersectionVisitor = __webpack_require__( 141 );
+	var LineSegmentIntersector = __webpack_require__( 142 );
+	var Renderer = __webpack_require__( 200 );
+	var Scene = __webpack_require__( 202 );
+	var DisplayGraph = __webpack_require__( 196 );
 	var Notify = __webpack_require__( 10 );
 	
 	
@@ -36176,7 +35726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( typeof overrideDevicePixelRatio === 'number' ) {
 	            devicePixelRatio = overrideDevicePixelRatio;
 	        } else if ( maxDevicePixelRatio !== -1 ) {
-	            devicePixelRatio = Math.min( devicePixelRatio, maxDevicePixelRatio );
+	            devicePixelRatio = maxDevicePixelRatio;
 	        }
 	        this._devicePixelRatio = devicePixelRatio;
 	
@@ -36362,14 +35912,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = View;
 
 
-/***/ }),
-/* 206 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Object = __webpack_require__( 13 );
-	var DatabasePager = __webpack_require__( 125 );
+	var Object = __webpack_require__( 12 );
+	var DatabasePager = __webpack_require__( 123 );
 	
 	
 	var Scene = function () {
@@ -36410,27 +35960,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Scene;
 
 
-/***/ }),
-/* 207 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Node = __webpack_require__( 12 );
-	var MatrixTransform = __webpack_require__( 44 );
+	var Node = __webpack_require__( 24 );
+	var MatrixTransform = __webpack_require__( 45 );
 	var Notify = __webpack_require__( 10 );
-	var Depth = __webpack_require__( 86 );
-	var BlendFunc = __webpack_require__( 39 );
-	var CullFace = __webpack_require__( 59 );
-	var Uniform = __webpack_require__( 35 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Matrix = __webpack_require__( 23 );
-	var Quat = __webpack_require__( 26 );
-	var IntersectionVisitor = __webpack_require__( 143 );
-	var LineSegmentIntersector = __webpack_require__( 144 );
-	var GizmoGeometry = __webpack_require__( 208 );
-	var TransformEnums = __webpack_require__( 29 );
+	var Depth = __webpack_require__( 84 );
+	var BlendFunc = __webpack_require__( 15 );
+	var CullFace = __webpack_require__( 58 );
+	var Uniform = __webpack_require__( 38 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Matrix = __webpack_require__( 28 );
+	var Quat = __webpack_require__( 30 );
+	var IntersectionVisitor = __webpack_require__( 141 );
+	var LineSegmentIntersector = __webpack_require__( 142 );
+	var GizmoGeometry = __webpack_require__( 204 );
+	var TransformEnums = __webpack_require__( 33 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	
@@ -36537,13 +36087,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._planeNode = new MatrixTransform();
 	
 	    this._rotateInLocal = true; // local vs world space
-	    this._translateInLocal = true; // local vs world space
 	    this._showAngle = new MatrixTransform();
 	
 	    //for realtime picking
 	    this._downCanvasCoord = Vec2.create();
 	    this._hoverNode = null; // the hovered x/y/z MT node
-	    this._keepHoverColor = Vec4.create();
+	    this._keepHoverColor = null;
 	
 	    // for editing
 	    this._isEditing = false;
@@ -36578,36 +36127,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// picking masks
 	NodeGizmo.NO_PICK = 1 << 0;
+	NodeGizmo.PICK_ARC = 1 << 1;
+	NodeGizmo.PICK_ARROW = 1 << 2;
+	NodeGizmo.PICK_PLANE = 1 << 3;
 	
-	NodeGizmo.PICK_ARC_X = 1 << 1;
-	NodeGizmo.PICK_ARC_Y = 1 << 2;
-	NodeGizmo.PICK_ARC_Z = 1 << 3;
+	NodeGizmo.PICK_X = 1 << 4;
+	NodeGizmo.PICK_Y = 1 << 5;
+	NodeGizmo.PICK_Z = 1 << 6;
 	
-	NodeGizmo.PICK_ARROW_X = 1 << 4;
-	NodeGizmo.PICK_ARROW_Y = 1 << 5;
-	NodeGizmo.PICK_ARROW_Z = 1 << 6;
-	
-	NodeGizmo.PICK_PLANE_X = 1 << 7;
-	NodeGizmo.PICK_PLANE_Y = 1 << 8;
-	NodeGizmo.PICK_PLANE_Z = 1 << 9;
-	
-	NodeGizmo.NO_FULL_CIRCLE = 1 << 10; // don't display the full non pickable circle (visual cue)
-	
-	NodeGizmo.PICK_ARC = NodeGizmo.PICK_ARC_X | NodeGizmo.PICK_ARC_Y | NodeGizmo.PICK_ARC_Z;
-	NodeGizmo.PICK_ARROW = NodeGizmo.PICK_ARROW_X | NodeGizmo.PICK_ARROW_Y | NodeGizmo.PICK_ARROW_Z;
-	NodeGizmo.PICK_PLANE = NodeGizmo.PICK_PLANE_X | NodeGizmo.PICK_PLANE_Y | NodeGizmo.PICK_PLANE_Z;
-	
+	NodeGizmo.PICK_XYZ = NodeGizmo.PICK_X | NodeGizmo.PICK_Y | NodeGizmo.PICK_Z;
 	NodeGizmo.PICK_GIZMO = NodeGizmo.PICK_ARC | NodeGizmo.PICK_ARROW | NodeGizmo.PICK_PLANE;
 	
 	NodeGizmo.prototype = MACROUTILS.objectInherit( MatrixTransform.prototype, {
-	
-	    setRotateInLocal: function ( bool ) {
-	        this._rotateInLocal = bool;
-	    },
-	
-	    setTranslateInLocal: function ( bool ) {
-	        this._translateInLocal = bool;
-	    },
 	
 	    setTraversalMask: function ( tmask ) {
 	        this._tmask = tmask;
@@ -36706,31 +36237,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.setNodeMask( 0x0 );
 	            return;
 	        }
-	
 	        var mask = this._attachedNode.editMask;
-	
 	        this.setNodeMask( mask & NodeGizmo.PICK_GIZMO ? NodeGizmo.NO_PICK : 0x0 );
-	
 	        this._translateNode.setNodeMask( mask & NodeGizmo.PICK_ARROW ? NodeGizmo.PICK_ARROW : 0x0 );
 	        this._rotateNode.setNodeMask( mask & NodeGizmo.PICK_ARC ? NodeGizmo.PICK_ARC : 0x0 );
 	        this._planeNode.setNodeMask( mask & NodeGizmo.PICK_PLANE ? NodeGizmo.PICK_PLANE : 0x0 );
-	
-	        var transChildren = this._translateNode.getChildren();
-	        transChildren[ 0 ].setNodeMask( mask & NodeGizmo.PICK_ARROW_X ? NodeGizmo.PICK_ARROW_X : 0x0 );
-	        transChildren[ 1 ].setNodeMask( mask & NodeGizmo.PICK_ARROW_Y ? NodeGizmo.PICK_ARROW_Y : 0x0 );
-	        transChildren[ 2 ].setNodeMask( mask & NodeGizmo.PICK_ARROW_Z ? NodeGizmo.PICK_ARROW_Z : 0x0 );
-	
-	        // children 0 is full arc
-	        var rotChildren = this._rotateNode.getChildren();
-	        rotChildren[ 0 ].setNodeMask( mask & NodeGizmo.NO_FULL_CIRCLE ? 0x0 : NodeGizmo.NO_PICK );
-	        rotChildren[ 1 ].setNodeMask( mask & NodeGizmo.PICK_ARC_X ? NodeGizmo.PICK_ARC_X : 0x0 );
-	        rotChildren[ 2 ].setNodeMask( mask & NodeGizmo.PICK_ARC_Y ? NodeGizmo.PICK_ARC_Y : 0x0 );
-	        rotChildren[ 3 ].setNodeMask( mask & NodeGizmo.PICK_ARC_Z ? NodeGizmo.PICK_ARC_Z : 0x0 );
-	
-	        var planeChildren = this._planeNode.getChildren();
-	        planeChildren[ 0 ].setNodeMask( mask & NodeGizmo.PICK_PLANE_X ? NodeGizmo.PICK_PLANE_X : 0x0 );
-	        planeChildren[ 1 ].setNodeMask( mask & NodeGizmo.PICK_PLANE_Y ? NodeGizmo.PICK_PLANE_Y : 0x0 );
-	        planeChildren[ 2 ].setNodeMask( mask & NodeGizmo.PICK_PLANE_Z ? NodeGizmo.PICK_PLANE_Z : 0x0 );
 	    },
 	
 	    onNodeHovered: ( function () {
@@ -36739,7 +36250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return function ( hit ) {
 	
 	            if ( this._hoverNode )
-	                this._hoverNode.getStateSet().getUniform( 'uColor' ).setFloat4( this._keepHoverColor );
+	                this._hoverNode.getStateSet().getUniform( 'uColor' ).setInternalArray( this._keepHoverColor );
 	            if ( !hit ) {
 	                this._hoverNode = null;
 	                return;
@@ -36757,8 +36268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var unif = node.getStateSet().getUniform( 'uColor' );
 	            this._hoverNode = node;
-	            Vec4.copy( unif.getInternalArray(), this._keepHoverColor );
-	            unif.setFloat4( hoverColor );
+	            this._keepHoverColor = unif.getInternalArray();
+	            unif.setInternalArray( hoverColor );
 	        };
 	    } )(),
 	
@@ -36782,9 +36293,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // set masks
 	        drawArcXYZ.setNodeMask( NodeGizmo.NO_PICK );
 	        drawArc.setNodeMask( NodeGizmo.NO_PICK );
-	        mtX.setNodeMask( NodeGizmo.PICK_ARC_X );
-	        mtY.setNodeMask( NodeGizmo.PICK_ARC_Y );
-	        mtZ.setNodeMask( NodeGizmo.PICK_ARC_Z );
+	        pickArc.setNodeMask( NodeGizmo.PICK_ARC );
+	        mtX.setNodeMask( NodeGizmo.PICK_X );
+	        mtY.setNodeMask( NodeGizmo.PICK_Y );
+	        mtZ.setNodeMask( NodeGizmo.PICK_Z );
 	
 	        mtXYZ.addChild( drawArcXYZ );
 	        mtX.addChild( drawArc );
@@ -36855,9 +36367,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        // set masks
 	        drawArrow.setNodeMask( NodeGizmo.NO_PICK );
-	        mtX.setNodeMask( NodeGizmo.PICK_ARROW_X );
-	        mtY.setNodeMask( NodeGizmo.PICK_ARROW_Y );
-	        mtZ.setNodeMask( NodeGizmo.PICK_ARROW_Z );
+	        pickArrow.setNodeMask( NodeGizmo.PICK_ARROW );
+	        mtX.setNodeMask( NodeGizmo.PICK_X );
+	        mtY.setNodeMask( NodeGizmo.PICK_Y );
+	        mtZ.setNodeMask( NodeGizmo.PICK_Z );
 	
 	        mtX.addChild( drawArrow );
 	        mtY.addChild( drawArrow );
@@ -36896,9 +36409,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Matrix.makeRotate( Math.PI * 0.5, 1.0, 0.0, 0.0, mtY.getMatrix() );
 	
 	        // set masks
-	        mtX.setNodeMask( NodeGizmo.PICK_PLANE_X );
-	        mtY.setNodeMask( NodeGizmo.PICK_PLANE_Y );
-	        mtZ.setNodeMask( NodeGizmo.PICK_PLANE_Z );
+	        mtPlane.setNodeMask( NodeGizmo.PICK_PLANE );
+	        mtX.setNodeMask( NodeGizmo.PICK_X );
+	        mtY.setNodeMask( NodeGizmo.PICK_Y );
+	        mtZ.setNodeMask( NodeGizmo.PICK_Z );
 	
 	        mtX.addChild( mtPlane );
 	        mtY.addChild( mtPlane );
@@ -37006,7 +36520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            Vec3.normalize( eye, eye );
 	
 	            // rotate node
-	            if ( this._rotateInLocal || this._translateInLocal ) {
+	            if ( this._rotateInLocal ) {
 	                // world scale
 	                Matrix.getScale( worldMat, tmpVec );
 	                Matrix.makeScale( tmpVec[ 0 ], tmpVec[ 1 ], tmpVec[ 2 ], invScale );
@@ -37014,17 +36528,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	                Matrix.mult( worldMat, invScale, temp );
 	                temp[ 12 ] = temp[ 13 ] = temp[ 14 ] = 0.0;
-	
-	                if ( this._translateInLocal ) {
-	                    Matrix.copy( temp, this._translateNode.getMatrix() );
-	                    Matrix.copy( temp, this._planeNode.getMatrix() );
-	                }
-	
-	                if ( this._rotateInLocal ) {
-	                    Matrix.copy( temp, this._rotateNode.getMatrix() );
-	                    Matrix.inverse( temp, temp );
-	                    Matrix.transformVec3( temp, eye, eye );
-	                }
+	                Matrix.copy( temp, this._rotateNode.getMatrix() );
+	                Matrix.inverse( temp, temp );
+	                Matrix.transformVec3( temp, eye, eye );
 	            } else {
 	                Matrix.makeIdentity( this._rotateNode.getMatrix() );
 	            }
@@ -37166,7 +36672,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // pick rotate gizmo
 	        var hit = this.pickGizmo( e, this._hoverNode.getNodeMask() | NodeGizmo.PICK_ARC );
 	        if ( !hit ) return;
-	
 	        // compute tangent direction
 	        var sign = this._hoverNode._nbAxis === 0 ? -1.0 : 1.0;
 	        var tang = Vec3.create();
@@ -37205,10 +36710,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // 3d direction
 	        Vec3.init( dir );
 	        dir[ this._hoverNode._nbAxis ] = 1.0;
-	        if ( this._translateInLocal ) {
-	            Matrix.transformVec3( this._editWorldScaleRot, dir, dir );
-	            Vec3.normalize( dir, dir );
-	        }
 	        Vec3.add( origin, dir, dir );
 	
 	        // project on canvas
@@ -37283,14 +36784,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return;
 	        var hit;
 	        if ( this._isEditing === false ) {
-	            hit = this.pickGizmo( e, NodeGizmo.PICK_GIZMO );
+	            hit = this.pickGizmo( e, NodeGizmo.PICK_XYZ | NodeGizmo.PICK_GIZMO );
 	            this.onNodeHovered( hit );
 	            return;
 	        }
-	
 	        if ( !this._hoverNode )
 	            return;
-	
 	        var par = this._hoverNode.getParents()[ 0 ];
 	        if ( par === this._rotateNode )
 	            this.updateRotateEdit( e );
@@ -37370,7 +36869,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._lsi.setTestPlane( false );
 	            this._lsi.set( Vec3.set( coordx, coordy, 0.0, this._origIntersect ), Vec3.set( coordx, coordy, 1.0, this._dstIntersect ) );
 	            this._iv.reset();
-	            this._iv.setTraversalMask( this._hoverNode.getNodeMask() );
+	            this._iv.setTraversalMask( this._hoverNode.getNodeMask() | NodeGizmo.PICK_ARROW );
+	
 	
 	            Matrix.copy( this._editWorldTrans, this.getMatrix() );
 	
@@ -37378,82 +36878,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._viewer._camera.accept( this._iv );
 	            this.setOnlyScenePicking();
 	
-	            if ( !this._translateInLocal ) {
-	                Matrix.transformVec3( this._editInvWorldScaleRot, this._lsi.getTranslateDistance(), tra );
-	            } else {
-	                Matrix.getScale( this._editInvWorldScaleRot, tra );
-	                var inter = this._lsi.getTranslateDistance();
-	                tra[ 0 ] *= inter[ 0 ];
-	                tra[ 1 ] *= inter[ 1 ];
-	                tra[ 2 ] *= inter[ 2 ];
-	            }
-	
+	            Matrix.transformVec3( this._editInvWorldScaleRot, this._lsi.getTranslateDistance(), tra );
 	            Matrix.multTranslate( this._editLocal, tra, this._attachedNode.getMatrix() );
 	
 	            this._attachedNode.dirtyBound();
 	        };
 	    } )(),
 	
-	    updatePlaneEdit: ( function () {
-	        var vec = Vec2.create();
-	        var tra = Vec3.create();
+	    updatePlaneEdit: function ( e ) {
+	        var vec = Vec3.create();
+	        getCanvasCoord( vec, e );
+	        Vec2.sub( vec, this._editOffset, vec );
 	
-	        return function ( e ) {
-	            getCanvasCoord( vec, e );
-	            Vec2.sub( vec, this._editOffset, vec );
+	        // canvas to webgl coord
+	        var viewer = this._viewer;
+	        var canvas = this._canvas;
+	        var coordx = vec[ 0 ] * ( viewer._canvasWidth / canvas.clientWidth );
+	        var coordy = ( canvas.clientHeight - vec[ 1 ] ) * ( viewer._canvasHeight / canvas.clientHeight );
 	
-	            // canvas to webgl coord
-	            var viewer = this._viewer;
-	            var canvas = this._canvas;
-	            var coordx = vec[ 0 ] * ( viewer._canvasWidth / canvas.clientWidth );
-	            var coordy = ( canvas.clientHeight - vec[ 1 ] ) * ( viewer._canvasHeight / canvas.clientHeight );
 	
-	            // project 2D point on the 3d plane
-	            this._lsi.reset();
-	            this._lsi.setTestPlane( true );
-	            this._lsi.set( Vec3.set( coordx, coordy, 0.0, this._origIntersect ), Vec3.set( coordx, coordy, 1.0, this._dstIntersect ) );
-	            this._iv.reset();
-	            this._iv.setTraversalMask( this._hoverNode.getNodeMask() );
+	        // project 2D point on the 3d plane
+	        this._lsi.reset();
+	        this._lsi.setTestPlane( true );
+	        this._lsi.set( Vec3.set( coordx, coordy, 0.0, this._origIntersect ), Vec3.set( coordx, coordy, 1.0, this._dstIntersect ) );
+	        this._iv.reset();
+	        this._iv.setTraversalMask( this._hoverNode.getNodeMask() | NodeGizmo.PICK_PLANE );
 	
-	            Matrix.copy( this._editWorldTrans, this.getMatrix() );
 	
-	            this.setOnlyGizmoPicking();
-	            this._viewer._camera.accept( this._iv );
-	            this.setOnlyScenePicking();
+	        Matrix.copy( this._editWorldTrans, this.getMatrix() );
 	
-	            if ( !this._translateInLocal ) {
-	                Matrix.transformVec3( this._editInvWorldScaleRot, this._lsi.getTranslateDistance(), tra );
-	            } else {
-	                Matrix.getScale( this._editInvWorldScaleRot, tra );
-	                var inter = this._lsi.getTranslateDistance();
-	                tra[ 0 ] *= inter[ 0 ];
-	                tra[ 1 ] *= inter[ 1 ];
-	                tra[ 2 ] *= inter[ 2 ];
-	            }
+	        this.setOnlyGizmoPicking();
+	        this._viewer._camera.accept( this._iv );
+	        this.setOnlyScenePicking();
 	
-	            Matrix.multTranslate( this._editLocal, tra, this._attachedNode.getMatrix() );
+	        Matrix.transformVec3( this._editInvWorldScaleRot, this._lsi.getTranslateDistance(), vec );
+	        Matrix.multTranslate( this._editLocal, vec, this._attachedNode.getMatrix() );
 	
-	            this._attachedNode.dirtyBound();
-	        };
-	    } )(),
+	        this._attachedNode.dirtyBound();
+	    }
 	
 	} );
 	
 	module.exports = NodeGizmo;
 
 
-/***/ }),
-/* 208 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BufferArray = __webpack_require__( 40 );
-	var Geometry = __webpack_require__( 31 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var DrawArrays = __webpack_require__( 42 );
-	var DrawElements = __webpack_require__( 43 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
+	var BufferArray = __webpack_require__( 20 );
+	var Geometry = __webpack_require__( 35 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var DrawArrays = __webpack_require__( 43 );
+	var DrawElements = __webpack_require__( 44 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
 	
 	
 	var glPrecision = [ '#ifdef GL_ES',
@@ -37775,15 +37255,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = GizmoGeometry;
 
 
-/***/ }),
-/* 209 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
 	var Notify = __webpack_require__( 10 );
-	var Uniform = __webpack_require__( 35 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var Uniform = __webpack_require__( 38 );
+	var NodeVisitor = __webpack_require__( 27 );
 	
 	var ArraySlider = function ( params ) {
 	    if ( params !== undefined ) {
@@ -38202,14 +37682,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ParameterVisitor;
 
 
-/***/ }),
-/* 210 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec3 = __webpack_require__( 15 );
-	var Matrix = __webpack_require__( 23 );
-	var TriangleSphereIntersector = __webpack_require__( 95 );
+	var Vec3 = __webpack_require__( 17 );
+	var Matrix = __webpack_require__( 28 );
+	var TriangleSphereIntersector = __webpack_require__( 93 );
 	
 	
 	var SphereIntersector = function () {
@@ -38305,17 +37785,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = SphereIntersector;
 
 
-/***/ }),
-/* 211 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var BufferArray = __webpack_require__( 40 );
-	var Geometry = __webpack_require__( 31 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var PrimitiveSet = __webpack_require__( 41 );
-	var Vec3 = __webpack_require__( 15 );
+	var BufferArray = __webpack_require__( 20 );
+	var Geometry = __webpack_require__( 35 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var PrimitiveSet = __webpack_require__( 42 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	var osg = MACROUTILS;
@@ -38583,25 +38063,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TangentSpaceGenerator;
 
 
-/***/ }),
-/* 212 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Camera = __webpack_require__( 56 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var Matrix = __webpack_require__( 23 );
-	var Node = __webpack_require__( 12 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
-	var Shape = __webpack_require__( 102 );
-	var Texture = __webpack_require__( 34 );
-	var Transform = __webpack_require__( 11 );
-	var Uniform = __webpack_require__( 35 );
-	var Vec2 = __webpack_require__( 70 );
-	var Vec4 = __webpack_require__( 25 );
-	var Viewport = __webpack_require__( 107 );
-	var Composer = __webpack_require__( 155 );
+	var Camera = __webpack_require__( 22 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var Matrix = __webpack_require__( 28 );
+	var Node = __webpack_require__( 24 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
+	var Shape = __webpack_require__( 100 );
+	var Texture = __webpack_require__( 37 );
+	var Transform = __webpack_require__( 23 );
+	var Uniform = __webpack_require__( 38 );
+	var Vec2 = __webpack_require__( 39 );
+	var Vec4 = __webpack_require__( 14 );
+	var Viewport = __webpack_require__( 105 );
+	var Composer = __webpack_require__( 153 );
 	
 	
 	var WebVRCustom = {};
@@ -38876,24 +38356,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = WebVRCustom;
 
 
-/***/ }),
-/* 213 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Camera = __webpack_require__( 56 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var Matrix = __webpack_require__( 23 );
-	var Node = __webpack_require__( 12 );
-	var Program = __webpack_require__( 100 );
-	var Shader = __webpack_require__( 101 );
-	var Shape = __webpack_require__( 102 );
-	var Texture = __webpack_require__( 34 );
-	var Transform = __webpack_require__( 11 );
-	var Uniform = __webpack_require__( 35 );
-	var Vec4 = __webpack_require__( 25 );
-	var Viewport = __webpack_require__( 107 );
-	var Composer = __webpack_require__( 155 );
+	var Camera = __webpack_require__( 22 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var Matrix = __webpack_require__( 28 );
+	var Node = __webpack_require__( 24 );
+	var Program = __webpack_require__( 98 );
+	var Shader = __webpack_require__( 99 );
+	var Shape = __webpack_require__( 100 );
+	var Texture = __webpack_require__( 37 );
+	var Transform = __webpack_require__( 23 );
+	var Uniform = __webpack_require__( 38 );
+	var Vec4 = __webpack_require__( 14 );
+	var Viewport = __webpack_require__( 105 );
+	var Composer = __webpack_require__( 153 );
 	
 	
 	var UpdateRttCameraCallback = function ( rootView, offsetView ) {
@@ -39064,16 +38544,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = WebVR;
 
 
-/***/ }),
-/* 214 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Renderer = __webpack_require__( 204 );
-	var View = __webpack_require__( 205 );
-	var Viewer = __webpack_require__( 215 );
-	var EventProxy = __webpack_require__( 218 );
-	var Scene = __webpack_require__( 206 );
+	var Renderer = __webpack_require__( 200 );
+	var View = __webpack_require__( 201 );
+	var Viewer = __webpack_require__( 211 );
+	var EventProxy = __webpack_require__( 214 );
 	
 	
 	var osgViewer = {};
@@ -39082,29 +38561,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	osgViewer.View = View;
 	osgViewer.Viewer = Viewer;
 	osgViewer.EventProxy = EventProxy;
-	osgViewer.Scene = Scene;
 	
 	module.exports = osgViewer;
 
 
-/***/ }),
-/* 215 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Matrix = __webpack_require__( 23 );
-	var Options = __webpack_require__( 216 );
+	var Matrix = __webpack_require__( 28 );
+	var Options = __webpack_require__( 212 );
 	var Timer = __webpack_require__( 9 );
-	var UpdateVisitor = __webpack_require__( 106 );
+	var UpdateVisitor = __webpack_require__( 104 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Texture = __webpack_require__( 34 );
-	var OrbitManipulator = __webpack_require__( 134 );
-	var createStats = __webpack_require__( 217 );
-	var EventProxy = __webpack_require__( 218 );
-	var View = __webpack_require__( 205 );
-	var WebGLUtils = __webpack_require__( 33 );
-	var WebGLDebugUtils = __webpack_require__( 226 );
+	var Texture = __webpack_require__( 37 );
+	var OrbitManipulator = __webpack_require__( 132 );
+	var createStats = __webpack_require__( 213 );
+	var EventProxy = __webpack_require__( 214 );
+	var View = __webpack_require__( 201 );
+	var WebGLUtils = __webpack_require__( 54 );
+	var WebGLDebugUtils = __webpack_require__( 222 );
 	
 	
 	var OptionsURL = ( function () {
@@ -39112,10 +38590,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ( function ( options ) {
 	        var vars = [],
 	            hash;
-	        if ( !window.location.search ) return;
+	        var indexOptions = window.location.href.indexOf( '?' );
+	        if ( indexOptions < 0 ) return;
 	
-	        // slice(1) to remove leading '?'
-	        var hashes = window.location.search.slice( 1 ).split( '&' );
+	        var hashes = window.location.href.slice( indexOptions + 1 ).split( '&' );
 	        for ( var i = 0; i < hashes.length; i++ ) {
 	            hash = hashes[ i ].split( '=' );
 	            var element = hash[ 0 ];
@@ -39207,7 +38685,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setUpView( gl.canvas, options );
 	
 	    this._hmd = null;
-	    this._requestAnimationFrame = window.requestAnimationFrame.bind( window );
 	
 	    this._contextLost = false;
 	};
@@ -39484,10 +38961,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        this.endFrame();
-	
-	        // submit frame to vr headset
-	        if ( this._hmd && this._hmd.isPresenting )
-	            this._hmd.submitFrame( this._eventProxy.WebVR._lastPose );
 	    },
 	
 	    setDone: function ( bool ) {
@@ -39502,8 +38975,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var self = this;
 	        var render = function () {
 	            if ( !self.done() ) {
-	                self._requestID = self._requestAnimationFrame( render, self.getGraphicContext().canvas );
+	
+	                var isPresentingVR = self._hmd && self._hmd.isPresenting;
+	
+	                if ( isPresentingVR )
+	                    self._requestID = self._hmd.requestAnimationFrame( render );
+	                else
+	                    self._requestID = window.requestAnimationFrame( render, self.getGraphicContext().canvas );
+	
 	                self.frame();
+	
+	                if ( isPresentingVR )
+	                    self._hmd.submitFrame( self._eventProxy.WebVR._lastPose );
 	            }
 	        };
 	        render();
@@ -39511,7 +38994,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    setVRDisplay: function ( hmd ) {
 	        this._hmd = hmd;
-	        this._requestAnimationFrame = hmd.requestAnimationFrame.bind( hmd );
 	    },
 	
 	    getVRDisplay: function () {
@@ -39525,8 +39007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        // reset position/orientation of hmd device
-	        if ( !this._hmd.capabilities.hasPosition )
-	            this._hmd.resetPose();
+	        this._hmd.resetPose();
 	
 	        if ( !this._hmd.capabilities.canPresent )
 	            return;
@@ -39683,9 +39164,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Viewer;
 
 
-/***/ }),
-/* 216 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
@@ -39722,13 +39203,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    getBoolean: function ( key ) {
 	        var val = this.getString( key );
-	        if ( val ) return ( val !== 'false' && val !== '0' );
+	        if ( val ) return Boolean( JSON.parse( val ) );
 	        return undefined;
 	    },
 	
 	    getNumber: function ( key ) {
 	        var val = this[ key ];
-	        if ( val ) return Number( val );
+	        if ( val ) return Number( JSON.parse( val ) );
 	        return undefined;
 	    },
 	
@@ -39743,9 +39224,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Options;
 
 
-/***/ }),
-/* 217 */
-/***/ (function(module, exports) {
+/***/ },
+/* 213 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -39771,7 +39252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            },
 	            calls: {
 	                caption: 'Calls (three.js)',
-	                over: 3000
+	                over: 300
 	            },
 	            raf: {
 	                caption: 'Time since last rAF (ms)',
@@ -39884,17 +39365,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = createStats;
 
 
-/***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var GamePad = __webpack_require__( 219 );
-	var HammerOsg = __webpack_require__( 220 );
-	var LeapMotion = __webpack_require__( 221 );
-	var StandardMouseKeyboard = __webpack_require__( 223 );
-	var WebVR = __webpack_require__( 224 );
-	var DeviceOrientation = __webpack_require__( 225 );
+	var GamePad = __webpack_require__( 215 );
+	var HammerOsg = __webpack_require__( 216 );
+	var LeapMotion = __webpack_require__( 217 );
+	var StandardMouseKeyboard = __webpack_require__( 219 );
+	var WebVR = __webpack_require__( 220 );
+	var DeviceOrientation = __webpack_require__( 221 );
 	
 	module.exports = {
 	    GamePad: GamePad,
@@ -39906,9 +39387,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
@@ -40005,12 +39486,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = GamePad;
 
 
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Hammer = __webpack_require__( 131 );
+	var Hammer = __webpack_require__( 129 );
 	
 	
 	var HammerController = function ( viewer ) {
@@ -40095,12 +39576,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = HammerController;
 
 
-/***/ }),
-/* 221 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Leap = __webpack_require__( 222 );
+	var Leap = __webpack_require__( 218 );
 	var Notify = __webpack_require__( 10 );
 	
 	var LeapMotion = function ( viewer ) {
@@ -40172,18 +39653,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LeapMotion;
 
 
-/***/ }),
-/* 222 */
-/***/ (function(module, exports) {
+/***/ },
+/* 218 */
+/***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_222__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_218__;
 
-/***/ }),
-/* 223 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Vec2 = __webpack_require__( 70 );
+	var Vec2 = __webpack_require__( 39 );
 	
 	
 	var StandardMouseKeyboard = function ( viewer ) {
@@ -40440,15 +39921,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = StandardMouseKeyboard;
 
 
-/***/ }),
-/* 224 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Quat = __webpack_require__( 26 );
-	var Vec3 = __webpack_require__( 15 );
-	var Matrix = __webpack_require__( 23 );
+	var Quat = __webpack_require__( 30 );
+	var Vec3 = __webpack_require__( 17 );
 	
 	
 	var WebVR = function ( viewer ) {
@@ -40517,58 +39997,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return true;
 	    },
 	
-	    update: ( function () {
-	        var tempQuat = Quat.create();
-	        var tempPos = Vec3.create();
+	    update: function () {
 	
-	        return function () {
+	        if ( !this.isValid() )
+	            return;
 	
-	            if ( !this.isValid() )
-	                return;
+	        var manipulatorAdapter = this.getManipulatorController();
 	
-	            var manipulatorAdapter = this.getManipulatorController();
+	        // update the manipulator with the rotation of the device
+	        if ( !manipulatorAdapter.update )
+	            return;
 	
-	            // update the manipulator with the rotation of the device
-	            if ( !manipulatorAdapter.update )
-	                return;
+	        if ( !this._hmd.capabilities.hasOrientation && !this._hmd.capabilities.hasPosition )
+	            return;
 	
-	            if ( !this._hmd.capabilities.hasOrientation && !this._hmd.capabilities.hasPosition )
-	                return;
+	        this._lastPose = this._hmd.getPose(); // if no prediction, call this._hmd.getImmediatePose()
 	
-	            this._lastPose = this._hmd.getPose(); // if no prediction, call this._hmd.getImmediatePose()
+	        // WebVR up vector is Y
+	        // OSGJS up vector is Z
 	
-	            // WebVR up vector is Y
-	            // OSGJS up vector is Z
+	        var quat = this._lastPose.orientation;
+	        if ( quat ) {
+	            this._quat[ 0 ] = quat[ 0 ];
+	            this._quat[ 1 ] = -quat[ 2 ];
+	            this._quat[ 2 ] = quat[ 1 ];
+	            this._quat[ 3 ] = quat[ 3 ];
+	        }
 	
-	            var sitToStand = this._hmd.stageParameters && this._hmd.stageParameters.sittingToStandingTransform;
+	        var pos = this._lastPose.position;
+	        if ( pos ) {
+	            this._pos[ 0 ] = pos[ 0 ] * this._worldScale;
+	            this._pos[ 1 ] = -pos[ 2 ] * this._worldScale;
+	            this._pos[ 2 ] = pos[ 1 ] * this._worldScale;
+	        }
 	
-	            var quat = this._lastPose.orientation;
-	            if ( quat ) {
-	                if ( sitToStand ) {
-	                    quat = Matrix.getRotate( sitToStand, tempQuat );
-	                    Quat.mult( quat, this._lastPose.orientation, quat );
-	                }
-	
-	                this._quat[ 0 ] = quat[ 0 ];
-	                this._quat[ 1 ] = -quat[ 2 ];
-	                this._quat[ 2 ] = quat[ 1 ];
-	                this._quat[ 3 ] = quat[ 3 ];
-	            }
-	
-	            var pos = this._lastPose.position;
-	            if ( pos ) {
-	                if ( sitToStand ) {
-	                    pos = Matrix.transformVec3( sitToStand, pos, tempPos );
-	                }
-	                this._pos[ 0 ] = pos[ 0 ] * this._worldScale;
-	                this._pos[ 1 ] = -pos[ 2 ] * this._worldScale;
-	                this._pos[ 2 ] = pos[ 1 ] * this._worldScale;
-	            }
-	
-	            manipulatorAdapter.update( this._quat, this._pos );
-	        };
-	    } )(),
-	
+	        manipulatorAdapter.update( this._quat, this._pos );
+	    },
 	
 	    getHmd: function () {
 	        return this._hmd;
@@ -40577,9 +40041,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = WebVR;
 
 
-/***/ }),
-/* 225 */
-/***/ (function(module, exports) {
+/***/ },
+/* 221 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -40658,9 +40122,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DeviceOrientation;
 
 
-/***/ }),
-/* 226 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
 
 	// jshint ignore: start
 	
@@ -41590,22 +41054,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = WebGLDebugUtils;
 
 
-/***/ }),
-/* 227 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var ShadowCastAttribute = __webpack_require__( 228 );
-	var ShadowCastCompiler = __webpack_require__( 165 );
-	var ShadowCastShaderGenerator = __webpack_require__( 164 );
-	var ShadowCasterVisitor = __webpack_require__( 229 );
-	var ShadowFrustumIntersection = __webpack_require__( 230 );
-	var ShadowMap = __webpack_require__( 231 );
-	var ShadowReceiveAttribute = __webpack_require__( 232 );
-	var ShadowSettings = __webpack_require__( 235 );
-	var ShadowTechnique = __webpack_require__( 233 );
-	var ShadowTexture = __webpack_require__( 234 );
-	var ShadowedScene = __webpack_require__( 236 );
+	var ShadowCastAttribute = __webpack_require__( 224 );
+	var ShadowCastCompiler = __webpack_require__( 163 );
+	var ShadowCastShaderGenerator = __webpack_require__( 162 );
+	var ShadowCasterVisitor = __webpack_require__( 225 );
+	var ShadowFrustumIntersection = __webpack_require__( 226 );
+	var ShadowMap = __webpack_require__( 227 );
+	var ShadowReceiveAttribute = __webpack_require__( 228 );
+	var ShadowSettings = __webpack_require__( 231 );
+	var ShadowTechnique = __webpack_require__( 229 );
+	var ShadowTexture = __webpack_require__( 230 );
+	var ShadowedScene = __webpack_require__( 232 );
 	
 	
 	var osgShadow = {};
@@ -41626,13 +41090,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgShadow;
 
 
-/***/ }),
-/* 228 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
+	var StateAttribute = __webpack_require__( 11 );
 	
 	
 	// Used to notify the Compiler to create a Depth Casting optimized shader
@@ -41676,17 +41140,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowCastAttribute;
 
 
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BlendFunc = __webpack_require__( 39 );
-	var Camera = __webpack_require__( 56 );
-	var Depth = __webpack_require__( 86 );
-	var Light = __webpack_require__( 97 );
-	var LightSource = __webpack_require__( 64 );
-	var NodeVisitor = __webpack_require__( 22 );
+	var BlendFunc = __webpack_require__( 15 );
+	var Camera = __webpack_require__( 22 );
+	var Depth = __webpack_require__( 84 );
+	var Light = __webpack_require__( 95 );
+	var LightSource = __webpack_require__( 63 );
+	var NodeVisitor = __webpack_require__( 27 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	
@@ -41802,21 +41266,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowCasterVisitor;
 
 
-/***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var BoundingBox = __webpack_require__( 14 );
-	var BoundingSphere = __webpack_require__( 18 );
-	var Camera = __webpack_require__( 56 );
-	var Geometry = __webpack_require__( 31 );
-	var Light = __webpack_require__( 97 );
-	var Matrix = __webpack_require__( 23 );
-	var MatrixMemoryPool = __webpack_require__( 27 );
-	var MatrixTransform = __webpack_require__( 44 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var Plane = __webpack_require__( 24 );
+	var BoundingBox = __webpack_require__( 16 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Camera = __webpack_require__( 22 );
+	var Geometry = __webpack_require__( 35 );
+	var Light = __webpack_require__( 95 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixMemoryPool = __webpack_require__( 31 );
+	var MatrixTransform = __webpack_require__( 45 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Plane = __webpack_require__( 29 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	/**
@@ -41992,34 +41456,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ComputeMultiFrustumBoundsVisitor;
 
 
-/***/ }),
-/* 231 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Camera = __webpack_require__( 56 );
-	var BlendFunc = __webpack_require__( 39 );
-	var ComputeBoundsVisitor = __webpack_require__( 30 );
-	var Depth = __webpack_require__( 86 );
-	var FrameBufferObject = __webpack_require__( 68 );
-	var Matrix = __webpack_require__( 23 );
+	var Camera = __webpack_require__( 22 );
+	var BlendFunc = __webpack_require__( 15 );
+	var ComputeBoundsVisitor = __webpack_require__( 34 );
+	var Depth = __webpack_require__( 84 );
+	var FrameBufferObject = __webpack_require__( 67 );
+	var Matrix = __webpack_require__( 28 );
 	var Notify = __webpack_require__( 10 );
-	var StateAttribute = __webpack_require__( 21 );
-	var StateSet = __webpack_require__( 19 );
-	var Texture = __webpack_require__( 34 );
-	var Transform = __webpack_require__( 11 );
-	var Uniform = __webpack_require__( 35 );
+	var StateAttribute = __webpack_require__( 11 );
+	var StateSet = __webpack_require__( 25 );
+	var Texture = __webpack_require__( 37 );
+	var Transform = __webpack_require__( 23 );
+	var Uniform = __webpack_require__( 38 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec3 = __webpack_require__( 15 );
-	var Vec4 = __webpack_require__( 25 );
-	var Viewport = __webpack_require__( 107 );
-	var WebGLCaps = __webpack_require__( 32 );
-	var ShadowReceiveAttribute = __webpack_require__( 232 );
-	var ShadowCasterVisitor = __webpack_require__( 229 );
-	var ShadowFrustumIntersection = __webpack_require__( 230 );
-	var ShadowCastAttribute = __webpack_require__( 228 );
-	var ShadowTechnique = __webpack_require__( 233 );
-	var ShadowTexture = __webpack_require__( 234 );
+	var Vec3 = __webpack_require__( 17 );
+	var Vec4 = __webpack_require__( 14 );
+	var Viewport = __webpack_require__( 105 );
+	var WebGLCaps = __webpack_require__( 36 );
+	var ShadowReceiveAttribute = __webpack_require__( 228 );
+	var ShadowCasterVisitor = __webpack_require__( 225 );
+	var ShadowFrustumIntersection = __webpack_require__( 226 );
+	var ShadowCastAttribute = __webpack_require__( 224 );
+	var ShadowTechnique = __webpack_require__( 229 );
+	var ShadowTexture = __webpack_require__( 230 );
 	
 	
 	// Custom camera cull callback
@@ -42086,6 +41550,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._textureMagFilter = undefined;
 	    this._textureMinFilter = undefined;
 	    this._textureSize = 256;
+	    this._renderSize = [ this._textureSize, this._textureSize ];
 	
 	    this._receivingStateset = undefined;
 	
@@ -42097,10 +41562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._texelSizeUniform = Uniform.createFloat1( 1.0 / this._textureSize, 'texelSize' );
 	    this._casterStateSet.addUniform( this._texelSizeUniform );
 	
-	    var unifRenderSize = Uniform.createFloat2( 'RenderSize' );
-	    this._casterStateSet.addUniform( unifRenderSize );
-	    this._renderSize = unifRenderSize.getInternalArray();
-	    this._renderSize[ 0 ] = this._renderSize[ 1 ] = this._textureSize;
+	    this._casterStateSet.addUniform( Uniform.createFloat2( this._renderSize, 'RenderSize' ) );
 	
 	    // make sure no unintended blend happens
 	    // if casting semi-transparent (alphablend material with full opaque pixels) shadow
@@ -42116,13 +41578,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var near = 0.001;
 	    var far = 1000;
-	    var unifRange = Uniform.createFloat4( 'Shadow_DepthRange' );
-	    this._casterStateSet.addUniform( unifRange );
-	    this._depthRange = unifRange.getInternalArray();
+	    this._depthRange = Vec4.create();
 	    this._depthRange[ 0 ] = near;
 	    this._depthRange[ 1 ] = far;
 	    this._depthRange[ 2 ] = far - near;
 	    this._depthRange[ 3 ] = 1.0 / ( far - near );
+	    this._casterStateSet.addUniform( Uniform.createFloat4( this._depthRange, 'Shadow_DepthRange' ) );
+	
+	
+	
 	
 	    this._worldLightPos = Vec4.create();
 	    this._worldLightPos[ 3 ] = 0;
@@ -43041,15 +42505,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowMap;
 
 
-/***/ }),
-/* 232 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var StateAttribute = __webpack_require__( 21 );
-	var Uniform = __webpack_require__( 35 );
-	var Map = __webpack_require__( 20 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Uniform = __webpack_require__( 38 );
+	var Map = __webpack_require__( 26 );
 	var Notify = __webpack_require__( 10 );
 	
 	
@@ -43371,13 +42835,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowReceiveAttribute;
 
 
-/***/ }),
-/* 233 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var Notify = __webpack_require__( 10 );
-	var Object = __webpack_require__( 13 );
+	var Object = __webpack_require__( 12 );
 	var MACROUTILS = __webpack_require__( 6 );
 	
 	/**
@@ -43463,17 +42927,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowTechnique;
 
 
-/***/ }),
-/* 234 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Map = __webpack_require__( 20 );
+	var Map = __webpack_require__( 26 );
 	var Notify = __webpack_require__( 10 );
-	var Texture = __webpack_require__( 34 );
-	var Uniform = __webpack_require__( 35 );
+	var Texture = __webpack_require__( 37 );
+	var Uniform = __webpack_require__( 38 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec4 = __webpack_require__( 25 );
+	var Vec4 = __webpack_require__( 14 );
 	
 	
 	/**
@@ -43586,10 +43050,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        // update Uniforms
 	        var uniformMap = this.getOrCreateUniforms( texUnit );
-	        uniformMap.ViewMatrix.setMatrix4( this._viewMatrix );
-	        uniformMap.ProjectionMatrix.setMatrix4( this._projectionMatrix );
-	        uniformMap.DepthRange.setFloat4( this._depthRange );
-	        uniformMap.MapSize.setFloat4( this._mapSize );
+	        uniformMap.ViewMatrix.setInternalArray( this._viewMatrix );
+	        uniformMap.ProjectionMatrix.setInternalArray( this._projectionMatrix );
+	        uniformMap.DepthRange.setInternalArray( this._depthRange );
+	        uniformMap.MapSize.setInternalArray( this._mapSize );
 	
 	    },
 	
@@ -43604,13 +43068,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowTexture;
 
 
-/***/ }),
-/* 235 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var MACROUTILS = __webpack_require__( 6 );
-	var Texture = __webpack_require__( 34 );
+	var Texture = __webpack_require__( 37 );
 	
 	var kernelSizeList = [ '1Band(1texFetch)', '4Band(4texFetch)', '9Band(9texFetch)', '16Band(16texFetch)', '1Tap(4texFetch)', '4Tap(16texFetch)', '9Tap(36texFetch)', '16Tap(64texFetch)', '4Poisson(16texFetch)', '8Poisson(32texFetch)', '16Poisson(64texFetch)', '25Poisson(100texFetch)', '32Poisson(128texFetch)' ];
 	
@@ -43759,18 +43223,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowSettings;
 
 
-/***/ }),
-/* 236 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var CullVisitor = __webpack_require__( 63 );
-	var Matrix = __webpack_require__( 23 );
-	var Node = __webpack_require__( 12 );
-	var NodeVisitor = __webpack_require__( 22 );
-	var StateSet = __webpack_require__( 19 );
+	var CullVisitor = __webpack_require__( 62 );
+	var Matrix = __webpack_require__( 28 );
+	var Node = __webpack_require__( 24 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var StateSet = __webpack_require__( 25 );
 	var MACROUTILS = __webpack_require__( 6 );
-	var Vec4 = __webpack_require__( 25 );
+	var Vec4 = __webpack_require__( 14 );
 	
 	
 	/**
@@ -43914,12 +43378,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ShadowedScene;
 
 
-/***/ }),
-/* 237 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var Text = __webpack_require__( 129 );
+	var Text = __webpack_require__( 127 );
 	
 	var osgText = {};
 	osgText.Text = Text;
@@ -43927,25 +43391,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgText;
 
 
-/***/ }),
-/* 238 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var osg = __webpack_require__( 126 );
-	var osgAnimation = __webpack_require__( 127 );
-	var osgText = __webpack_require__( 128 );
+	var osg = __webpack_require__( 124 );
+	var osgAnimation = __webpack_require__( 125 );
+	
 	
 	var osgWrappers = {};
 	
 	osgWrappers.osg = osg;
 	osgWrappers.osgAnimation = osgAnimation;
-	osgWrappers.osgText = osgText;
 	
 	module.exports = osgWrappers;
 
 
-/***/ })
+/***/ }
 /******/ ])
 });
 ;
