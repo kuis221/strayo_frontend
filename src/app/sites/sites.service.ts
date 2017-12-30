@@ -20,7 +20,7 @@ import { Dataset } from '../models/dataset.model';
 
 import { SitesState } from '../sites/state';
 import * as sitesActions from './actions/actions';
-import { GetSites } from './actions/actions';
+import { GetSites, SetMainSite } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { getSitesState } from '../reducers';
@@ -50,11 +50,13 @@ export class SitesService {
   private sitesSource = new BehaviorSubject<List<Site>>(List([]));
   sites = this.sitesSource.asObservable().pipe(distinctUntilChanged());
 
+  private mainSiteSource = new BehaviorSubject<Site>(null);
+  mainSite = this.mainSiteSource.asObservable().pipe(distinctUntilChanged());
   constructor(private store: Store<fromRoot.State>, private apollo: Apollo, private http: HttpClient) {
     this.getState$().subscribe((state) => {
       if (!state) return;
-      console.log('got state', state);
       this.sitesSource.next(state.sites);
+      this.mainSiteSource.next(state.mainSite);
     });
   }
 
@@ -64,6 +66,10 @@ export class SitesService {
 
   public loadSites() {
     this.store.dispatch(new GetSites());
+  }
+
+  public setMainSite(site: Site) {
+    this.store.dispatch(new SetMainSite(site));
   }
 
   // Called by effect

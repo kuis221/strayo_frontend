@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ApplicationRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { List } from 'immutable';
@@ -20,7 +20,7 @@ import { Dataset } from '../../models/dataset.model';
 export class SiteLayoutComponent implements OnInit {
   site: Site;
   datasets: Dataset[];
-  constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
+  constructor(private ref: ApplicationRef, private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.pipe(
@@ -32,9 +32,10 @@ export class SiteLayoutComponent implements OnInit {
       })
     ).subscribe((site) => {
       this.site = site;
-      this.datasets = site.datasets();
       if (!site) return;
+      this.datasets = site.datasets();
       this.datasetsService.setDatasets(site.datasets() || []);
+      console.log('GOT SITE', site.getProperties(), this.datasets);
     });
   }
 }

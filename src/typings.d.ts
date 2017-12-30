@@ -8,6 +8,8 @@ declare module 'pouchdb' {
 	var PouchDB: any;
 	export default PouchDB;
 }
+// Bluebird
+declare var P: any;
 
 declare var OSG: OSGModule;
 interface OSGModule {

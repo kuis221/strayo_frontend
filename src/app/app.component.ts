@@ -12,6 +12,8 @@ import { SitesService } from './sites/sites.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DatasetsService } from './datasets/datasets.service';
 
+import getItWorking from './util/getosgjsworking';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,6 +26,8 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private sitesService: SitesService, private datasetsService: DatasetsService) {
   }
   ngOnInit() {
+    getItWorking();
+    console.log('P', P, P.defer);
     console.log('osg', OSG);
     OSG.globalify();
     this.sitesService.loadSites();

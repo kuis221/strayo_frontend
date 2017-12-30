@@ -4,14 +4,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("bluebird"), require("zlib"), require("hammerjs"), require("jquery"), require("leapjs"));
+		module.exports = factory(require("bluebird"), require("zlib"), require("hammerjs"), require("jquery"), require("leapjs"), require("qunit"));
 	else if(typeof define === 'function' && define.amd)
-		define(["bluebird", "zlib", "hammer", "jquery", "leap"], factory);
+		define(["bluebird", "zlib", "hammer", "jquery", "leap", "qunit"], factory);
 	else if(typeof exports === 'object')
-		exports["OSG"] = factory(require("bluebird"), require("zlib"), require("hammerjs"), require("jquery"), require("leapjs"));
+		exports["OSG"] = factory(require("bluebird"), require("zlib"), require("hammerjs"), require("jquery"), require("leapjs"), require("qunit"));
 	else
-		root["OSG"] = factory(root["P"], root["Zlib"], root["Hammer"], root["$"], root["Leap"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_48__, __WEBPACK_EXTERNAL_MODULE_51__, __WEBPACK_EXTERNAL_MODULE_128__, __WEBPACK_EXTERNAL_MODULE_198__, __WEBPACK_EXTERNAL_MODULE_217__) {
+		root["OSG"] = factory(root["P"], root["Zlib"], root["Hammer"], root["$"], root["Leap"], root["QUnit"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_48__, __WEBPACK_EXTERNAL_MODULE_51__, __WEBPACK_EXTERNAL_MODULE_128__, __WEBPACK_EXTERNAL_MODULE_198__, __WEBPACK_EXTERNAL_MODULE_217__, __WEBPACK_EXTERNAL_MODULE_240__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -58,8 +58,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-	module.exports = __webpack_require__(1);
+	__webpack_require__(250);
+	module.exports = __webpack_require__(250);
 
 
 /***/ }),
@@ -42407,8 +42407,12414 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = osgWrappers;
 
 
+/***/ }),
+/* 234 */,
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * https://github.com/es-shims/es5-shim
+	 * @license es5-shim Copyright 2009-2014 by contributors, MIT License
+	 * see https://github.com/es-shims/es5-shim/blob/master/LICENSE
+	 */
+	
+	// vim: ts=4 sts=4 sw=4 expandtab
+	
+	//Add semicolon to prevent IIFE from being passed as argument to concatenated code.
+	;
+	
+	// UMD (Universal Module Definition)
+	// see https://github.com/umdjs/umd/blob/master/returnExports.js
+	(function (root, factory) {
+	    if (true) {
+	        // AMD. Register as an anonymous module.
+	        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object') {
+	        // Node. Does not work with strict CommonJS, but
+	        // only CommonJS-like enviroments that support module.exports,
+	        // like Node.
+	        module.exports = factory();
+	    } else {
+	        // Browser globals (root is window)
+	        root.returnExports = factory();
+	    }
+	}(this, function () {
+	
+	/**
+	 * Brings an environment as close to ECMAScript 5 compliance
+	 * as is possible with the facilities of erstwhile engines.
+	 *
+	 * Annotated ES5: http://es5.github.com/ (specific links below)
+	 * ES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
+	 * Required reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/
+	 */
+	
+	// Shortcut to an often accessed properties, in order to avoid multiple
+	// dereference that costs universally.
+	var ArrayPrototype = Array.prototype;
+	var ObjectPrototype = Object.prototype;
+	var FunctionPrototype = Function.prototype;
+	var StringPrototype = String.prototype;
+	var NumberPrototype = Number.prototype;
+	var array_slice = ArrayPrototype.slice;
+	var array_splice = ArrayPrototype.splice;
+	var array_push = ArrayPrototype.push;
+	var array_unshift = ArrayPrototype.unshift;
+	var call = FunctionPrototype.call;
+	
+	// Having a toString local variable name breaks in Opera so use _toString.
+	var _toString = ObjectPrototype.toString;
+	
+	var isFunction = function (val) {
+	    return ObjectPrototype.toString.call(val) === '[object Function]';
+	};
+	var isRegex = function (val) {
+	    return ObjectPrototype.toString.call(val) === '[object RegExp]';
+	};
+	var isArray = function isArray(obj) {
+	    return _toString.call(obj) === '[object Array]';
+	};
+	var isString = function isString(obj) {
+	    return _toString.call(obj) === '[object String]';
+	};
+	var isArguments = function isArguments(value) {
+	    var str = _toString.call(value);
+	    var isArgs = str === '[object Arguments]';
+	    if (!isArgs) {
+	        isArgs = !isArray(value)
+	            && value !== null
+	            && typeof value === 'object'
+	            && typeof value.length === 'number'
+	            && value.length >= 0
+	            && isFunction(value.callee);
+	    }
+	    return isArgs;
+	};
+	
+	var supportsDescriptors = Object.defineProperty && (function () {
+	    try {
+	        Object.defineProperty({}, 'x', {});
+	        return true;
+	    } catch (e) { /* this is ES3 */
+	        return false;
+	    }
+	}());
+	
+	// Define configurable, writable and non-enumerable props
+	// if they don't exist.
+	var defineProperty;
+	if (supportsDescriptors) {
+	    defineProperty = function (object, name, method, forceAssign) {
+	        if (!forceAssign && (name in object)) { return; }
+	        Object.defineProperty(object, name, {
+	            configurable: true,
+	            enumerable: false,
+	            writable: true,
+	            value: method
+	        });
+	    };
+	} else {
+	    defineProperty = function (object, name, method, forceAssign) {
+	        if (!forceAssign && (name in object)) { return; }
+	        object[name] = method;
+	    };
+	}
+	var defineProperties = function (object, map, forceAssign) {
+	    for (var name in map) {
+	        if (ObjectPrototype.hasOwnProperty.call(map, name)) {
+	          defineProperty(object, name, map[name], forceAssign);
+	        }
+	    }
+	};
+	
+	//
+	// Util
+	// ======
+	//
+	
+	// ES5 9.4
+	// http://es5.github.com/#x9.4
+	// http://jsperf.com/to-integer
+	
+	function toInteger(num) {
+	    var n = +num;
+	    if (n !== n) { // isNaN
+	        n = 0;
+	    } else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0)) {
+	        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+	    }
+	    return n;
+	}
+	
+	function isPrimitive(input) {
+	    var type = typeof input;
+	    return (
+	        input === null ||
+	        type === 'undefined' ||
+	        type === 'boolean' ||
+	        type === 'number' ||
+	        type === 'string'
+	    );
+	}
+	
+	function toPrimitive(input) {
+	    var val, valueOf, toStr;
+	    if (isPrimitive(input)) {
+	        return input;
+	    }
+	    valueOf = input.valueOf;
+	    if (isFunction(valueOf)) {
+	        val = valueOf.call(input);
+	        if (isPrimitive(val)) {
+	            return val;
+	        }
+	    }
+	    toStr = input.toString;
+	    if (isFunction(toStr)) {
+	        val = toStr.call(input);
+	        if (isPrimitive(val)) {
+	            return val;
+	        }
+	    }
+	    throw new TypeError();
+	}
+	
+	// ES5 9.9
+	// http://es5.github.com/#x9.9
+	var toObject = function (o) {
+	    if (o == null) { // this matches both null and undefined
+	        throw new TypeError("can't convert " + o + ' to object');
+	    }
+	    return Object(o);
+	};
+	
+	var ToUint32 = function ToUint32(x) {
+	    return x >>> 0;
+	};
+	
+	//
+	// Function
+	// ========
+	//
+	
+	// ES-5 15.3.4.5
+	// http://es5.github.com/#x15.3.4.5
+	
+	function Empty() {}
+	
+	defineProperties(FunctionPrototype, {
+	    bind: function bind(that) { // .length is 1
+	        // 1. Let Target be the this value.
+	        var target = this;
+	        // 2. If IsCallable(Target) is false, throw a TypeError exception.
+	        if (!isFunction(target)) {
+	            throw new TypeError('Function.prototype.bind called on incompatible ' + target);
+	        }
+	        // 3. Let A be a new (possibly empty) internal list of all of the
+	        //   argument values provided after thisArg (arg1, arg2 etc), in order.
+	        // XXX slicedArgs will stand in for "A" if used
+	        var args = array_slice.call(arguments, 1); // for normal call
+	        // 4. Let F be a new native ECMAScript object.
+	        // 11. Set the [[Prototype]] internal property of F to the standard
+	        //   built-in Function prototype object as specified in 15.3.3.1.
+	        // 12. Set the [[Call]] internal property of F as described in
+	        //   15.3.4.5.1.
+	        // 13. Set the [[Construct]] internal property of F as described in
+	        //   15.3.4.5.2.
+	        // 14. Set the [[HasInstance]] internal property of F as described in
+	        //   15.3.4.5.3.
+	        var binder = function () {
+	
+	            if (this instanceof bound) {
+	                // 15.3.4.5.2 [[Construct]]
+	                // When the [[Construct]] internal method of a function object,
+	                // F that was created using the bind function is called with a
+	                // list of arguments ExtraArgs, the following steps are taken:
+	                // 1. Let target be the value of F's [[TargetFunction]]
+	                //   internal property.
+	                // 2. If target has no [[Construct]] internal method, a
+	                //   TypeError exception is thrown.
+	                // 3. Let boundArgs be the value of F's [[BoundArgs]] internal
+	                //   property.
+	                // 4. Let args be a new list containing the same values as the
+	                //   list boundArgs in the same order followed by the same
+	                //   values as the list ExtraArgs in the same order.
+	                // 5. Return the result of calling the [[Construct]] internal
+	                //   method of target providing args as the arguments.
+	
+	                var result = target.apply(
+	                    this,
+	                    args.concat(array_slice.call(arguments))
+	                );
+	                if (Object(result) === result) {
+	                    return result;
+	                }
+	                return this;
+	
+	            } else {
+	                // 15.3.4.5.1 [[Call]]
+	                // When the [[Call]] internal method of a function object, F,
+	                // which was created using the bind function is called with a
+	                // this value and a list of arguments ExtraArgs, the following
+	                // steps are taken:
+	                // 1. Let boundArgs be the value of F's [[BoundArgs]] internal
+	                //   property.
+	                // 2. Let boundThis be the value of F's [[BoundThis]] internal
+	                //   property.
+	                // 3. Let target be the value of F's [[TargetFunction]] internal
+	                //   property.
+	                // 4. Let args be a new list containing the same values as the
+	                //   list boundArgs in the same order followed by the same
+	                //   values as the list ExtraArgs in the same order.
+	                // 5. Return the result of calling the [[Call]] internal method
+	                //   of target providing boundThis as the this value and
+	                //   providing args as the arguments.
+	
+	                // equiv: target.call(this, ...boundArgs, ...args)
+	                return target.apply(
+	                    that,
+	                    args.concat(array_slice.call(arguments))
+	                );
+	
+	            }
+	
+	        };
+	
+	        // 15. If the [[Class]] internal property of Target is "Function", then
+	        //     a. Let L be the length property of Target minus the length of A.
+	        //     b. Set the length own property of F to either 0 or L, whichever is
+	        //       larger.
+	        // 16. Else set the length own property of F to 0.
+	
+	        var boundLength = Math.max(0, target.length - args.length);
+	
+	        // 17. Set the attributes of the length own property of F to the values
+	        //   specified in 15.3.5.1.
+	        var boundArgs = [];
+	        for (var i = 0; i < boundLength; i++) {
+	            boundArgs.push('$' + i);
+	        }
+	
+	        // XXX Build a dynamic function with desired amount of arguments is the only
+	        // way to set the length property of a function.
+	        // In environments where Content Security Policies enabled (Chrome extensions,
+	        // for ex.) all use of eval or Function costructor throws an exception.
+	        // However in all of these environments Function.prototype.bind exists
+	        // and so this code will never be executed.
+	        var bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this, arguments); }')(binder);
+	
+	        if (target.prototype) {
+	            Empty.prototype = target.prototype;
+	            bound.prototype = new Empty();
+	            // Clean up dangling references.
+	            Empty.prototype = null;
+	        }
+	
+	        // TODO
+	        // 18. Set the [[Extensible]] internal property of F to true.
+	
+	        // TODO
+	        // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
+	        // 20. Call the [[DefineOwnProperty]] internal method of F with
+	        //   arguments "caller", PropertyDescriptor {[[Get]]: thrower, [[Set]]:
+	        //   thrower, [[Enumerable]]: false, [[Configurable]]: false}, and
+	        //   false.
+	        // 21. Call the [[DefineOwnProperty]] internal method of F with
+	        //   arguments "arguments", PropertyDescriptor {[[Get]]: thrower,
+	        //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
+	        //   and false.
+	
+	        // TODO
+	        // NOTE Function objects created using Function.prototype.bind do not
+	        // have a prototype property or the [[Code]], [[FormalParameters]], and
+	        // [[Scope]] internal properties.
+	        // XXX can't delete prototype in pure-js.
+	
+	        // 22. Return F.
+	        return bound;
+	    }
+	});
+	
+	// _Please note: Shortcuts are defined after `Function.prototype.bind` as we
+	// us it in defining shortcuts.
+	var owns = call.bind(ObjectPrototype.hasOwnProperty);
+	
+	// If JS engine supports accessors creating shortcuts.
+	var defineGetter;
+	var defineSetter;
+	var lookupGetter;
+	var lookupSetter;
+	var supportsAccessors;
+	if ((supportsAccessors = owns(ObjectPrototype, '__defineGetter__'))) {
+	    defineGetter = call.bind(ObjectPrototype.__defineGetter__);
+	    defineSetter = call.bind(ObjectPrototype.__defineSetter__);
+	    lookupGetter = call.bind(ObjectPrototype.__lookupGetter__);
+	    lookupSetter = call.bind(ObjectPrototype.__lookupSetter__);
+	}
+	
+	//
+	// Array
+	// =====
+	//
+	
+	// ES5 15.4.4.12
+	// http://es5.github.com/#x15.4.4.12
+	var spliceNoopReturnsEmptyArray = (function () {
+	    var a = [1, 2];
+	    var result = a.splice();
+	    return a.length === 2 && isArray(result) && result.length === 0;
+	}());
+	defineProperties(ArrayPrototype, {
+	    // Safari 5.0 bug where .splice() returns undefined
+	    splice: function splice(start, deleteCount) {
+	        if (arguments.length === 0) {
+	            return [];
+	        } else {
+	            return array_splice.apply(this, arguments);
+	        }
+	    }
+	}, spliceNoopReturnsEmptyArray);
+	
+	var spliceWorksWithEmptyObject = (function () {
+	    var obj = {};
+	    ArrayPrototype.splice.call(obj, 0, 0, 1);
+	    return obj.length === 1;
+	}());
+	defineProperties(ArrayPrototype, {
+	    splice: function splice(start, deleteCount) {
+	        if (arguments.length === 0) { return []; }
+	        var args = arguments;
+	        this.length = Math.max(toInteger(this.length), 0);
+	        if (arguments.length > 0 && typeof deleteCount !== 'number') {
+	            args = array_slice.call(arguments);
+	            if (args.length < 2) {
+	                args.push(this.length - start);
+	            } else {
+	                args[1] = toInteger(deleteCount);
+	            }
+	        }
+	        return array_splice.apply(this, args);
+	    }
+	}, !spliceWorksWithEmptyObject);
+	
+	// ES5 15.4.4.12
+	// http://es5.github.com/#x15.4.4.13
+	// Return len+argCount.
+	// [bugfix, ielt8]
+	// IE < 8 bug: [].unshift(0) === undefined but should be "1"
+	var hasUnshiftReturnValueBug = [].unshift(0) !== 1;
+	defineProperties(ArrayPrototype, {
+	    unshift: function () {
+	        array_unshift.apply(this, arguments);
+	        return this.length;
+	    }
+	}, hasUnshiftReturnValueBug);
+	
+	// ES5 15.4.3.2
+	// http://es5.github.com/#x15.4.3.2
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
+	defineProperties(Array, { isArray: isArray });
+	
+	// The IsCallable() check in the Array functions
+	// has been replaced with a strict check on the
+	// internal class of the object to trap cases where
+	// the provided function was actually a regular
+	// expression literal, which in V8 and
+	// JavaScriptCore is a typeof "function".  Only in
+	// V8 are regular expression literals permitted as
+	// reduce parameters, so it is desirable in the
+	// general case for the shim to match the more
+	// strict and common behavior of rejecting regular
+	// expressions.
+	
+	// ES5 15.4.4.18
+	// http://es5.github.com/#x15.4.4.18
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
+	
+	// Check failure of by-index access of string characters (IE < 9)
+	// and failure of `0 in boxedString` (Rhino)
+	var boxedString = Object('a');
+	var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
+	
+	var properlyBoxesContext = function properlyBoxed(method) {
+	    // Check node 0.6.21 bug where third parameter is not boxed
+	    var properlyBoxesNonStrict = true;
+	    var properlyBoxesStrict = true;
+	    if (method) {
+	        method.call('foo', function (_, __, context) {
+	            if (typeof context !== 'object') { properlyBoxesNonStrict = false; }
+	        });
+	
+	        method.call([1], function () {
+	            'use strict';
+	            properlyBoxesStrict = typeof this === 'string';
+	        }, 'x');
+	    }
+	    return !!method && properlyBoxesNonStrict && properlyBoxesStrict;
+	};
+	
+	defineProperties(ArrayPrototype, {
+	    forEach: function forEach(fun /*, thisp*/) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            thisp = arguments[1],
+	            i = -1,
+	            length = self.length >>> 0;
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(); // TODO message
+	        }
+	
+	        while (++i < length) {
+	            if (i in self) {
+	                // Invoke the callback function with call, passing arguments:
+	                // context, property value, property key, thisArg object
+	                // context
+	                fun.call(thisp, self[i], i, object);
+	            }
+	        }
+	    }
+	}, !properlyBoxesContext(ArrayPrototype.forEach));
+	
+	// ES5 15.4.4.19
+	// http://es5.github.com/#x15.4.4.19
+	// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
+	defineProperties(ArrayPrototype, {
+	    map: function map(fun /*, thisp*/) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0,
+	            result = Array(length),
+	            thisp = arguments[1];
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        for (var i = 0; i < length; i++) {
+	            if (i in self) {
+	                result[i] = fun.call(thisp, self[i], i, object);
+	            }
+	        }
+	        return result;
+	    }
+	}, !properlyBoxesContext(ArrayPrototype.map));
+	
+	// ES5 15.4.4.20
+	// http://es5.github.com/#x15.4.4.20
+	// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
+	defineProperties(ArrayPrototype, {
+	    filter: function filter(fun /*, thisp */) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0,
+	            result = [],
+	            value,
+	            thisp = arguments[1];
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        for (var i = 0; i < length; i++) {
+	            if (i in self) {
+	                value = self[i];
+	                if (fun.call(thisp, value, i, object)) {
+	                    result.push(value);
+	                }
+	            }
+	        }
+	        return result;
+	    }
+	}, !properlyBoxesContext(ArrayPrototype.filter));
+	
+	// ES5 15.4.4.16
+	// http://es5.github.com/#x15.4.4.16
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
+	defineProperties(ArrayPrototype, {
+	    every: function every(fun /*, thisp */) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0,
+	            thisp = arguments[1];
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        for (var i = 0; i < length; i++) {
+	            if (i in self && !fun.call(thisp, self[i], i, object)) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+	}, !properlyBoxesContext(ArrayPrototype.every));
+	
+	// ES5 15.4.4.17
+	// http://es5.github.com/#x15.4.4.17
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
+	defineProperties(ArrayPrototype, {
+	    some: function some(fun /*, thisp */) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0,
+	            thisp = arguments[1];
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        for (var i = 0; i < length; i++) {
+	            if (i in self && fun.call(thisp, self[i], i, object)) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	}, !properlyBoxesContext(ArrayPrototype.some));
+	
+	// ES5 15.4.4.21
+	// http://es5.github.com/#x15.4.4.21
+	// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
+	var reduceCoercesToObject = false;
+	if (ArrayPrototype.reduce) {
+	    reduceCoercesToObject = typeof ArrayPrototype.reduce.call('es5', function (_, __, ___, list) { return list; }) === 'object';
+	}
+	defineProperties(ArrayPrototype, {
+	    reduce: function reduce(fun /*, initial*/) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0;
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        // no value to return if no initial value and an empty array
+	        if (!length && arguments.length === 1) {
+	            throw new TypeError('reduce of empty array with no initial value');
+	        }
+	
+	        var i = 0;
+	        var result;
+	        if (arguments.length >= 2) {
+	            result = arguments[1];
+	        } else {
+	            do {
+	                if (i in self) {
+	                    result = self[i++];
+	                    break;
+	                }
+	
+	                // if array contains no values, no initial value to return
+	                if (++i >= length) {
+	                    throw new TypeError('reduce of empty array with no initial value');
+	                }
+	            } while (true);
+	        }
+	
+	        for (; i < length; i++) {
+	            if (i in self) {
+	                result = fun.call(void 0, result, self[i], i, object);
+	            }
+	        }
+	
+	        return result;
+	    }
+	}, !reduceCoercesToObject);
+	
+	// ES5 15.4.4.22
+	// http://es5.github.com/#x15.4.4.22
+	// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
+	var reduceRightCoercesToObject = false;
+	if (ArrayPrototype.reduceRight) {
+	    reduceRightCoercesToObject = typeof ArrayPrototype.reduceRight.call('es5', function (_, __, ___, list) { return list; }) === 'object';
+	}
+	defineProperties(ArrayPrototype, {
+	    reduceRight: function reduceRight(fun /*, initial*/) {
+	        var object = toObject(this),
+	            self = splitString && isString(this) ? this.split('') : object,
+	            length = self.length >>> 0;
+	
+	        // If no callback function or if callback is not a callable function
+	        if (!isFunction(fun)) {
+	            throw new TypeError(fun + ' is not a function');
+	        }
+	
+	        // no value to return if no initial value, empty array
+	        if (!length && arguments.length === 1) {
+	            throw new TypeError('reduceRight of empty array with no initial value');
+	        }
+	
+	        var result, i = length - 1;
+	        if (arguments.length >= 2) {
+	            result = arguments[1];
+	        } else {
+	            do {
+	                if (i in self) {
+	                    result = self[i--];
+	                    break;
+	                }
+	
+	                // if array contains no values, no initial value to return
+	                if (--i < 0) {
+	                    throw new TypeError('reduceRight of empty array with no initial value');
+	                }
+	            } while (true);
+	        }
+	
+	        if (i < 0) {
+	            return result;
+	        }
+	
+	        do {
+	            if (i in self) {
+	                result = fun.call(void 0, result, self[i], i, object);
+	            }
+	        } while (i--);
+	
+	        return result;
+	    }
+	}, !reduceRightCoercesToObject);
+	
+	// ES5 15.4.4.14
+	// http://es5.github.com/#x15.4.4.14
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
+	var hasFirefox2IndexOfBug = Array.prototype.indexOf && [0, 1].indexOf(1, 2) !== -1;
+	defineProperties(ArrayPrototype, {
+	    indexOf: function indexOf(sought /*, fromIndex */ ) {
+	        var self = splitString && isString(this) ? this.split('') : toObject(this),
+	            length = self.length >>> 0;
+	
+	        if (!length) {
+	            return -1;
+	        }
+	
+	        var i = 0;
+	        if (arguments.length > 1) {
+	            i = toInteger(arguments[1]);
+	        }
+	
+	        // handle negative indices
+	        i = i >= 0 ? i : Math.max(0, length + i);
+	        for (; i < length; i++) {
+	            if (i in self && self[i] === sought) {
+	                return i;
+	            }
+	        }
+	        return -1;
+	    }
+	}, hasFirefox2IndexOfBug);
+	
+	// ES5 15.4.4.15
+	// http://es5.github.com/#x15.4.4.15
+	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+	var hasFirefox2LastIndexOfBug = Array.prototype.lastIndexOf && [0, 1].lastIndexOf(0, -3) !== -1;
+	defineProperties(ArrayPrototype, {
+	    lastIndexOf: function lastIndexOf(sought /*, fromIndex */) {
+	        var self = splitString && isString(this) ? this.split('') : toObject(this),
+	            length = self.length >>> 0;
+	
+	        if (!length) {
+	            return -1;
+	        }
+	        var i = length - 1;
+	        if (arguments.length > 1) {
+	            i = Math.min(i, toInteger(arguments[1]));
+	        }
+	        // handle negative indices
+	        i = i >= 0 ? i : length - Math.abs(i);
+	        for (; i >= 0; i--) {
+	            if (i in self && sought === self[i]) {
+	                return i;
+	            }
+	        }
+	        return -1;
+	    }
+	}, hasFirefox2LastIndexOfBug);
+	
+	//
+	// Object
+	// ======
+	//
+	
+	// ES5 15.2.3.14
+	// http://es5.github.com/#x15.2.3.14
+	
+	// http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
+	var hasDontEnumBug = !({'toString': null}).propertyIsEnumerable('toString'),
+	    hasProtoEnumBug = (function () {}).propertyIsEnumerable('prototype'),
+	    dontEnums = [
+	        'toString',
+	        'toLocaleString',
+	        'valueOf',
+	        'hasOwnProperty',
+	        'isPrototypeOf',
+	        'propertyIsEnumerable',
+	        'constructor'
+	    ],
+	    dontEnumsLength = dontEnums.length;
+	
+	defineProperties(Object, {
+	    keys: function keys(object) {
+	        var isFn = isFunction(object),
+	            isArgs = isArguments(object),
+	            isObject = object !== null && typeof object === 'object',
+	            isStr = isObject && isString(object);
+	
+	        if (!isObject && !isFn && !isArgs) {
+	            throw new TypeError('Object.keys called on a non-object');
+	        }
+	
+	        var theKeys = [];
+	        var skipProto = hasProtoEnumBug && isFn;
+	        if (isStr || isArgs) {
+	            for (var i = 0; i < object.length; ++i) {
+	                theKeys.push(String(i));
+	            }
+	        } else {
+	            for (var name in object) {
+	                if (!(skipProto && name === 'prototype') && owns(object, name)) {
+	                    theKeys.push(String(name));
+	                }
+	            }
+	        }
+	
+	        if (hasDontEnumBug) {
+	            var ctor = object.constructor,
+	                skipConstructor = ctor && ctor.prototype === object;
+	            for (var j = 0; j < dontEnumsLength; j++) {
+	                var dontEnum = dontEnums[j];
+	                if (!(skipConstructor && dontEnum === 'constructor') && owns(object, dontEnum)) {
+	                    theKeys.push(dontEnum);
+	                }
+	            }
+	        }
+	        return theKeys;
+	    }
+	});
+	
+	var keysWorksWithArguments = Object.keys && (function () {
+	    // Safari 5.0 bug
+	    return Object.keys(arguments).length === 2;
+	}(1, 2));
+	var originalKeys = Object.keys;
+	defineProperties(Object, {
+	    keys: function keys(object) {
+	        if (isArguments(object)) {
+	            return originalKeys(ArrayPrototype.slice.call(object));
+	        } else {
+	            return originalKeys(object);
+	        }
+	    }
+	}, !keysWorksWithArguments);
+	
+	//
+	// Date
+	// ====
+	//
+	
+	// ES5 15.9.5.43
+	// http://es5.github.com/#x15.9.5.43
+	// This function returns a String value represent the instance in time
+	// represented by this Date object. The format of the String is the Date Time
+	// string format defined in 15.9.1.15. All fields are present in the String.
+	// The time zone is always UTC, denoted by the suffix Z. If the time value of
+	// this object is not a finite Number a RangeError exception is thrown.
+	var negativeDate = -62198755200000;
+	var negativeYearString = '-000001';
+	var hasNegativeDateBug = Date.prototype.toISOString && new Date(negativeDate).toISOString().indexOf(negativeYearString) === -1;
+	
+	defineProperties(Date.prototype, {
+	    toISOString: function toISOString() {
+	        var result, length, value, year, month;
+	        if (!isFinite(this)) {
+	            throw new RangeError('Date.prototype.toISOString called on non-finite value.');
+	        }
+	
+	        year = this.getUTCFullYear();
+	
+	        month = this.getUTCMonth();
+	        // see https://github.com/es-shims/es5-shim/issues/111
+	        year += Math.floor(month / 12);
+	        month = (month % 12 + 12) % 12;
+	
+	        // the date time string format is specified in 15.9.1.15.
+	        result = [month + 1, this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
+	        year = (
+	            (year < 0 ? '-' : (year > 9999 ? '+' : '')) +
+	            ('00000' + Math.abs(year)).slice(0 <= year && year <= 9999 ? -4 : -6)
+	        );
+	
+	        length = result.length;
+	        while (length--) {
+	            value = result[length];
+	            // pad months, days, hours, minutes, and seconds to have two
+	            // digits.
+	            if (value < 10) {
+	                result[length] = '0' + value;
+	            }
+	        }
+	        // pad milliseconds to have three digits.
+	        return (
+	            year + '-' + result.slice(0, 2).join('-') +
+	            'T' + result.slice(2).join(':') + '.' +
+	            ('000' + this.getUTCMilliseconds()).slice(-3) + 'Z'
+	        );
+	    }
+	}, hasNegativeDateBug);
+	
+	
+	// ES5 15.9.5.44
+	// http://es5.github.com/#x15.9.5.44
+	// This function provides a String representation of a Date object for use by
+	// JSON.stringify (15.12.3).
+	var dateToJSONIsSupported = false;
+	try {
+	    dateToJSONIsSupported = (
+	        Date.prototype.toJSON &&
+	        new Date(NaN).toJSON() === null &&
+	        new Date(negativeDate).toJSON().indexOf(negativeYearString) !== -1 &&
+	        Date.prototype.toJSON.call({ // generic
+	            toISOString: function () {
+	                return true;
+	            }
+	        })
+	    );
+	} catch (e) {
+	}
+	if (!dateToJSONIsSupported) {
+	    Date.prototype.toJSON = function toJSON(key) {
+	        // When the toJSON method is called with argument key, the following
+	        // steps are taken:
+	
+	        // 1.  Let O be the result of calling ToObject, giving it the this
+	        // value as its argument.
+	        // 2. Let tv be toPrimitive(O, hint Number).
+	        var o = Object(this),
+	            tv = toPrimitive(o),
+	            toISO;
+	        // 3. If tv is a Number and is not finite, return null.
+	        if (typeof tv === 'number' && !isFinite(tv)) {
+	            return null;
+	        }
+	        // 4. Let toISO be the result of calling the [[Get]] internal method of
+	        // O with argument "toISOString".
+	        toISO = o.toISOString;
+	        // 5. If IsCallable(toISO) is false, throw a TypeError exception.
+	        if (typeof toISO !== 'function') {
+	            throw new TypeError('toISOString property is not callable');
+	        }
+	        // 6. Return the result of calling the [[Call]] internal method of
+	        //  toISO with O as the this value and an empty argument list.
+	        return toISO.call(o);
+	
+	        // NOTE 1 The argument is ignored.
+	
+	        // NOTE 2 The toJSON function is intentionally generic; it does not
+	        // require that its this value be a Date object. Therefore, it can be
+	        // transferred to other kinds of objects for use as a method. However,
+	        // it does require that any such object have a toISOString method. An
+	        // object is free to use the argument key to filter its
+	        // stringification.
+	    };
+	}
+	
+	// ES5 15.9.4.2
+	// http://es5.github.com/#x15.9.4.2
+	// based on work shared by Daniel Friesen (dantman)
+	// http://gist.github.com/303249
+	var supportsExtendedYears = Date.parse('+033658-09-27T01:46:40.000Z') === 1e15;
+	var acceptsInvalidDates = !isNaN(Date.parse('2012-04-04T24:00:00.500Z')) || !isNaN(Date.parse('2012-11-31T23:59:59.000Z'));
+	var doesNotParseY2KNewYear = isNaN(Date.parse('2000-01-01T00:00:00.000Z'));
+	if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExtendedYears) {
+	    // XXX global assignment won't work in embeddings that use
+	    // an alternate object for the context.
+	    Date = (function (NativeDate) {
+	
+	        // Date.length === 7
+	        function Date(Y, M, D, h, m, s, ms) {
+	            var length = arguments.length;
+	            if (this instanceof NativeDate) {
+	                var date = length === 1 && String(Y) === Y ? // isString(Y)
+	                    // We explicitly pass it through parse:
+	                    new NativeDate(Date.parse(Y)) :
+	                    // We have to manually make calls depending on argument
+	                    // length here
+	                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
+	                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
+	                    length >= 5 ? new NativeDate(Y, M, D, h, m) :
+	                    length >= 4 ? new NativeDate(Y, M, D, h) :
+	                    length >= 3 ? new NativeDate(Y, M, D) :
+	                    length >= 2 ? new NativeDate(Y, M) :
+	                    length >= 1 ? new NativeDate(Y) :
+	                                  new NativeDate();
+	                // Prevent mixups with unfixed Date object
+	                date.constructor = Date;
+	                return date;
+	            }
+	            return NativeDate.apply(this, arguments);
+	        }
+	
+	        // 15.9.1.15 Date Time String Format.
+	        var isoDateExpression = new RegExp('^' +
+	            '(\\d{4}|[\+\-]\\d{6})' + // four-digit year capture or sign +
+	                                      // 6-digit extended year
+	            '(?:-(\\d{2})' + // optional month capture
+	            '(?:-(\\d{2})' + // optional day capture
+	            '(?:' + // capture hours:minutes:seconds.milliseconds
+	                'T(\\d{2})' + // hours capture
+	                ':(\\d{2})' + // minutes capture
+	                '(?:' + // optional :seconds.milliseconds
+	                    ':(\\d{2})' + // seconds capture
+	                    '(?:(\\.\\d{1,}))?' + // milliseconds capture
+	                ')?' +
+	            '(' + // capture UTC offset component
+	                'Z|' + // UTC capture
+	                '(?:' + // offset specifier +/-hours:minutes
+	                    '([-+])' + // sign capture
+	                    '(\\d{2})' + // hours offset capture
+	                    ':(\\d{2})' + // minutes offset capture
+	                ')' +
+	            ')?)?)?)?' +
+	        '$');
+	
+	        var months = [
+	            0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
+	        ];
+	
+	        function dayFromMonth(year, month) {
+	            var t = month > 1 ? 1 : 0;
+	            return (
+	                months[month] +
+	                Math.floor((year - 1969 + t) / 4) -
+	                Math.floor((year - 1901 + t) / 100) +
+	                Math.floor((year - 1601 + t) / 400) +
+	                365 * (year - 1970)
+	            );
+	        }
+	
+	        function toUTC(t) {
+	            return Number(new NativeDate(1970, 0, 1, 0, 0, 0, t));
+	        }
+	
+	        // Copy any custom methods a 3rd party library may have added
+	        for (var key in NativeDate) {
+	            Date[key] = NativeDate[key];
+	        }
+	
+	        // Copy "native" methods explicitly; they may be non-enumerable
+	        Date.now = NativeDate.now;
+	        Date.UTC = NativeDate.UTC;
+	        Date.prototype = NativeDate.prototype;
+	        Date.prototype.constructor = Date;
+	
+	        // Upgrade Date.parse to handle simplified ISO 8601 strings
+	        Date.parse = function parse(string) {
+	            var match = isoDateExpression.exec(string);
+	            if (match) {
+	                // parse months, days, hours, minutes, seconds, and milliseconds
+	                // provide default values if necessary
+	                // parse the UTC offset component
+	                var year = Number(match[1]),
+	                    month = Number(match[2] || 1) - 1,
+	                    day = Number(match[3] || 1) - 1,
+	                    hour = Number(match[4] || 0),
+	                    minute = Number(match[5] || 0),
+	                    second = Number(match[6] || 0),
+	                    millisecond = Math.floor(Number(match[7] || 0) * 1000),
+	                    // When time zone is missed, local offset should be used
+	                    // (ES 5.1 bug)
+	                    // see https://bugs.ecmascript.org/show_bug.cgi?id=112
+	                    isLocalTime = Boolean(match[4] && !match[8]),
+	                    signOffset = match[9] === '-' ? 1 : -1,
+	                    hourOffset = Number(match[10] || 0),
+	                    minuteOffset = Number(match[11] || 0),
+	                    result;
+	                if (
+	                    hour < (
+	                        minute > 0 || second > 0 || millisecond > 0 ?
+	                        24 : 25
+	                    ) &&
+	                    minute < 60 && second < 60 && millisecond < 1000 &&
+	                    month > -1 && month < 12 && hourOffset < 24 &&
+	                    minuteOffset < 60 && // detect invalid offsets
+	                    day > -1 &&
+	                    day < (
+	                        dayFromMonth(year, month + 1) -
+	                        dayFromMonth(year, month)
+	                    )
+	                ) {
+	                    result = (
+	                        (dayFromMonth(year, month) + day) * 24 +
+	                        hour +
+	                        hourOffset * signOffset
+	                    ) * 60;
+	                    result = (
+	                        (result + minute + minuteOffset * signOffset) * 60 +
+	                        second
+	                    ) * 1000 + millisecond;
+	                    if (isLocalTime) {
+	                        result = toUTC(result);
+	                    }
+	                    if (-8.64e15 <= result && result <= 8.64e15) {
+	                        return result;
+	                    }
+	                }
+	                return NaN;
+	            }
+	            return NativeDate.parse.apply(this, arguments);
+	        };
+	
+	        return Date;
+	    })(Date);
+	}
+	
+	// ES5 15.9.4.4
+	// http://es5.github.com/#x15.9.4.4
+	if (!Date.now) {
+	    Date.now = function now() {
+	        return new Date().getTime();
+	    };
+	}
+	
+	
+	//
+	// Number
+	// ======
+	//
+	
+	// ES5.1 15.7.4.5
+	// http://es5.github.com/#x15.7.4.5
+	var hasToFixedBugs = NumberPrototype.toFixed && (
+	  (0.00008).toFixed(3) !== '0.000'
+	  || (0.9).toFixed(0) !== '1'
+	  || (1.255).toFixed(2) !== '1.25'
+	  || (1000000000000000128).toFixed(0) !== '1000000000000000128'
+	);
+	
+	var toFixedHelpers = {
+	  base: 1e7,
+	  size: 6,
+	  data: [0, 0, 0, 0, 0, 0],
+	  multiply: function multiply(n, c) {
+	      var i = -1;
+	      while (++i < toFixedHelpers.size) {
+	          c += n * toFixedHelpers.data[i];
+	          toFixedHelpers.data[i] = c % toFixedHelpers.base;
+	          c = Math.floor(c / toFixedHelpers.base);
+	      }
+	  },
+	  divide: function divide(n) {
+	      var i = toFixedHelpers.size, c = 0;
+	      while (--i >= 0) {
+	          c += toFixedHelpers.data[i];
+	          toFixedHelpers.data[i] = Math.floor(c / n);
+	          c = (c % n) * toFixedHelpers.base;
+	      }
+	  },
+	  numToString: function numToString() {
+	      var i = toFixedHelpers.size;
+	      var s = '';
+	      while (--i >= 0) {
+	          if (s !== '' || i === 0 || toFixedHelpers.data[i] !== 0) {
+	              var t = String(toFixedHelpers.data[i]);
+	              if (s === '') {
+	                  s = t;
+	              } else {
+	                  s += '0000000'.slice(0, 7 - t.length) + t;
+	              }
+	          }
+	      }
+	      return s;
+	  },
+	  pow: function pow(x, n, acc) {
+	      return (n === 0 ? acc : (n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc)));
+	  },
+	  log: function log(x) {
+	      var n = 0;
+	      while (x >= 4096) {
+	          n += 12;
+	          x /= 4096;
+	      }
+	      while (x >= 2) {
+	          n += 1;
+	          x /= 2;
+	      }
+	      return n;
+	  }
+	};
+	
+	defineProperties(NumberPrototype, {
+	    toFixed: function toFixed(fractionDigits) {
+	        var f, x, s, m, e, z, j, k;
+	
+	        // Test for NaN and round fractionDigits down
+	        f = Number(fractionDigits);
+	        f = f !== f ? 0 : Math.floor(f);
+	
+	        if (f < 0 || f > 20) {
+	            throw new RangeError('Number.toFixed called with invalid number of decimals');
+	        }
+	
+	        x = Number(this);
+	
+	        // Test for NaN
+	        if (x !== x) {
+	            return 'NaN';
+	        }
+	
+	        // If it is too big or small, return the string value of the number
+	        if (x <= -1e21 || x >= 1e21) {
+	            return String(x);
+	        }
+	
+	        s = '';
+	
+	        if (x < 0) {
+	            s = '-';
+	            x = -x;
+	        }
+	
+	        m = '0';
+	
+	        if (x > 1e-21) {
+	            // 1e-21 < x < 1e21
+	            // -70 < log2(x) < 70
+	            e = toFixedHelpers.log(x * toFixedHelpers.pow(2, 69, 1)) - 69;
+	            z = (e < 0 ? x * toFixedHelpers.pow(2, -e, 1) : x / toFixedHelpers.pow(2, e, 1));
+	            z *= 0x10000000000000; // Math.pow(2, 52);
+	            e = 52 - e;
+	
+	            // -18 < e < 122
+	            // x = z / 2 ^ e
+	            if (e > 0) {
+	                toFixedHelpers.multiply(0, z);
+	                j = f;
+	
+	                while (j >= 7) {
+	                    toFixedHelpers.multiply(1e7, 0);
+	                    j -= 7;
+	                }
+	
+	                toFixedHelpers.multiply(toFixedHelpers.pow(10, j, 1), 0);
+	                j = e - 1;
+	
+	                while (j >= 23) {
+	                    toFixedHelpers.divide(1 << 23);
+	                    j -= 23;
+	                }
+	
+	                toFixedHelpers.divide(1 << j);
+	                toFixedHelpers.multiply(1, 1);
+	                toFixedHelpers.divide(2);
+	                m = toFixedHelpers.numToString();
+	            } else {
+	                toFixedHelpers.multiply(0, z);
+	                toFixedHelpers.multiply(1 << (-e), 0);
+	                m = toFixedHelpers.numToString() + '0.00000000000000000000'.slice(2, 2 + f);
+	            }
+	        }
+	
+	        if (f > 0) {
+	            k = m.length;
+	
+	            if (k <= f) {
+	                m = s + '0.0000000000000000000'.slice(0, f - k + 2) + m;
+	            } else {
+	                m = s + m.slice(0, k - f) + '.' + m.slice(k - f);
+	            }
+	        } else {
+	            m = s + m;
+	        }
+	
+	        return m;
+	    }
+	}, hasToFixedBugs);
+	
+	
+	//
+	// String
+	// ======
+	//
+	
+	// ES5 15.5.4.14
+	// http://es5.github.com/#x15.5.4.14
+	
+	// [bugfix, IE lt 9, firefox 4, Konqueror, Opera, obscure browsers]
+	// Many browsers do not split properly with regular expressions or they
+	// do not perform the split correctly under obscure conditions.
+	// See http://blog.stevenlevithan.com/archives/cross-browser-split
+	// I've tested in many browsers and this seems to cover the deviant ones:
+	//    'ab'.split(/(?:ab)*/) should be ["", ""], not [""]
+	//    '.'.split(/(.?)(.?)/) should be ["", ".", "", ""], not ["", ""]
+	//    'tesst'.split(/(s)*/) should be ["t", undefined, "e", "s", "t"], not
+	//       [undefined, "t", undefined, "e", ...]
+	//    ''.split(/.?/) should be [], not [""]
+	//    '.'.split(/()()/) should be ["."], not ["", "", "."]
+	
+	var string_split = StringPrototype.split;
+	if (
+	    'ab'.split(/(?:ab)*/).length !== 2 ||
+	    '.'.split(/(.?)(.?)/).length !== 4 ||
+	    'tesst'.split(/(s)*/)[1] === 't' ||
+	    'test'.split(/(?:)/, -1).length !== 4 ||
+	    ''.split(/.?/).length ||
+	    '.'.split(/()()/).length > 1
+	) {
+	    (function () {
+	        var compliantExecNpcg = /()??/.exec('')[1] === void 0; // NPCG: nonparticipating capturing group
+	
+	        StringPrototype.split = function (separator, limit) {
+	            var string = this;
+	            if (separator === void 0 && limit === 0) {
+	                return [];
+	            }
+	
+	            // If `separator` is not a regex, use native split
+	            if (_toString.call(separator) !== '[object RegExp]') {
+	                return string_split.call(this, separator, limit);
+	            }
+	
+	            var output = [],
+	                flags = (separator.ignoreCase ? 'i' : '') +
+	                        (separator.multiline  ? 'm' : '') +
+	                        (separator.extended   ? 'x' : '') + // Proposed for ES6
+	                        (separator.sticky     ? 'y' : ''), // Firefox 3+
+	                lastLastIndex = 0,
+	                // Make `global` and avoid `lastIndex` issues by working with a copy
+	                separator2, match, lastIndex, lastLength;
+	            separator = new RegExp(separator.source, flags + 'g');
+	            string += ''; // Type-convert
+	            if (!compliantExecNpcg) {
+	                // Doesn't need flags gy, but they don't hurt
+	                separator2 = new RegExp('^' + separator.source + '$(?!\\s)', flags);
+	            }
+	            /* Values for `limit`, per the spec:
+	             * If undefined: 4294967295 // Math.pow(2, 32) - 1
+	             * If 0, Infinity, or NaN: 0
+	             * If positive number: limit = Math.floor(limit); if (limit > 4294967295) limit -= 4294967296;
+	             * If negative number: 4294967296 - Math.floor(Math.abs(limit))
+	             * If other: Type-convert, then use the above rules
+	             */
+	            limit = limit === void 0 ?
+	                -1 >>> 0 : // Math.pow(2, 32) - 1
+	                ToUint32(limit);
+	            while (match = separator.exec(string)) {
+	                // `separator.lastIndex` is not reliable cross-browser
+	                lastIndex = match.index + match[0].length;
+	                if (lastIndex > lastLastIndex) {
+	                    output.push(string.slice(lastLastIndex, match.index));
+	                    // Fix browsers whose `exec` methods don't consistently return `undefined` for
+	                    // nonparticipating capturing groups
+	                    if (!compliantExecNpcg && match.length > 1) {
+	                        match[0].replace(separator2, function () {
+	                            for (var i = 1; i < arguments.length - 2; i++) {
+	                                if (arguments[i] === void 0) {
+	                                    match[i] = void 0;
+	                                }
+	                            }
+	                        });
+	                    }
+	                    if (match.length > 1 && match.index < string.length) {
+	                        ArrayPrototype.push.apply(output, match.slice(1));
+	                    }
+	                    lastLength = match[0].length;
+	                    lastLastIndex = lastIndex;
+	                    if (output.length >= limit) {
+	                        break;
+	                    }
+	                }
+	                if (separator.lastIndex === match.index) {
+	                    separator.lastIndex++; // Avoid an infinite loop
+	                }
+	            }
+	            if (lastLastIndex === string.length) {
+	                if (lastLength || !separator.test('')) {
+	                    output.push('');
+	                }
+	            } else {
+	                output.push(string.slice(lastLastIndex));
+	            }
+	            return output.length > limit ? output.slice(0, limit) : output;
+	        };
+	    }());
+	
+	// [bugfix, chrome]
+	// If separator is undefined, then the result array contains just one String,
+	// which is the this value (converted to a String). If limit is not undefined,
+	// then the output array is truncated so that it contains no more than limit
+	// elements.
+	// "0".split(undefined, 0) -> []
+	} else if ('0'.split(void 0, 0).length) {
+	    StringPrototype.split = function split(separator, limit) {
+	        if (separator === void 0 && limit === 0) { return []; }
+	        return string_split.call(this, separator, limit);
+	    };
+	}
+	
+	var str_replace = StringPrototype.replace;
+	var replaceReportsGroupsCorrectly = (function () {
+	    var groups = [];
+	    'x'.replace(/x(.)?/g, function (match, group) {
+	        groups.push(group);
+	    });
+	    return groups.length === 1 && typeof groups[0] === 'undefined';
+	}());
+	
+	if (!replaceReportsGroupsCorrectly) {
+	    StringPrototype.replace = function replace(searchValue, replaceValue) {
+	        var isFn = isFunction(replaceValue);
+	        var hasCapturingGroups = isRegex(searchValue) && (/\)[*?]/).test(searchValue.source);
+	        if (!isFn || !hasCapturingGroups) {
+	            return str_replace.call(this, searchValue, replaceValue);
+	        } else {
+	            var wrappedReplaceValue = function (match) {
+	                var length = arguments.length;
+	                var originalLastIndex = searchValue.lastIndex;
+	                searchValue.lastIndex = 0;
+	                var args = searchValue.exec(match) || [];
+	                searchValue.lastIndex = originalLastIndex;
+	                args.push(arguments[length - 2], arguments[length - 1]);
+	                return replaceValue.apply(this, args);
+	            };
+	            return str_replace.call(this, searchValue, wrappedReplaceValue);
+	        }
+	    };
+	}
+	
+	// ECMA-262, 3rd B.2.3
+	// Not an ECMAScript standard, although ECMAScript 3rd Edition has a
+	// non-normative section suggesting uniform semantics and it should be
+	// normalized across all browsers
+	// [bugfix, IE lt 9] IE < 9 substr() with negative value not working in IE
+	var string_substr = StringPrototype.substr;
+	var hasNegativeSubstrBug = ''.substr && '0b'.substr(-1) !== 'b';
+	defineProperties(StringPrototype, {
+	    substr: function substr(start, length) {
+	        return string_substr.call(
+	            this,
+	            start < 0 ? ((start = this.length + start) < 0 ? 0 : start) : start,
+	            length
+	        );
+	    }
+	}, hasNegativeSubstrBug);
+	
+	// ES5 15.5.4.20
+	// whitespace from: http://es5.github.io/#x15.5.4.20
+	var ws = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
+	    '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028' +
+	    '\u2029\uFEFF';
+	var zeroWidth = '\u200b';
+	var wsRegexChars = '[' + ws + ']';
+	var trimBeginRegexp = new RegExp('^' + wsRegexChars + wsRegexChars + '*');
+	var trimEndRegexp = new RegExp(wsRegexChars + wsRegexChars + '*$');
+	var hasTrimWhitespaceBug = StringPrototype.trim && (ws.trim() || !zeroWidth.trim());
+	defineProperties(StringPrototype, {
+	    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+	    // http://perfectionkills.com/whitespace-deviations/
+	    trim: function trim() {
+	        if (this === void 0 || this === null) {
+	            throw new TypeError("can't convert " + this + ' to object');
+	        }
+	        return String(this).replace(trimBeginRegexp, '').replace(trimEndRegexp, '');
+	    }
+	}, hasTrimWhitespaceBug);
+	
+	// ES-5 15.1.2.2
+	if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
+	    parseInt = (function (origParseInt) {
+	        var hexRegex = /^0[xX]/;
+	        return function parseIntES5(str, radix) {
+	            str = String(str).trim();
+	            if (!Number(radix)) {
+	                radix = hexRegex.test(str) ? 16 : 10;
+	            }
+	            return origParseInt(str, radix);
+	        };
+	    }(parseInt));
+	}
+	
+	}));
+
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process) { /*!
+	  * https://github.com/paulmillr/es6-shim
+	  * @license es6-shim Copyright 2013-2014 by Paul Miller (http://paulmillr.com)
+	  *   and contributors,  MIT License
+	  * es6-shim: v0.20.2
+	  * see https://github.com/paulmillr/es6-shim/blob/master/LICENSE
+	  * Details and documentation:
+	  * https://github.com/paulmillr/es6-shim/
+	  */
+	
+	// UMD (Universal Module Definition)
+	// see https://github.com/umdjs/umd/blob/master/returnExports.js
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like enviroments that support module.exports,
+	    // like Node.
+	    module.exports = factory();
+	  } else {
+	    // Browser globals (root is window)
+	    root.returnExports = factory();
+	  }
+	}(this, function () {
+	  'use strict';
+	
+	  var isCallableWithoutNew = function (func) {
+	    try { func(); }
+	    catch (e) { return false; }
+	    return true;
+	  };
+	
+	  var supportsSubclassing = function (C, f) {
+	    /* jshint proto:true */
+	    try {
+	      var Sub = function () { C.apply(this, arguments); };
+	      if (!Sub.__proto__) { return false; /* skip test on IE < 11 */ }
+	      Object.setPrototypeOf(Sub, C);
+	      Sub.prototype = Object.create(C.prototype, {
+	        constructor: { value: C }
+	      });
+	      return f(Sub);
+	    } catch (e) {
+	      return false;
+	    }
+	  };
+	
+	  var arePropertyDescriptorsSupported = function () {
+	    try {
+	      Object.defineProperty({}, 'x', {});
+	      return true;
+	    } catch (e) { /* this is IE 8. */
+	      return false;
+	    }
+	  };
+	
+	  var startsWithRejectsRegex = function () {
+	    var rejectsRegex = false;
+	    if (String.prototype.startsWith) {
+	      try {
+	        '/a/'.startsWith(/a/);
+	      } catch (e) { /* this is spec compliant */
+	        rejectsRegex = true;
+	      }
+	    }
+	    return rejectsRegex;
+	  };
+	
+	  /*jshint evil: true */
+	  var getGlobal = new Function('return this;');
+	  /*jshint evil: false */
+	
+	  var globals = getGlobal();
+	  var global_isFinite = globals.isFinite;
+	  var supportsDescriptors = !!Object.defineProperty && arePropertyDescriptorsSupported();
+	  var startsWithIsCompliant = startsWithRejectsRegex();
+	  var _slice = Array.prototype.slice;
+	  var _indexOf = String.prototype.indexOf;
+	  var _toString = Object.prototype.toString;
+	  var _hasOwnProperty = Object.prototype.hasOwnProperty;
+	  var ArrayIterator; // make our implementation private
+	
+	  var defineProperty = function (object, name, value, force) {
+	    if (!force && name in object) { return; }
+	    if (supportsDescriptors) {
+	      Object.defineProperty(object, name, {
+	        configurable: true,
+	        enumerable: false,
+	        writable: true,
+	        value: value
+	      });
+	    } else {
+	      object[name] = value;
+	    }
+	  };
+	
+	  // Define configurable, writable and non-enumerable props
+	  // if they don’t exist.
+	  var defineProperties = function (object, map) {
+	    Object.keys(map).forEach(function (name) {
+	      var method = map[name];
+	      defineProperty(object, name, method, false);
+	    });
+	  };
+	
+	  // Simple shim for Object.create on ES3 browsers
+	  // (unlike real shim, no attempt to support `prototype === null`)
+	  var create = Object.create || function (prototype, properties) {
+	    function Type() {}
+	    Type.prototype = prototype;
+	    var object = new Type();
+	    if (typeof properties !== 'undefined') {
+	      defineProperties(object, properties);
+	    }
+	    return object;
+	  };
+	
+	  // This is a private name in the es6 spec, equal to '[Symbol.iterator]'
+	  // we're going to use an arbitrary _-prefixed name to make our shims
+	  // work properly with each other, even though we don't have full Iterator
+	  // support.  That is, `Array.from(map.keys())` will work, but we don't
+	  // pretend to export a "real" Iterator interface.
+	  var $iterator$ = (typeof Symbol === 'function' && Symbol.iterator) ||
+	    '_es6shim_iterator_';
+	  // Firefox ships a partial implementation using the name @@iterator.
+	  // https://bugzilla.mozilla.org/show_bug.cgi?id=907077#c14
+	  // So use that name if we detect it.
+	  if (globals.Set && typeof new globals.Set()['@@iterator'] === 'function') {
+	    $iterator$ = '@@iterator';
+	  }
+	  var addIterator = function (prototype, impl) {
+	    if (!impl) { impl = function iterator() { return this; }; }
+	    var o = {};
+	    o[$iterator$] = impl;
+	    defineProperties(prototype, o);
+	    /* jshint notypeof: true */
+	    if (!prototype[$iterator$] && typeof $iterator$ === 'symbol') {
+	      // implementations are buggy when $iterator$ is a Symbol
+	      prototype[$iterator$] = impl;
+	    }
+	  };
+	
+	  // taken directly from https://github.com/ljharb/is-arguments/blob/master/index.js
+	  // can be replaced with require('is-arguments') if we ever use a build process instead
+	  var isArguments = function isArguments(value) {
+	    var str = _toString.call(value);
+	    var result = str === '[object Arguments]';
+	    if (!result) {
+	      result = str !== '[object Array]' &&
+	        value !== null &&
+	        typeof value === 'object' &&
+	        typeof value.length === 'number' &&
+	        value.length >= 0 &&
+	        _toString.call(value.callee) === '[object Function]';
+	    }
+	    return result;
+	  };
+	
+	  var emulateES6construct = function (o) {
+	    if (!ES.TypeIsObject(o)) { throw new TypeError('bad object'); }
+	    // es5 approximation to es6 subclass semantics: in es6, 'new Foo'
+	    // would invoke Foo.@@create to allocation/initialize the new object.
+	    // In es5 we just get the plain object.  So if we detect an
+	    // uninitialized object, invoke o.constructor.@@create
+	    if (!o._es6construct) {
+	      if (o.constructor && ES.IsCallable(o.constructor['@@create'])) {
+	        o = o.constructor['@@create'](o);
+	      }
+	      defineProperties(o, { _es6construct: true });
+	    }
+	    return o;
+	  };
+	
+	  var ES = {
+	    CheckObjectCoercible: function (x, optMessage) {
+	      /* jshint eqnull:true */
+	      if (x == null) {
+	        throw new TypeError(optMessage || 'Cannot call method on ' + x);
+	      }
+	      return x;
+	    },
+	
+	    TypeIsObject: function (x) {
+	      /* jshint eqnull:true */
+	      // this is expensive when it returns false; use this function
+	      // when you expect it to return true in the common case.
+	      return x != null && Object(x) === x;
+	    },
+	
+	    ToObject: function (o, optMessage) {
+	      return Object(ES.CheckObjectCoercible(o, optMessage));
+	    },
+	
+	    IsCallable: function (x) {
+	      return typeof x === 'function' &&
+	        // some versions of IE say that typeof /abc/ === 'function'
+	        _toString.call(x) === '[object Function]';
+	    },
+	
+	    ToInt32: function (x) {
+	      return x >> 0;
+	    },
+	
+	    ToUint32: function (x) {
+	      return x >>> 0;
+	    },
+	
+	    ToInteger: function (value) {
+	      var number = +value;
+	      if (Number.isNaN(number)) { return 0; }
+	      if (number === 0 || !Number.isFinite(number)) { return number; }
+	      return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
+	    },
+	
+	    ToLength: function (value) {
+	      var len = ES.ToInteger(value);
+	      if (len <= 0) { return 0; } // includes converting -0 to +0
+	      if (len > Number.MAX_SAFE_INTEGER) { return Number.MAX_SAFE_INTEGER; }
+	      return len;
+	    },
+	
+	    SameValue: function (a, b) {
+	      if (a === b) {
+	        // 0 === -0, but they are not identical.
+	        if (a === 0) { return 1 / a === 1 / b; }
+	        return true;
+	      }
+	      return Number.isNaN(a) && Number.isNaN(b);
+	    },
+	
+	    SameValueZero: function (a, b) {
+	      // same as SameValue except for SameValueZero(+0, -0) == true
+	      return (a === b) || (Number.isNaN(a) && Number.isNaN(b));
+	    },
+	
+	    IsIterable: function (o) {
+	      return ES.TypeIsObject(o) &&
+	        (typeof o[$iterator$] !== 'undefined' || isArguments(o));
+	    },
+	
+	    GetIterator: function (o) {
+	      if (isArguments(o)) {
+	        // special case support for `arguments`
+	        return new ArrayIterator(o, 'value');
+	      }
+	      var itFn = o[$iterator$];
+	      if (!ES.IsCallable(itFn)) {
+	        throw new TypeError('value is not an iterable');
+	      }
+	      var it = itFn.call(o);
+	      if (!ES.TypeIsObject(it)) {
+	        throw new TypeError('bad iterator');
+	      }
+	      return it;
+	    },
+	
+	    IteratorNext: function (it) {
+	      var result = arguments.length > 1 ? it.next(arguments[1]) : it.next();
+	      if (!ES.TypeIsObject(result)) {
+	        throw new TypeError('bad iterator');
+	      }
+	      return result;
+	    },
+	
+	    Construct: function (C, args) {
+	      // CreateFromConstructor
+	      var obj;
+	      if (ES.IsCallable(C['@@create'])) {
+	        obj = C['@@create']();
+	      } else {
+	        // OrdinaryCreateFromConstructor
+	        obj = create(C.prototype || null);
+	      }
+	      // Mark that we've used the es6 construct path
+	      // (see emulateES6construct)
+	      defineProperties(obj, { _es6construct: true });
+	      // Call the constructor.
+	      var result = C.apply(obj, args);
+	      return ES.TypeIsObject(result) ? result : obj;
+	    }
+	  };
+	
+	  var numberConversion = (function () {
+	    // from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js#L176-L266
+	    // with permission and license, per https://twitter.com/inexorabletash/status/372206509540659200
+	
+	    function roundToEven(n) {
+	      var w = Math.floor(n), f = n - w;
+	      if (f < 0.5) {
+	        return w;
+	      }
+	      if (f > 0.5) {
+	        return w + 1;
+	      }
+	      return w % 2 ? w + 1 : w;
+	    }
+	
+	    function packIEEE754(v, ebits, fbits) {
+	      var bias = (1 << (ebits - 1)) - 1,
+	        s, e, f,
+	        i, bits, str, bytes;
+	
+	      // Compute sign, exponent, fraction
+	      if (v !== v) {
+	        // NaN
+	        // http://dev.w3.org/2006/webapi/WebIDL/#es-type-mapping
+	        e = (1 << ebits) - 1;
+	        f = Math.pow(2, fbits - 1);
+	        s = 0;
+	      } else if (v === Infinity || v === -Infinity) {
+	        e = (1 << ebits) - 1;
+	        f = 0;
+	        s = (v < 0) ? 1 : 0;
+	      } else if (v === 0) {
+	        e = 0;
+	        f = 0;
+	        s = (1 / v === -Infinity) ? 1 : 0;
+	      } else {
+	        s = v < 0;
+	        v = Math.abs(v);
+	
+	        if (v >= Math.pow(2, 1 - bias)) {
+	          e = Math.min(Math.floor(Math.log(v) / Math.LN2), 1023);
+	          f = roundToEven(v / Math.pow(2, e) * Math.pow(2, fbits));
+	          if (f / Math.pow(2, fbits) >= 2) {
+	            e = e + 1;
+	            f = 1;
+	          }
+	          if (e > bias) {
+	            // Overflow
+	            e = (1 << ebits) - 1;
+	            f = 0;
+	          } else {
+	            // Normal
+	            e = e + bias;
+	            f = f - Math.pow(2, fbits);
+	          }
+	        } else {
+	          // Subnormal
+	          e = 0;
+	          f = roundToEven(v / Math.pow(2, 1 - bias - fbits));
+	        }
+	      }
+	
+	      // Pack sign, exponent, fraction
+	      bits = [];
+	      for (i = fbits; i; i -= 1) {
+	        bits.push(f % 2 ? 1 : 0);
+	        f = Math.floor(f / 2);
+	      }
+	      for (i = ebits; i; i -= 1) {
+	        bits.push(e % 2 ? 1 : 0);
+	        e = Math.floor(e / 2);
+	      }
+	      bits.push(s ? 1 : 0);
+	      bits.reverse();
+	      str = bits.join('');
+	
+	      // Bits to bytes
+	      bytes = [];
+	      while (str.length) {
+	        bytes.push(parseInt(str.slice(0, 8), 2));
+	        str = str.slice(8);
+	      }
+	      return bytes;
+	    }
+	
+	    function unpackIEEE754(bytes, ebits, fbits) {
+	      // Bytes to bits
+	      var bits = [], i, j, b, str,
+	          bias, s, e, f;
+	
+	      for (i = bytes.length; i; i -= 1) {
+	        b = bytes[i - 1];
+	        for (j = 8; j; j -= 1) {
+	          bits.push(b % 2 ? 1 : 0);
+	          b = b >> 1;
+	        }
+	      }
+	      bits.reverse();
+	      str = bits.join('');
+	
+	      // Unpack sign, exponent, fraction
+	      bias = (1 << (ebits - 1)) - 1;
+	      s = parseInt(str.slice(0, 1), 2) ? -1 : 1;
+	      e = parseInt(str.slice(1, 1 + ebits), 2);
+	      f = parseInt(str.slice(1 + ebits), 2);
+	
+	      // Produce number
+	      if (e === (1 << ebits) - 1) {
+	        return f !== 0 ? NaN : s * Infinity;
+	      } else if (e > 0) {
+	        // Normalized
+	        return s * Math.pow(2, e - bias) * (1 + f / Math.pow(2, fbits));
+	      } else if (f !== 0) {
+	        // Denormalized
+	        return s * Math.pow(2, -(bias - 1)) * (f / Math.pow(2, fbits));
+	      } else {
+	        return s < 0 ? -0 : 0;
+	      }
+	    }
+	
+	    function unpackFloat64(b) { return unpackIEEE754(b, 11, 52); }
+	    function packFloat64(v) { return packIEEE754(v, 11, 52); }
+	    function unpackFloat32(b) { return unpackIEEE754(b, 8, 23); }
+	    function packFloat32(v) { return packIEEE754(v, 8, 23); }
+	
+	    var conversions = {
+	      toFloat32: function (num) { return unpackFloat32(packFloat32(num)); }
+	    };
+	    if (typeof Float32Array !== 'undefined') {
+	      var float32array = new Float32Array(1);
+	      conversions.toFloat32 = function (num) {
+	        float32array[0] = num;
+	        return float32array[0];
+	      };
+	    }
+	    return conversions;
+	  }());
+	
+	  defineProperties(String, {
+	    fromCodePoint: function (_) { // length = 1
+	      var points = _slice.call(arguments, 0, arguments.length);
+	      var result = [];
+	      var next;
+	      for (var i = 0, length = points.length; i < length; i++) {
+	        next = Number(points[i]);
+	        if (!ES.SameValue(next, ES.ToInteger(next)) ||
+	            next < 0 || next > 0x10FFFF) {
+	          throw new RangeError('Invalid code point ' + next);
+	        }
+	
+	        if (next < 0x10000) {
+	          result.push(String.fromCharCode(next));
+	        } else {
+	          next -= 0x10000;
+	          result.push(String.fromCharCode((next >> 10) + 0xD800));
+	          result.push(String.fromCharCode((next % 0x400) + 0xDC00));
+	        }
+	      }
+	      return result.join('');
+	    },
+	
+	    raw: function (callSite) { // raw.length===1
+	      var substitutions = _slice.call(arguments, 1, arguments.length);
+	      var cooked = ES.ToObject(callSite, 'bad callSite');
+	      var rawValue = cooked.raw;
+	      var raw = ES.ToObject(rawValue, 'bad raw value');
+	      var len = Object.keys(raw).length;
+	      var literalsegments = ES.ToLength(len);
+	      if (literalsegments === 0) {
+	        return '';
+	      }
+	
+	      var stringElements = [];
+	      var nextIndex = 0;
+	      var nextKey, next, nextSeg, nextSub;
+	      while (nextIndex < literalsegments) {
+	        nextKey = String(nextIndex);
+	        next = raw[nextKey];
+	        nextSeg = String(next);
+	        stringElements.push(nextSeg);
+	        if (nextIndex + 1 >= literalsegments) {
+	          break;
+	        }
+	        next = substitutions[nextKey];
+	        if (typeof next === 'undefined') {
+	          break;
+	        }
+	        nextSub = String(next);
+	        stringElements.push(nextSub);
+	        nextIndex++;
+	      }
+	      return stringElements.join('');
+	    }
+	  });
+	
+	  // Firefox 31 reports this function's length as 0
+	  // https://bugzilla.mozilla.org/show_bug.cgi?id=1062484
+	  if (String.fromCodePoint.length !== 1) {
+	    var originalFromCodePoint = String.fromCodePoint;
+	    defineProperty(String, 'fromCodePoint', function (_) { return originalFromCodePoint.apply(this, arguments); }, true);
+	  }
+	
+	  var StringShims = {
+	    // Fast repeat, uses the `Exponentiation by squaring` algorithm.
+	    // Perf: http://jsperf.com/string-repeat2/2
+	    repeat: (function () {
+	      var repeat = function (s, times) {
+	        if (times < 1) { return ''; }
+	        if (times % 2) { return repeat(s, times - 1) + s; }
+	        var half = repeat(s, times / 2);
+	        return half + half;
+	      };
+	
+	      return function (times) {
+	        var thisStr = String(ES.CheckObjectCoercible(this));
+	        times = ES.ToInteger(times);
+	        if (times < 0 || times === Infinity) {
+	          throw new RangeError('Invalid String#repeat value');
+	        }
+	        return repeat(thisStr, times);
+	      };
+	    })(),
+	
+	    startsWith: function (searchStr) {
+	      var thisStr = String(ES.CheckObjectCoercible(this));
+	      if (_toString.call(searchStr) === '[object RegExp]') {
+	        throw new TypeError('Cannot call method "startsWith" with a regex');
+	      }
+	      searchStr = String(searchStr);
+	      var startArg = arguments.length > 1 ? arguments[1] : void 0;
+	      var start = Math.max(ES.ToInteger(startArg), 0);
+	      return thisStr.slice(start, start + searchStr.length) === searchStr;
+	    },
+	
+	    endsWith: function (searchStr) {
+	      var thisStr = String(ES.CheckObjectCoercible(this));
+	      if (_toString.call(searchStr) === '[object RegExp]') {
+	        throw new TypeError('Cannot call method "endsWith" with a regex');
+	      }
+	      searchStr = String(searchStr);
+	      var thisLen = thisStr.length;
+	      var posArg = arguments.length > 1 ? arguments[1] : void 0;
+	      var pos = typeof posArg === 'undefined' ? thisLen : ES.ToInteger(posArg);
+	      var end = Math.min(Math.max(pos, 0), thisLen);
+	      return thisStr.slice(end - searchStr.length, end) === searchStr;
+	    },
+	
+	    contains: function (searchString) {
+	      var position = arguments.length > 1 ? arguments[1] : void 0;
+	      // Somehow this trick makes method 100% compat with the spec.
+	      return _indexOf.call(this, searchString, position) !== -1;
+	    },
+	
+	    codePointAt: function (pos) {
+	      var thisStr = String(ES.CheckObjectCoercible(this));
+	      var position = ES.ToInteger(pos);
+	      var length = thisStr.length;
+	      if (position < 0 || position >= length) { return; }
+	      var first = thisStr.charCodeAt(position);
+	      var isEnd = (position + 1 === length);
+	      if (first < 0xD800 || first > 0xDBFF || isEnd) { return first; }
+	      var second = thisStr.charCodeAt(position + 1);
+	      if (second < 0xDC00 || second > 0xDFFF) { return first; }
+	      return ((first - 0xD800) * 1024) + (second - 0xDC00) + 0x10000;
+	    }
+	  };
+	  defineProperties(String.prototype, StringShims);
+	
+	  var hasStringTrimBug = '\u0085'.trim().length !== 1;
+	  if (hasStringTrimBug) {
+	    var originalStringTrim = String.prototype.trim;
+	    delete String.prototype.trim;
+	    // whitespace from: http://es5.github.io/#x15.5.4.20
+	    // implementation from https://github.com/es-shims/es5-shim/blob/v3.4.0/es5-shim.js#L1304-L1324
+	    var ws = [
+	      '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003',
+	      '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028',
+	      '\u2029\uFEFF'
+	    ].join('');
+	    var trimRegexp = new RegExp('(^[' + ws + ']+)|([' + ws + ']+$)', 'g');
+	    defineProperties(String.prototype, {
+	      trim: function () {
+	        if (typeof this === 'undefined' || this === null) {
+	          throw new TypeError("can't convert " + this + ' to object');
+	        }
+	        return String(this).replace(trimRegexp, '');
+	      }
+	    });
+	  }
+	
+	  // see https://people.mozilla.org/~jorendorff/es6-draft.html#sec-string.prototype-@@iterator
+	  var StringIterator = function (s) {
+	    this._s = String(ES.CheckObjectCoercible(s));
+	    this._i = 0;
+	  };
+	  StringIterator.prototype.next = function () {
+	    var s = this._s, i = this._i;
+	    if (typeof s === 'undefined' || i >= s.length) {
+	      this._s = void 0;
+	      return { value: void 0, done: true };
+	    }
+	    var first = s.charCodeAt(i), second, len;
+	    if (first < 0xD800 || first > 0xDBFF || (i + 1) == s.length) {
+	      len = 1;
+	    } else {
+	      second = s.charCodeAt(i + 1);
+	      len = (second < 0xDC00 || second > 0xDFFF) ? 1 : 2;
+	    }
+	    this._i = i + len;
+	    return { value: s.substr(i, len), done: false };
+	  };
+	  addIterator(StringIterator.prototype);
+	  addIterator(String.prototype, function () {
+	    return new StringIterator(this);
+	  });
+	
+	  if (!startsWithIsCompliant) {
+	    // Firefox has a noncompliant startsWith implementation
+	    String.prototype.startsWith = StringShims.startsWith;
+	    String.prototype.endsWith = StringShims.endsWith;
+	  }
+	
+	  var ArrayShims = {
+	    from: function (iterable) {
+	      var mapFn = arguments.length > 1 ? arguments[1] : void 0;
+	
+	      var list = ES.ToObject(iterable, 'bad iterable');
+	      if (typeof mapFn !== 'undefined' && !ES.IsCallable(mapFn)) {
+	        throw new TypeError('Array.from: when provided, the second argument must be a function');
+	      }
+	
+	      var hasThisArg = arguments.length > 2;
+	      var thisArg = hasThisArg ? arguments[2] : void 0;
+	
+	      var usingIterator = ES.IsIterable(list);
+	      // does the spec really mean that Arrays should use ArrayIterator?
+	      // https://bugs.ecmascript.org/show_bug.cgi?id=2416
+	      //if (Array.isArray(list)) { usingIterator=false; }
+	
+	      var length;
+	      var result, i, value;
+	      if (usingIterator) {
+	        i = 0;
+	        result = ES.IsCallable(this) ? Object(new this()) : [];
+	        var it = usingIterator ? ES.GetIterator(list) : null;
+	        var iterationValue;
+	
+	        do {
+	          iterationValue = ES.IteratorNext(it);
+	          if (!iterationValue.done) {
+	            value = iterationValue.value;
+	            if (mapFn) {
+	              result[i] = hasThisArg ? mapFn.call(thisArg, value, i) : mapFn(value, i);
+	            } else {
+	              result[i] = value;
+	            }
+	            i += 1;
+	          }
+	        } while (!iterationValue.done);
+	        length = i;
+	      } else {
+	        length = ES.ToLength(list.length);
+	        result = ES.IsCallable(this) ? Object(new this(length)) : new Array(length);
+	        for (i = 0; i < length; ++i) {
+	          value = list[i];
+	          if (mapFn) {
+	            result[i] = hasThisArg ? mapFn.call(thisArg, value, i) : mapFn(value, i);
+	          } else {
+	            result[i] = value;
+	          }
+	        }
+	      }
+	
+	      result.length = length;
+	      return result;
+	    },
+	
+	    of: function () {
+	      return Array.from(arguments);
+	    }
+	  };
+	  defineProperties(Array, ArrayShims);
+	
+	  var arrayFromSwallowsNegativeLengths = function () {
+	    try {
+	      return Array.from({ length: -1 }).length === 0;
+	    } catch (e) {
+	      return false;
+	    }
+	  };
+	  // Fixes a Firefox bug in v32
+	  // https://bugzilla.mozilla.org/show_bug.cgi?id=1063993
+	  if (!arrayFromSwallowsNegativeLengths()) {
+	    defineProperty(Array, 'from', ArrayShims.from, true);
+	  }
+	
+	  // Our ArrayIterator is private; see
+	  // https://github.com/paulmillr/es6-shim/issues/252
+	  ArrayIterator = function (array, kind) {
+	      this.i = 0;
+	      this.array = array;
+	      this.kind = kind;
+	  };
+	
+	  defineProperties(ArrayIterator.prototype, {
+	    next: function () {
+	      var i = this.i, array = this.array;
+	      if (!(this instanceof ArrayIterator)) {
+	        throw new TypeError('Not an ArrayIterator');
+	      }
+	      if (typeof array !== 'undefined') {
+	        var len = ES.ToLength(array.length);
+	        for (; i < len; i++) {
+	          var kind = this.kind;
+	          var retval;
+	          if (kind === 'key') {
+	            retval = i;
+	          } else if (kind === 'value') {
+	            retval = array[i];
+	          } else if (kind === 'entry') {
+	            retval = [i, array[i]];
+	          }
+	          this.i = i + 1;
+	          return { value: retval, done: false };
+	        }
+	      }
+	      this.array = void 0;
+	      return { value: void 0, done: true };
+	    }
+	  });
+	  addIterator(ArrayIterator.prototype);
+	
+	  var ArrayPrototypeShims = {
+	    copyWithin: function (target, start) {
+	      var end = arguments[2]; // copyWithin.length must be 2
+	      var o = ES.ToObject(this);
+	      var len = ES.ToLength(o.length);
+	      target = ES.ToInteger(target);
+	      start = ES.ToInteger(start);
+	      var to = target < 0 ? Math.max(len + target, 0) : Math.min(target, len);
+	      var from = start < 0 ? Math.max(len + start, 0) : Math.min(start, len);
+	      end = typeof end === 'undefined' ? len : ES.ToInteger(end);
+	      var fin = end < 0 ? Math.max(len + end, 0) : Math.min(end, len);
+	      var count = Math.min(fin - from, len - to);
+	      var direction = 1;
+	      if (from < to && to < (from + count)) {
+	        direction = -1;
+	        from += count - 1;
+	        to += count - 1;
+	      }
+	      while (count > 0) {
+	        if (_hasOwnProperty.call(o, from)) {
+	          o[to] = o[from];
+	        } else {
+	          delete o[from];
+	        }
+	        from += direction;
+	        to += direction;
+	        count -= 1;
+	      }
+	      return o;
+	    },
+	
+	    fill: function (value) {
+	      var start = arguments.length > 1 ? arguments[1] : void 0;
+	      var end = arguments.length > 2 ? arguments[2] : void 0;
+	      var O = ES.ToObject(this);
+	      var len = ES.ToLength(O.length);
+	      start = ES.ToInteger(typeof start === 'undefined' ? 0 : start);
+	      end = ES.ToInteger(typeof end === 'undefined' ? len : end);
+	
+	      var relativeStart = start < 0 ? Math.max(len + start, 0) : Math.min(start, len);
+	      var relativeEnd = end < 0 ? len + end : end;
+	
+	      for (var i = relativeStart; i < len && i < relativeEnd; ++i) {
+	        O[i] = value;
+	      }
+	      return O;
+	    },
+	
+	    find: function find(predicate) {
+	      var list = ES.ToObject(this);
+	      var length = ES.ToLength(list.length);
+	      if (!ES.IsCallable(predicate)) {
+	        throw new TypeError('Array#find: predicate must be a function');
+	      }
+	      var thisArg = arguments[1];
+	      for (var i = 0, value; i < length; i++) {
+	        value = list[i];
+	        if (predicate.call(thisArg, value, i, list)) { return value; }
+	      }
+	      return;
+	    },
+	
+	    findIndex: function findIndex(predicate) {
+	      var list = ES.ToObject(this);
+	      var length = ES.ToLength(list.length);
+	      if (!ES.IsCallable(predicate)) {
+	        throw new TypeError('Array#findIndex: predicate must be a function');
+	      }
+	      var thisArg = arguments[1];
+	      for (var i = 0; i < length; i++) {
+	        if (predicate.call(thisArg, list[i], i, list)) { return i; }
+	      }
+	      return -1;
+	    },
+	
+	    keys: function () {
+	      return new ArrayIterator(this, 'key');
+	    },
+	
+	    values: function () {
+	      return new ArrayIterator(this, 'value');
+	    },
+	
+	    entries: function () {
+	      return new ArrayIterator(this, 'entry');
+	    }
+	  };
+	  // Safari 7.1 defines Array#keys and Array#entries natively,
+	  // but the resulting ArrayIterator objects don't have a "next" method.
+	  if (Array.prototype.keys && !ES.IsCallable([1].keys().next)) {
+	    delete Array.prototype.keys;
+	  }
+	  if (Array.prototype.entries && !ES.IsCallable([1].entries().next)) {
+	    delete Array.prototype.entries;
+	  }
+	
+	  // Chrome 38 defines Array#keys and Array#entries, and Array#@@iterator, but not Array#values
+	  if (Array.prototype.keys && Array.prototype.entries && !Array.prototype.values && Array.prototype[$iterator$]) {
+	    defineProperties(Array.prototype, {
+	      values: Array.prototype[$iterator$]
+	    });
+	  }
+	  defineProperties(Array.prototype, ArrayPrototypeShims);
+	
+	  addIterator(Array.prototype, function () { return this.values(); });
+	  // Chrome defines keys/values/entries on Array, but doesn't give us
+	  // any way to identify its iterator.  So add our own shimmed field.
+	  if (Object.getPrototypeOf) {
+	    addIterator(Object.getPrototypeOf([].values()));
+	  }
+	
+	  var maxSafeInteger = Math.pow(2, 53) - 1;
+	  defineProperties(Number, {
+	    MAX_SAFE_INTEGER: maxSafeInteger,
+	    MIN_SAFE_INTEGER: -maxSafeInteger,
+	    EPSILON: 2.220446049250313e-16,
+	
+	    parseInt: globals.parseInt,
+	    parseFloat: globals.parseFloat,
+	
+	    isFinite: function (value) {
+	      return typeof value === 'number' && global_isFinite(value);
+	    },
+	
+	    isInteger: function (value) {
+	      return Number.isFinite(value) &&
+	        ES.ToInteger(value) === value;
+	    },
+	
+	    isSafeInteger: function (value) {
+	      return Number.isInteger(value) && Math.abs(value) <= Number.MAX_SAFE_INTEGER;
+	    },
+	
+	    isNaN: function (value) {
+	      // NaN !== NaN, but they are identical.
+	      // NaNs are the only non-reflexive value, i.e., if x !== x,
+	      // then x is NaN.
+	      // isNaN is broken: it converts its argument to number, so
+	      // isNaN('foo') => true
+	      return value !== value;
+	    }
+	
+	  });
+	
+	  // Work around bugs in Array#find and Array#findIndex -- early
+	  // implementations skipped holes in sparse arrays. (Note that the
+	  // implementations of find/findIndex indirectly use shimmed
+	  // methods of Number, so this test has to happen down here.)
+	  if (![, 1].find(function (item, idx) { return idx === 0; })) {
+	    defineProperty(Array.prototype, 'find', ArrayPrototypeShims.find, true);
+	  }
+	  if ([, 1].findIndex(function (item, idx) { return idx === 0; }) !== 0) {
+	    defineProperty(Array.prototype, 'findIndex', ArrayPrototypeShims.findIndex, true);
+	  }
+	
+	  if (supportsDescriptors) {
+	    defineProperties(Object, {
+	      getPropertyDescriptor: function (subject, name) {
+	        var pd = Object.getOwnPropertyDescriptor(subject, name);
+	        var proto = Object.getPrototypeOf(subject);
+	        while (typeof pd === 'undefined' && proto !== null) {
+	          pd = Object.getOwnPropertyDescriptor(proto, name);
+	          proto = Object.getPrototypeOf(proto);
+	        }
+	        return pd;
+	      },
+	
+	      getPropertyNames: function (subject) {
+	        var result = Object.getOwnPropertyNames(subject);
+	        var proto = Object.getPrototypeOf(subject);
+	
+	        var addProperty = function (property) {
+	          if (result.indexOf(property) === -1) {
+	            result.push(property);
+	          }
+	        };
+	
+	        while (proto !== null) {
+	          Object.getOwnPropertyNames(proto).forEach(addProperty);
+	          proto = Object.getPrototypeOf(proto);
+	        }
+	        return result;
+	      }
+	    });
+	
+	    defineProperties(Object, {
+	      // 19.1.3.1
+	      assign: function (target, source) {
+	        if (!ES.TypeIsObject(target)) {
+	          throw new TypeError('target must be an object');
+	        }
+	        return Array.prototype.reduce.call(arguments, function (target, source) {
+	          return Object.keys(Object(source)).reduce(function (target, key) {
+	            target[key] = source[key];
+	            return target;
+	          }, target);
+	        });
+	      },
+	
+	      is: function (a, b) {
+	        return ES.SameValue(a, b);
+	      },
+	
+	      // 19.1.3.9
+	      // shim from https://gist.github.com/WebReflection/5593554
+	      setPrototypeOf: (function (Object, magic) {
+	        var set;
+	
+	        var checkArgs = function (O, proto) {
+	          if (!ES.TypeIsObject(O)) {
+	            throw new TypeError('cannot set prototype on a non-object');
+	          }
+	          if (!(proto === null || ES.TypeIsObject(proto))) {
+	            throw new TypeError('can only set prototype to an object or null' + proto);
+	          }
+	        };
+	
+	        var setPrototypeOf = function (O, proto) {
+	          checkArgs(O, proto);
+	          set.call(O, proto);
+	          return O;
+	        };
+	
+	        try {
+	          // this works already in Firefox and Safari
+	          set = Object.getOwnPropertyDescriptor(Object.prototype, magic).set;
+	          set.call({}, null);
+	        } catch (e) {
+	          if (Object.prototype !== {}[magic]) {
+	            // IE < 11 cannot be shimmed
+	            return;
+	          }
+	          // probably Chrome or some old Mobile stock browser
+	          set = function (proto) {
+	            this[magic] = proto;
+	          };
+	          // please note that this will **not** work
+	          // in those browsers that do not inherit
+	          // __proto__ by mistake from Object.prototype
+	          // in these cases we should probably throw an error
+	          // or at least be informed about the issue
+	          setPrototypeOf.polyfill = setPrototypeOf(
+	            setPrototypeOf({}, null),
+	            Object.prototype
+	          ) instanceof Object;
+	          // setPrototypeOf.polyfill === true means it works as meant
+	          // setPrototypeOf.polyfill === false means it's not 100% reliable
+	          // setPrototypeOf.polyfill === undefined
+	          // or
+	          // setPrototypeOf.polyfill ==  null means it's not a polyfill
+	          // which means it works as expected
+	          // we can even delete Object.prototype.__proto__;
+	        }
+	        return setPrototypeOf;
+	      })(Object, '__proto__')
+	    });
+	  }
+	
+	  // Workaround bug in Opera 12 where setPrototypeOf(x, null) doesn't work,
+	  // but Object.create(null) does.
+	  if (Object.setPrototypeOf && Object.getPrototypeOf &&
+	      Object.getPrototypeOf(Object.setPrototypeOf({}, null)) !== null &&
+	      Object.getPrototypeOf(Object.create(null)) === null) {
+	    (function () {
+	      var FAKENULL = Object.create(null);
+	      var gpo = Object.getPrototypeOf, spo = Object.setPrototypeOf;
+	      Object.getPrototypeOf = function (o) {
+	        var result = gpo(o);
+	        return result === FAKENULL ? null : result;
+	      };
+	      Object.setPrototypeOf = function (o, p) {
+	        if (p === null) { p = FAKENULL; }
+	        return spo(o, p);
+	      };
+	      Object.setPrototypeOf.polyfill = false;
+	    })();
+	  }
+	
+	  try {
+	    Object.keys('foo');
+	  } catch (e) {
+	    var originalObjectKeys = Object.keys;
+	    Object.keys = function (obj) {
+	      return originalObjectKeys(ES.ToObject(obj));
+	    };
+	  }
+	
+	  var MathShims = {
+	    acosh: function (value) {
+	      value = Number(value);
+	      if (Number.isNaN(value) || value < 1) { return NaN; }
+	      if (value === 1) { return 0; }
+	      if (value === Infinity) { return value; }
+	      return Math.log(value + Math.sqrt(value * value - 1));
+	    },
+	
+	    asinh: function (value) {
+	      value = Number(value);
+	      if (value === 0 || !global_isFinite(value)) {
+	        return value;
+	      }
+	      return value < 0 ? -Math.asinh(-value) : Math.log(value + Math.sqrt(value * value + 1));
+	    },
+	
+	    atanh: function (value) {
+	      value = Number(value);
+	      if (Number.isNaN(value) || value < -1 || value > 1) {
+	        return NaN;
+	      }
+	      if (value === -1) { return -Infinity; }
+	      if (value === 1) { return Infinity; }
+	      if (value === 0) { return value; }
+	      return 0.5 * Math.log((1 + value) / (1 - value));
+	    },
+	
+	    cbrt: function (value) {
+	      value = Number(value);
+	      if (value === 0) { return value; }
+	      var negate = value < 0, result;
+	      if (negate) { value = -value; }
+	      result = Math.pow(value, 1 / 3);
+	      return negate ? -result : result;
+	    },
+	
+	    clz32: function (value) {
+	      // See https://bugs.ecmascript.org/show_bug.cgi?id=2465
+	      value = Number(value);
+	      var number = ES.ToUint32(value);
+	      if (number === 0) {
+	        return 32;
+	      }
+	      return 32 - (number).toString(2).length;
+	    },
+	
+	    cosh: function (value) {
+	      value = Number(value);
+	      if (value === 0) { return 1; } // +0 or -0
+	      if (Number.isNaN(value)) { return NaN; }
+	      if (!global_isFinite(value)) { return Infinity; }
+	      if (value < 0) { value = -value; }
+	      if (value > 21) { return Math.exp(value) / 2; }
+	      return (Math.exp(value) + Math.exp(-value)) / 2;
+	    },
+	
+	    expm1: function (value) {
+	      value = Number(value);
+	      if (value === -Infinity) { return -1; }
+	      if (!global_isFinite(value) || value === 0) { return value; }
+	      return Math.exp(value) - 1;
+	    },
+	
+	    hypot: function (x, y) {
+	      var anyNaN = false;
+	      var allZero = true;
+	      var anyInfinity = false;
+	      var numbers = [];
+	      Array.prototype.every.call(arguments, function (arg) {
+	        var num = Number(arg);
+	        if (Number.isNaN(num)) {
+	          anyNaN = true;
+	        } else if (num === Infinity || num === -Infinity) {
+	          anyInfinity = true;
+	        } else if (num !== 0) {
+	          allZero = false;
+	        }
+	        if (anyInfinity) {
+	          return false;
+	        } else if (!anyNaN) {
+	          numbers.push(Math.abs(num));
+	        }
+	        return true;
+	      });
+	      if (anyInfinity) { return Infinity; }
+	      if (anyNaN) { return NaN; }
+	      if (allZero) { return 0; }
+	
+	      numbers.sort(function (a, b) { return b - a; });
+	      var largest = numbers[0];
+	      var divided = numbers.map(function (number) { return number / largest; });
+	      var sum = divided.reduce(function (sum, number) { return sum += number * number; }, 0);
+	      return largest * Math.sqrt(sum);
+	    },
+	
+	    log2: function (value) {
+	      return Math.log(value) * Math.LOG2E;
+	    },
+	
+	    log10: function (value) {
+	      return Math.log(value) * Math.LOG10E;
+	    },
+	
+	    log1p: function (value) {
+	      value = Number(value);
+	      if (value < -1 || Number.isNaN(value)) { return NaN; }
+	      if (value === 0 || value === Infinity) { return value; }
+	      if (value === -1) { return -Infinity; }
+	      var result = 0;
+	      var n = 50;
+	
+	      if (value < 0 || value > 1) { return Math.log(1 + value); }
+	      for (var i = 1; i < n; i++) {
+	        if ((i % 2) === 0) {
+	          result -= Math.pow(value, i) / i;
+	        } else {
+	          result += Math.pow(value, i) / i;
+	        }
+	      }
+	
+	      return result;
+	    },
+	
+	    sign: function (value) {
+	      var number = +value;
+	      if (number === 0) { return number; }
+	      if (Number.isNaN(number)) { return number; }
+	      return number < 0 ? -1 : 1;
+	    },
+	
+	    sinh: function (value) {
+	      value = Number(value);
+	      if (!global_isFinite(value) || value === 0) { return value; }
+	      return (Math.exp(value) - Math.exp(-value)) / 2;
+	    },
+	
+	    tanh: function (value) {
+	      value = Number(value);
+	      if (Number.isNaN(value) || value === 0) { return value; }
+	      if (value === Infinity) { return 1; }
+	      if (value === -Infinity) { return -1; }
+	      return (Math.exp(value) - Math.exp(-value)) / (Math.exp(value) + Math.exp(-value));
+	    },
+	
+	    trunc: function (value) {
+	      var number = Number(value);
+	      return number < 0 ? -Math.floor(-number) : Math.floor(number);
+	    },
+	
+	    imul: function (x, y) {
+	      // taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/imul
+	      x = ES.ToUint32(x);
+	      y = ES.ToUint32(y);
+	      var ah  = (x >>> 16) & 0xffff;
+	      var al = x & 0xffff;
+	      var bh  = (y >>> 16) & 0xffff;
+	      var bl = y & 0xffff;
+	      // the shift by 0 fixes the sign on the high part
+	      // the final |0 converts the unsigned value into a signed value
+	      return ((al * bl) + (((ah * bl + al * bh) << 16) >>> 0)|0);
+	    },
+	
+	    fround: function (x) {
+	      if (x === 0 || x === Infinity || x === -Infinity || Number.isNaN(x)) {
+	        return x;
+	      }
+	      var num = Number(x);
+	      return numberConversion.toFloat32(num);
+	    }
+	  };
+	  defineProperties(Math, MathShims);
+	
+	  if (Math.imul(0xffffffff, 5) !== -5) {
+	    // Safari 6.1, at least, reports "0" for this value
+	    Math.imul = MathShims.imul;
+	  }
+	
+	  // Promises
+	  // Simplest possible implementation; use a 3rd-party library if you
+	  // want the best possible speed and/or long stack traces.
+	  var PromiseShim = (function () {
+	
+	    var Promise, Promise$prototype;
+	
+	    ES.IsPromise = function (promise) {
+	      if (!ES.TypeIsObject(promise)) {
+	        return false;
+	      }
+	      if (!promise._promiseConstructor) {
+	        // _promiseConstructor is a bit more unique than _status, so we'll
+	        // check that instead of the [[PromiseStatus]] internal field.
+	        return false;
+	      }
+	      if (typeof promise._status === 'undefined') {
+	        return false; // uninitialized
+	      }
+	      return true;
+	    };
+	
+	    // "PromiseCapability" in the spec is what most promise implementations
+	    // call a "deferred".
+	    var PromiseCapability = function (C) {
+	      if (!ES.IsCallable(C)) {
+	        throw new TypeError('bad promise constructor');
+	      }
+	      var capability = this;
+	      var resolver = function (resolve, reject) {
+	        capability.resolve = resolve;
+	        capability.reject = reject;
+	      };
+	      capability.promise = ES.Construct(C, [resolver]);
+	      // see https://bugs.ecmascript.org/show_bug.cgi?id=2478
+	      if (!capability.promise._es6construct) {
+	        throw new TypeError('bad promise constructor');
+	      }
+	      if (!(ES.IsCallable(capability.resolve) &&
+	            ES.IsCallable(capability.reject))) {
+	        throw new TypeError('bad promise constructor');
+	      }
+	    };
+	
+	    // find an appropriate setImmediate-alike
+	    var setTimeout = globals.setTimeout;
+	    var makeZeroTimeout;
+	    if (typeof window !== 'undefined' && ES.IsCallable(window.postMessage)) {
+	      makeZeroTimeout = function () {
+	        // from http://dbaron.org/log/20100309-faster-timeouts
+	        var timeouts = [];
+	        var messageName = 'zero-timeout-message';
+	        var setZeroTimeout = function (fn) {
+	          timeouts.push(fn);
+	          window.postMessage(messageName, '*');
+	        };
+	        var handleMessage = function (event) {
+	          if (event.source == window && event.data == messageName) {
+	            event.stopPropagation();
+	            if (timeouts.length === 0) { return; }
+	            var fn = timeouts.shift();
+	            fn();
+	          }
+	        };
+	        window.addEventListener('message', handleMessage, true);
+	        return setZeroTimeout;
+	      };
+	    }
+	    var makePromiseAsap = function () {
+	      // An efficient task-scheduler based on a pre-existing Promise
+	      // implementation, which we can use even if we override the
+	      // global Promise below (in order to workaround bugs)
+	      // https://github.com/Raynos/observ-hash/issues/2#issuecomment-35857671
+	      var P = globals.Promise;
+	      return P && P.resolve && function (task) {
+	        return P.resolve().then(task);
+	      };
+	    };
+	    var enqueue = ES.IsCallable(globals.setImmediate) ?
+	      globals.setImmediate.bind(globals) :
+	      typeof process === 'object' && process.nextTick ? process.nextTick :
+	      makePromiseAsap() ||
+	      (ES.IsCallable(makeZeroTimeout) ? makeZeroTimeout() :
+	      function (task) { setTimeout(task, 0); }); // fallback
+	
+	    var triggerPromiseReactions = function (reactions, x) {
+	      reactions.forEach(function (reaction) {
+	        enqueue(function () {
+	          // PromiseReactionTask
+	          var handler = reaction.handler;
+	          var capability = reaction.capability;
+	          var resolve = capability.resolve;
+	          var reject = capability.reject;
+	          try {
+	            var result = handler(x);
+	            if (result === capability.promise) {
+	              throw new TypeError('self resolution');
+	            }
+	            var updateResult =
+	              updatePromiseFromPotentialThenable(result, capability);
+	            if (!updateResult) {
+	              resolve(result);
+	            }
+	          } catch (e) {
+	            reject(e);
+	          }
+	        });
+	      });
+	    };
+	
+	    var updatePromiseFromPotentialThenable = function (x, capability) {
+	      if (!ES.TypeIsObject(x)) {
+	        return false;
+	      }
+	      var resolve = capability.resolve;
+	      var reject = capability.reject;
+	      try {
+	        var then = x.then; // only one invocation of accessor
+	        if (!ES.IsCallable(then)) { return false; }
+	        then.call(x, resolve, reject);
+	      } catch (e) {
+	        reject(e);
+	      }
+	      return true;
+	    };
+	
+	    var promiseResolutionHandler = function (promise, onFulfilled, onRejected) {
+	      return function (x) {
+	        if (x === promise) {
+	          return onRejected(new TypeError('self resolution'));
+	        }
+	        var C = promise._promiseConstructor;
+	        var capability = new PromiseCapability(C);
+	        var updateResult = updatePromiseFromPotentialThenable(x, capability);
+	        if (updateResult) {
+	          return capability.promise.then(onFulfilled, onRejected);
+	        } else {
+	          return onFulfilled(x);
+	        }
+	      };
+	    };
+	
+	    Promise = function (resolver) {
+	      var promise = this;
+	      promise = emulateES6construct(promise);
+	      if (!promise._promiseConstructor) {
+	        // we use _promiseConstructor as a stand-in for the internal
+	        // [[PromiseStatus]] field; it's a little more unique.
+	        throw new TypeError('bad promise');
+	      }
+	      if (typeof promise._status !== 'undefined') {
+	        throw new TypeError('promise already initialized');
+	      }
+	      // see https://bugs.ecmascript.org/show_bug.cgi?id=2482
+	      if (!ES.IsCallable(resolver)) {
+	        throw new TypeError('not a valid resolver');
+	      }
+	      promise._status = 'unresolved';
+	      promise._resolveReactions = [];
+	      promise._rejectReactions = [];
+	
+	      var resolve = function (resolution) {
+	        if (promise._status !== 'unresolved') { return; }
+	        var reactions = promise._resolveReactions;
+	        promise._result = resolution;
+	        promise._resolveReactions = void 0;
+	        promise._rejectReactions = void 0;
+	        promise._status = 'has-resolution';
+	        triggerPromiseReactions(reactions, resolution);
+	      };
+	      var reject = function (reason) {
+	        if (promise._status !== 'unresolved') { return; }
+	        var reactions = promise._rejectReactions;
+	        promise._result = reason;
+	        promise._resolveReactions = void 0;
+	        promise._rejectReactions = void 0;
+	        promise._status = 'has-rejection';
+	        triggerPromiseReactions(reactions, reason);
+	      };
+	      try {
+	        resolver(resolve, reject);
+	      } catch (e) {
+	        reject(e);
+	      }
+	      return promise;
+	    };
+	    Promise$prototype = Promise.prototype;
+	    defineProperties(Promise, {
+	      '@@create': function (obj) {
+	        var constructor = this;
+	        // AllocatePromise
+	        // The `obj` parameter is a hack we use for es5
+	        // compatibility.
+	        var prototype = constructor.prototype || Promise$prototype;
+	        obj = obj || create(prototype);
+	        defineProperties(obj, {
+	          _status: void 0,
+	          _result: void 0,
+	          _resolveReactions: void 0,
+	          _rejectReactions: void 0,
+	          _promiseConstructor: void 0
+	        });
+	        obj._promiseConstructor = constructor;
+	        return obj;
+	      }
+	    });
+	
+	    var _promiseAllResolver = function (index, values, capability, remaining) {
+	      var done = false;
+	      return function (x) {
+	        if (done) { return; } // protect against being called multiple times
+	        done = true;
+	        values[index] = x;
+	        if ((--remaining.count) === 0) {
+	          var resolve = capability.resolve;
+	          resolve(values); // call w/ this===undefined
+	        }
+	      };
+	    };
+	
+	    Promise.all = function (iterable) {
+	      var C = this;
+	      var capability = new PromiseCapability(C);
+	      var resolve = capability.resolve;
+	      var reject = capability.reject;
+	      try {
+	        if (!ES.IsIterable(iterable)) {
+	          throw new TypeError('bad iterable');
+	        }
+	        var it = ES.GetIterator(iterable);
+	        var values = [], remaining = { count: 1 };
+	        for (var index = 0; ; index++) {
+	          var next = ES.IteratorNext(it);
+	          if (next.done) {
+	            break;
+	          }
+	          var nextPromise = C.resolve(next.value);
+	          var resolveElement = _promiseAllResolver(
+	            index, values, capability, remaining
+	          );
+	          remaining.count++;
+	          nextPromise.then(resolveElement, capability.reject);
+	        }
+	        if ((--remaining.count) === 0) {
+	          resolve(values); // call w/ this===undefined
+	        }
+	      } catch (e) {
+	        reject(e);
+	      }
+	      return capability.promise;
+	    };
+	
+	    Promise.race = function (iterable) {
+	      var C = this;
+	      var capability = new PromiseCapability(C);
+	      var resolve = capability.resolve;
+	      var reject = capability.reject;
+	      try {
+	        if (!ES.IsIterable(iterable)) {
+	          throw new TypeError('bad iterable');
+	        }
+	        var it = ES.GetIterator(iterable);
+	        while (true) {
+	          var next = ES.IteratorNext(it);
+	          if (next.done) {
+	            // If iterable has no items, resulting promise will never
+	            // resolve; see:
+	            // https://github.com/domenic/promises-unwrapping/issues/75
+	            // https://bugs.ecmascript.org/show_bug.cgi?id=2515
+	            break;
+	          }
+	          var nextPromise = C.resolve(next.value);
+	          nextPromise.then(resolve, reject);
+	        }
+	      } catch (e) {
+	        reject(e);
+	      }
+	      return capability.promise;
+	    };
+	
+	    Promise.reject = function (reason) {
+	      var C = this;
+	      var capability = new PromiseCapability(C);
+	      var reject = capability.reject;
+	      reject(reason); // call with this===undefined
+	      return capability.promise;
+	    };
+	
+	    Promise.resolve = function (v) {
+	      var C = this;
+	      if (ES.IsPromise(v)) {
+	        var constructor = v._promiseConstructor;
+	        if (constructor === C) { return v; }
+	      }
+	      var capability = new PromiseCapability(C);
+	      var resolve = capability.resolve;
+	      resolve(v); // call with this===undefined
+	      return capability.promise;
+	    };
+	
+	    Promise.prototype['catch'] = function (onRejected) {
+	      return this.then(void 0, onRejected);
+	    };
+	
+	    Promise.prototype.then = function (onFulfilled, onRejected) {
+	      var promise = this;
+	      if (!ES.IsPromise(promise)) { throw new TypeError('not a promise'); }
+	      // this.constructor not this._promiseConstructor; see
+	      // https://bugs.ecmascript.org/show_bug.cgi?id=2513
+	      var C = this.constructor;
+	      var capability = new PromiseCapability(C);
+	      if (!ES.IsCallable(onRejected)) {
+	        onRejected = function (e) { throw e; };
+	      }
+	      if (!ES.IsCallable(onFulfilled)) {
+	        onFulfilled = function (x) { return x; };
+	      }
+	      var resolutionHandler =
+	        promiseResolutionHandler(promise, onFulfilled, onRejected);
+	      var resolveReaction =
+	        { capability: capability, handler: resolutionHandler };
+	      var rejectReaction =
+	        { capability: capability, handler: onRejected };
+	      switch (promise._status) {
+	      case 'unresolved':
+	        promise._resolveReactions.push(resolveReaction);
+	        promise._rejectReactions.push(rejectReaction);
+	        break;
+	      case 'has-resolution':
+	        triggerPromiseReactions([resolveReaction], promise._result);
+	        break;
+	      case 'has-rejection':
+	        triggerPromiseReactions([rejectReaction], promise._result);
+	        break;
+	      default:
+	        throw new TypeError('unexpected');
+	      }
+	      return capability.promise;
+	    };
+	
+	    return Promise;
+	  })();
+	  // export the Promise constructor.
+	  defineProperties(globals, { Promise: PromiseShim });
+	  // In Chrome 33 (and thereabouts) Promise is defined, but the
+	  // implementation is buggy in a number of ways.  Let's check subclassing
+	  // support to see if we have a buggy implementation.
+	  var promiseSupportsSubclassing = supportsSubclassing(globals.Promise, function (S) {
+	    return S.resolve(42) instanceof S;
+	  });
+	  var promiseIgnoresNonFunctionThenCallbacks = (function () {
+	    try {
+	      globals.Promise.reject(42).then(null, 5).then(null, function () {});
+	      return true;
+	    } catch (ex) {
+	      return false;
+	    }
+	  }());
+	  var promiseRequiresObjectContext = (function () {
+	    try { Promise.call(3, function () {}); } catch (e) { return true; }
+	    return false;
+	  }());
+	  if (!promiseSupportsSubclassing || !promiseIgnoresNonFunctionThenCallbacks || !promiseRequiresObjectContext) {
+	    globals.Promise = PromiseShim;
+	  }
+	
+	  // Map and Set require a true ES5 environment
+	  // Their fast path also requires that the environment preserve
+	  // property insertion order, which is not guaranteed by the spec.
+	  var testOrder = function (a) {
+	    var b = Object.keys(a.reduce(function (o, k) {
+	      o[k] = true;
+	      return o;
+	    }, {}));
+	    return a.join(':') === b.join(':');
+	  };
+	  var preservesInsertionOrder = testOrder(['z', 'a', 'bb']);
+	  // some engines (eg, Chrome) only preserve insertion order for string keys
+	  var preservesNumericInsertionOrder = testOrder(['z', 1, 'a', '3', 2]);
+	
+	  if (supportsDescriptors) {
+	
+	    var fastkey = function fastkey(key) {
+	      if (!preservesInsertionOrder) {
+	        return null;
+	      }
+	      var type = typeof key;
+	      if (type === 'string') {
+	        return '$' + key;
+	      } else if (type === 'number') {
+	        // note that -0 will get coerced to "0" when used as a property key
+	        if (!preservesNumericInsertionOrder) {
+	          return 'n' + key;
+	        }
+	        return key;
+	      }
+	      return null;
+	    };
+	
+	    var emptyObject = function emptyObject() {
+	      // accomodate some older not-quite-ES5 browsers
+	      return Object.create ? Object.create(null) : {};
+	    };
+	
+	    var collectionShims = {
+	      Map: (function () {
+	
+	        var empty = {};
+	
+	        function MapEntry(key, value) {
+	          this.key = key;
+	          this.value = value;
+	          this.next = null;
+	          this.prev = null;
+	        }
+	
+	        MapEntry.prototype.isRemoved = function () {
+	          return this.key === empty;
+	        };
+	
+	        function MapIterator(map, kind) {
+	          this.head = map._head;
+	          this.i = this.head;
+	          this.kind = kind;
+	        }
+	
+	        MapIterator.prototype = {
+	          next: function () {
+	            var i = this.i, kind = this.kind, head = this.head, result;
+	            if (typeof this.i === 'undefined') {
+	              return { value: void 0, done: true };
+	            }
+	            while (i.isRemoved() && i !== head) {
+	              // back up off of removed entries
+	              i = i.prev;
+	            }
+	            // advance to next unreturned element.
+	            while (i.next !== head) {
+	              i = i.next;
+	              if (!i.isRemoved()) {
+	                if (kind === 'key') {
+	                  result = i.key;
+	                } else if (kind === 'value') {
+	                  result = i.value;
+	                } else {
+	                  result = [i.key, i.value];
+	                }
+	                this.i = i;
+	                return { value: result, done: false };
+	              }
+	            }
+	            // once the iterator is done, it is done forever.
+	            this.i = void 0;
+	            return { value: void 0, done: true };
+	          }
+	        };
+	        addIterator(MapIterator.prototype);
+	
+	        function Map(iterable) {
+	          var map = this;
+	          if (!ES.TypeIsObject(map)) {
+	            throw new TypeError('Map does not accept arguments when called as a function');
+	          }
+	          map = emulateES6construct(map);
+	          if (!map._es6map) {
+	            throw new TypeError('bad map');
+	          }
+	
+	          var head = new MapEntry(null, null);
+	          // circular doubly-linked list.
+	          head.next = head.prev = head;
+	
+	          defineProperties(map, {
+	            _head: head,
+	            _storage: emptyObject(),
+	            _size: 0
+	          });
+	
+	          // Optionally initialize map from iterable
+	          if (typeof iterable !== 'undefined' && iterable !== null) {
+	            var it = ES.GetIterator(iterable);
+	            var adder = map.set;
+	            if (!ES.IsCallable(adder)) { throw new TypeError('bad map'); }
+	            while (true) {
+	              var next = ES.IteratorNext(it);
+	              if (next.done) { break; }
+	              var nextItem = next.value;
+	              if (!ES.TypeIsObject(nextItem)) {
+	                throw new TypeError('expected iterable of pairs');
+	              }
+	              adder.call(map, nextItem[0], nextItem[1]);
+	            }
+	          }
+	          return map;
+	        }
+	        var Map$prototype = Map.prototype;
+	        defineProperties(Map, {
+	          '@@create': function (obj) {
+	            var constructor = this;
+	            var prototype = constructor.prototype || Map$prototype;
+	            obj = obj || create(prototype);
+	            defineProperties(obj, { _es6map: true });
+	            return obj;
+	          }
+	        });
+	
+	        Object.defineProperty(Map.prototype, 'size', {
+	          configurable: true,
+	          enumerable: false,
+	          get: function () {
+	            if (typeof this._size === 'undefined') {
+	              throw new TypeError('size method called on incompatible Map');
+	            }
+	            return this._size;
+	          }
+	        });
+	
+	        defineProperties(Map.prototype, {
+	          get: function (key) {
+	            var fkey = fastkey(key);
+	            if (fkey !== null) {
+	              // fast O(1) path
+	              var entry = this._storage[fkey];
+	              if (entry) {
+	                return entry.value;
+	              } else {
+	                return;
+	              }
+	            }
+	            var head = this._head, i = head;
+	            while ((i = i.next) !== head) {
+	              if (ES.SameValueZero(i.key, key)) {
+	                return i.value;
+	              }
+	            }
+	            return;
+	          },
+	
+	          has: function (key) {
+	            var fkey = fastkey(key);
+	            if (fkey !== null) {
+	              // fast O(1) path
+	              return typeof this._storage[fkey] !== 'undefined';
+	            }
+	            var head = this._head, i = head;
+	            while ((i = i.next) !== head) {
+	              if (ES.SameValueZero(i.key, key)) {
+	                return true;
+	              }
+	            }
+	            return false;
+	          },
+	
+	          set: function (key, value) {
+	            var head = this._head, i = head, entry;
+	            var fkey = fastkey(key);
+	            if (fkey !== null) {
+	              // fast O(1) path
+	              if (typeof this._storage[fkey] !== 'undefined') {
+	                this._storage[fkey].value = value;
+	                return this;
+	              } else {
+	                entry = this._storage[fkey] = new MapEntry(key, value);
+	                i = head.prev;
+	                // fall through
+	              }
+	            }
+	            while ((i = i.next) !== head) {
+	              if (ES.SameValueZero(i.key, key)) {
+	                i.value = value;
+	                return this;
+	              }
+	            }
+	            entry = entry || new MapEntry(key, value);
+	            if (ES.SameValue(-0, key)) {
+	              entry.key = +0; // coerce -0 to +0 in entry
+	            }
+	            entry.next = this._head;
+	            entry.prev = this._head.prev;
+	            entry.prev.next = entry;
+	            entry.next.prev = entry;
+	            this._size += 1;
+	            return this;
+	          },
+	
+	          'delete': function (key) {
+	            var head = this._head, i = head;
+	            var fkey = fastkey(key);
+	            if (fkey !== null) {
+	              // fast O(1) path
+	              if (typeof this._storage[fkey] === 'undefined') {
+	                return false;
+	              }
+	              i = this._storage[fkey].prev;
+	              delete this._storage[fkey];
+	              // fall through
+	            }
+	            while ((i = i.next) !== head) {
+	              if (ES.SameValueZero(i.key, key)) {
+	                i.key = i.value = empty;
+	                i.prev.next = i.next;
+	                i.next.prev = i.prev;
+	                this._size -= 1;
+	                return true;
+	              }
+	            }
+	            return false;
+	          },
+	
+	          clear: function () {
+	            this._size = 0;
+	            this._storage = emptyObject();
+	            var head = this._head, i = head, p = i.next;
+	            while ((i = p) !== head) {
+	              i.key = i.value = empty;
+	              p = i.next;
+	              i.next = i.prev = head;
+	            }
+	            head.next = head.prev = head;
+	          },
+	
+	          keys: function () {
+	            return new MapIterator(this, 'key');
+	          },
+	
+	          values: function () {
+	            return new MapIterator(this, 'value');
+	          },
+	
+	          entries: function () {
+	            return new MapIterator(this, 'key+value');
+	          },
+	
+	          forEach: function (callback) {
+	            var context = arguments.length > 1 ? arguments[1] : null;
+	            var it = this.entries();
+	            for (var entry = it.next(); !entry.done; entry = it.next()) {
+	              callback.call(context, entry.value[1], entry.value[0], this);
+	            }
+	          }
+	        });
+	        addIterator(Map.prototype, function () { return this.entries(); });
+	
+	        return Map;
+	      })(),
+	
+	      Set: (function () {
+	        // Creating a Map is expensive.  To speed up the common case of
+	        // Sets containing only string or numeric keys, we use an object
+	        // as backing storage and lazily create a full Map only when
+	        // required.
+	        var SetShim = function Set(iterable) {
+	          var set = this;
+	          if (!ES.TypeIsObject(set)) {
+	            throw new TypeError('Set does not accept arguments when called as a function');
+	          }
+	          set = emulateES6construct(set);
+	          if (!set._es6set) {
+	            throw new TypeError('bad set');
+	          }
+	
+	          defineProperties(set, {
+	            '[[SetData]]': null,
+	            _storage: emptyObject()
+	          });
+	
+	          // Optionally initialize map from iterable
+	          if (typeof iterable !== 'undefined' && iterable !== null) {
+	            var it = ES.GetIterator(iterable);
+	            var adder = set.add;
+	            if (!ES.IsCallable(adder)) { throw new TypeError('bad set'); }
+	            while (true) {
+	              var next = ES.IteratorNext(it);
+	              if (next.done) { break; }
+	              var nextItem = next.value;
+	              adder.call(set, nextItem);
+	            }
+	          }
+	          return set;
+	        };
+	        var Set$prototype = SetShim.prototype;
+	        defineProperties(SetShim, {
+	          '@@create': function (obj) {
+	            var constructor = this;
+	            var prototype = constructor.prototype || Set$prototype;
+	            obj = obj || create(prototype);
+	            defineProperties(obj, { _es6set: true });
+	            return obj;
+	          }
+	        });
+	
+	        // Switch from the object backing storage to a full Map.
+	        var ensureMap = function ensureMap(set) {
+	          if (!set['[[SetData]]']) {
+	            var m = set['[[SetData]]'] = new collectionShims.Map();
+	            Object.keys(set._storage).forEach(function (k) {
+	              // fast check for leading '$'
+	              if (k.charCodeAt(0) === 36) {
+	                k = k.slice(1);
+	              } else if (k.charAt(0) === 'n') {
+	                k = +k.slice(1);
+	              } else {
+	                k = +k;
+	              }
+	              m.set(k, k);
+	            });
+	            set._storage = null; // free old backing storage
+	          }
+	        };
+	
+	        Object.defineProperty(SetShim.prototype, 'size', {
+	          configurable: true,
+	          enumerable: false,
+	          get: function () {
+	            if (typeof this._storage === 'undefined') {
+	              // https://github.com/paulmillr/es6-shim/issues/176
+	              throw new TypeError('size method called on incompatible Set');
+	            }
+	            ensureMap(this);
+	            return this['[[SetData]]'].size;
+	          }
+	        });
+	
+	        defineProperties(SetShim.prototype, {
+	          has: function (key) {
+	            var fkey;
+	            if (this._storage && (fkey = fastkey(key)) !== null) {
+	              return !!this._storage[fkey];
+	            }
+	            ensureMap(this);
+	            return this['[[SetData]]'].has(key);
+	          },
+	
+	          add: function (key) {
+	            var fkey;
+	            if (this._storage && (fkey = fastkey(key)) !== null) {
+	              this._storage[fkey] = true;
+	              return this;
+	            }
+	            ensureMap(this);
+	            this['[[SetData]]'].set(key, key);
+	            return this;
+	          },
+	
+	          'delete': function (key) {
+	            var fkey;
+	            if (this._storage && (fkey = fastkey(key)) !== null) {
+	              var hasFKey = _hasOwnProperty.call(this._storage, fkey);
+	              return (delete this._storage[fkey]) && hasFKey;
+	            }
+	            ensureMap(this);
+	            return this['[[SetData]]']['delete'](key);
+	          },
+	
+	          clear: function () {
+	            if (this._storage) {
+	              this._storage = emptyObject();
+	              return;
+	            }
+	            return this['[[SetData]]'].clear();
+	          },
+	
+	          keys: function () {
+	            ensureMap(this);
+	            return this['[[SetData]]'].keys();
+	          },
+	
+	          values: function () {
+	            ensureMap(this);
+	            return this['[[SetData]]'].values();
+	          },
+	
+	          entries: function () {
+	            ensureMap(this);
+	            return this['[[SetData]]'].entries();
+	          },
+	
+	          forEach: function (callback) {
+	            var context = arguments.length > 1 ? arguments[1] : null;
+	            var entireSet = this;
+	            ensureMap(this);
+	            this['[[SetData]]'].forEach(function (value, key) {
+	              callback.call(context, key, key, entireSet);
+	            });
+	          }
+	        });
+	        addIterator(SetShim.prototype, function () { return this.values(); });
+	
+	        return SetShim;
+	      })()
+	    };
+	    defineProperties(globals, collectionShims);
+	
+	    if (globals.Map || globals.Set) {
+	      /*
+	        - In Firefox < 23, Map#size is a function.
+	        - In all current Firefox, Set#entries/keys/values & Map#clear do not exist
+	        - https://bugzilla.mozilla.org/show_bug.cgi?id=869996
+	        - In Firefox 24, Map and Set do not implement forEach
+	        - In Firefox 25 at least, Map and Set are callable without "new"
+	      */
+	      if (
+	        typeof globals.Map.prototype.clear !== 'function' ||
+	        new globals.Set().size !== 0 ||
+	        new globals.Map().size !== 0 ||
+	        typeof globals.Map.prototype.keys !== 'function' ||
+	        typeof globals.Set.prototype.keys !== 'function' ||
+	        typeof globals.Map.prototype.forEach !== 'function' ||
+	        typeof globals.Set.prototype.forEach !== 'function' ||
+	        isCallableWithoutNew(globals.Map) ||
+	        isCallableWithoutNew(globals.Set) ||
+	        !supportsSubclassing(globals.Map, function (M) {
+	          var m = new M([]);
+	          // Firefox 32 is ok with the instantiating the subclass but will
+	          // throw when the map is used.
+	          m.set(42, 42);
+	          return m instanceof M;
+	        })
+	      ) {
+	        globals.Map = collectionShims.Map;
+	        globals.Set = collectionShims.Set;
+	      }
+	    }
+	    // Shim incomplete iterator implementations.
+	    addIterator(Object.getPrototypeOf((new globals.Map()).keys()));
+	    addIterator(Object.getPrototypeOf((new globals.Set()).keys()));
+	  }
+	
+	  return globals;
+	}));
+	
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(237)))
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+	
+	process.listeners = function (name) { return [] }
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 238 */,
+/* 239 */,
+/* 240 */
+/***/ (function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_240__;
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $ = __webpack_require__( 198 );
+	var getScene = __webpack_require__( 242 );
+	var getBoxScene = __webpack_require__( 243 );
+	var Channel = __webpack_require__( 108 );
+	var Animation = __webpack_require__( 107 );
+	var UpdateMatrixTransform = __webpack_require__( 71 );
+	var StackedRotateAxis = __webpack_require__( 118 );
+	var StackedScale = __webpack_require__( 119 );
+	var StackedQuaternion = __webpack_require__( 117 );
+	var StackedTranslate = __webpack_require__( 120 );
+	var StackedMatrix = __webpack_require__( 116 );
+	
+	
+	var QUnit = window.QUnit;
+	
+	var checkNear = function ( a, b, threshold ) {
+	
+	    if ( threshold === undefined ) {
+	        threshold = 1e-5;
+	    }
+	
+	    if ( $.isArray( a ) ) {
+	        var expected = function ( a, b ) {
+	            return QUnit.jsDump.parse( a ) + ' expected ' + QUnit.jsDump.parse( b );
+	        };
+	        for ( var i = 0; i < a.length; ++i ) {
+	            var number = typeof a[ i ] === 'number' && typeof b[ i ] === 'number';
+	            if ( Math.abs( a[ i ] - b[ i ] ) > threshold || number === false ) {
+	                QUnit.log( expected.bind( this, a, b ) );
+	                return false;
+	            }
+	        }
+	    } else {
+	        if ( a === undefined || b === undefined ) {
+	            QUnit.log( function () {
+	                return 'undefined value : ' + a + ', ' + b;
+	            } );
+	            return false;
+	        }
+	        if ( Math.abs( a - b ) > threshold ) {
+	            QUnit.log( function () {
+	                return a + ' != ' + b;
+	            } );
+	            return false;
+	        }
+	    }
+	    return true;
+	};
+	
+	var near = function ( a, b, error, message ) {
+	
+	    var threshold = error;
+	    var text = message;
+	
+	    if ( typeof threshold === 'string' )
+	        text = threshold;
+	
+	    if ( typeof threshold !== 'number' )
+	        threshold = 1e-5;
+	
+	    if ( $.isArray( a ) ) {
+	        for ( var i = 0; i < a.length; ++i ) {
+	            var number = typeof a[ i ] === 'number' && typeof b[ i ] === 'number' && !isNaN( a[ i ] ) && !isNaN( b[ i ] );
+	            if ( Math.abs( a[ i ] - b[ i ] ) > threshold || number === false ) {
+	                ok( false, QUnit.jsDump.parse( a ) + ' expected ' + QUnit.jsDump.parse( b ) );
+	                return;
+	            }
+	        }
+	    } else {
+	        if ( Math.abs( a - b ) > threshold ) {
+	            ok( false, a + ' != ' + b );
+	            return;
+	        }
+	    }
+	    ok( true, text ); //'okay: ' + QUnit.jsDump.parse(a));
+	};
+	
+	var createFakeRenderer = function () {
+	    return {
+	        TEXTURE0: 10,
+	        DEPTH_TEST: 1,
+	        CULL_FACE: 0,
+	        UNSIGNED_SHORT: 0,
+	        HIGH_FLOAT: 0,
+	        FRAGMENT_SHADER: 0,
+	        TEXTURE_CUBE_MAP_POSITIVE_X: 0x8515,
+	        TEXTURE_CUBE_MAP_NEGATIVE_X: 0x8516,
+	        TEXTURE_CUBE_MAP_POSITIVE_Y: 0x8517,
+	        TEXTURE_CUBE_MAP_NEGATIVE_Y: 0x8518,
+	        TEXTURE_CUBE_MAP_POSITIVE_Z: 0x8519,
+	        TEXTURE_CUBE_MAP_NEGATIVE_Z: 0x851A,
+	        MAX_CUBE_MAP_TEXTURE_SIZE: 0x851C,
+	        UNPACK_FLIP_Y_WEBGL: 0,
+	        drawElements: function () {},
+	        createBuffer: function () {},
+	        deleteBuffer: function () {},
+	
+	
+	        blendColor: function () {},
+	        enable: function () {},
+	        disable: function () {},
+	        depthFunc: function () {},
+	        pixelStorei: function () {},
+	        depthRange: function () {},
+	        depthMask: function () {},
+	        deleteTexture: function () {},
+	        activeTexture: function () {},
+	        bindTexture: function () {},
+	        bufferData: function () {},
+	        bindBuffer: function () {},
+	        blendFunc: function () {},
+	        getShaderPrecisionFormat: function () {
+	            return {
+	                precision: 1
+	            };
+	        },
+	        getSupportedExtensions: function () {
+	            return {};
+	        },
+	        enableVertexAttribArray: function () {},
+	        vertexAttribPointer: function () {},
+	        createTexture: function () {},
+	        createFramebuffer: function () {
+	            return 1;
+	        },
+	        deleteFramebuffer: function () {},
+	        bindFramebuffer: function () {},
+	        framebufferTexture2D: function () {},
+	        checkFramebufferStatus: function () {
+	            return 0x8CD5;
+	        },
+	        createRenderbuffer: function () {
+	            return 1;
+	        },
+	        deleteRenderbuffer: function () {},
+	        bindRenderbuffer: function () {},
+	        renderbufferStorage: function () {},
+	        framebufferRenderbuffer: function () {},
+	        clear: function () {},
+	        viewport: function () {},
+	        cullFace: function () {},
+	        texImage2D: function () {},
+	        texParameteri: function () {},
+	        createShader: function () {
+	            return 1;
+	        },
+	        deleteShader: function () {},
+	        shaderSource: function () {},
+	        compileShader: function () {},
+	        getShaderParameter: function () {
+	            return true;
+	        },
+	        isContextLost: function () {
+	            return false;
+	        },
+	        getShaderInfoLog: function () {},
+	        createProgram: function () {
+	            return {};
+	        },
+	        deleteProgram: function () {},
+	        attachShader: function () {},
+	        validateProgram: function () {},
+	        linkProgram: function () {},
+	        getParameter: function () {},
+	        getProgramParameter: function () {
+	            return true;
+	        },
+	        getProgramInfoLog: function () {},
+	        getUniformLocation: function () {
+	            return 0;
+	        },
+	        getAttribLocation: function () {
+	            return 0;
+	        },
+	        useProgram: function () {},
+	        uniformMatrix4fv: function () {},
+	        uniform1fv: function () {},
+	        uniform4fv: function () {},
+	        uniform3fv: function () {},
+	        uniform1iv: function () {},
+	        canvas: {
+	            clientWidth: 300,
+	            clientHeight: 300
+	        }
+	
+	    };
+	};
+	
+	var createFakeWebGLCanvas = function () {
+	    var obj = {
+	        addEventListener: function () {},
+	        getContext: function () {
+	            return createFakeRenderer();
+	        },
+	        style: {
+	            width: 300
+	        },
+	        getAttribute: function () {
+	            return 0;
+	        }
+	    };
+	    return obj;
+	};
+	
+	var createVec3Keyframes = function () {
+	    var keys = [
+	        1, 1, 1,
+	        0, 0, 0,
+	        3, 3, 3
+	    ];
+	    var times = [ 0, 1, 2 ];
+	    return Channel.createVec3Channel( keys, times );
+	};
+	
+	var createFloatKeyframes = function () {
+	    var keys = [
+	        1, 0, 3
+	    ];
+	
+	    var start = 0;
+	    if ( arguments.length > 0 ) // offset time keyframes
+	        start = arguments[ 0 ];
+	
+	    var times = [ start + 0, start + 1, start + 2 ];
+	    return Channel.createFloatChannel( keys, times );
+	};
+	
+	var createFloatCubicBezierKeyframes = function () {
+	    var keys = [
+	        1, 2, 3,
+	        0, 1, 3,
+	        3, 4, 5
+	    ];
+	    var times = [ 0, 1, 2 ];
+	    return Channel.createFloatCubicBezierChannel( keys, times );
+	};
+	
+	var createVec3CubicBezierKeyframes = function () {
+	    var keys = [
+	        1, 1, 1,
+	        2, 2, 2,
+	        5, 5, 5,
+	
+	        6, 6, 6,
+	        9, 9, 9,
+	        8, 8, 8,
+	
+	        6, 6, 6,
+	        6, 6, 6,
+	        6, 6, 6
+	    ];
+	    var times = [ 0, 1, 2 ];
+	    return Channel.createVec3CubicBezierChannel( keys, times );
+	};
+	
+	var createQuatLerpKeyFrames = function () {
+	    var keys = [ 1.22465e-16, 1.22465e-16, 1.22465e-16, -1,
+	        0.300706, 7.99708e-17, 1.53623e-16, -0.953717,
+	        0.382683, 6.62774e-17, 1.60008e-16, -0.92388,
+	        0.382683, 6.62774e-17, 1.60008e-16, -0.92388,
+	        0.126911, -0.0991929, 0.119115, -0.979727
+	    ];
+	
+	    var times = [ 0, 0.202899, 0.456522, 1.21739, 1.47101 ];
+	    return Channel.createQuatChannel( keys, times );
+	};
+	
+	
+	var createAnimation = function ( name, target1, target2 ) {
+	
+	    var a = createFloatKeyframes();
+	    a.target = target1 || 'a';
+	    a.name = 'rotateX';
+	
+	    var b = createFloatKeyframes( 2 );
+	    b.target = target2 || 'b';
+	    b.name = 'rotateY';
+	
+	    return Animation.createAnimation( [ a, b ], name );
+	};
+	
+	var createAnimationWithNegativeKey = function ( name, target1, target2 ) {
+	
+	    var a = createFloatKeyframes( -10 );
+	    a.target = target1 || 'a';
+	    a.name = 'rotateX';
+	
+	    var b = createFloatKeyframes( 10 );
+	    b.target = target2 || 'b';
+	    b.name = 'rotateY';
+	
+	    return Animation.createAnimation( [ a, b ], name );
+	};
+	
+	var stackedElement = {
+	    translate: StackedTranslate,
+	    rotate: StackedRotateAxis,
+	    rotateX: StackedRotateAxis,
+	    rotateY: StackedRotateAxis,
+	    rotateZ: StackedRotateAxis,
+	    matrix: StackedMatrix,
+	    scale: StackedScale,
+	    quat: StackedQuaternion
+	};
+	
+	var createAnimationUpdateCallback = function ( animations ) {
+	    var cbMap = {};
+	
+	    for ( var a = 0; a < animations.length; a++ ) {
+	        var animation = animations[ a ];
+	        for ( var i = 0; i < animation.channels.length; i++ ) {
+	            var channel = animation.channels[ i ];
+	
+	            var target = channel.target;
+	            var name = channel.name;
+	
+	            var ucb = cbMap[ target ];
+	            if ( !ucb ) {
+	                cbMap[ target ] = new UpdateMatrixTransform();
+	                ucb = cbMap[ target ];
+	                ucb.setName( target );
+	            }
+	            var stacked = ucb.getStackedTransforms();
+	            var st = new stackedElement[ name ]( name );
+	            stacked.push( st );
+	        }
+	    }
+	    return cbMap;
+	};
+	
+	var createCanvas = function ( noGL ) {
+	
+	    // mockup for phantomjs or benchmarks
+	    if ( noGL || navigator.userAgent.indexOf( 'PhantomJS' ) !== -1 ) {
+	        return createFakeWebGLCanvas();
+	    }
+	
+	    var parent = document.body;
+	
+	    var t = '' + ( new Date() ).getTime();
+	    var cnv = '<canvas id=\'' + t + '\'></canvas>';
+	
+	    var mydiv = document.createElement( 'div' );
+	    mydiv.setAttribute( 'id', 'div_' + t );
+	    mydiv.innerHTML = cnv;
+	    parent.appendChild( mydiv );
+	    return document.getElementById( t );
+	};
+	
+	var removeCanvas = function ( canvas ) {
+	    if ( !canvas ) return;
+	    var id = canvas.getAttribute( 'id' );
+	    var parent = document.getElementById( 'div_' + id );
+	    if ( !parent )
+	        return;
+	    parent.removeChild( canvas );
+	};
+	
+	module.exports = {
+	    checkNear: checkNear,
+	    createFakeRenderer: createFakeRenderer,
+	    removeCanvas: removeCanvas,
+	    createCanvas: createCanvas,
+	    createVec3Keyframes: createVec3Keyframes,
+	    createFloatKeyframes: createFloatKeyframes,
+	    createFloatCubicBezierKeyframes: createFloatCubicBezierKeyframes,
+	    createVec3CubicBezierKeyframes: createVec3CubicBezierKeyframes,
+	    createQuatLerpKeyFrames: createQuatLerpKeyFrames,
+	    createAnimation: createAnimation,
+	    createAnimationWithNegativeKey: createAnimationWithNegativeKey,
+	    createAnimationUpdateCallback: createAnimationUpdateCallback,
+	    near: near,
+	    getBoxScene: getBoxScene,
+	    getScene: getScene
+	};
+
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	var getScene = function () {
+	    return {
+	        'children': [ {
+	            'children': [ {
+	                'children': [ {
+	                    'children': [ {
+	                        'attributes': {
+	                            'Normal': {
+	                                'elements': [ 0.04907, 0.00483, -0.99878, 0.04907, 0.00483, -0.99878, 0.04907, 0.00483, -0.99878, 0.14671, 0.01445, -0.98907, 0.14671, 0.01445, -0.98907, 0.14671, 0.01445, -0.98907, 0.14671, 0.01445, -0.98907, 0.24291, 0.02392, -0.96975, 0.24291, 0.02392, -0.96975, 0.24291, 0.02392, -0.96975, 0.24291, 0.02392, -0.96975, 0.3367, 0.03316, -0.94103, 0.3367, 0.03316, -0.94103, 0.3367, 0.03316, -0.94103, 0.3367, 0.03316, -0.94103, 0.42718, 0.04207, -0.90319, 0.42718, 0.04207, -0.90319, 0.42718, 0.04207, -0.90319, 0.42718, 0.04207, -0.90319, 0.51345, 0.05057, -0.85663, 0.51345, 0.05057, -0.85663, 0.51345, 0.05057, -0.85663, 0.51345, 0.05057, -0.85663, 0.59468, 0.05857, -0.80183, 0.59468, 0.05857, -0.80183, 0.59468, 0.05857, -0.80183, 0.59468, 0.05857, -0.80183, 0.6701, 0.066, -0.73934, 0.6701, 0.066, -0.73934, 0.6701, 0.066, -0.73934, 0.6701, 0.066, -0.73934, 0.73899, 0.07278, -0.66978, 0.73899, 0.07278, -0.66978, 0.73899, 0.07278, -0.66978, 0.73899, 0.07278, -0.66978, 0.80071, 0.07886, -0.59384, 0.80071, 0.07886, -0.59384, 0.80071, 0.07886, -0.59384, 0.80071, 0.07886, -0.59384, 0.85468, 0.08418, -0.51228, 0.85468, 0.08418, -0.51228, 0.85468, 0.08418, -0.51228, 0.85468, 0.08418, -0.51228, 0.90043, 0.08868, -0.42587, 0.90043, 0.08868, -0.42587, 0.90043, 0.08868, -0.42587, 0.90043, 0.08868, -0.42587, 0.93752, 0.09233, -0.33545, 0.93752, 0.09233, -0.33545, 0.93752, 0.09233, -0.33545, 0.93752, 0.09233, -0.33545, 0.96563, 0.0951, -0.24188, 0.96563, 0.0951, -0.24188, 0.96563, 0.0951, -0.24188, 0.96563, 0.0951, -0.24188, 0.98452, 0.09696, -0.14604, 0.98452, 0.09696, -0.14604, 0.98452, 0.09696, -0.14604, 0.98452, 0.09696, -0.14604, 0.994, 0.0979, -0.04883, 0.994, 0.0979, -0.04883, 0.994, 0.0979, -0.04883, 0.994, 0.0979, -0.04883, 0.994, 0.0979, 0.04883, 0.994, 0.0979, 0.04883, 0.994, 0.0979, 0.04883, 0.994, 0.0979, 0.04883, 0.98452, 0.09696, 0.14604, 0.98452, 0.09696, 0.14604, 0.98452, 0.09696, 0.14604, 0.98452, 0.09696, 0.14604, 0.96563, 0.0951, 0.24188, 0.96563, 0.0951, 0.24188, 0.96563, 0.0951, 0.24188, 0.96563, 0.0951, 0.24188, 0.93752, 0.09233, 0.33545, 0.93752, 0.09233, 0.33545, 0.93752, 0.09233, 0.33545, 0.93752, 0.09233, 0.33545, 0.90043, 0.08868, 0.42587, 0.90043, 0.08868, 0.42587, 0.90043, 0.08868, 0.42587, 0.90043, 0.08868, 0.42587, 0.85468, 0.08418, 0.51228, 0.85468, 0.08418, 0.51228, 0.85468, 0.08418, 0.51228, 0.85468, 0.08418, 0.51228, 0.80071, 0.07886, 0.59384, 0.80071, 0.07886, 0.59384, 0.80071, 0.07886, 0.59384, 0.80071, 0.07886, 0.59384, 0.73899, 0.07278, 0.66978, 0.73899, 0.07278, 0.66978, 0.73899, 0.07278, 0.66978, 0.73899, 0.07278, 0.66978, 0.6701, 0.066, 0.73934, 0.6701, 0.066, 0.73934, 0.6701, 0.066, 0.73934, 0.6701, 0.066, 0.73934, 0.59468, 0.05857, 0.80183, 0.59468, 0.05857, 0.80183, 0.59468, 0.05857, 0.80183, 0.59468, 0.05857, 0.80183, 0.51345, 0.05057, 0.85663, 0.51345, 0.05057, 0.85663, 0.51345, 0.05057, 0.85663, 0.51345, 0.05057, 0.85663, 0.42718, 0.04207, 0.90319, 0.42718, 0.04207, 0.90319, 0.42718, 0.04207, 0.90319, 0.42718, 0.04207, 0.90319, 0.33671, 0.03316, 0.94103, 0.33671, 0.03316, 0.94103, 0.33671, 0.03316, 0.94103, 0.33671, 0.03316, 0.94103, 0.24291, 0.02392, 0.96975, 0.24291, 0.02392, 0.96975, 0.24291, 0.02392, 0.96975, 0.24291, 0.02392, 0.96975, 0.14672, 0.01445, 0.98907, 0.14672, 0.01445, 0.98907, 0.14672, 0.01445, 0.98907, 0.14672, 0.01445, 0.98907, 0.04907, 0.00483, 0.99878, 0.04907, 0.00483, 0.99878, 0.04907, 0.00483, 0.99878, 0.04718, 0.01431, 0.99878, 0.04718, 0.01431, 0.99878, 0.04718, 0.01431, 0.99878, 0.14108, 0.0428, 0.98907, 0.14108, 0.0428, 0.98907, 0.14108, 0.0428, 0.98907, 0.14108, 0.0428, 0.98907, 0.23358, 0.07085, 0.96975, 0.23358, 0.07085, 0.96975, 0.23358, 0.07085, 0.96975, 0.23358, 0.07085, 0.96975, 0.32377, 0.09821, 0.94103, 0.32377, 0.09821, 0.94103, 0.32377, 0.09821, 0.94103, 0.32377, 0.09821, 0.94103, 0.41076, 0.1246, 0.90319, 0.41076, 0.1246, 0.90319, 0.41076, 0.1246, 0.90319, 0.41076, 0.1246, 0.90319, 0.49371, 0.14977, 0.85663, 0.49371, 0.14977, 0.85663, 0.49371, 0.14977, 0.85663, 0.49371, 0.14977, 0.85663, 0.57182, 0.17346, 0.80183, 0.57182, 0.17346, 0.80183, 0.57182, 0.17346, 0.80183, 0.57182, 0.17346, 0.80183, 0.64434, 0.19546, 0.73934, 0.64434, 0.19546, 0.73934, 0.64434, 0.19546, 0.73934, 0.64434, 0.19546, 0.73934, 0.71059, 0.21555, 0.66978, 0.71059, 0.21555, 0.66978, 0.71059, 0.21555, 0.66978, 0.71059, 0.21555, 0.66978, 0.76994, 0.23356, 0.59384, 0.76994, 0.23356, 0.59384, 0.76994, 0.23356, 0.59384, 0.76994, 0.23356, 0.59384, 0.82184, 0.2493, 0.51228, 0.82184, 0.2493, 0.51228, 0.82184, 0.2493, 0.51228, 0.82184, 0.2493, 0.51228, 0.86582, 0.26265, 0.42587, 0.86582, 0.26265, 0.42587, 0.86582, 0.26265, 0.42587, 0.86582, 0.26265, 0.42587, 0.90149, 0.27347, 0.33545, 0.90149, 0.27347, 0.33545, 0.90149, 0.27347, 0.33545, 0.90149, 0.27347, 0.33545, 0.92853, 0.28167, 0.24188, 0.92853, 0.28167, 0.24188, 0.92853, 0.28167, 0.24188, 0.92853, 0.28167, 0.24188, 0.94668, 0.28717, 0.14604, 0.94668, 0.28717, 0.14604, 0.94668, 0.28717, 0.14604, 0.94668, 0.28717, 0.14604, 0.9558, 0.28994, 0.04883, 0.9558, 0.28994, 0.04883, 0.9558, 0.28994, 0.04883, 0.9558, 0.28994, 0.04883, 0.9558, 0.28994, -0.04883, 0.9558, 0.28994, -0.04883, 0.9558, 0.28994, -0.04883, 0.9558, 0.28994, -0.04883, 0.94668, 0.28717, -0.14604, 0.94668, 0.28717, -0.14604, 0.94668, 0.28717, -0.14604, 0.94668, 0.28717, -0.14604, 0.92853, 0.28167, -0.24188, 0.92853, 0.28167, -0.24188, 0.92853, 0.28167, -0.24188, 0.92853, 0.28167, -0.24188, 0.90149, 0.27347, -0.33545, 0.90149, 0.27347, -0.33545, 0.90149, 0.27347, -0.33545, 0.90149, 0.27347, -0.33545, 0.86582, 0.26265, -0.42587, 0.86582, 0.26265, -0.42587, 0.86582, 0.26265, -0.42587, 0.86582, 0.26265, -0.42587, 0.82184, 0.2493, -0.51228, 0.82184, 0.2493, -0.51228, 0.82184, 0.2493, -0.51228, 0.82184, 0.2493, -0.51228, 0.76993, 0.23356, -0.59384, 0.76993, 0.23356, -0.59384, 0.76993, 0.23356, -0.59384, 0.76993, 0.23356, -0.59384, 0.71059, 0.21555, -0.66978, 0.71059, 0.21555, -0.66978, 0.71059, 0.21555, -0.66978, 0.71059, 0.21555, -0.66978, 0.64434, 0.19546, -0.73934, 0.64434, 0.19546, -0.73934, 0.64434, 0.19546, -0.73934, 0.64434, 0.19546, -0.73934, 0.57182, 0.17346, -0.80183, 0.57182, 0.17346, -0.80183, 0.57182, 0.17346, -0.80183, 0.57182, 0.17346, -0.80183, 0.49371, 0.14977, -0.85663, 0.49371, 0.14977, -0.85663, 0.49371, 0.14977, -0.85663, 0.49371, 0.14977, -0.85663, 0.41076, 0.1246, -0.90319, 0.41076, 0.1246, -0.90319, 0.41076, 0.1246, -0.90319, 0.41076, 0.1246, -0.90319, 0.32376, 0.09821, -0.94103, 0.32376, 0.09821, -0.94103, 0.32376, 0.09821, -0.94103, 0.32376, 0.09821, -0.94103, 0.23357, 0.07085, -0.96975, 0.23357, 0.07085, -0.96975, 0.23357, 0.07085, -0.96975, 0.23357, 0.07085, -0.96975, 0.14108, 0.0428, -0.98907, 0.14108, 0.0428, -0.98907, 0.14108, 0.0428, -0.98907, 0.14108, 0.0428, -0.98907, 0.04718, 0.01431, -0.99878, 0.04718, 0.01431, -0.99878, 0.04718, 0.01431, -0.99878, 0.04348, 0.02324, -0.99878, 0.04348, 0.02324, -0.99878, 0.04348, 0.02324, -0.99878, 0.13002, 0.0695, -0.98907, 0.13002, 0.0695, -0.98907, 0.13002, 0.0695, -0.98907, 0.13002, 0.0695, -0.98907, 0.21526, 0.11506, -0.96975, 0.21526, 0.11506, -0.96975, 0.21526, 0.11506, -0.96975, 0.21526, 0.11506, -0.96975, 0.29838, 0.15949, -0.94103, 0.29838, 0.15949, -0.94103, 0.29838, 0.15949, -0.94103, 0.29838, 0.15949, -0.94103, 0.37856, 0.20234, -0.90319, 0.37856, 0.20234, -0.90319, 0.37856, 0.20234, -0.90319, 0.37856, 0.20234, -0.90319, 0.45501, 0.24321, -0.85663, 0.45501, 0.24321, -0.85663, 0.45501, 0.24321, -0.85663, 0.45501, 0.24321, -0.85663, 0.527, 0.28168, -0.80183, 0.527, 0.28168, -0.80183, 0.527, 0.28168, -0.80183, 0.527, 0.28168, -0.80183, 0.59383, 0.31741, -0.73934, 0.59383, 0.31741, -0.73934, 0.59383, 0.31741, -0.73934, 0.59383, 0.31741, -0.73934, 0.65488, 0.35004, -0.66978, 0.65488, 0.35004, -0.66978, 0.65488, 0.35004, -0.66978, 0.65488, 0.35004, -0.66978, 0.70958, 0.37928, -0.59384, 0.70958, 0.37928, -0.59384, 0.70958, 0.37928, -0.59384, 0.70958, 0.37928, -0.59384, 0.75741, 0.40484, -0.51228, 0.75741, 0.40484, -0.51228, 0.75741, 0.40484, -0.51228, 0.75741, 0.40484, -0.51228, 0.79795, 0.42651, -0.42587, 0.79795, 0.42651, -0.42587, 0.79795, 0.42651, -0.42587, 0.79795, 0.42651, -0.42587, 0.83082, 0.44408, -0.33545, 0.83082, 0.44408, -0.33545, 0.83082, 0.44408, -0.33545, 0.83082, 0.44408, -0.33545, 0.85573, 0.4574, -0.24188, 0.85573, 0.4574, -0.24188, 0.85573, 0.4574, -0.24188, 0.85573, 0.4574, -0.24188, 0.87247, 0.46634, -0.14604, 0.87247, 0.46634, -0.14604, 0.87247, 0.46634, -0.14604, 0.87247, 0.46634, -0.14604, 0.88087, 0.47083, -0.04883, 0.88087, 0.47083, -0.04883, 0.88087, 0.47083, -0.04883, 0.88087, 0.47083, -0.04883, 0.88087, 0.47083, 0.04883, 0.88087, 0.47083, 0.04883, 0.88087, 0.47083, 0.04883, 0.88087, 0.47083, 0.04883, 0.87247, 0.46634, 0.14604, 0.87247, 0.46634, 0.14604, 0.87247, 0.46634, 0.14604, 0.87247, 0.46634, 0.14604, 0.85573, 0.4574, 0.24188, 0.85573, 0.4574, 0.24188, 0.85573, 0.4574, 0.24188, 0.85573, 0.4574, 0.24188, 0.83082, 0.44408, 0.33545, 0.83082, 0.44408, 0.33545, 0.83082, 0.44408, 0.33545, 0.83082, 0.44408, 0.33545, 0.79795, 0.42651, 0.42587, 0.79795, 0.42651, 0.42587, 0.79795, 0.42651, 0.42587, 0.79795, 0.42651, 0.42587, 0.75741, 0.40484, 0.51228, 0.75741, 0.40484, 0.51228, 0.75741, 0.40484, 0.51228, 0.75741, 0.40484, 0.51228, 0.70958, 0.37928, 0.59384, 0.70958, 0.37928, 0.59384, 0.70958, 0.37928, 0.59384, 0.70958, 0.37928, 0.59384, 0.65488, 0.35004, 0.66978, 0.65488, 0.35004, 0.66978, 0.65488, 0.35004, 0.66978, 0.65488, 0.35004, 0.66978, 0.59383, 0.31741, 0.73934, 0.59383, 0.31741, 0.73934, 0.59383, 0.31741, 0.73934, 0.59383, 0.31741, 0.73934, 0.527, 0.28169, 0.80183, 0.527, 0.28169, 0.80183, 0.527, 0.28169, 0.80183, 0.527, 0.28169, 0.80183, 0.45501, 0.24321, 0.85663, 0.45501, 0.24321, 0.85663, 0.45501, 0.24321, 0.85663, 0.45501, 0.24321, 0.85663, 0.37856, 0.20234, 0.90319, 0.37856, 0.20234, 0.90319, 0.37856, 0.20234, 0.90319, 0.37856, 0.20234, 0.90319, 0.29838, 0.15949, 0.94103, 0.29838, 0.15949, 0.94103, 0.29838, 0.15949, 0.94103, 0.29838, 0.15949, 0.94103, 0.21526, 0.11506, 0.96975, 0.21526, 0.11506, 0.96975, 0.21526, 0.11506, 0.96975, 0.21526, 0.11506, 0.96975, 0.13002, 0.0695, 0.98907, 0.13002, 0.0695, 0.98907, 0.13002, 0.0695, 0.98907, 0.13002, 0.0695, 0.98907, 0.04348, 0.02324, 0.99878, 0.04348, 0.02324, 0.99878, 0.04348, 0.02324, 0.99878, 0.03811, 0.03128, 0.99878, 0.03811, 0.03128, 0.99878, 0.03811, 0.03128, 0.99878, 0.11396, 0.09353, 0.98907, 0.11396, 0.09353, 0.98907, 0.11396, 0.09353, 0.98907, 0.11396, 0.09353, 0.98907, 0.18868, 0.15485, 0.96975, 0.18868, 0.15485, 0.96975, 0.18868, 0.15485, 0.96975, 0.18868, 0.15485, 0.96975, 0.26154, 0.21464, 0.94103, 0.26154, 0.21464, 0.94103, 0.26154, 0.21464, 0.94103, 0.26154, 0.21464, 0.94103, 0.33181, 0.27231, 0.90319, 0.33181, 0.27231, 0.90319, 0.33181, 0.27231, 0.90319, 0.33181, 0.27231, 0.90319, 0.39882, 0.3273, 0.85663, 0.39882, 0.3273, 0.85663, 0.39882, 0.3273, 0.85663, 0.39882, 0.3273, 0.85663, 0.46192, 0.37908, 0.80183, 0.46192, 0.37908, 0.80183, 0.46192, 0.37908, 0.80183, 0.46192, 0.37908, 0.80183, 0.5205, 0.42716, 0.73934, 0.5205, 0.42716, 0.73934, 0.5205, 0.42716, 0.73934, 0.5205, 0.42716, 0.73934, 0.57401, 0.47108, 0.66978, 0.57401, 0.47108, 0.66978, 0.57401, 0.47108, 0.66978, 0.57401, 0.47108, 0.66978, 0.62195, 0.51042, 0.59384, 0.62195, 0.51042, 0.59384, 0.62195, 0.51042, 0.59384, 0.62195, 0.51042, 0.59384, 0.66388, 0.54483, 0.51228, 0.66388, 0.54483, 0.51228, 0.66388, 0.54483, 0.51228, 0.66388, 0.54483, 0.51228, 0.69941, 0.57399, 0.42587, 0.69941, 0.57399, 0.42587, 0.69941, 0.57399, 0.42587, 0.69941, 0.57399, 0.42587, 0.72822, 0.59764, 0.33545, 0.72822, 0.59764, 0.33545, 0.72822, 0.59764, 0.33545, 0.72822, 0.59764, 0.33545, 0.75006, 0.61556, 0.24188, 0.75006, 0.61556, 0.24188, 0.75006, 0.61556, 0.24188, 0.75006, 0.61556, 0.24188, 0.76472, 0.62759, 0.14604, 0.76472, 0.62759, 0.14604, 0.76472, 0.62759, 0.14604, 0.76472, 0.62759, 0.14604, 0.77209, 0.63364, 0.04883, 0.77209, 0.63364, 0.04883, 0.77209, 0.63364, 0.04883, 0.77209, 0.63364, 0.04883, 0.77209, 0.63364, -0.04883, 0.77209, 0.63364, -0.04883, 0.77209, 0.63364, -0.04883, 0.77209, 0.63364, -0.04883, 0.76472, 0.62759, -0.14604, 0.76472, 0.62759, -0.14604, 0.76472, 0.62759, -0.14604, 0.76472, 0.62759, -0.14604, 0.75006, 0.61556, -0.24188, 0.75006, 0.61556, -0.24188, 0.75006, 0.61556, -0.24188, 0.75006, 0.61556, -0.24188, 0.72822, 0.59764, -0.33545, 0.72822, 0.59764, -0.33545, 0.72822, 0.59764, -0.33545, 0.72822, 0.59764, -0.33545, 0.69941, 0.57399, -0.42587, 0.69941, 0.57399, -0.42587, 0.69941, 0.57399, -0.42587, 0.69941, 0.57399, -0.42587, 0.66388, 0.54483, -0.51228, 0.66388, 0.54483, -0.51228, 0.66388, 0.54483, -0.51228, 0.66388, 0.54483, -0.51228, 0.62195, 0.51042, -0.59384, 0.62195, 0.51042, -0.59384, 0.62195, 0.51042, -0.59384, 0.62195, 0.51042, -0.59384, 0.57401, 0.47108, -0.66978, 0.57401, 0.47108, -0.66978, 0.57401, 0.47108, -0.66978, 0.57401, 0.47108, -0.66978, 0.5205, 0.42716, -0.73934, 0.5205, 0.42716, -0.73934, 0.5205, 0.42716, -0.73934, 0.5205, 0.42716, -0.73934, 0.46192, 0.37908, -0.80183, 0.46192, 0.37908, -0.80183, 0.46192, 0.37908, -0.80183, 0.46192, 0.37908, -0.80183, 0.39882, 0.3273, -0.85663, 0.39882, 0.3273, -0.85663, 0.39882, 0.3273, -0.85663, 0.39882, 0.3273, -0.85663, 0.33181, 0.27231, -0.90319, 0.33181, 0.27231, -0.90319, 0.33181, 0.27231, -0.90319, 0.33181, 0.27231, -0.90319, 0.26154, 0.21464, -0.94103, 0.26154, 0.21464, -0.94103, 0.26154, 0.21464, -0.94103, 0.26154, 0.21464, -0.94103, 0.18868, 0.15485, -0.96975, 0.18868, 0.15485, -0.96975, 0.18868, 0.15485, -0.96975, 0.18868, 0.15485, -0.96975, 0.11396, 0.09353, -0.98907, 0.11396, 0.09353, -0.98907, 0.11396, 0.09353, -0.98907, 0.11396, 0.09353, -0.98907, 0.03811, 0.03128, -0.99878, 0.03811, 0.03128, -0.99878, 0.03811, 0.03128, -0.99878, 0.03128, 0.03811, -0.99878, 0.03128, 0.03811, -0.99878, 0.03128, 0.03811, -0.99878, 0.09353, 0.11396, -0.98907, 0.09353, 0.11396, -0.98907, 0.09353, 0.11396, -0.98907, 0.09353, 0.11396, -0.98907, 0.15485, 0.18868, -0.96975, 0.15485, 0.18868, -0.96975, 0.15485, 0.18868, -0.96975, 0.15485, 0.18868, -0.96975, 0.21464, 0.26154, -0.94103, 0.21464, 0.26154, -0.94103, 0.21464, 0.26154, -0.94103, 0.21464, 0.26154, -0.94103, 0.27231, 0.33181, -0.90319, 0.27231, 0.33181, -0.90319, 0.27231, 0.33181, -0.90319, 0.27231, 0.33181, -0.90319, 0.3273, 0.39882, -0.85663, 0.3273, 0.39882, -0.85663, 0.3273, 0.39882, -0.85663, 0.3273, 0.39882, -0.85663, 0.37908, 0.46192, -0.80183, 0.37908, 0.46192, -0.80183, 0.37908, 0.46192, -0.80183, 0.37908, 0.46192, -0.80183, 0.42716, 0.5205, -0.73934, 0.42716, 0.5205, -0.73934, 0.42716, 0.5205, -0.73934, 0.42716, 0.5205, -0.73934, 0.47108, 0.57401, -0.66978, 0.47108, 0.57401, -0.66978, 0.47108, 0.57401, -0.66978, 0.47108, 0.57401, -0.66978, 0.51042, 0.62195, -0.59384, 0.51042, 0.62195, -0.59384, 0.51042, 0.62195, -0.59384, 0.51042, 0.62195, -0.59384, 0.54483, 0.66388, -0.51228, 0.54483, 0.66388, -0.51228, 0.54483, 0.66388, -0.51228, 0.54483, 0.66388, -0.51228, 0.57399, 0.69941, -0.42587, 0.57399, 0.69941, -0.42587, 0.57399, 0.69941, -0.42587, 0.57399, 0.69941, -0.42587, 0.59764, 0.72822, -0.33545, 0.59764, 0.72822, -0.33545, 0.59764, 0.72822, -0.33545, 0.59764, 0.72822, -0.33545, 0.61556, 0.75006, -0.24188, 0.61556, 0.75006, -0.24188, 0.61556, 0.75006, -0.24188, 0.61556, 0.75006, -0.24188, 0.62759, 0.76472, -0.14604, 0.62759, 0.76472, -0.14604, 0.62759, 0.76472, -0.14604, 0.62759, 0.76472, -0.14604, 0.63364, 0.77209, -0.04883, 0.63364, 0.77209, -0.04883, 0.63364, 0.77209, -0.04883, 0.63364, 0.77209, -0.04883, 0.63364, 0.77209, 0.04883, 0.63364, 0.77209, 0.04883, 0.63364, 0.77209, 0.04883, 0.63364, 0.77209, 0.04883, 0.62759, 0.76472, 0.14604, 0.62759, 0.76472, 0.14604, 0.62759, 0.76472, 0.14604, 0.62759, 0.76472, 0.14604, 0.61556, 0.75006, 0.24188, 0.61556, 0.75006, 0.24188, 0.61556, 0.75006, 0.24188, 0.61556, 0.75006, 0.24188, 0.59763, 0.72822, 0.33545, 0.59763, 0.72822, 0.33545, 0.59763, 0.72822, 0.33545, 0.59763, 0.72822, 0.33545, 0.57399, 0.69941, 0.42587, 0.57399, 0.69941, 0.42587, 0.57399, 0.69941, 0.42587, 0.57399, 0.69941, 0.42587, 0.54483, 0.66388, 0.51228, 0.54483, 0.66388, 0.51228, 0.54483, 0.66388, 0.51228, 0.54483, 0.66388, 0.51228, 0.51042, 0.62195, 0.59384, 0.51042, 0.62195, 0.59384, 0.51042, 0.62195, 0.59384, 0.51042, 0.62195, 0.59384, 0.47108, 0.57401, 0.66978, 0.47108, 0.57401, 0.66978, 0.47108, 0.57401, 0.66978, 0.47108, 0.57401, 0.66978, 0.42716, 0.5205, 0.73934, 0.42716, 0.5205, 0.73934, 0.42716, 0.5205, 0.73934, 0.42716, 0.5205, 0.73934, 0.37908, 0.46192, 0.80183, 0.37908, 0.46192, 0.80183, 0.37908, 0.46192, 0.80183, 0.37908, 0.46192, 0.80183, 0.3273, 0.39882, 0.85663, 0.3273, 0.39882, 0.85663, 0.3273, 0.39882, 0.85663, 0.3273, 0.39882, 0.85663, 0.27231, 0.33181, 0.90319, 0.27231, 0.33181, 0.90319, 0.27231, 0.33181, 0.90319, 0.27231, 0.33181, 0.90319, 0.21464, 0.26154, 0.94103, 0.21464, 0.26154, 0.94103, 0.21464, 0.26154, 0.94103, 0.21464, 0.26154, 0.94103, 0.15485, 0.18868, 0.96975, 0.15485, 0.18868, 0.96975, 0.15485, 0.18868, 0.96975, 0.15485, 0.18868, 0.96975, 0.09353, 0.11396, 0.98907, 0.09353, 0.11396, 0.98907, 0.09353, 0.11396, 0.98907, 0.09353, 0.11396, 0.98907, 0.03128, 0.03811, 0.99878, 0.03128, 0.03811, 0.99878, 0.03128, 0.03811, 0.99878, 0.02324, 0.04348, 0.99878, 0.02324, 0.04348, 0.99878, 0.02324, 0.04348, 0.99878, 0.0695, 0.13002, 0.98907, 0.0695, 0.13002, 0.98907, 0.0695, 0.13002, 0.98907, 0.0695, 0.13002, 0.98907, 0.11506, 0.21526, 0.96975, 0.11506, 0.21526, 0.96975, 0.11506, 0.21526, 0.96975, 0.11506, 0.21526, 0.96975, 0.15949, 0.29838, 0.94103, 0.15949, 0.29838, 0.94103, 0.15949, 0.29838, 0.94103, 0.15949, 0.29838, 0.94103, 0.20234, 0.37856, 0.90319, 0.20234, 0.37856, 0.90319, 0.20234, 0.37856, 0.90319, 0.20234, 0.37856, 0.90319, 0.24321, 0.45501, 0.85663, 0.24321, 0.45501, 0.85663, 0.24321, 0.45501, 0.85663, 0.24321, 0.45501, 0.85663, 0.28168, 0.527, 0.80183, 0.28168, 0.527, 0.80183, 0.28168, 0.527, 0.80183, 0.28168, 0.527, 0.80183, 0.31741, 0.59383, 0.73934, 0.31741, 0.59383, 0.73934, 0.31741, 0.59383, 0.73934, 0.31741, 0.59383, 0.73934, 0.35004, 0.65488, 0.66978, 0.35004, 0.65488, 0.66978, 0.35004, 0.65488, 0.66978, 0.35004, 0.65488, 0.66978, 0.37928, 0.70958, 0.59384, 0.37928, 0.70958, 0.59384, 0.37928, 0.70958, 0.59384, 0.37928, 0.70958, 0.59384, 0.40484, 0.75741, 0.51228, 0.40484, 0.75741, 0.51228, 0.40484, 0.75741, 0.51228, 0.40484, 0.75741, 0.51228, 0.42651, 0.79795, 0.42587, 0.42651, 0.79795, 0.42587, 0.42651, 0.79795, 0.42587, 0.42651, 0.79795, 0.42587, 0.44408, 0.83082, 0.33545, 0.44408, 0.83082, 0.33545, 0.44408, 0.83082, 0.33545, 0.44408, 0.83082, 0.33545, 0.4574, 0.85573, 0.24188, 0.4574, 0.85573, 0.24188, 0.4574, 0.85573, 0.24188, 0.4574, 0.85573, 0.24188, 0.46634, 0.87247, 0.14604, 0.46634, 0.87247, 0.14604, 0.46634, 0.87247, 0.14604, 0.46634, 0.87247, 0.14604, 0.47083, 0.88087, 0.04883, 0.47083, 0.88087, 0.04883, 0.47083, 0.88087, 0.04883, 0.47083, 0.88087, 0.04883, 0.47083, 0.88087, -0.04883, 0.47083, 0.88087, -0.04883, 0.47083, 0.88087, -0.04883, 0.47083, 0.88087, -0.04883, 0.46634, 0.87247, -0.14604, 0.46634, 0.87247, -0.14604, 0.46634, 0.87247, -0.14604, 0.46634, 0.87247, -0.14604, 0.4574, 0.85573, -0.24188, 0.4574, 0.85573, -0.24188, 0.4574, 0.85573, -0.24188, 0.4574, 0.85573, -0.24188, 0.44408, 0.83082, -0.33545, 0.44408, 0.83082, -0.33545, 0.44408, 0.83082, -0.33545, 0.44408, 0.83082, -0.33545, 0.42651, 0.79795, -0.42587, 0.42651, 0.79795, -0.42587, 0.42651, 0.79795, -0.42587, 0.42651, 0.79795, -0.42587, 0.40484, 0.75741, -0.51228, 0.40484, 0.75741, -0.51228, 0.40484, 0.75741, -0.51228, 0.40484, 0.75741, -0.51228, 0.37928, 0.70958, -0.59384, 0.37928, 0.70958, -0.59384, 0.37928, 0.70958, -0.59384, 0.37928, 0.70958, -0.59384, 0.35004, 0.65488, -0.66978, 0.35004, 0.65488, -0.66978, 0.35004, 0.65488, -0.66978, 0.35004, 0.65488, -0.66978, 0.31741, 0.59383, -0.73934, 0.31741, 0.59383, -0.73934, 0.31741, 0.59383, -0.73934, 0.31741, 0.59383, -0.73934, 0.28168, 0.527, -0.80183, 0.28168, 0.527, -0.80183, 0.28168, 0.527, -0.80183, 0.28168, 0.527, -0.80183, 0.24321, 0.45501, -0.85663, 0.24321, 0.45501, -0.85663, 0.24321, 0.45501, -0.85663, 0.24321, 0.45501, -0.85663, 0.20234, 0.37856, -0.90319, 0.20234, 0.37856, -0.90319, 0.20234, 0.37856, -0.90319, 0.20234, 0.37856, -0.90319, 0.15949, 0.29838, -0.94103, 0.15949, 0.29838, -0.94103, 0.15949, 0.29838, -0.94103, 0.15949, 0.29838, -0.94103, 0.11506, 0.21526, -0.96975, 0.11506, 0.21526, -0.96975, 0.11506, 0.21526, -0.96975, 0.11506, 0.21526, -0.96975, 0.0695, 0.13002, -0.98907, 0.0695, 0.13002, -0.98907, 0.0695, 0.13002, -0.98907, 0.0695, 0.13002, -0.98907, 0.02324, 0.04348, -0.99878, 0.02324, 0.04348, -0.99878, 0.02324, 0.04348, -0.99878, 0.01431, 0.04718, -0.99878, 0.01431, 0.04718, -0.99878, 0.01431, 0.04718, -0.99878, 0.0428, 0.14108, -0.98907, 0.0428, 0.14108, -0.98907, 0.0428, 0.14108, -0.98907, 0.0428, 0.14108, -0.98907, 0.07085, 0.23357, -0.96975, 0.07085, 0.23357, -0.96975, 0.07085, 0.23357, -0.96975, 0.07085, 0.23357, -0.96975, 0.09821, 0.32377, -0.94103, 0.09821, 0.32377, -0.94103, 0.09821, 0.32377, -0.94103, 0.09821, 0.32377, -0.94103, 0.1246, 0.41076, -0.90319, 0.1246, 0.41076, -0.90319, 0.1246, 0.41076, -0.90319, 0.1246, 0.41076, -0.90319, 0.14977, 0.49371, -0.85663, 0.14977, 0.49371, -0.85663, 0.14977, 0.49371, -0.85663, 0.14977, 0.49371, -0.85663, 0.17346, 0.57182, -0.80183, 0.17346, 0.57182, -0.80183, 0.17346, 0.57182, -0.80183, 0.17346, 0.57182, -0.80183, 0.19546, 0.64434, -0.73934, 0.19546, 0.64434, -0.73934, 0.19546, 0.64434, -0.73934, 0.19546, 0.64434, -0.73934, 0.21555, 0.71059, -0.66978, 0.21555, 0.71059, -0.66978, 0.21555, 0.71059, -0.66978, 0.21555, 0.71059, -0.66978, 0.23356, 0.76993, -0.59384, 0.23356, 0.76993, -0.59384, 0.23356, 0.76993, -0.59384, 0.23356, 0.76993, -0.59384, 0.2493, 0.82184, -0.51228, 0.2493, 0.82184, -0.51228, 0.2493, 0.82184, -0.51228, 0.2493, 0.82184, -0.51228, 0.26264, 0.86582, -0.42587, 0.26264, 0.86582, -0.42587, 0.26264, 0.86582, -0.42587, 0.26264, 0.86582, -0.42587, 0.27346, 0.90149, -0.33545, 0.27346, 0.90149, -0.33545, 0.27346, 0.90149, -0.33545, 0.27346, 0.90149, -0.33545, 0.28166, 0.92853, -0.24188, 0.28166, 0.92853, -0.24188, 0.28166, 0.92853, -0.24188, 0.28166, 0.92853, -0.24188, 0.28717, 0.94668, -0.14604, 0.28717, 0.94668, -0.14604, 0.28717, 0.94668, -0.14604, 0.28717, 0.94668, -0.14604, 0.28994, 0.9558, -0.04883, 0.28994, 0.9558, -0.04883, 0.28994, 0.9558, -0.04883, 0.28994, 0.9558, -0.04883, 0.28994, 0.9558, 0.04883, 0.28994, 0.9558, 0.04883, 0.28994, 0.9558, 0.04883, 0.28994, 0.9558, 0.04883, 0.28717, 0.94668, 0.14604, 0.28717, 0.94668, 0.14604, 0.28717, 0.94668, 0.14604, 0.28717, 0.94668, 0.14604, 0.28166, 0.92853, 0.24188, 0.28166, 0.92853, 0.24188, 0.28166, 0.92853, 0.24188, 0.28166, 0.92853, 0.24188, 0.27346, 0.90149, 0.33545, 0.27346, 0.90149, 0.33545, 0.27346, 0.90149, 0.33545, 0.27346, 0.90149, 0.33545, 0.26264, 0.86582, 0.42587, 0.26264, 0.86582, 0.42587, 0.26264, 0.86582, 0.42587, 0.26264, 0.86582, 0.42587, 0.2493, 0.82184, 0.51228, 0.2493, 0.82184, 0.51228, 0.2493, 0.82184, 0.51228, 0.2493, 0.82184, 0.51228, 0.23356, 0.76994, 0.59384, 0.23356, 0.76994, 0.59384, 0.23356, 0.76994, 0.59384, 0.23356, 0.76994, 0.59384, 0.21555, 0.71059, 0.66978, 0.21555, 0.71059, 0.66978, 0.21555, 0.71059, 0.66978, 0.21555, 0.71059, 0.66978, 0.19546, 0.64434, 0.73934, 0.19546, 0.64434, 0.73934, 0.19546, 0.64434, 0.73934, 0.19546, 0.64434, 0.73934, 0.17346, 0.57182, 0.80183, 0.17346, 0.57182, 0.80183, 0.17346, 0.57182, 0.80183, 0.17346, 0.57182, 0.80183, 0.14977, 0.49371, 0.85663, 0.14977, 0.49371, 0.85663, 0.14977, 0.49371, 0.85663, 0.14977, 0.49371, 0.85663, 0.1246, 0.41076, 0.90319, 0.1246, 0.41076, 0.90319, 0.1246, 0.41076, 0.90319, 0.1246, 0.41076, 0.90319, 0.09821, 0.32377, 0.94103, 0.09821, 0.32377, 0.94103, 0.09821, 0.32377, 0.94103, 0.09821, 0.32377, 0.94103, 0.07085, 0.23358, 0.96975, 0.07085, 0.23358, 0.96975, 0.07085, 0.23358, 0.96975, 0.07085, 0.23358, 0.96975, 0.0428, 0.14108, 0.98907, 0.0428, 0.14108, 0.98907, 0.0428, 0.14108, 0.98907, 0.0428, 0.14108, 0.98907, 0.01431, 0.04718, 0.99878, 0.01431, 0.04718, 0.99878, 0.01431, 0.04718, 0.99878, 0.00483, 0.04907, 0.99878, 0.00483, 0.04907, 0.99878, 0.00483, 0.04907, 0.99878, 0.01445, 0.14672, 0.98907, 0.01445, 0.14672, 0.98907, 0.01445, 0.14672, 0.98907, 0.01445, 0.14672, 0.98907, 0.02392, 0.24291, 0.96975, 0.02392, 0.24291, 0.96975, 0.02392, 0.24291, 0.96975, 0.02392, 0.24291, 0.96975, 0.03316, 0.33671, 0.94103, 0.03316, 0.33671, 0.94103, 0.03316, 0.33671, 0.94103, 0.03316, 0.33671, 0.94103, 0.04207, 0.42718, 0.90319, 0.04207, 0.42718, 0.90319, 0.04207, 0.42718, 0.90319, 0.04207, 0.42718, 0.90319, 0.05057, 0.51344, 0.85663, 0.05057, 0.51344, 0.85663, 0.05057, 0.51344, 0.85663, 0.05057, 0.51344, 0.85663, 0.05857, 0.59468, 0.80183, 0.05857, 0.59468, 0.80183, 0.05857, 0.59468, 0.80183, 0.05857, 0.59468, 0.80183, 0.066, 0.67009, 0.73934, 0.066, 0.67009, 0.73934, 0.066, 0.67009, 0.73934, 0.066, 0.67009, 0.73934, 0.07278, 0.73899, 0.66978, 0.07278, 0.73899, 0.66978, 0.07278, 0.73899, 0.66978, 0.07278, 0.73899, 0.66978, 0.07886, 0.80071, 0.59384, 0.07886, 0.80071, 0.59384, 0.07886, 0.80071, 0.59384, 0.07886, 0.80071, 0.59384, 0.08418, 0.85468, 0.51228, 0.08418, 0.85468, 0.51228, 0.08418, 0.85468, 0.51228, 0.08418, 0.85468, 0.51228, 0.08868, 0.90043, 0.42587, 0.08868, 0.90043, 0.42587, 0.08868, 0.90043, 0.42587, 0.08868, 0.90043, 0.42587, 0.09234, 0.93752, 0.33545, 0.09234, 0.93752, 0.33545, 0.09234, 0.93752, 0.33545, 0.09234, 0.93752, 0.33545, 0.09511, 0.96563, 0.24188, 0.09511, 0.96563, 0.24188, 0.09511, 0.96563, 0.24188, 0.09511, 0.96563, 0.24188, 0.09697, 0.98452, 0.14604, 0.09697, 0.98452, 0.14604, 0.09697, 0.98452, 0.14604, 0.09697, 0.98452, 0.14604, 0.0979, 0.994, 0.04883, 0.0979, 0.994, 0.04883, 0.0979, 0.994, 0.04883, 0.0979, 0.994, 0.04883, 0.0979, 0.994, -0.04883, 0.0979, 0.994, -0.04883, 0.0979, 0.994, -0.04883, 0.0979, 0.994, -0.04883, 0.09697, 0.98452, -0.14604, 0.09697, 0.98452, -0.14604, 0.09697, 0.98452, -0.14604, 0.09697, 0.98452, -0.14604, 0.09511, 0.96563, -0.24188, 0.09511, 0.96563, -0.24188, 0.09511, 0.96563, -0.24188, 0.09511, 0.96563, -0.24188, 0.09234, 0.93752, -0.33545, 0.09234, 0.93752, -0.33545, 0.09234, 0.93752, -0.33545, 0.09234, 0.93752, -0.33545, 0.08868, 0.90043, -0.42587, 0.08868, 0.90043, -0.42587, 0.08868, 0.90043, -0.42587, 0.08868, 0.90043, -0.42587, 0.08418, 0.85468, -0.51228, 0.08418, 0.85468, -0.51228, 0.08418, 0.85468, -0.51228, 0.08418, 0.85468, -0.51228, 0.07886, 0.80071, -0.59384, 0.07886, 0.80071, -0.59384, 0.07886, 0.80071, -0.59384, 0.07886, 0.80071, -0.59384, 0.07278, 0.73899, -0.66978, 0.07278, 0.73899, -0.66978, 0.07278, 0.73899, -0.66978, 0.07278, 0.73899, -0.66978, 0.066, 0.67009, -0.73934, 0.066, 0.67009, -0.73934, 0.066, 0.67009, -0.73934, 0.066, 0.67009, -0.73934, 0.05857, 0.59468, -0.80183, 0.05857, 0.59468, -0.80183, 0.05857, 0.59468, -0.80183, 0.05857, 0.59468, -0.80183, 0.05057, 0.51344, -0.85663, 0.05057, 0.51344, -0.85663, 0.05057, 0.51344, -0.85663, 0.05057, 0.51344, -0.85663, 0.04207, 0.42718, -0.90319, 0.04207, 0.42718, -0.90319, 0.04207, 0.42718, -0.90319, 0.04207, 0.42718, -0.90319, 0.03316, 0.3367, -0.94103, 0.03316, 0.3367, -0.94103, 0.03316, 0.3367, -0.94103, 0.03316, 0.3367, -0.94103, 0.02392, 0.24291, -0.96975, 0.02392, 0.24291, -0.96975, 0.02392, 0.24291, -0.96975, 0.02392, 0.24291, -0.96975, 0.01445, 0.14671, -0.98907, 0.01445, 0.14671, -0.98907, 0.01445, 0.14671, -0.98907, 0.01445, 0.14671, -0.98907, 0.00483, 0.04907, -0.99878, 0.00483, 0.04907, -0.99878, 0.00483, 0.04907, -0.99878, -0.00483, 0.04907, -0.99878, -0.00483, 0.04907, -0.99878, -0.00483, 0.04907, -0.99878, -0.01445, 0.14671, -0.98907, -0.01445, 0.14671, -0.98907, -0.01445, 0.14671, -0.98907, -0.01445, 0.14671, -0.98907, -0.02392, 0.24291, -0.96975, -0.02392, 0.24291, -0.96975, -0.02392, 0.24291, -0.96975, -0.02392, 0.24291, -0.96975, -0.03316, 0.3367, -0.94103, -0.03316, 0.3367, -0.94103, -0.03316, 0.3367, -0.94103, -0.03316, 0.3367, -0.94103, -0.04207, 0.42718, -0.90319, -0.04207, 0.42718, -0.90319, -0.04207, 0.42718, -0.90319, -0.04207, 0.42718, -0.90319, -0.05057, 0.51344, -0.85663, -0.05057, 0.51344, -0.85663, -0.05057, 0.51344, -0.85663, -0.05057, 0.51344, -0.85663, -0.05857, 0.59468, -0.80183, -0.05857, 0.59468, -0.80183, -0.05857, 0.59468, -0.80183, -0.05857, 0.59468, -0.80183, -0.066, 0.67009, -0.73934, -0.066, 0.67009, -0.73934, -0.066, 0.67009, -0.73934, -0.066, 0.67009, -0.73934, -0.07278, 0.73899, -0.66978, -0.07278, 0.73899, -0.66978, -0.07278, 0.73899, -0.66978, -0.07278, 0.73899, -0.66978, -0.07886, 0.80071, -0.59384, -0.07886, 0.80071, -0.59384, -0.07886, 0.80071, -0.59384, -0.07886, 0.80071, -0.59384, -0.08418, 0.85468, -0.51228, -0.08418, 0.85468, -0.51228, -0.08418, 0.85468, -0.51228, -0.08418, 0.85468, -0.51228, -0.08868, 0.90043, -0.42587, -0.08868, 0.90043, -0.42587, -0.08868, 0.90043, -0.42587, -0.08868, 0.90043, -0.42587, -0.09234, 0.93752, -0.33545, -0.09234, 0.93752, -0.33545, -0.09234, 0.93752, -0.33545, -0.09234, 0.93752, -0.33545, -0.09511, 0.96563, -0.24188, -0.09511, 0.96563, -0.24188, -0.09511, 0.96563, -0.24188, -0.09511, 0.96563, -0.24188, -0.09697, 0.98451, -0.14604, -0.09697, 0.98451, -0.14604, -0.09697, 0.98451, -0.14604, -0.09697, 0.98451, -0.14604, -0.0979, 0.994, -0.04883, -0.0979, 0.994, -0.04883, -0.0979, 0.994, -0.04883, -0.0979, 0.994, -0.04883, -0.0979, 0.994, 0.04883, -0.0979, 0.994, 0.04883, -0.0979, 0.994, 0.04883, -0.0979, 0.994, 0.04883, -0.09697, 0.98452, 0.14604, -0.09697, 0.98452, 0.14604, -0.09697, 0.98452, 0.14604, -0.09697, 0.98452, 0.14604, -0.09511, 0.96563, 0.24188, -0.09511, 0.96563, 0.24188, -0.09511, 0.96563, 0.24188, -0.09511, 0.96563, 0.24188, -0.09234, 0.93752, 0.33545, -0.09234, 0.93752, 0.33545, -0.09234, 0.93752, 0.33545, -0.09234, 0.93752, 0.33545, -0.08868, 0.90043, 0.42587, -0.08868, 0.90043, 0.42587, -0.08868, 0.90043, 0.42587, -0.08868, 0.90043, 0.42587, -0.08418, 0.85468, 0.51228, -0.08418, 0.85468, 0.51228, -0.08418, 0.85468, 0.51228, -0.08418, 0.85468, 0.51228, -0.07886, 0.80071, 0.59384, -0.07886, 0.80071, 0.59384, -0.07886, 0.80071, 0.59384, -0.07886, 0.80071, 0.59384, -0.07278, 0.73899, 0.66978, -0.07278, 0.73899, 0.66978, -0.07278, 0.73899, 0.66978, -0.07278, 0.73899, 0.66978, -0.066, 0.67009, 0.73934, -0.066, 0.67009, 0.73934, -0.066, 0.67009, 0.73934, -0.066, 0.67009, 0.73934, -0.05857, 0.59468, 0.80183, -0.05857, 0.59468, 0.80183, -0.05857, 0.59468, 0.80183, -0.05857, 0.59468, 0.80183, -0.05057, 0.51344, 0.85663, -0.05057, 0.51344, 0.85663, -0.05057, 0.51344, 0.85663, -0.05057, 0.51344, 0.85663, -0.04207, 0.42718, 0.90319, -0.04207, 0.42718, 0.90319, -0.04207, 0.42718, 0.90319, -0.04207, 0.42718, 0.90319, -0.03316, 0.33671, 0.94103, -0.03316, 0.33671, 0.94103, -0.03316, 0.33671, 0.94103, -0.03316, 0.33671, 0.94103, -0.02392, 0.24291, 0.96975, -0.02392, 0.24291, 0.96975, -0.02392, 0.24291, 0.96975, -0.02392, 0.24291, 0.96975, -0.01445, 0.14672, 0.98907, -0.01445, 0.14672, 0.98907, -0.01445, 0.14672, 0.98907, -0.01445, 0.14672, 0.98907, -0.00483, 0.04907, 0.99878, -0.00483, 0.04907, 0.99878, -0.00483, 0.04907, 0.99878, -0.01431, 0.04718, 0.99878, -0.01431, 0.04718, 0.99878, -0.01431, 0.04718, 0.99878, -0.0428, 0.14108, 0.98907, -0.0428, 0.14108, 0.98907, -0.0428, 0.14108, 0.98907, -0.0428, 0.14108, 0.98907, -0.07085, 0.23358, 0.96975, -0.07085, 0.23358, 0.96975, -0.07085, 0.23358, 0.96975, -0.07085, 0.23358, 0.96975, -0.09821, 0.32377, 0.94103, -0.09821, 0.32377, 0.94103, -0.09821, 0.32377, 0.94103, -0.09821, 0.32377, 0.94103, -0.1246, 0.41076, 0.90319, -0.1246, 0.41076, 0.90319, -0.1246, 0.41076, 0.90319, -0.1246, 0.41076, 0.90319, -0.14977, 0.49371, 0.85663, -0.14977, 0.49371, 0.85663, -0.14977, 0.49371, 0.85663, -0.14977, 0.49371, 0.85663, -0.17346, 0.57182, 0.80183, -0.17346, 0.57182, 0.80183, -0.17346, 0.57182, 0.80183, -0.17346, 0.57182, 0.80183, -0.19546, 0.64434, 0.73934, -0.19546, 0.64434, 0.73934, -0.19546, 0.64434, 0.73934, -0.19546, 0.64434, 0.73934, -0.21555, 0.71059, 0.66978, -0.21555, 0.71059, 0.66978, -0.21555, 0.71059, 0.66978, -0.21555, 0.71059, 0.66978, -0.23356, 0.76994, 0.59384, -0.23356, 0.76994, 0.59384, -0.23356, 0.76994, 0.59384, -0.23356, 0.76994, 0.59384, -0.2493, 0.82184, 0.51228, -0.2493, 0.82184, 0.51228, -0.2493, 0.82184, 0.51228, -0.2493, 0.82184, 0.51228, -0.26265, 0.86582, 0.42587, -0.26265, 0.86582, 0.42587, -0.26265, 0.86582, 0.42587, -0.26265, 0.86582, 0.42587, -0.27347, 0.90149, 0.33545, -0.27347, 0.90149, 0.33545, -0.27347, 0.90149, 0.33545, -0.27347, 0.90149, 0.33545, -0.28167, 0.92853, 0.24188, -0.28167, 0.92853, 0.24188, -0.28167, 0.92853, 0.24188, -0.28167, 0.92853, 0.24188, -0.28717, 0.94668, 0.14604, -0.28717, 0.94668, 0.14604, -0.28717, 0.94668, 0.14604, -0.28717, 0.94668, 0.14604, -0.28994, 0.9558, 0.04883, -0.28994, 0.9558, 0.04883, -0.28994, 0.9558, 0.04883, -0.28994, 0.9558, 0.04883, -0.28994, 0.9558, -0.04883, -0.28994, 0.9558, -0.04883, -0.28994, 0.9558, -0.04883, -0.28994, 0.9558, -0.04883, -0.28717, 0.94668, -0.14604, -0.28717, 0.94668, -0.14604, -0.28717, 0.94668, -0.14604, -0.28717, 0.94668, -0.14604, -0.28167, 0.92853, -0.24188, -0.28167, 0.92853, -0.24188, -0.28167, 0.92853, -0.24188, -0.28167, 0.92853, -0.24188, -0.27347, 0.90149, -0.33545, -0.27347, 0.90149, -0.33545, -0.27347, 0.90149, -0.33545, -0.27347, 0.90149, -0.33545, -0.26265, 0.86582, -0.42587, -0.26265, 0.86582, -0.42587, -0.26265, 0.86582, -0.42587, -0.26265, 0.86582, -0.42587, -0.2493, 0.82184, -0.51228, -0.2493, 0.82184, -0.51228, -0.2493, 0.82184, -0.51228, -0.2493, 0.82184, -0.51228, -0.23356, 0.76993, -0.59384, -0.23356, 0.76993, -0.59384, -0.23356, 0.76993, -0.59384, -0.23356, 0.76993, -0.59384, -0.21555, 0.71059, -0.66978, -0.21555, 0.71059, -0.66978, -0.21555, 0.71059, -0.66978, -0.21555, 0.71059, -0.66978, -0.19546, 0.64434, -0.73934, -0.19546, 0.64434, -0.73934, -0.19546, 0.64434, -0.73934, -0.19546, 0.64434, -0.73934, -0.17346, 0.57182, -0.80183, -0.17346, 0.57182, -0.80183, -0.17346, 0.57182, -0.80183, -0.17346, 0.57182, -0.80183, -0.14977, 0.49371, -0.85663, -0.14977, 0.49371, -0.85663, -0.14977, 0.49371, -0.85663, -0.14977, 0.49371, -0.85663, -0.1246, 0.41076, -0.90319, -0.1246, 0.41076, -0.90319, -0.1246, 0.41076, -0.90319, -0.1246, 0.41076, -0.90319, -0.09821, 0.32377, -0.94103, -0.09821, 0.32377, -0.94103, -0.09821, 0.32377, -0.94103, -0.09821, 0.32377, -0.94103, -0.07085, 0.23357, -0.96975, -0.07085, 0.23357, -0.96975, -0.07085, 0.23357, -0.96975, -0.07085, 0.23357, -0.96975, -0.0428, 0.14108, -0.98907, -0.0428, 0.14108, -0.98907, -0.0428, 0.14108, -0.98907, -0.0428, 0.14108, -0.98907, -0.01431, 0.04718, -0.99878, -0.01431, 0.04718, -0.99878, -0.01431, 0.04718, -0.99878, -0.02324, 0.04348, -0.99878, -0.02324, 0.04348, -0.99878, -0.02324, 0.04348, -0.99878, -0.0695, 0.13002, -0.98907, -0.0695, 0.13002, -0.98907, -0.0695, 0.13002, -0.98907, -0.0695, 0.13002, -0.98907, -0.11506, 0.21526, -0.96975, -0.11506, 0.21526, -0.96975, -0.11506, 0.21526, -0.96975, -0.11506, 0.21526, -0.96975, -0.15949, 0.29838, -0.94103, -0.15949, 0.29838, -0.94103, -0.15949, 0.29838, -0.94103, -0.15949, 0.29838, -0.94103, -0.20234, 0.37856, -0.90319, -0.20234, 0.37856, -0.90319, -0.20234, 0.37856, -0.90319, -0.20234, 0.37856, -0.90319, -0.24321, 0.45501, -0.85663, -0.24321, 0.45501, -0.85663, -0.24321, 0.45501, -0.85663, -0.24321, 0.45501, -0.85663, -0.28168, 0.527, -0.80183, -0.28168, 0.527, -0.80183, -0.28168, 0.527, -0.80183, -0.28168, 0.527, -0.80183, -0.31741, 0.59383, -0.73934, -0.31741, 0.59383, -0.73934, -0.31741, 0.59383, -0.73934, -0.31741, 0.59383, -0.73934, -0.35004, 0.65488, -0.66978, -0.35004, 0.65488, -0.66978, -0.35004, 0.65488, -0.66978, -0.35004, 0.65488, -0.66978, -0.37928, 0.70958, -0.59384, -0.37928, 0.70958, -0.59384, -0.37928, 0.70958, -0.59384, -0.37928, 0.70958, -0.59384, -0.40484, 0.75741, -0.51228, -0.40484, 0.75741, -0.51228, -0.40484, 0.75741, -0.51228, -0.40484, 0.75741, -0.51228, -0.42651, 0.79795, -0.42587, -0.42651, 0.79795, -0.42587, -0.42651, 0.79795, -0.42587, -0.42651, 0.79795, -0.42587, -0.44408, 0.83082, -0.33545, -0.44408, 0.83082, -0.33545, -0.44408, 0.83082, -0.33545, -0.44408, 0.83082, -0.33545, -0.4574, 0.85573, -0.24188, -0.4574, 0.85573, -0.24188, -0.4574, 0.85573, -0.24188, -0.4574, 0.85573, -0.24188, -0.46634, 0.87247, -0.14604, -0.46634, 0.87247, -0.14604, -0.46634, 0.87247, -0.14604, -0.46634, 0.87247, -0.14604, -0.47083, 0.88087, -0.04883, -0.47083, 0.88087, -0.04883, -0.47083, 0.88087, -0.04883, -0.47083, 0.88087, -0.04883, -0.47083, 0.88087, 0.04883, -0.47083, 0.88087, 0.04883, -0.47083, 0.88087, 0.04883, -0.47083, 0.88087, 0.04883, -0.46634, 0.87247, 0.14604, -0.46634, 0.87247, 0.14604, -0.46634, 0.87247, 0.14604, -0.46634, 0.87247, 0.14604, -0.4574, 0.85573, 0.24188, -0.4574, 0.85573, 0.24188, -0.4574, 0.85573, 0.24188, -0.4574, 0.85573, 0.24188, -0.44408, 0.83082, 0.33545, -0.44408, 0.83082, 0.33545, -0.44408, 0.83082, 0.33545, -0.44408, 0.83082, 0.33545, -0.42651, 0.79795, 0.42587, -0.42651, 0.79795, 0.42587, -0.42651, 0.79795, 0.42587, -0.42651, 0.79795, 0.42587, -0.40484, 0.75741, 0.51228, -0.40484, 0.75741, 0.51228, -0.40484, 0.75741, 0.51228, -0.40484, 0.75741, 0.51228, -0.37928, 0.70958, 0.59384, -0.37928, 0.70958, 0.59384, -0.37928, 0.70958, 0.59384, -0.37928, 0.70958, 0.59384, -0.35004, 0.65488, 0.66978, -0.35004, 0.65488, 0.66978, -0.35004, 0.65488, 0.66978, -0.35004, 0.65488, 0.66978, -0.31741, 0.59383, 0.73934, -0.31741, 0.59383, 0.73934, -0.31741, 0.59383, 0.73934, -0.31741, 0.59383, 0.73934, -0.28169, 0.527, 0.80183, -0.28169, 0.527, 0.80183, -0.28169, 0.527, 0.80183, -0.28169, 0.527, 0.80183, -0.24321, 0.45501, 0.85663, -0.24321, 0.45501, 0.85663, -0.24321, 0.45501, 0.85663, -0.24321, 0.45501, 0.85663, -0.20234, 0.37856, 0.90319, -0.20234, 0.37856, 0.90319, -0.20234, 0.37856, 0.90319, -0.20234, 0.37856, 0.90319, -0.15949, 0.29838, 0.94103, -0.15949, 0.29838, 0.94103, -0.15949, 0.29838, 0.94103, -0.15949, 0.29838, 0.94103, -0.11506, 0.21526, 0.96975, -0.11506, 0.21526, 0.96975, -0.11506, 0.21526, 0.96975, -0.11506, 0.21526, 0.96975, -0.0695, 0.13002, 0.98907, -0.0695, 0.13002, 0.98907, -0.0695, 0.13002, 0.98907, -0.0695, 0.13002, 0.98907, -0.02324, 0.04348, 0.99878, -0.02324, 0.04348, 0.99878, -0.02324, 0.04348, 0.99878, -0.03128, 0.03811, 0.99878, -0.03128, 0.03811, 0.99878, -0.03128, 0.03811, 0.99878, -0.09353, 0.11396, 0.98907, -0.09353, 0.11396, 0.98907, -0.09353, 0.11396, 0.98907, -0.09353, 0.11396, 0.98907, -0.15485, 0.18868, 0.96975, -0.15485, 0.18868, 0.96975, -0.15485, 0.18868, 0.96975, -0.15485, 0.18868, 0.96975, -0.21464, 0.26154, 0.94103, -0.21464, 0.26154, 0.94103, -0.21464, 0.26154, 0.94103, -0.21464, 0.26154, 0.94103, -0.27231, 0.33181, 0.90319, -0.27231, 0.33181, 0.90319, -0.27231, 0.33181, 0.90319, -0.27231, 0.33181, 0.90319, -0.3273, 0.39882, 0.85663, -0.3273, 0.39882, 0.85663, -0.3273, 0.39882, 0.85663, -0.3273, 0.39882, 0.85663, -0.37908, 0.46192, 0.80183, -0.37908, 0.46192, 0.80183, -0.37908, 0.46192, 0.80183, -0.37908, 0.46192, 0.80183, -0.42716, 0.5205, 0.73934, -0.42716, 0.5205, 0.73934, -0.42716, 0.5205, 0.73934, -0.42716, 0.5205, 0.73934, -0.47108, 0.57401, 0.66978, -0.47108, 0.57401, 0.66978, -0.47108, 0.57401, 0.66978, -0.47108, 0.57401, 0.66978, -0.51042, 0.62195, 0.59384, -0.51042, 0.62195, 0.59384, -0.51042, 0.62195, 0.59384, -0.51042, 0.62195, 0.59384, -0.54483, 0.66388, 0.51228, -0.54483, 0.66388, 0.51228, -0.54483, 0.66388, 0.51228, -0.54483, 0.66388, 0.51228, -0.57399, 0.69941, 0.42587, -0.57399, 0.69941, 0.42587, -0.57399, 0.69941, 0.42587, -0.57399, 0.69941, 0.42587, -0.59764, 0.72822, 0.33545, -0.59764, 0.72822, 0.33545, -0.59764, 0.72822, 0.33545, -0.59764, 0.72822, 0.33545, -0.61556, 0.75006, 0.24188, -0.61556, 0.75006, 0.24188, -0.61556, 0.75006, 0.24188, -0.61556, 0.75006, 0.24188, -0.62759, 0.76472, 0.14604, -0.62759, 0.76472, 0.14604, -0.62759, 0.76472, 0.14604, -0.62759, 0.76472, 0.14604, -0.63364, 0.77209, 0.04883, -0.63364, 0.77209, 0.04883, -0.63364, 0.77209, 0.04883, -0.63364, 0.77209, 0.04883, -0.63364, 0.77209, -0.04883, -0.63364, 0.77209, -0.04883, -0.63364, 0.77209, -0.04883, -0.63364, 0.77209, -0.04883, -0.62759, 0.76472, -0.14604, -0.62759, 0.76472, -0.14604, -0.62759, 0.76472, -0.14604, -0.62759, 0.76472, -0.14604, -0.61556, 0.75006, -0.24188, -0.61556, 0.75006, -0.24188, -0.61556, 0.75006, -0.24188, -0.61556, 0.75006, -0.24188, -0.59764, 0.72822, -0.33545, -0.59764, 0.72822, -0.33545, -0.59764, 0.72822, -0.33545, -0.59764, 0.72822, -0.33545, -0.57399, 0.69941, -0.42587, -0.57399, 0.69941, -0.42587, -0.57399, 0.69941, -0.42587, -0.57399, 0.69941, -0.42587, -0.54483, 0.66388, -0.51228, -0.54483, 0.66388, -0.51228, -0.54483, 0.66388, -0.51228, -0.54483, 0.66388, -0.51228, -0.51042, 0.62195, -0.59384, -0.51042, 0.62195, -0.59384, -0.51042, 0.62195, -0.59384, -0.51042, 0.62195, -0.59384, -0.47108, 0.57401, -0.66978, -0.47108, 0.57401, -0.66978, -0.47108, 0.57401, -0.66978, -0.47108, 0.57401, -0.66978, -0.42716, 0.5205, -0.73934, -0.42716, 0.5205, -0.73934, -0.42716, 0.5205, -0.73934, -0.42716, 0.5205, -0.73934, -0.37908, 0.46192, -0.80183, -0.37908, 0.46192, -0.80183, -0.37908, 0.46192, -0.80183, -0.37908, 0.46192, -0.80183, -0.3273, 0.39882, -0.85663, -0.3273, 0.39882, -0.85663, -0.3273, 0.39882, -0.85663, -0.3273, 0.39882, -0.85663, -0.27231, 0.33181, -0.90319, -0.27231, 0.33181, -0.90319, -0.27231, 0.33181, -0.90319, -0.27231, 0.33181, -0.90319, -0.21464, 0.26154, -0.94103, -0.21464, 0.26154, -0.94103, -0.21464, 0.26154, -0.94103, -0.21464, 0.26154, -0.94103, -0.15485, 0.18868, -0.96975, -0.15485, 0.18868, -0.96975, -0.15485, 0.18868, -0.96975, -0.15485, 0.18868, -0.96975, -0.09353, 0.11396, -0.98907, -0.09353, 0.11396, -0.98907, -0.09353, 0.11396, -0.98907, -0.09353, 0.11396, -0.98907, -0.03128, 0.03811, -0.99878, -0.03128, 0.03811, -0.99878, -0.03128, 0.03811, -0.99878, -0.03811, 0.03128, -0.99878, -0.03811, 0.03128, -0.99878, -0.03811, 0.03128, -0.99878, -0.11396, 0.09353, -0.98907, -0.11396, 0.09353, -0.98907, -0.11396, 0.09353, -0.98907, -0.11396, 0.09353, -0.98907, -0.18868, 0.15485, -0.96975, -0.18868, 0.15485, -0.96975, -0.18868, 0.15485, -0.96975, -0.18868, 0.15485, -0.96975, -0.26154, 0.21464, -0.94103, -0.26154, 0.21464, -0.94103, -0.26154, 0.21464, -0.94103, -0.26154, 0.21464, -0.94103, -0.33181, 0.27231, -0.90319, -0.33181, 0.27231, -0.90319, -0.33181, 0.27231, -0.90319, -0.33181, 0.27231, -0.90319, -0.39882, 0.3273, -0.85663, -0.39882, 0.3273, -0.85663, -0.39882, 0.3273, -0.85663, -0.39882, 0.3273, -0.85663, -0.46192, 0.37908, -0.80183, -0.46192, 0.37908, -0.80183, -0.46192, 0.37908, -0.80183, -0.46192, 0.37908, -0.80183, -0.5205, 0.42716, -0.73934, -0.5205, 0.42716, -0.73934, -0.5205, 0.42716, -0.73934, -0.5205, 0.42716, -0.73934, -0.57401, 0.47108, -0.66978, -0.57401, 0.47108, -0.66978, -0.57401, 0.47108, -0.66978, -0.57401, 0.47108, -0.66978, -0.62195, 0.51042, -0.59384, -0.62195, 0.51042, -0.59384, -0.62195, 0.51042, -0.59384, -0.62195, 0.51042, -0.59384, -0.66388, 0.54483, -0.51228, -0.66388, 0.54483, -0.51228, -0.66388, 0.54483, -0.51228, -0.66388, 0.54483, -0.51228, -0.69941, 0.57399, -0.42587, -0.69941, 0.57399, -0.42587, -0.69941, 0.57399, -0.42587, -0.69941, 0.57399, -0.42587, -0.72822, 0.59763, -0.33545, -0.72822, 0.59763, -0.33545, -0.72822, 0.59763, -0.33545, -0.72822, 0.59763, -0.33545, -0.75006, 0.61556, -0.24188, -0.75006, 0.61556, -0.24188, -0.75006, 0.61556, -0.24188, -0.75006, 0.61556, -0.24188, -0.76472, 0.62759, -0.14604, -0.76472, 0.62759, -0.14604, -0.76472, 0.62759, -0.14604, -0.76472, 0.62759, -0.14604, -0.77209, 0.63364, -0.04883, -0.77209, 0.63364, -0.04883, -0.77209, 0.63364, -0.04883, -0.77209, 0.63364, -0.04883, -0.77209, 0.63364, 0.04883, -0.77209, 0.63364, 0.04883, -0.77209, 0.63364, 0.04883, -0.77209, 0.63364, 0.04883, -0.76472, 0.62759, 0.14604, -0.76472, 0.62759, 0.14604, -0.76472, 0.62759, 0.14604, -0.76472, 0.62759, 0.14604, -0.75006, 0.61556, 0.24188, -0.75006, 0.61556, 0.24188, -0.75006, 0.61556, 0.24188, -0.75006, 0.61556, 0.24188, -0.72822, 0.59763, 0.33545, -0.72822, 0.59763, 0.33545, -0.72822, 0.59763, 0.33545, -0.72822, 0.59763, 0.33545, -0.69941, 0.57399, 0.42587, -0.69941, 0.57399, 0.42587, -0.69941, 0.57399, 0.42587, -0.69941, 0.57399, 0.42587, -0.66388, 0.54483, 0.51228, -0.66388, 0.54483, 0.51228, -0.66388, 0.54483, 0.51228, -0.66388, 0.54483, 0.51228, -0.62195, 0.51042, 0.59384, -0.62195, 0.51042, 0.59384, -0.62195, 0.51042, 0.59384, -0.62195, 0.51042, 0.59384, -0.57401, 0.47108, 0.66978, -0.57401, 0.47108, 0.66978, -0.57401, 0.47108, 0.66978, -0.57401, 0.47108, 0.66978, -0.5205, 0.42716, 0.73934, -0.5205, 0.42716, 0.73934, -0.5205, 0.42716, 0.73934, -0.5205, 0.42716, 0.73934, -0.46192, 0.37908, 0.80183, -0.46192, 0.37908, 0.80183, -0.46192, 0.37908, 0.80183, -0.46192, 0.37908, 0.80183, -0.39882, 0.3273, 0.85663, -0.39882, 0.3273, 0.85663, -0.39882, 0.3273, 0.85663, -0.39882, 0.3273, 0.85663, -0.33181, 0.27231, 0.90319, -0.33181, 0.27231, 0.90319, -0.33181, 0.27231, 0.90319, -0.33181, 0.27231, 0.90319, -0.26154, 0.21464, 0.94103, -0.26154, 0.21464, 0.94103, -0.26154, 0.21464, 0.94103, -0.26154, 0.21464, 0.94103, -0.18868, 0.15485, 0.96975, -0.18868, 0.15485, 0.96975, -0.18868, 0.15485, 0.96975, -0.18868, 0.15485, 0.96975, -0.11396, 0.09353, 0.98907, -0.11396, 0.09353, 0.98907, -0.11396, 0.09353, 0.98907, -0.11396, 0.09353, 0.98907, -0.03811, 0.03128, 0.99878, -0.03811, 0.03128, 0.99878, -0.03811, 0.03128, 0.99878, -0.04348, 0.02324, 0.99878, -0.04348, 0.02324, 0.99878, -0.04348, 0.02324, 0.99878, -0.13002, 0.0695, 0.98907, -0.13002, 0.0695, 0.98907, -0.13002, 0.0695, 0.98907, -0.13002, 0.0695, 0.98907, -0.21526, 0.11506, 0.96975, -0.21526, 0.11506, 0.96975, -0.21526, 0.11506, 0.96975, -0.21526, 0.11506, 0.96975, -0.29838, 0.15949, 0.94103, -0.29838, 0.15949, 0.94103, -0.29838, 0.15949, 0.94103, -0.29838, 0.15949, 0.94103, -0.37856, 0.20234, 0.90319, -0.37856, 0.20234, 0.90319, -0.37856, 0.20234, 0.90319, -0.37856, 0.20234, 0.90319, -0.45501, 0.24321, 0.85663, -0.45501, 0.24321, 0.85663, -0.45501, 0.24321, 0.85663, -0.45501, 0.24321, 0.85663, -0.527, 0.28168, 0.80183, -0.527, 0.28168, 0.80183, -0.527, 0.28168, 0.80183, -0.527, 0.28168, 0.80183, -0.59383, 0.31741, 0.73934, -0.59383, 0.31741, 0.73934, -0.59383, 0.31741, 0.73934, -0.59383, 0.31741, 0.73934, -0.65488, 0.35004, 0.66978, -0.65488, 0.35004, 0.66978, -0.65488, 0.35004, 0.66978, -0.65488, 0.35004, 0.66978, -0.70958, 0.37928, 0.59384, -0.70958, 0.37928, 0.59384, -0.70958, 0.37928, 0.59384, -0.70958, 0.37928, 0.59384, -0.75741, 0.40484, 0.51228, -0.75741, 0.40484, 0.51228, -0.75741, 0.40484, 0.51228, -0.75741, 0.40484, 0.51228, -0.79795, 0.42651, 0.42587, -0.79795, 0.42651, 0.42587, -0.79795, 0.42651, 0.42587, -0.79795, 0.42651, 0.42587, -0.83082, 0.44408, 0.33545, -0.83082, 0.44408, 0.33545, -0.83082, 0.44408, 0.33545, -0.83082, 0.44408, 0.33545, -0.85573, 0.4574, 0.24188, -0.85573, 0.4574, 0.24188, -0.85573, 0.4574, 0.24188, -0.85573, 0.4574, 0.24188, -0.87247, 0.46634, 0.14604, -0.87247, 0.46634, 0.14604, -0.87247, 0.46634, 0.14604, -0.87247, 0.46634, 0.14604, -0.88087, 0.47083, 0.04883, -0.88087, 0.47083, 0.04883, -0.88087, 0.47083, 0.04883, -0.88087, 0.47083, 0.04883, -0.88087, 0.47083, -0.04883, -0.88087, 0.47083, -0.04883, -0.88087, 0.47083, -0.04883, -0.88087, 0.47083, -0.04883, -0.87247, 0.46634, -0.14604, -0.87247, 0.46634, -0.14604, -0.87247, 0.46634, -0.14604, -0.87247, 0.46634, -0.14604, -0.85573, 0.4574, -0.24188, -0.85573, 0.4574, -0.24188, -0.85573, 0.4574, -0.24188, -0.85573, 0.4574, -0.24188, -0.83082, 0.44408, -0.33545, -0.83082, 0.44408, -0.33545, -0.83082, 0.44408, -0.33545, -0.83082, 0.44408, -0.33545, -0.79795, 0.42651, -0.42587, -0.79795, 0.42651, -0.42587, -0.79795, 0.42651, -0.42587, -0.79795, 0.42651, -0.42587, -0.75741, 0.40484, -0.51228, -0.75741, 0.40484, -0.51228, -0.75741, 0.40484, -0.51228, -0.75741, 0.40484, -0.51228, -0.70958, 0.37928, -0.59384, -0.70958, 0.37928, -0.59384, -0.70958, 0.37928, -0.59384, -0.70958, 0.37928, -0.59384, -0.65488, 0.35004, -0.66978, -0.65488, 0.35004, -0.66978, -0.65488, 0.35004, -0.66978, -0.65488, 0.35004, -0.66978, -0.59383, 0.31741, -0.73934, -0.59383, 0.31741, -0.73934, -0.59383, 0.31741, -0.73934, -0.59383, 0.31741, -0.73934, -0.527, 0.28168, -0.80183, -0.527, 0.28168, -0.80183, -0.527, 0.28168, -0.80183, -0.527, 0.28168, -0.80183, -0.45501, 0.24321, -0.85663, -0.45501, 0.24321, -0.85663, -0.45501, 0.24321, -0.85663, -0.45501, 0.24321, -0.85663, -0.37856, 0.20234, -0.90319, -0.37856, 0.20234, -0.90319, -0.37856, 0.20234, -0.90319, -0.37856, 0.20234, -0.90319, -0.29838, 0.15949, -0.94103, -0.29838, 0.15949, -0.94103, -0.29838, 0.15949, -0.94103, -0.29838, 0.15949, -0.94103, -0.21526, 0.11506, -0.96975, -0.21526, 0.11506, -0.96975, -0.21526, 0.11506, -0.96975, -0.21526, 0.11506, -0.96975, -0.13002, 0.0695, -0.98907, -0.13002, 0.0695, -0.98907, -0.13002, 0.0695, -0.98907, -0.13002, 0.0695, -0.98907, -0.04348, 0.02324, -0.99878, -0.04348, 0.02324, -0.99878, -0.04348, 0.02324, -0.99878, -0.04718, 0.01431, -0.99878, -0.04718, 0.01431, -0.99878, -0.04718, 0.01431, -0.99878, -0.14108, 0.0428, -0.98907, -0.14108, 0.0428, -0.98907, -0.14108, 0.0428, -0.98907, -0.14108, 0.0428, -0.98907, -0.23357, 0.07085, -0.96975, -0.23357, 0.07085, -0.96975, -0.23357, 0.07085, -0.96975, -0.23357, 0.07085, -0.96975, -0.32377, 0.09821, -0.94103, -0.32377, 0.09821, -0.94103, -0.32377, 0.09821, -0.94103, -0.32377, 0.09821, -0.94103, -0.41076, 0.1246, -0.90319, -0.41076, 0.1246, -0.90319, -0.41076, 0.1246, -0.90319, -0.41076, 0.1246, -0.90319, -0.49371, 0.14977, -0.85663, -0.49371, 0.14977, -0.85663, -0.49371, 0.14977, -0.85663, -0.49371, 0.14977, -0.85663, -0.57182, 0.17346, -0.80183, -0.57182, 0.17346, -0.80183, -0.57182, 0.17346, -0.80183, -0.57182, 0.17346, -0.80183, -0.64434, 0.19546, -0.73934, -0.64434, 0.19546, -0.73934, -0.64434, 0.19546, -0.73934, -0.64434, 0.19546, -0.73934, -0.71059, 0.21555, -0.66978, -0.71059, 0.21555, -0.66978, -0.71059, 0.21555, -0.66978, -0.71059, 0.21555, -0.66978, -0.76993, 0.23356, -0.59384, -0.76993, 0.23356, -0.59384, -0.76993, 0.23356, -0.59384, -0.76993, 0.23356, -0.59384, -0.82184, 0.2493, -0.51228, -0.82184, 0.2493, -0.51228, -0.82184, 0.2493, -0.51228, -0.82184, 0.2493, -0.51228, -0.86582, 0.26264, -0.42587, -0.86582, 0.26264, -0.42587, -0.86582, 0.26264, -0.42587, -0.86582, 0.26264, -0.42587, -0.90149, 0.27346, -0.33545, -0.90149, 0.27346, -0.33545, -0.90149, 0.27346, -0.33545, -0.90149, 0.27346, -0.33545, -0.92853, 0.28166, -0.24188, -0.92853, 0.28166, -0.24188, -0.92853, 0.28166, -0.24188, -0.92853, 0.28166, -0.24188, -0.94668, 0.28717, -0.14604, -0.94668, 0.28717, -0.14604, -0.94668, 0.28717, -0.14604, -0.94668, 0.28717, -0.14604, -0.9558, 0.28994, -0.04883, -0.9558, 0.28994, -0.04883, -0.9558, 0.28994, -0.04883, -0.9558, 0.28994, -0.04883, -0.9558, 0.28994, 0.04883, -0.9558, 0.28994, 0.04883, -0.9558, 0.28994, 0.04883, -0.9558, 0.28994, 0.04883, -0.94668, 0.28717, 0.14604, -0.94668, 0.28717, 0.14604, -0.94668, 0.28717, 0.14604, -0.94668, 0.28717, 0.14604, -0.92853, 0.28166, 0.24188, -0.92853, 0.28166, 0.24188, -0.92853, 0.28166, 0.24188, -0.92853, 0.28166, 0.24188, -0.90149, 0.27346, 0.33545, -0.90149, 0.27346, 0.33545, -0.90149, 0.27346, 0.33545, -0.90149, 0.27346, 0.33545, -0.86583, 0.26264, 0.42587, -0.86583, 0.26264, 0.42587, -0.86583, 0.26264, 0.42587, -0.86583, 0.26264, 0.42587, -0.82184, 0.2493, 0.51228, -0.82184, 0.2493, 0.51228, -0.82184, 0.2493, 0.51228, -0.82184, 0.2493, 0.51228, -0.76994, 0.23356, 0.59384, -0.76994, 0.23356, 0.59384, -0.76994, 0.23356, 0.59384, -0.76994, 0.23356, 0.59384, -0.71059, 0.21555, 0.66978, -0.71059, 0.21555, 0.66978, -0.71059, 0.21555, 0.66978, -0.71059, 0.21555, 0.66978, -0.64434, 0.19546, 0.73934, -0.64434, 0.19546, 0.73934, -0.64434, 0.19546, 0.73934, -0.64434, 0.19546, 0.73934, -0.57182, 0.17346, 0.80183, -0.57182, 0.17346, 0.80183, -0.57182, 0.17346, 0.80183, -0.57182, 0.17346, 0.80183, -0.49371, 0.14977, 0.85663, -0.49371, 0.14977, 0.85663, -0.49371, 0.14977, 0.85663, -0.49371, 0.14977, 0.85663, -0.41076, 0.1246, 0.90319, -0.41076, 0.1246, 0.90319, -0.41076, 0.1246, 0.90319, -0.41076, 0.1246, 0.90319, -0.32377, 0.09821, 0.94103, -0.32377, 0.09821, 0.94103, -0.32377, 0.09821, 0.94103, -0.32377, 0.09821, 0.94103, -0.23358, 0.07085, 0.96975, -0.23358, 0.07085, 0.96975, -0.23358, 0.07085, 0.96975, -0.23358, 0.07085, 0.96975, -0.14108, 0.0428, 0.98907, -0.14108, 0.0428, 0.98907, -0.14108, 0.0428, 0.98907, -0.14108, 0.0428, 0.98907, -0.04718, 0.01431, 0.99878, -0.04718, 0.01431, 0.99878, -0.04718, 0.01431, 0.99878, -0.04907, 0.00483, 0.99878, -0.04907, 0.00483, 0.99878, -0.04907, 0.00483, 0.99878, -0.14672, 0.01445, 0.98907, -0.14672, 0.01445, 0.98907, -0.14672, 0.01445, 0.98907, -0.14672, 0.01445, 0.98907, -0.24291, 0.02392, 0.96975, -0.24291, 0.02392, 0.96975, -0.24291, 0.02392, 0.96975, -0.24291, 0.02392, 0.96975, -0.33671, 0.03316, 0.94103, -0.33671, 0.03316, 0.94103, -0.33671, 0.03316, 0.94103, -0.33671, 0.03316, 0.94103, -0.42718, 0.04207, 0.90319, -0.42718, 0.04207, 0.90319, -0.42718, 0.04207, 0.90319, -0.42718, 0.04207, 0.90319, -0.51345, 0.05057, 0.85663, -0.51345, 0.05057, 0.85663, -0.51345, 0.05057, 0.85663, -0.51345, 0.05057, 0.85663, -0.59468, 0.05857, 0.80183, -0.59468, 0.05857, 0.80183, -0.59468, 0.05857, 0.80183, -0.59468, 0.05857, 0.80183, -0.67009, 0.066, 0.73934, -0.67009, 0.066, 0.73934, -0.67009, 0.066, 0.73934, -0.67009, 0.066, 0.73934, -0.73899, 0.07278, 0.66978, -0.73899, 0.07278, 0.66978, -0.73899, 0.07278, 0.66978, -0.73899, 0.07278, 0.66978, -0.80071, 0.07886, 0.59384, -0.80071, 0.07886, 0.59384, -0.80071, 0.07886, 0.59384, -0.80071, 0.07886, 0.59384, -0.85468, 0.08418, 0.51228, -0.85468, 0.08418, 0.51228, -0.85468, 0.08418, 0.51228, -0.85468, 0.08418, 0.51228, -0.90043, 0.08868, 0.42587, -0.90043, 0.08868, 0.42587, -0.90043, 0.08868, 0.42587, -0.90043, 0.08868, 0.42587, -0.93752, 0.09234, 0.33545, -0.93752, 0.09234, 0.33545, -0.93752, 0.09234, 0.33545, -0.93752, 0.09234, 0.33545, -0.96563, 0.09511, 0.24188, -0.96563, 0.09511, 0.24188, -0.96563, 0.09511, 0.24188, -0.96563, 0.09511, 0.24188, -0.98452, 0.09697, 0.14604, -0.98452, 0.09697, 0.14604, -0.98452, 0.09697, 0.14604, -0.98452, 0.09697, 0.14604, -0.994, 0.0979, 0.04883, -0.994, 0.0979, 0.04883, -0.994, 0.0979, 0.04883, -0.994, 0.0979, 0.04883, -0.994, 0.0979, -0.04883, -0.994, 0.0979, -0.04883, -0.994, 0.0979, -0.04883, -0.994, 0.0979, -0.04883, -0.98452, 0.09697, -0.14604, -0.98452, 0.09697, -0.14604, -0.98452, 0.09697, -0.14604, -0.98452, 0.09697, -0.14604, -0.96563, 0.09511, -0.24188, -0.96563, 0.09511, -0.24188, -0.96563, 0.09511, -0.24188, -0.96563, 0.09511, -0.24188, -0.93752, 0.09234, -0.33545, -0.93752, 0.09234, -0.33545, -0.93752, 0.09234, -0.33545, -0.93752, 0.09234, -0.33545, -0.90043, 0.08868, -0.42587, -0.90043, 0.08868, -0.42587, -0.90043, 0.08868, -0.42587, -0.90043, 0.08868, -0.42587, -0.85468, 0.08418, -0.51228, -0.85468, 0.08418, -0.51228, -0.85468, 0.08418, -0.51228, -0.85468, 0.08418, -0.51228, -0.80071, 0.07886, -0.59384, -0.80071, 0.07886, -0.59384, -0.80071, 0.07886, -0.59384, -0.80071, 0.07886, -0.59384, -0.73899, 0.07278, -0.66978, -0.73899, 0.07278, -0.66978, -0.73899, 0.07278, -0.66978, -0.73899, 0.07278, -0.66978, -0.67009, 0.066, -0.73934, -0.67009, 0.066, -0.73934, -0.67009, 0.066, -0.73934, -0.67009, 0.066, -0.73934, -0.59468, 0.05857, -0.80183, -0.59468, 0.05857, -0.80183, -0.59468, 0.05857, -0.80183, -0.59468, 0.05857, -0.80183, -0.51345, 0.05057, -0.85663, -0.51345, 0.05057, -0.85663, -0.51345, 0.05057, -0.85663, -0.51345, 0.05057, -0.85663, -0.42718, 0.04207, -0.90319, -0.42718, 0.04207, -0.90319, -0.42718, 0.04207, -0.90319, -0.42718, 0.04207, -0.90319, -0.3367, 0.03316, -0.94103, -0.3367, 0.03316, -0.94103, -0.3367, 0.03316, -0.94103, -0.3367, 0.03316, -0.94103, -0.24291, 0.02392, -0.96975, -0.24291, 0.02392, -0.96975, -0.24291, 0.02392, -0.96975, -0.24291, 0.02392, -0.96975, -0.14671, 0.01445, -0.98907, -0.14671, 0.01445, -0.98907, -0.14671, 0.01445, -0.98907, -0.14671, 0.01445, -0.98907, -0.04907, 0.00483, -0.99878, -0.04907, 0.00483, -0.99878, -0.04907, 0.00483, -0.99878, -0.04907, -0.00483, -0.99878, -0.04907, -0.00483, -0.99878, -0.04907, -0.00483, -0.99878, -0.14671, -0.01445, -0.98907, -0.14671, -0.01445, -0.98907, -0.14671, -0.01445, -0.98907, -0.14671, -0.01445, -0.98907, -0.24291, -0.02392, -0.96975, -0.24291, -0.02392, -0.96975, -0.24291, -0.02392, -0.96975, -0.24291, -0.02392, -0.96975, -0.3367, -0.03316, -0.94103, -0.3367, -0.03316, -0.94103, -0.3367, -0.03316, -0.94103, -0.3367, -0.03316, -0.94103, -0.42718, -0.04207, -0.90319, -0.42718, -0.04207, -0.90319, -0.42718, -0.04207, -0.90319, -0.42718, -0.04207, -0.90319, -0.51345, -0.05057, -0.85663, -0.51345, -0.05057, -0.85663, -0.51345, -0.05057, -0.85663, -0.51345, -0.05057, -0.85663, -0.59468, -0.05857, -0.80183, -0.59468, -0.05857, -0.80183, -0.59468, -0.05857, -0.80183, -0.59468, -0.05857, -0.80183, -0.67009, -0.066, -0.73934, -0.67009, -0.066, -0.73934, -0.67009, -0.066, -0.73934, -0.67009, -0.066, -0.73934, -0.73899, -0.07278, -0.66978, -0.73899, -0.07278, -0.66978, -0.73899, -0.07278, -0.66978, -0.73899, -0.07278, -0.66978, -0.80071, -0.07886, -0.59384, -0.80071, -0.07886, -0.59384, -0.80071, -0.07886, -0.59384, -0.80071, -0.07886, -0.59384, -0.85468, -0.08418, -0.51228, -0.85468, -0.08418, -0.51228, -0.85468, -0.08418, -0.51228, -0.85468, -0.08418, -0.51228, -0.90043, -0.08868, -0.42587, -0.90043, -0.08868, -0.42587, -0.90043, -0.08868, -0.42587, -0.90043, -0.08868, -0.42587, -0.93752, -0.09234, -0.33545, -0.93752, -0.09234, -0.33545, -0.93752, -0.09234, -0.33545, -0.93752, -0.09234, -0.33545, -0.96563, -0.09511, -0.24188, -0.96563, -0.09511, -0.24188, -0.96563, -0.09511, -0.24188, -0.96563, -0.09511, -0.24188, -0.98452, -0.09697, -0.14604, -0.98452, -0.09697, -0.14604, -0.98452, -0.09697, -0.14604, -0.98452, -0.09697, -0.14604, -0.994, -0.0979, -0.04883, -0.994, -0.0979, -0.04883, -0.994, -0.0979, -0.04883, -0.994, -0.0979, -0.04883, -0.994, -0.0979, 0.04883, -0.994, -0.0979, 0.04883, -0.994, -0.0979, 0.04883, -0.994, -0.0979, 0.04883, -0.98452, -0.09697, 0.14604, -0.98452, -0.09697, 0.14604, -0.98452, -0.09697, 0.14604, -0.98452, -0.09697, 0.14604, -0.96563, -0.09511, 0.24188, -0.96563, -0.09511, 0.24188, -0.96563, -0.09511, 0.24188, -0.96563, -0.09511, 0.24188, -0.93752, -0.09234, 0.33545, -0.93752, -0.09234, 0.33545, -0.93752, -0.09234, 0.33545, -0.93752, -0.09234, 0.33545, -0.90043, -0.08868, 0.42587, -0.90043, -0.08868, 0.42587, -0.90043, -0.08868, 0.42587, -0.90043, -0.08868, 0.42587, -0.85468, -0.08418, 0.51228, -0.85468, -0.08418, 0.51228, -0.85468, -0.08418, 0.51228, -0.85468, -0.08418, 0.51228, -0.80071, -0.07886, 0.59384, -0.80071, -0.07886, 0.59384, -0.80071, -0.07886, 0.59384, -0.80071, -0.07886, 0.59384, -0.73899, -0.07278, 0.66978, -0.73899, -0.07278, 0.66978, -0.73899, -0.07278, 0.66978, -0.73899, -0.07278, 0.66978, -0.67009, -0.066, 0.73934, -0.67009, -0.066, 0.73934, -0.67009, -0.066, 0.73934, -0.67009, -0.066, 0.73934, -0.59468, -0.05857, 0.80183, -0.59468, -0.05857, 0.80183, -0.59468, -0.05857, 0.80183, -0.59468, -0.05857, 0.80183, -0.51345, -0.05057, 0.85663, -0.51345, -0.05057, 0.85663, -0.51345, -0.05057, 0.85663, -0.51345, -0.05057, 0.85663, -0.42718, -0.04207, 0.90319, -0.42718, -0.04207, 0.90319, -0.42718, -0.04207, 0.90319, -0.42718, -0.04207, 0.90319, -0.33671, -0.03316, 0.94103, -0.33671, -0.03316, 0.94103, -0.33671, -0.03316, 0.94103, -0.33671, -0.03316, 0.94103, -0.24291, -0.02392, 0.96975, -0.24291, -0.02392, 0.96975, -0.24291, -0.02392, 0.96975, -0.24291, -0.02392, 0.96975, -0.14672, -0.01445, 0.98907, -0.14672, -0.01445, 0.98907, -0.14672, -0.01445, 0.98907, -0.14672, -0.01445, 0.98907, -0.04907, -0.00483, 0.99878, -0.04907, -0.00483, 0.99878, -0.04907, -0.00483, 0.99878, -0.04718, -0.01431, 0.99878, -0.04718, -0.01431, 0.99878, -0.04718, -0.01431, 0.99878, -0.14108, -0.0428, 0.98907, -0.14108, -0.0428, 0.98907, -0.14108, -0.0428, 0.98907, -0.14108, -0.0428, 0.98907, -0.23358, -0.07085, 0.96975, -0.23358, -0.07085, 0.96975, -0.23358, -0.07085, 0.96975, -0.23358, -0.07085, 0.96975, -0.32377, -0.09821, 0.94103, -0.32377, -0.09821, 0.94103, -0.32377, -0.09821, 0.94103, -0.32377, -0.09821, 0.94103, -0.41076, -0.1246, 0.90319, -0.41076, -0.1246, 0.90319, -0.41076, -0.1246, 0.90319, -0.41076, -0.1246, 0.90319, -0.49371, -0.14977, 0.85663, -0.49371, -0.14977, 0.85663, -0.49371, -0.14977, 0.85663, -0.49371, -0.14977, 0.85663, -0.57182, -0.17346, 0.80183, -0.57182, -0.17346, 0.80183, -0.57182, -0.17346, 0.80183, -0.57182, -0.17346, 0.80183, -0.64434, -0.19546, 0.73934, -0.64434, -0.19546, 0.73934, -0.64434, -0.19546, 0.73934, -0.64434, -0.19546, 0.73934, -0.71059, -0.21555, 0.66978, -0.71059, -0.21555, 0.66978, -0.71059, -0.21555, 0.66978, -0.71059, -0.21555, 0.66978, -0.76994, -0.23356, 0.59384, -0.76994, -0.23356, 0.59384, -0.76994, -0.23356, 0.59384, -0.76994, -0.23356, 0.59384, -0.82184, -0.2493, 0.51228, -0.82184, -0.2493, 0.51228, -0.82184, -0.2493, 0.51228, -0.82184, -0.2493, 0.51228, -0.86582, -0.26265, 0.42587, -0.86582, -0.26265, 0.42587, -0.86582, -0.26265, 0.42587, -0.86582, -0.26265, 0.42587, -0.90149, -0.27347, 0.33545, -0.90149, -0.27347, 0.33545, -0.90149, -0.27347, 0.33545, -0.90149, -0.27347, 0.33545, -0.92853, -0.28167, 0.24188, -0.92853, -0.28167, 0.24188, -0.92853, -0.28167, 0.24188, -0.92853, -0.28167, 0.24188, -0.94668, -0.28717, 0.14604, -0.94668, -0.28717, 0.14604, -0.94668, -0.28717, 0.14604, -0.94668, -0.28717, 0.14604, -0.9558, -0.28994, 0.04883, -0.9558, -0.28994, 0.04883, -0.9558, -0.28994, 0.04883, -0.9558, -0.28994, 0.04883, -0.9558, -0.28994, -0.04883, -0.9558, -0.28994, -0.04883, -0.9558, -0.28994, -0.04883, -0.9558, -0.28994, -0.04883, -0.94668, -0.28717, -0.14604, -0.94668, -0.28717, -0.14604, -0.94668, -0.28717, -0.14604, -0.94668, -0.28717, -0.14604, -0.92853, -0.28167, -0.24188, -0.92853, -0.28167, -0.24188, -0.92853, -0.28167, -0.24188, -0.92853, -0.28167, -0.24188, -0.90149, -0.27347, -0.33545, -0.90149, -0.27347, -0.33545, -0.90149, -0.27347, -0.33545, -0.90149, -0.27347, -0.33545, -0.86582, -0.26265, -0.42587, -0.86582, -0.26265, -0.42587, -0.86582, -0.26265, -0.42587, -0.86582, -0.26265, -0.42587, -0.82184, -0.2493, -0.51228, -0.82184, -0.2493, -0.51228, -0.82184, -0.2493, -0.51228, -0.82184, -0.2493, -0.51228, -0.76993, -0.23356, -0.59384, -0.76993, -0.23356, -0.59384, -0.76993, -0.23356, -0.59384, -0.76993, -0.23356, -0.59384, -0.71059, -0.21555, -0.66978, -0.71059, -0.21555, -0.66978, -0.71059, -0.21555, -0.66978, -0.71059, -0.21555, -0.66978, -0.64434, -0.19546, -0.73934, -0.64434, -0.19546, -0.73934, -0.64434, -0.19546, -0.73934, -0.64434, -0.19546, -0.73934, -0.57182, -0.17346, -0.80183, -0.57182, -0.17346, -0.80183, -0.57182, -0.17346, -0.80183, -0.57182, -0.17346, -0.80183, -0.49371, -0.14977, -0.85663, -0.49371, -0.14977, -0.85663, -0.49371, -0.14977, -0.85663, -0.49371, -0.14977, -0.85663, -0.41076, -0.1246, -0.90319, -0.41076, -0.1246, -0.90319, -0.41076, -0.1246, -0.90319, -0.41076, -0.1246, -0.90319, -0.32377, -0.09821, -0.94103, -0.32377, -0.09821, -0.94103, -0.32377, -0.09821, -0.94103, -0.32377, -0.09821, -0.94103, -0.23357, -0.07085, -0.96975, -0.23357, -0.07085, -0.96975, -0.23357, -0.07085, -0.96975, -0.23357, -0.07085, -0.96975, -0.14108, -0.0428, -0.98907, -0.14108, -0.0428, -0.98907, -0.14108, -0.0428, -0.98907, -0.14108, -0.0428, -0.98907, -0.04718, -0.01431, -0.99878, -0.04718, -0.01431, -0.99878, -0.04718, -0.01431, -0.99878, -0.04348, -0.02324, -0.99878, -0.04348, -0.02324, -0.99878, -0.04348, -0.02324, -0.99878, -0.13002, -0.0695, -0.98907, -0.13002, -0.0695, -0.98907, -0.13002, -0.0695, -0.98907, -0.13002, -0.0695, -0.98907, -0.21526, -0.11506, -0.96975, -0.21526, -0.11506, -0.96975, -0.21526, -0.11506, -0.96975, -0.21526, -0.11506, -0.96975, -0.29838, -0.15949, -0.94103, -0.29838, -0.15949, -0.94103, -0.29838, -0.15949, -0.94103, -0.29838, -0.15949, -0.94103, -0.37856, -0.20234, -0.90319, -0.37856, -0.20234, -0.90319, -0.37856, -0.20234, -0.90319, -0.37856, -0.20234, -0.90319, -0.45501, -0.24321, -0.85663, -0.45501, -0.24321, -0.85663, -0.45501, -0.24321, -0.85663, -0.45501, -0.24321, -0.85663, -0.527, -0.28169, -0.80183, -0.527, -0.28169, -0.80183, -0.527, -0.28169, -0.80183, -0.527, -0.28169, -0.80183, -0.59383, -0.31741, -0.73934, -0.59383, -0.31741, -0.73934, -0.59383, -0.31741, -0.73934, -0.59383, -0.31741, -0.73934, -0.65488, -0.35004, -0.66978, -0.65488, -0.35004, -0.66978, -0.65488, -0.35004, -0.66978, -0.65488, -0.35004, -0.66978, -0.70958, -0.37928, -0.59384, -0.70958, -0.37928, -0.59384, -0.70958, -0.37928, -0.59384, -0.70958, -0.37928, -0.59384, -0.75741, -0.40484, -0.51228, -0.75741, -0.40484, -0.51228, -0.75741, -0.40484, -0.51228, -0.75741, -0.40484, -0.51228, -0.79795, -0.42651, -0.42587, -0.79795, -0.42651, -0.42587, -0.79795, -0.42651, -0.42587, -0.79795, -0.42651, -0.42587, -0.83082, -0.44408, -0.33545, -0.83082, -0.44408, -0.33545, -0.83082, -0.44408, -0.33545, -0.83082, -0.44408, -0.33545, -0.85573, -0.4574, -0.24188, -0.85573, -0.4574, -0.24188, -0.85573, -0.4574, -0.24188, -0.85573, -0.4574, -0.24188, -0.87247, -0.46634, -0.14604, -0.87247, -0.46634, -0.14604, -0.87247, -0.46634, -0.14604, -0.87247, -0.46634, -0.14604, -0.88087, -0.47083, -0.04883, -0.88087, -0.47083, -0.04883, -0.88087, -0.47083, -0.04883, -0.88087, -0.47083, -0.04883, -0.88087, -0.47083, 0.04883, -0.88087, -0.47083, 0.04883, -0.88087, -0.47083, 0.04883, -0.88087, -0.47083, 0.04883, -0.87247, -0.46634, 0.14604, -0.87247, -0.46634, 0.14604, -0.87247, -0.46634, 0.14604, -0.87247, -0.46634, 0.14604, -0.85573, -0.4574, 0.24188, -0.85573, -0.4574, 0.24188, -0.85573, -0.4574, 0.24188, -0.85573, -0.4574, 0.24188, -0.83082, -0.44408, 0.33545, -0.83082, -0.44408, 0.33545, -0.83082, -0.44408, 0.33545, -0.83082, -0.44408, 0.33545, -0.79795, -0.42651, 0.42587, -0.79795, -0.42651, 0.42587, -0.79795, -0.42651, 0.42587, -0.79795, -0.42651, 0.42587, -0.75741, -0.40484, 0.51228, -0.75741, -0.40484, 0.51228, -0.75741, -0.40484, 0.51228, -0.75741, -0.40484, 0.51228, -0.70958, -0.37928, 0.59384, -0.70958, -0.37928, 0.59384, -0.70958, -0.37928, 0.59384, -0.70958, -0.37928, 0.59384, -0.65488, -0.35004, 0.66978, -0.65488, -0.35004, 0.66978, -0.65488, -0.35004, 0.66978, -0.65488, -0.35004, 0.66978, -0.59383, -0.31741, 0.73934, -0.59383, -0.31741, 0.73934, -0.59383, -0.31741, 0.73934, -0.59383, -0.31741, 0.73934, -0.527, -0.28169, 0.80183, -0.527, -0.28169, 0.80183, -0.527, -0.28169, 0.80183, -0.527, -0.28169, 0.80183, -0.45501, -0.24321, 0.85663, -0.45501, -0.24321, 0.85663, -0.45501, -0.24321, 0.85663, -0.45501, -0.24321, 0.85663, -0.37856, -0.20234, 0.90319, -0.37856, -0.20234, 0.90319, -0.37856, -0.20234, 0.90319, -0.37856, -0.20234, 0.90319, -0.29838, -0.15949, 0.94103, -0.29838, -0.15949, 0.94103, -0.29838, -0.15949, 0.94103, -0.29838, -0.15949, 0.94103, -0.21526, -0.11506, 0.96975, -0.21526, -0.11506, 0.96975, -0.21526, -0.11506, 0.96975, -0.21526, -0.11506, 0.96975, -0.13002, -0.0695, 0.98907, -0.13002, -0.0695, 0.98907, -0.13002, -0.0695, 0.98907, -0.13002, -0.0695, 0.98907, -0.04348, -0.02324, 0.99878, -0.04348, -0.02324, 0.99878, -0.04348, -0.02324, 0.99878, -0.03811, -0.03128, 0.99878, -0.03811, -0.03128, 0.99878, -0.03811, -0.03128, 0.99878, -0.11396, -0.09353, 0.98907, -0.11396, -0.09353, 0.98907, -0.11396, -0.09353, 0.98907, -0.11396, -0.09353, 0.98907, -0.18868, -0.15485, 0.96975, -0.18868, -0.15485, 0.96975, -0.18868, -0.15485, 0.96975, -0.18868, -0.15485, 0.96975, -0.26154, -0.21464, 0.94103, -0.26154, -0.21464, 0.94103, -0.26154, -0.21464, 0.94103, -0.26154, -0.21464, 0.94103, -0.33181, -0.27231, 0.90319, -0.33181, -0.27231, 0.90319, -0.33181, -0.27231, 0.90319, -0.33181, -0.27231, 0.90319, -0.39882, -0.3273, 0.85663, -0.39882, -0.3273, 0.85663, -0.39882, -0.3273, 0.85663, -0.39882, -0.3273, 0.85663, -0.46192, -0.37908, 0.80183, -0.46192, -0.37908, 0.80183, -0.46192, -0.37908, 0.80183, -0.46192, -0.37908, 0.80183, -0.5205, -0.42716, 0.73934, -0.5205, -0.42716, 0.73934, -0.5205, -0.42716, 0.73934, -0.5205, -0.42716, 0.73934, -0.57401, -0.47108, 0.66978, -0.57401, -0.47108, 0.66978, -0.57401, -0.47108, 0.66978, -0.57401, -0.47108, 0.66978, -0.62195, -0.51042, 0.59384, -0.62195, -0.51042, 0.59384, -0.62195, -0.51042, 0.59384, -0.62195, -0.51042, 0.59384, -0.66388, -0.54483, 0.51228, -0.66388, -0.54483, 0.51228, -0.66388, -0.54483, 0.51228, -0.66388, -0.54483, 0.51228, -0.69941, -0.57399, 0.42587, -0.69941, -0.57399, 0.42587, -0.69941, -0.57399, 0.42587, -0.69941, -0.57399, 0.42587, -0.72822, -0.59764, 0.33545, -0.72822, -0.59764, 0.33545, -0.72822, -0.59764, 0.33545, -0.72822, -0.59764, 0.33545, -0.75006, -0.61556, 0.24188, -0.75006, -0.61556, 0.24188, -0.75006, -0.61556, 0.24188, -0.75006, -0.61556, 0.24188, -0.76472, -0.62759, 0.14604, -0.76472, -0.62759, 0.14604, -0.76472, -0.62759, 0.14604, -0.76472, -0.62759, 0.14604, -0.77209, -0.63364, 0.04883, -0.77209, -0.63364, 0.04883, -0.77209, -0.63364, 0.04883, -0.77209, -0.63364, 0.04883, -0.77209, -0.63364, -0.04883, -0.77209, -0.63364, -0.04883, -0.77209, -0.63364, -0.04883, -0.77209, -0.63364, -0.04883, -0.76472, -0.62759, -0.14604, -0.76472, -0.62759, -0.14604, -0.76472, -0.62759, -0.14604, -0.76472, -0.62759, -0.14604, -0.75006, -0.61556, -0.24188, -0.75006, -0.61556, -0.24188, -0.75006, -0.61556, -0.24188, -0.75006, -0.61556, -0.24188, -0.72822, -0.59764, -0.33545, -0.72822, -0.59764, -0.33545, -0.72822, -0.59764, -0.33545, -0.72822, -0.59764, -0.33545, -0.69941, -0.57399, -0.42587, -0.69941, -0.57399, -0.42587, -0.69941, -0.57399, -0.42587, -0.69941, -0.57399, -0.42587, -0.66388, -0.54483, -0.51228, -0.66388, -0.54483, -0.51228, -0.66388, -0.54483, -0.51228, -0.66388, -0.54483, -0.51228, -0.62195, -0.51042, -0.59384, -0.62195, -0.51042, -0.59384, -0.62195, -0.51042, -0.59384, -0.62195, -0.51042, -0.59384, -0.57401, -0.47108, -0.66978, -0.57401, -0.47108, -0.66978, -0.57401, -0.47108, -0.66978, -0.57401, -0.47108, -0.66978, -0.5205, -0.42716, -0.73934, -0.5205, -0.42716, -0.73934, -0.5205, -0.42716, -0.73934, -0.5205, -0.42716, -0.73934, -0.46192, -0.37908, -0.80183, -0.46192, -0.37908, -0.80183, -0.46192, -0.37908, -0.80183, -0.46192, -0.37908, -0.80183, -0.39882, -0.3273, -0.85663, -0.39882, -0.3273, -0.85663, -0.39882, -0.3273, -0.85663, -0.39882, -0.3273, -0.85663, -0.33181, -0.27231, -0.90319, -0.33181, -0.27231, -0.90319, -0.33181, -0.27231, -0.90319, -0.33181, -0.27231, -0.90319, -0.26154, -0.21464, -0.94103, -0.26154, -0.21464, -0.94103, -0.26154, -0.21464, -0.94103, -0.26154, -0.21464, -0.94103, -0.18868, -0.15485, -0.96975, -0.18868, -0.15485, -0.96975, -0.18868, -0.15485, -0.96975, -0.18868, -0.15485, -0.96975, -0.11396, -0.09353, -0.98907, -0.11396, -0.09353, -0.98907, -0.11396, -0.09353, -0.98907, -0.11396, -0.09353, -0.98907, -0.03811, -0.03128, -0.99878, -0.03811, -0.03128, -0.99878, -0.03811, -0.03128, -0.99878, -0.03128, -0.03811, -0.99878, -0.03128, -0.03811, -0.99878, -0.03128, -0.03811, -0.99878, -0.09353, -0.11396, -0.98907, -0.09353, -0.11396, -0.98907, -0.09353, -0.11396, -0.98907, -0.09353, -0.11396, -0.98907, -0.15485, -0.18868, -0.96975, -0.15485, -0.18868, -0.96975, -0.15485, -0.18868, -0.96975, -0.15485, -0.18868, -0.96975, -0.21464, -0.26154, -0.94103, -0.21464, -0.26154, -0.94103, -0.21464, -0.26154, -0.94103, -0.21464, -0.26154, -0.94103, -0.27231, -0.33181, -0.90319, -0.27231, -0.33181, -0.90319, -0.27231, -0.33181, -0.90319, -0.27231, -0.33181, -0.90319, -0.3273, -0.39882, -0.85663, -0.3273, -0.39882, -0.85663, -0.3273, -0.39882, -0.85663, -0.3273, -0.39882, -0.85663, -0.37908, -0.46192, -0.80183, -0.37908, -0.46192, -0.80183, -0.37908, -0.46192, -0.80183, -0.37908, -0.46192, -0.80183, -0.42716, -0.5205, -0.73934, -0.42716, -0.5205, -0.73934, -0.42716, -0.5205, -0.73934, -0.42716, -0.5205, -0.73934, -0.47108, -0.57401, -0.66978, -0.47108, -0.57401, -0.66978, -0.47108, -0.57401, -0.66978, -0.47108, -0.57401, -0.66978, -0.51042, -0.62195, -0.59384, -0.51042, -0.62195, -0.59384, -0.51042, -0.62195, -0.59384, -0.51042, -0.62195, -0.59384, -0.54483, -0.66388, -0.51228, -0.54483, -0.66388, -0.51228, -0.54483, -0.66388, -0.51228, -0.54483, -0.66388, -0.51228, -0.57399, -0.69941, -0.42587, -0.57399, -0.69941, -0.42587, -0.57399, -0.69941, -0.42587, -0.57399, -0.69941, -0.42587, -0.59763, -0.72822, -0.33545, -0.59763, -0.72822, -0.33545, -0.59763, -0.72822, -0.33545, -0.59763, -0.72822, -0.33545, -0.61556, -0.75006, -0.24188, -0.61556, -0.75006, -0.24188, -0.61556, -0.75006, -0.24188, -0.61556, -0.75006, -0.24188, -0.62759, -0.76472, -0.14604, -0.62759, -0.76472, -0.14604, -0.62759, -0.76472, -0.14604, -0.62759, -0.76472, -0.14604, -0.63364, -0.77209, -0.04883, -0.63364, -0.77209, -0.04883, -0.63364, -0.77209, -0.04883, -0.63364, -0.77209, -0.04883, -0.63364, -0.77209, 0.04883, -0.63364, -0.77209, 0.04883, -0.63364, -0.77209, 0.04883, -0.63364, -0.77209, 0.04883, -0.62759, -0.76472, 0.14604, -0.62759, -0.76472, 0.14604, -0.62759, -0.76472, 0.14604, -0.62759, -0.76472, 0.14604, -0.61556, -0.75006, 0.24188, -0.61556, -0.75006, 0.24188, -0.61556, -0.75006, 0.24188, -0.61556, -0.75006, 0.24188, -0.59764, -0.72822, 0.33545, -0.59764, -0.72822, 0.33545, -0.59764, -0.72822, 0.33545, -0.59764, -0.72822, 0.33545, -0.57399, -0.69941, 0.42587, -0.57399, -0.69941, 0.42587, -0.57399, -0.69941, 0.42587, -0.57399, -0.69941, 0.42587, -0.54483, -0.66388, 0.51228, -0.54483, -0.66388, 0.51228, -0.54483, -0.66388, 0.51228, -0.54483, -0.66388, 0.51228, -0.51042, -0.62195, 0.59384, -0.51042, -0.62195, 0.59384, -0.51042, -0.62195, 0.59384, -0.51042, -0.62195, 0.59384, -0.47108, -0.57401, 0.66978, -0.47108, -0.57401, 0.66978, -0.47108, -0.57401, 0.66978, -0.47108, -0.57401, 0.66978, -0.42716, -0.5205, 0.73934, -0.42716, -0.5205, 0.73934, -0.42716, -0.5205, 0.73934, -0.42716, -0.5205, 0.73934, -0.37908, -0.46192, 0.80183, -0.37908, -0.46192, 0.80183, -0.37908, -0.46192, 0.80183, -0.37908, -0.46192, 0.80183, -0.3273, -0.39882, 0.85663, -0.3273, -0.39882, 0.85663, -0.3273, -0.39882, 0.85663, -0.3273, -0.39882, 0.85663, -0.27231, -0.33181, 0.90319, -0.27231, -0.33181, 0.90319, -0.27231, -0.33181, 0.90319, -0.27231, -0.33181, 0.90319, -0.21464, -0.26154, 0.94103, -0.21464, -0.26154, 0.94103, -0.21464, -0.26154, 0.94103, -0.21464, -0.26154, 0.94103, -0.15485, -0.18868, 0.96975, -0.15485, -0.18868, 0.96975, -0.15485, -0.18868, 0.96975, -0.15485, -0.18868, 0.96975, -0.09353, -0.11396, 0.98907, -0.09353, -0.11396, 0.98907, -0.09353, -0.11396, 0.98907, -0.09353, -0.11396, 0.98907, -0.03128, -0.03811, 0.99878, -0.03128, -0.03811, 0.99878, -0.03128, -0.03811, 0.99878, -0.02324, -0.04348, 0.99878, -0.02324, -0.04348, 0.99878, -0.02324, -0.04348, 0.99878, -0.0695, -0.13002, 0.98907, -0.0695, -0.13002, 0.98907, -0.0695, -0.13002, 0.98907, -0.0695, -0.13002, 0.98907, -0.11506, -0.21526, 0.96975, -0.11506, -0.21526, 0.96975, -0.11506, -0.21526, 0.96975, -0.11506, -0.21526, 0.96975, -0.15949, -0.29838, 0.94103, -0.15949, -0.29838, 0.94103, -0.15949, -0.29838, 0.94103, -0.15949, -0.29838, 0.94103, -0.20234, -0.37856, 0.90319, -0.20234, -0.37856, 0.90319, -0.20234, -0.37856, 0.90319, -0.20234, -0.37856, 0.90319, -0.24321, -0.45501, 0.85663, -0.24321, -0.45501, 0.85663, -0.24321, -0.45501, 0.85663, -0.24321, -0.45501, 0.85663, -0.28168, -0.527, 0.80183, -0.28168, -0.527, 0.80183, -0.28168, -0.527, 0.80183, -0.28168, -0.527, 0.80183, -0.31741, -0.59383, 0.73934, -0.31741, -0.59383, 0.73934, -0.31741, -0.59383, 0.73934, -0.31741, -0.59383, 0.73934, -0.35004, -0.65488, 0.66978, -0.35004, -0.65488, 0.66978, -0.35004, -0.65488, 0.66978, -0.35004, -0.65488, 0.66978, -0.37928, -0.70958, 0.59384, -0.37928, -0.70958, 0.59384, -0.37928, -0.70958, 0.59384, -0.37928, -0.70958, 0.59384, -0.40484, -0.75741, 0.51228, -0.40484, -0.75741, 0.51228, -0.40484, -0.75741, 0.51228, -0.40484, -0.75741, 0.51228, -0.42651, -0.79795, 0.42587, -0.42651, -0.79795, 0.42587, -0.42651, -0.79795, 0.42587, -0.42651, -0.79795, 0.42587, -0.44408, -0.83082, 0.33545, -0.44408, -0.83082, 0.33545, -0.44408, -0.83082, 0.33545, -0.44408, -0.83082, 0.33545, -0.4574, -0.85573, 0.24188, -0.4574, -0.85573, 0.24188, -0.4574, -0.85573, 0.24188, -0.4574, -0.85573, 0.24188, -0.46634, -0.87247, 0.14604, -0.46634, -0.87247, 0.14604, -0.46634, -0.87247, 0.14604, -0.46634, -0.87247, 0.14604, -0.47083, -0.88087, 0.04883, -0.47083, -0.88087, 0.04883, -0.47083, -0.88087, 0.04883, -0.47083, -0.88087, 0.04883, -0.47083, -0.88087, -0.04883, -0.47083, -0.88087, -0.04883, -0.47083, -0.88087, -0.04883, -0.47083, -0.88087, -0.04883, -0.46634, -0.87247, -0.14604, -0.46634, -0.87247, -0.14604, -0.46634, -0.87247, -0.14604, -0.46634, -0.87247, -0.14604, -0.4574, -0.85573, -0.24188, -0.4574, -0.85573, -0.24188, -0.4574, -0.85573, -0.24188, -0.4574, -0.85573, -0.24188, -0.44408, -0.83082, -0.33545, -0.44408, -0.83082, -0.33545, -0.44408, -0.83082, -0.33545, -0.44408, -0.83082, -0.33545, -0.42651, -0.79795, -0.42587, -0.42651, -0.79795, -0.42587, -0.42651, -0.79795, -0.42587, -0.42651, -0.79795, -0.42587, -0.40484, -0.75741, -0.51228, -0.40484, -0.75741, -0.51228, -0.40484, -0.75741, -0.51228, -0.40484, -0.75741, -0.51228, -0.37928, -0.70958, -0.59384, -0.37928, -0.70958, -0.59384, -0.37928, -0.70958, -0.59384, -0.37928, -0.70958, -0.59384, -0.35004, -0.65488, -0.66978, -0.35004, -0.65488, -0.66978, -0.35004, -0.65488, -0.66978, -0.35004, -0.65488, -0.66978, -0.31741, -0.59383, -0.73934, -0.31741, -0.59383, -0.73934, -0.31741, -0.59383, -0.73934, -0.31741, -0.59383, -0.73934, -0.28168, -0.527, -0.80183, -0.28168, -0.527, -0.80183, -0.28168, -0.527, -0.80183, -0.28168, -0.527, -0.80183, -0.24321, -0.45501, -0.85663, -0.24321, -0.45501, -0.85663, -0.24321, -0.45501, -0.85663, -0.24321, -0.45501, -0.85663, -0.20234, -0.37856, -0.90319, -0.20234, -0.37856, -0.90319, -0.20234, -0.37856, -0.90319, -0.20234, -0.37856, -0.90319, -0.15949, -0.29838, -0.94103, -0.15949, -0.29838, -0.94103, -0.15949, -0.29838, -0.94103, -0.15949, -0.29838, -0.94103, -0.11506, -0.21526, -0.96975, -0.11506, -0.21526, -0.96975, -0.11506, -0.21526, -0.96975, -0.11506, -0.21526, -0.96975, -0.0695, -0.13002, -0.98907, -0.0695, -0.13002, -0.98907, -0.0695, -0.13002, -0.98907, -0.0695, -0.13002, -0.98907, -0.02324, -0.04348, -0.99878, -0.02324, -0.04348, -0.99878, -0.02324, -0.04348, -0.99878, -0.01431, -0.04718, -0.99878, -0.01431, -0.04718, -0.99878, -0.01431, -0.04718, -0.99878, -0.0428, -0.14108, -0.98907, -0.0428, -0.14108, -0.98907, -0.0428, -0.14108, -0.98907, -0.0428, -0.14108, -0.98907, -0.07085, -0.23357, -0.96975, -0.07085, -0.23357, -0.96975, -0.07085, -0.23357, -0.96975, -0.07085, -0.23357, -0.96975, -0.09821, -0.32377, -0.94103, -0.09821, -0.32377, -0.94103, -0.09821, -0.32377, -0.94103, -0.09821, -0.32377, -0.94103, -0.1246, -0.41076, -0.90319, -0.1246, -0.41076, -0.90319, -0.1246, -0.41076, -0.90319, -0.1246, -0.41076, -0.90319, -0.14977, -0.49371, -0.85663, -0.14977, -0.49371, -0.85663, -0.14977, -0.49371, -0.85663, -0.14977, -0.49371, -0.85663, -0.17346, -0.57182, -0.80183, -0.17346, -0.57182, -0.80183, -0.17346, -0.57182, -0.80183, -0.17346, -0.57182, -0.80183, -0.19546, -0.64434, -0.73934, -0.19546, -0.64434, -0.73934, -0.19546, -0.64434, -0.73934, -0.19546, -0.64434, -0.73934, -0.21555, -0.71059, -0.66978, -0.21555, -0.71059, -0.66978, -0.21555, -0.71059, -0.66978, -0.21555, -0.71059, -0.66978, -0.23356, -0.76994, -0.59384, -0.23356, -0.76994, -0.59384, -0.23356, -0.76994, -0.59384, -0.23356, -0.76994, -0.59384, -0.2493, -0.82184, -0.51228, -0.2493, -0.82184, -0.51228, -0.2493, -0.82184, -0.51228, -0.2493, -0.82184, -0.51228, -0.26264, -0.86583, -0.42587, -0.26264, -0.86583, -0.42587, -0.26264, -0.86583, -0.42587, -0.26264, -0.86583, -0.42587, -0.27346, -0.90149, -0.33545, -0.27346, -0.90149, -0.33545, -0.27346, -0.90149, -0.33545, -0.27346, -0.90149, -0.33545, -0.28166, -0.92853, -0.24188, -0.28166, -0.92853, -0.24188, -0.28166, -0.92853, -0.24188, -0.28166, -0.92853, -0.24188, -0.28717, -0.94668, -0.14604, -0.28717, -0.94668, -0.14604, -0.28717, -0.94668, -0.14604, -0.28717, -0.94668, -0.14604, -0.28994, -0.9558, -0.04883, -0.28994, -0.9558, -0.04883, -0.28994, -0.9558, -0.04883, -0.28994, -0.9558, -0.04883, -0.28994, -0.9558, 0.04883, -0.28994, -0.9558, 0.04883, -0.28994, -0.9558, 0.04883, -0.28994, -0.9558, 0.04883, -0.28717, -0.94668, 0.14604, -0.28717, -0.94668, 0.14604, -0.28717, -0.94668, 0.14604, -0.28717, -0.94668, 0.14604, -0.28167, -0.92853, 0.24188, -0.28167, -0.92853, 0.24188, -0.28167, -0.92853, 0.24188, -0.28167, -0.92853, 0.24188, -0.27346, -0.90149, 0.33545, -0.27346, -0.90149, 0.33545, -0.27346, -0.90149, 0.33545, -0.27346, -0.90149, 0.33545, -0.26264, -0.86582, 0.42587, -0.26264, -0.86582, 0.42587, -0.26264, -0.86582, 0.42587, -0.26264, -0.86582, 0.42587, -0.2493, -0.82184, 0.51228, -0.2493, -0.82184, 0.51228, -0.2493, -0.82184, 0.51228, -0.2493, -0.82184, 0.51228, -0.23356, -0.76994, 0.59384, -0.23356, -0.76994, 0.59384, -0.23356, -0.76994, 0.59384, -0.23356, -0.76994, 0.59384, -0.21555, -0.71059, 0.66978, -0.21555, -0.71059, 0.66978, -0.21555, -0.71059, 0.66978, -0.21555, -0.71059, 0.66978, -0.19546, -0.64434, 0.73934, -0.19546, -0.64434, 0.73934, -0.19546, -0.64434, 0.73934, -0.19546, -0.64434, 0.73934, -0.17346, -0.57182, 0.80183, -0.17346, -0.57182, 0.80183, -0.17346, -0.57182, 0.80183, -0.17346, -0.57182, 0.80183, -0.14977, -0.49371, 0.85663, -0.14977, -0.49371, 0.85663, -0.14977, -0.49371, 0.85663, -0.14977, -0.49371, 0.85663, -0.1246, -0.41076, 0.90319, -0.1246, -0.41076, 0.90319, -0.1246, -0.41076, 0.90319, -0.1246, -0.41076, 0.90319, -0.09821, -0.32377, 0.94103, -0.09821, -0.32377, 0.94103, -0.09821, -0.32377, 0.94103, -0.09821, -0.32377, 0.94103, -0.07085, -0.23358, 0.96975, -0.07085, -0.23358, 0.96975, -0.07085, -0.23358, 0.96975, -0.07085, -0.23358, 0.96975, -0.0428, -0.14108, 0.98907, -0.0428, -0.14108, 0.98907, -0.0428, -0.14108, 0.98907, -0.0428, -0.14108, 0.98907, -0.01431, -0.04718, 0.99878, -0.01431, -0.04718, 0.99878, -0.01431, -0.04718, 0.99878, -0.00483, -0.04907, 0.99878, -0.00483, -0.04907, 0.99878, -0.00483, -0.04907, 0.99878, -0.01445, -0.14672, 0.98907, -0.01445, -0.14672, 0.98907, -0.01445, -0.14672, 0.98907, -0.01445, -0.14672, 0.98907, -0.02392, -0.24291, 0.96975, -0.02392, -0.24291, 0.96975, -0.02392, -0.24291, 0.96975, -0.02392, -0.24291, 0.96975, -0.03316, -0.33671, 0.94103, -0.03316, -0.33671, 0.94103, -0.03316, -0.33671, 0.94103, -0.03316, -0.33671, 0.94103, -0.04207, -0.42718, 0.90319, -0.04207, -0.42718, 0.90319, -0.04207, -0.42718, 0.90319, -0.04207, -0.42718, 0.90319, -0.05057, -0.51345, 0.85663, -0.05057, -0.51345, 0.85663, -0.05057, -0.51345, 0.85663, -0.05057, -0.51345, 0.85663, -0.05857, -0.59468, 0.80183, -0.05857, -0.59468, 0.80183, -0.05857, -0.59468, 0.80183, -0.05857, -0.59468, 0.80183, -0.066, -0.67009, 0.73934, -0.066, -0.67009, 0.73934, -0.066, -0.67009, 0.73934, -0.066, -0.67009, 0.73934, -0.07278, -0.73899, 0.66978, -0.07278, -0.73899, 0.66978, -0.07278, -0.73899, 0.66978, -0.07278, -0.73899, 0.66978, -0.07886, -0.80071, 0.59384, -0.07886, -0.80071, 0.59384, -0.07886, -0.80071, 0.59384, -0.07886, -0.80071, 0.59384, -0.08418, -0.85468, 0.51228, -0.08418, -0.85468, 0.51228, -0.08418, -0.85468, 0.51228, -0.08418, -0.85468, 0.51228, -0.08868, -0.90043, 0.42587, -0.08868, -0.90043, 0.42587, -0.08868, -0.90043, 0.42587, -0.08868, -0.90043, 0.42587, -0.09234, -0.93752, 0.33545, -0.09234, -0.93752, 0.33545, -0.09234, -0.93752, 0.33545, -0.09234, -0.93752, 0.33545, -0.09511, -0.96563, 0.24188, -0.09511, -0.96563, 0.24188, -0.09511, -0.96563, 0.24188, -0.09511, -0.96563, 0.24188, -0.09697, -0.98452, 0.14604, -0.09697, -0.98452, 0.14604, -0.09697, -0.98452, 0.14604, -0.09697, -0.98452, 0.14604, -0.0979, -0.994, 0.04883, -0.0979, -0.994, 0.04883, -0.0979, -0.994, 0.04883, -0.0979, -0.994, 0.04883, -0.0979, -0.994, -0.04883, -0.0979, -0.994, -0.04883, -0.0979, -0.994, -0.04883, -0.0979, -0.994, -0.04883, -0.09697, -0.98452, -0.14604, -0.09697, -0.98452, -0.14604, -0.09697, -0.98452, -0.14604, -0.09697, -0.98452, -0.14604, -0.09511, -0.96563, -0.24188, -0.09511, -0.96563, -0.24188, -0.09511, -0.96563, -0.24188, -0.09511, -0.96563, -0.24188, -0.09234, -0.93752, -0.33545, -0.09234, -0.93752, -0.33545, -0.09234, -0.93752, -0.33545, -0.09234, -0.93752, -0.33545, -0.08868, -0.90043, -0.42587, -0.08868, -0.90043, -0.42587, -0.08868, -0.90043, -0.42587, -0.08868, -0.90043, -0.42587, -0.08418, -0.85468, -0.51228, -0.08418, -0.85468, -0.51228, -0.08418, -0.85468, -0.51228, -0.08418, -0.85468, -0.51228, -0.07886, -0.80071, -0.59384, -0.07886, -0.80071, -0.59384, -0.07886, -0.80071, -0.59384, -0.07886, -0.80071, -0.59384, -0.07278, -0.73899, -0.66978, -0.07278, -0.73899, -0.66978, -0.07278, -0.73899, -0.66978, -0.07278, -0.73899, -0.66978, -0.066, -0.6701, -0.73934, -0.066, -0.6701, -0.73934, -0.066, -0.6701, -0.73934, -0.066, -0.6701, -0.73934, -0.05857, -0.59468, -0.80183, -0.05857, -0.59468, -0.80183, -0.05857, -0.59468, -0.80183, -0.05857, -0.59468, -0.80183, -0.05057, -0.51345, -0.85663, -0.05057, -0.51345, -0.85663, -0.05057, -0.51345, -0.85663, -0.05057, -0.51345, -0.85663, -0.04207, -0.42718, -0.90319, -0.04207, -0.42718, -0.90319, -0.04207, -0.42718, -0.90319, -0.04207, -0.42718, -0.90319, -0.03316, -0.3367, -0.94103, -0.03316, -0.3367, -0.94103, -0.03316, -0.3367, -0.94103, -0.03316, -0.3367, -0.94103, -0.02392, -0.24291, -0.96975, -0.02392, -0.24291, -0.96975, -0.02392, -0.24291, -0.96975, -0.02392, -0.24291, -0.96975, -0.01445, -0.14671, -0.98907, -0.01445, -0.14671, -0.98907, -0.01445, -0.14671, -0.98907, -0.01445, -0.14671, -0.98907, -0.00483, -0.04907, -0.99878, -0.00483, -0.04907, -0.99878, -0.00483, -0.04907, -0.99878, 0.00483, -0.04907, -0.99878, 0.00483, -0.04907, -0.99878, 0.00483, -0.04907, -0.99878, 0.01445, -0.14671, -0.98907, 0.01445, -0.14671, -0.98907, 0.01445, -0.14671, -0.98907, 0.01445, -0.14671, -0.98907, 0.02392, -0.24291, -0.96975, 0.02392, -0.24291, -0.96975, 0.02392, -0.24291, -0.96975, 0.02392, -0.24291, -0.96975, 0.03316, -0.3367, -0.94103, 0.03316, -0.3367, -0.94103, 0.03316, -0.3367, -0.94103, 0.03316, -0.3367, -0.94103, 0.04207, -0.42718, -0.90319, 0.04207, -0.42718, -0.90319, 0.04207, -0.42718, -0.90319, 0.04207, -0.42718, -0.90319, 0.05057, -0.51345, -0.85663, 0.05057, -0.51345, -0.85663, 0.05057, -0.51345, -0.85663, 0.05057, -0.51345, -0.85663, 0.05857, -0.59468, -0.80183, 0.05857, -0.59468, -0.80183, 0.05857, -0.59468, -0.80183, 0.05857, -0.59468, -0.80183, 0.066, -0.6701, -0.73934, 0.066, -0.6701, -0.73934, 0.066, -0.6701, -0.73934, 0.066, -0.6701, -0.73934, 0.07278, -0.73899, -0.66978, 0.07278, -0.73899, -0.66978, 0.07278, -0.73899, -0.66978, 0.07278, -0.73899, -0.66978, 0.07886, -0.80071, -0.59384, 0.07886, -0.80071, -0.59384, 0.07886, -0.80071, -0.59384, 0.07886, -0.80071, -0.59384, 0.08418, -0.85468, -0.51228, 0.08418, -0.85468, -0.51228, 0.08418, -0.85468, -0.51228, 0.08418, -0.85468, -0.51228, 0.08868, -0.90043, -0.42587, 0.08868, -0.90043, -0.42587, 0.08868, -0.90043, -0.42587, 0.08868, -0.90043, -0.42587, 0.09234, -0.93752, -0.33545, 0.09234, -0.93752, -0.33545, 0.09234, -0.93752, -0.33545, 0.09234, -0.93752, -0.33545, 0.09511, -0.96563, -0.24188, 0.09511, -0.96563, -0.24188, 0.09511, -0.96563, -0.24188, 0.09511, -0.96563, -0.24188, 0.09697, -0.98452, -0.14604, 0.09697, -0.98452, -0.14604, 0.09697, -0.98452, -0.14604, 0.09697, -0.98452, -0.14604, 0.0979, -0.994, -0.04883, 0.0979, -0.994, -0.04883, 0.0979, -0.994, -0.04883, 0.0979, -0.994, -0.04883, 0.0979, -0.994, 0.04883, 0.0979, -0.994, 0.04883, 0.0979, -0.994, 0.04883, 0.0979, -0.994, 0.04883, 0.09697, -0.98452, 0.14604, 0.09697, -0.98452, 0.14604, 0.09697, -0.98452, 0.14604, 0.09697, -0.98452, 0.14604, 0.09511, -0.96563, 0.24188, 0.09511, -0.96563, 0.24188, 0.09511, -0.96563, 0.24188, 0.09511, -0.96563, 0.24188, 0.09234, -0.93752, 0.33545, 0.09234, -0.93752, 0.33545, 0.09234, -0.93752, 0.33545, 0.09234, -0.93752, 0.33545, 0.08868, -0.90043, 0.42587, 0.08868, -0.90043, 0.42587, 0.08868, -0.90043, 0.42587, 0.08868, -0.90043, 0.42587, 0.08418, -0.85468, 0.51228, 0.08418, -0.85468, 0.51228, 0.08418, -0.85468, 0.51228, 0.08418, -0.85468, 0.51228, 0.07886, -0.80071, 0.59384, 0.07886, -0.80071, 0.59384, 0.07886, -0.80071, 0.59384, 0.07886, -0.80071, 0.59384, 0.07278, -0.73899, 0.66978, 0.07278, -0.73899, 0.66978, 0.07278, -0.73899, 0.66978, 0.07278, -0.73899, 0.66978, 0.066, -0.67009, 0.73934, 0.066, -0.67009, 0.73934, 0.066, -0.67009, 0.73934, 0.066, -0.67009, 0.73934, 0.05857, -0.59468, 0.80183, 0.05857, -0.59468, 0.80183, 0.05857, -0.59468, 0.80183, 0.05857, -0.59468, 0.80183, 0.05057, -0.51345, 0.85663, 0.05057, -0.51345, 0.85663, 0.05057, -0.51345, 0.85663, 0.05057, -0.51345, 0.85663, 0.04207, -0.42718, 0.90319, 0.04207, -0.42718, 0.90319, 0.04207, -0.42718, 0.90319, 0.04207, -0.42718, 0.90319, 0.03316, -0.33671, 0.94103, 0.03316, -0.33671, 0.94103, 0.03316, -0.33671, 0.94103, 0.03316, -0.33671, 0.94103, 0.02392, -0.24291, 0.96975, 0.02392, -0.24291, 0.96975, 0.02392, -0.24291, 0.96975, 0.02392, -0.24291, 0.96975, 0.01445, -0.14672, 0.98907, 0.01445, -0.14672, 0.98907, 0.01445, -0.14672, 0.98907, 0.01445, -0.14672, 0.98907, 0.00483, -0.04907, 0.99878, 0.00483, -0.04907, 0.99878, 0.00483, -0.04907, 0.99878, 0.01431, -0.04718, 0.99878, 0.01431, -0.04718, 0.99878, 0.01431, -0.04718, 0.99878, 0.0428, -0.14108, 0.98907, 0.0428, -0.14108, 0.98907, 0.0428, -0.14108, 0.98907, 0.0428, -0.14108, 0.98907, 0.07085, -0.23358, 0.96975, 0.07085, -0.23358, 0.96975, 0.07085, -0.23358, 0.96975, 0.07085, -0.23358, 0.96975, 0.09821, -0.32377, 0.94103, 0.09821, -0.32377, 0.94103, 0.09821, -0.32377, 0.94103, 0.09821, -0.32377, 0.94103, 0.1246, -0.41076, 0.90319, 0.1246, -0.41076, 0.90319, 0.1246, -0.41076, 0.90319, 0.1246, -0.41076, 0.90319, 0.14977, -0.49371, 0.85663, 0.14977, -0.49371, 0.85663, 0.14977, -0.49371, 0.85663, 0.14977, -0.49371, 0.85663, 0.17346, -0.57182, 0.80183, 0.17346, -0.57182, 0.80183, 0.17346, -0.57182, 0.80183, 0.17346, -0.57182, 0.80183, 0.19546, -0.64434, 0.73934, 0.19546, -0.64434, 0.73934, 0.19546, -0.64434, 0.73934, 0.19546, -0.64434, 0.73934, 0.21555, -0.71059, 0.66978, 0.21555, -0.71059, 0.66978, 0.21555, -0.71059, 0.66978, 0.21555, -0.71059, 0.66978, 0.23356, -0.76994, 0.59384, 0.23356, -0.76994, 0.59384, 0.23356, -0.76994, 0.59384, 0.23356, -0.76994, 0.59384, 0.2493, -0.82184, 0.51228, 0.2493, -0.82184, 0.51228, 0.2493, -0.82184, 0.51228, 0.2493, -0.82184, 0.51228, 0.26265, -0.86583, 0.42587, 0.26265, -0.86583, 0.42587, 0.26265, -0.86583, 0.42587, 0.26265, -0.86583, 0.42587, 0.27347, -0.90149, 0.33545, 0.27347, -0.90149, 0.33545, 0.27347, -0.90149, 0.33545, 0.27347, -0.90149, 0.33545, 0.28167, -0.92853, 0.24188, 0.28167, -0.92853, 0.24188, 0.28167, -0.92853, 0.24188, 0.28167, -0.92853, 0.24188, 0.28717, -0.94668, 0.14604, 0.28717, -0.94668, 0.14604, 0.28717, -0.94668, 0.14604, 0.28717, -0.94668, 0.14604, 0.28994, -0.9558, 0.04883, 0.28994, -0.9558, 0.04883, 0.28994, -0.9558, 0.04883, 0.28994, -0.9558, 0.04883, 0.28994, -0.9558, -0.04883, 0.28994, -0.9558, -0.04883, 0.28994, -0.9558, -0.04883, 0.28994, -0.9558, -0.04883, 0.28717, -0.94668, -0.14604, 0.28717, -0.94668, -0.14604, 0.28717, -0.94668, -0.14604, 0.28717, -0.94668, -0.14604, 0.28167, -0.92853, -0.24188, 0.28167, -0.92853, -0.24188, 0.28167, -0.92853, -0.24188, 0.28167, -0.92853, -0.24188, 0.27347, -0.90149, -0.33545, 0.27347, -0.90149, -0.33545, 0.27347, -0.90149, -0.33545, 0.27347, -0.90149, -0.33545, 0.26265, -0.86583, -0.42587, 0.26265, -0.86583, -0.42587, 0.26265, -0.86583, -0.42587, 0.26265, -0.86583, -0.42587, 0.2493, -0.82184, -0.51228, 0.2493, -0.82184, -0.51228, 0.2493, -0.82184, -0.51228, 0.2493, -0.82184, -0.51228, 0.23356, -0.76994, -0.59384, 0.23356, -0.76994, -0.59384, 0.23356, -0.76994, -0.59384, 0.23356, -0.76994, -0.59384, 0.21555, -0.71059, -0.66978, 0.21555, -0.71059, -0.66978, 0.21555, -0.71059, -0.66978, 0.21555, -0.71059, -0.66978, 0.19546, -0.64434, -0.73934, 0.19546, -0.64434, -0.73934, 0.19546, -0.64434, -0.73934, 0.19546, -0.64434, -0.73934, 0.17346, -0.57182, -0.80183, 0.17346, -0.57182, -0.80183, 0.17346, -0.57182, -0.80183, 0.17346, -0.57182, -0.80183, 0.14977, -0.49371, -0.85663, 0.14977, -0.49371, -0.85663, 0.14977, -0.49371, -0.85663, 0.14977, -0.49371, -0.85663, 0.1246, -0.41076, -0.90319, 0.1246, -0.41076, -0.90319, 0.1246, -0.41076, -0.90319, 0.1246, -0.41076, -0.90319, 0.09821, -0.32377, -0.94103, 0.09821, -0.32377, -0.94103, 0.09821, -0.32377, -0.94103, 0.09821, -0.32377, -0.94103, 0.07085, -0.23357, -0.96975, 0.07085, -0.23357, -0.96975, 0.07085, -0.23357, -0.96975, 0.07085, -0.23357, -0.96975, 0.0428, -0.14108, -0.98907, 0.0428, -0.14108, -0.98907, 0.0428, -0.14108, -0.98907, 0.0428, -0.14108, -0.98907, 0.01431, -0.04718, -0.99878, 0.01431, -0.04718, -0.99878, 0.01431, -0.04718, -0.99878, 0.02324, -0.04348, -0.99878, 0.02324, -0.04348, -0.99878, 0.02324, -0.04348, -0.99878, 0.0695, -0.13002, -0.98907, 0.0695, -0.13002, -0.98907, 0.0695, -0.13002, -0.98907, 0.0695, -0.13002, -0.98907, 0.11506, -0.21526, -0.96975, 0.11506, -0.21526, -0.96975, 0.11506, -0.21526, -0.96975, 0.11506, -0.21526, -0.96975, 0.15949, -0.29838, -0.94103, 0.15949, -0.29838, -0.94103, 0.15949, -0.29838, -0.94103, 0.15949, -0.29838, -0.94103, 0.20234, -0.37856, -0.90319, 0.20234, -0.37856, -0.90319, 0.20234, -0.37856, -0.90319, 0.20234, -0.37856, -0.90319, 0.24321, -0.45501, -0.85663, 0.24321, -0.45501, -0.85663, 0.24321, -0.45501, -0.85663, 0.24321, -0.45501, -0.85663, 0.28169, -0.527, -0.80183, 0.28169, -0.527, -0.80183, 0.28169, -0.527, -0.80183, 0.28169, -0.527, -0.80183, 0.31741, -0.59383, -0.73934, 0.31741, -0.59383, -0.73934, 0.31741, -0.59383, -0.73934, 0.31741, -0.59383, -0.73934, 0.35004, -0.65488, -0.66978, 0.35004, -0.65488, -0.66978, 0.35004, -0.65488, -0.66978, 0.35004, -0.65488, -0.66978, 0.37928, -0.70958, -0.59384, 0.37928, -0.70958, -0.59384, 0.37928, -0.70958, -0.59384, 0.37928, -0.70958, -0.59384, 0.40484, -0.75741, -0.51228, 0.40484, -0.75741, -0.51228, 0.40484, -0.75741, -0.51228, 0.40484, -0.75741, -0.51228, 0.42651, -0.79795, -0.42587, 0.42651, -0.79795, -0.42587, 0.42651, -0.79795, -0.42587, 0.42651, -0.79795, -0.42587, 0.44408, -0.83082, -0.33545, 0.44408, -0.83082, -0.33545, 0.44408, -0.83082, -0.33545, 0.44408, -0.83082, -0.33545, 0.4574, -0.85573, -0.24188, 0.4574, -0.85573, -0.24188, 0.4574, -0.85573, -0.24188, 0.4574, -0.85573, -0.24188, 0.46634, -0.87247, -0.14604, 0.46634, -0.87247, -0.14604, 0.46634, -0.87247, -0.14604, 0.46634, -0.87247, -0.14604, 0.47083, -0.88087, -0.04883, 0.47083, -0.88087, -0.04883, 0.47083, -0.88087, -0.04883, 0.47083, -0.88087, -0.04883, 0.47083, -0.88087, 0.04883, 0.47083, -0.88087, 0.04883, 0.47083, -0.88087, 0.04883, 0.47083, -0.88087, 0.04883, 0.46634, -0.87247, 0.14604, 0.46634, -0.87247, 0.14604, 0.46634, -0.87247, 0.14604, 0.46634, -0.87247, 0.14604, 0.4574, -0.85573, 0.24188, 0.4574, -0.85573, 0.24188, 0.4574, -0.85573, 0.24188, 0.4574, -0.85573, 0.24188, 0.44408, -0.83082, 0.33545, 0.44408, -0.83082, 0.33545, 0.44408, -0.83082, 0.33545, 0.44408, -0.83082, 0.33545, 0.42651, -0.79795, 0.42587, 0.42651, -0.79795, 0.42587, 0.42651, -0.79795, 0.42587, 0.42651, -0.79795, 0.42587, 0.40484, -0.75741, 0.51228, 0.40484, -0.75741, 0.51228, 0.40484, -0.75741, 0.51228, 0.40484, -0.75741, 0.51228, 0.37928, -0.70958, 0.59384, 0.37928, -0.70958, 0.59384, 0.37928, -0.70958, 0.59384, 0.37928, -0.70958, 0.59384, 0.35004, -0.65488, 0.66978, 0.35004, -0.65488, 0.66978, 0.35004, -0.65488, 0.66978, 0.35004, -0.65488, 0.66978, 0.31741, -0.59383, 0.73934, 0.31741, -0.59383, 0.73934, 0.31741, -0.59383, 0.73934, 0.31741, -0.59383, 0.73934, 0.28169, -0.527, 0.80183, 0.28169, -0.527, 0.80183, 0.28169, -0.527, 0.80183, 0.28169, -0.527, 0.80183, 0.24321, -0.45501, 0.85663, 0.24321, -0.45501, 0.85663, 0.24321, -0.45501, 0.85663, 0.24321, -0.45501, 0.85663, 0.20234, -0.37856, 0.90319, 0.20234, -0.37856, 0.90319, 0.20234, -0.37856, 0.90319, 0.20234, -0.37856, 0.90319, 0.15949, -0.29838, 0.94103, 0.15949, -0.29838, 0.94103, 0.15949, -0.29838, 0.94103, 0.15949, -0.29838, 0.94103, 0.11506, -0.21526, 0.96975, 0.11506, -0.21526, 0.96975, 0.11506, -0.21526, 0.96975, 0.11506, -0.21526, 0.96975, 0.0695, -0.13002, 0.98907, 0.0695, -0.13002, 0.98907, 0.0695, -0.13002, 0.98907, 0.0695, -0.13002, 0.98907, 0.02324, -0.04348, 0.99878, 0.02324, -0.04348, 0.99878, 0.02324, -0.04348, 0.99878, 0.03128, -0.03811, 0.99878, 0.03128, -0.03811, 0.99878, 0.03128, -0.03811, 0.99878, 0.09353, -0.11396, 0.98907, 0.09353, -0.11396, 0.98907, 0.09353, -0.11396, 0.98907, 0.09353, -0.11396, 0.98907, 0.15485, -0.18868, 0.96975, 0.15485, -0.18868, 0.96975, 0.15485, -0.18868, 0.96975, 0.15485, -0.18868, 0.96975, 0.21464, -0.26154, 0.94103, 0.21464, -0.26154, 0.94103, 0.21464, -0.26154, 0.94103, 0.21464, -0.26154, 0.94103, 0.27231, -0.33181, 0.90319, 0.27231, -0.33181, 0.90319, 0.27231, -0.33181, 0.90319, 0.27231, -0.33181, 0.90319, 0.3273, -0.39882, 0.85663, 0.3273, -0.39882, 0.85663, 0.3273, -0.39882, 0.85663, 0.3273, -0.39882, 0.85663, 0.37908, -0.46192, 0.80183, 0.37908, -0.46192, 0.80183, 0.37908, -0.46192, 0.80183, 0.37908, -0.46192, 0.80183, 0.42716, -0.5205, 0.73934, 0.42716, -0.5205, 0.73934, 0.42716, -0.5205, 0.73934, 0.42716, -0.5205, 0.73934, 0.47108, -0.57401, 0.66978, 0.47108, -0.57401, 0.66978, 0.47108, -0.57401, 0.66978, 0.47108, -0.57401, 0.66978, 0.51042, -0.62195, 0.59384, 0.51042, -0.62195, 0.59384, 0.51042, -0.62195, 0.59384, 0.51042, -0.62195, 0.59384, 0.54483, -0.66388, 0.51228, 0.54483, -0.66388, 0.51228, 0.54483, -0.66388, 0.51228, 0.54483, -0.66388, 0.51228, 0.57399, -0.69941, 0.42587, 0.57399, -0.69941, 0.42587, 0.57399, -0.69941, 0.42587, 0.57399, -0.69941, 0.42587, 0.59764, -0.72822, 0.33545, 0.59764, -0.72822, 0.33545, 0.59764, -0.72822, 0.33545, 0.59764, -0.72822, 0.33545, 0.61556, -0.75006, 0.24188, 0.61556, -0.75006, 0.24188, 0.61556, -0.75006, 0.24188, 0.61556, -0.75006, 0.24188, 0.62759, -0.76472, 0.14604, 0.62759, -0.76472, 0.14604, 0.62759, -0.76472, 0.14604, 0.62759, -0.76472, 0.14604, 0.63364, -0.77209, 0.04883, 0.63364, -0.77209, 0.04883, 0.63364, -0.77209, 0.04883, 0.63364, -0.77209, 0.04883, 0.63364, -0.77209, -0.04883, 0.63364, -0.77209, -0.04883, 0.63364, -0.77209, -0.04883, 0.63364, -0.77209, -0.04883, 0.62759, -0.76472, -0.14604, 0.62759, -0.76472, -0.14604, 0.62759, -0.76472, -0.14604, 0.62759, -0.76472, -0.14604, 0.61556, -0.75006, -0.24188, 0.61556, -0.75006, -0.24188, 0.61556, -0.75006, -0.24188, 0.61556, -0.75006, -0.24188, 0.59764, -0.72822, -0.33545, 0.59764, -0.72822, -0.33545, 0.59764, -0.72822, -0.33545, 0.59764, -0.72822, -0.33545, 0.57399, -0.69941, -0.42587, 0.57399, -0.69941, -0.42587, 0.57399, -0.69941, -0.42587, 0.57399, -0.69941, -0.42587, 0.54483, -0.66388, -0.51228, 0.54483, -0.66388, -0.51228, 0.54483, -0.66388, -0.51228, 0.54483, -0.66388, -0.51228, 0.51042, -0.62195, -0.59384, 0.51042, -0.62195, -0.59384, 0.51042, -0.62195, -0.59384, 0.51042, -0.62195, -0.59384, 0.47108, -0.57401, -0.66978, 0.47108, -0.57401, -0.66978, 0.47108, -0.57401, -0.66978, 0.47108, -0.57401, -0.66978, 0.42716, -0.5205, -0.73934, 0.42716, -0.5205, -0.73934, 0.42716, -0.5205, -0.73934, 0.42716, -0.5205, -0.73934, 0.37908, -0.46192, -0.80183, 0.37908, -0.46192, -0.80183, 0.37908, -0.46192, -0.80183, 0.37908, -0.46192, -0.80183, 0.3273, -0.39882, -0.85663, 0.3273, -0.39882, -0.85663, 0.3273, -0.39882, -0.85663, 0.3273, -0.39882, -0.85663, 0.27231, -0.33181, -0.90319, 0.27231, -0.33181, -0.90319, 0.27231, -0.33181, -0.90319, 0.27231, -0.33181, -0.90319, 0.21464, -0.26154, -0.94103, 0.21464, -0.26154, -0.94103, 0.21464, -0.26154, -0.94103, 0.21464, -0.26154, -0.94103, 0.15485, -0.18868, -0.96975, 0.15485, -0.18868, -0.96975, 0.15485, -0.18868, -0.96975, 0.15485, -0.18868, -0.96975, 0.09353, -0.11396, -0.98907, 0.09353, -0.11396, -0.98907, 0.09353, -0.11396, -0.98907, 0.09353, -0.11396, -0.98907, 0.03128, -0.03811, -0.99878, 0.03128, -0.03811, -0.99878, 0.03128, -0.03811, -0.99878, 0.03811, -0.03128, -0.99878, 0.03811, -0.03128, -0.99878, 0.03811, -0.03128, -0.99878, 0.11396, -0.09353, -0.98907, 0.11396, -0.09353, -0.98907, 0.11396, -0.09353, -0.98907, 0.11396, -0.09353, -0.98907, 0.18868, -0.15485, -0.96975, 0.18868, -0.15485, -0.96975, 0.18868, -0.15485, -0.96975, 0.18868, -0.15485, -0.96975, 0.26154, -0.21464, -0.94103, 0.26154, -0.21464, -0.94103, 0.26154, -0.21464, -0.94103, 0.26154, -0.21464, -0.94103, 0.33181, -0.27231, -0.90319, 0.33181, -0.27231, -0.90319, 0.33181, -0.27231, -0.90319, 0.33181, -0.27231, -0.90319, 0.39882, -0.3273, -0.85663, 0.39882, -0.3273, -0.85663, 0.39882, -0.3273, -0.85663, 0.39882, -0.3273, -0.85663, 0.46192, -0.37908, -0.80183, 0.46192, -0.37908, -0.80183, 0.46192, -0.37908, -0.80183, 0.46192, -0.37908, -0.80183, 0.5205, -0.42716, -0.73934, 0.5205, -0.42716, -0.73934, 0.5205, -0.42716, -0.73934, 0.5205, -0.42716, -0.73934, 0.57401, -0.47108, -0.66978, 0.57401, -0.47108, -0.66978, 0.57401, -0.47108, -0.66978, 0.57401, -0.47108, -0.66978, 0.62195, -0.51042, -0.59384, 0.62195, -0.51042, -0.59384, 0.62195, -0.51042, -0.59384, 0.62195, -0.51042, -0.59384, 0.66388, -0.54483, -0.51228, 0.66388, -0.54483, -0.51228, 0.66388, -0.54483, -0.51228, 0.66388, -0.54483, -0.51228, 0.69941, -0.57399, -0.42587, 0.69941, -0.57399, -0.42587, 0.69941, -0.57399, -0.42587, 0.69941, -0.57399, -0.42587, 0.72822, -0.59763, -0.33545, 0.72822, -0.59763, -0.33545, 0.72822, -0.59763, -0.33545, 0.72822, -0.59763, -0.33545, 0.75006, -0.61556, -0.24188, 0.75006, -0.61556, -0.24188, 0.75006, -0.61556, -0.24188, 0.75006, -0.61556, -0.24188, 0.76472, -0.62759, -0.14604, 0.76472, -0.62759, -0.14604, 0.76472, -0.62759, -0.14604, 0.76472, -0.62759, -0.14604, 0.77209, -0.63364, -0.04883, 0.77209, -0.63364, -0.04883, 0.77209, -0.63364, -0.04883, 0.77209, -0.63364, -0.04883, 0.77209, -0.63364, 0.04883, 0.77209, -0.63364, 0.04883, 0.77209, -0.63364, 0.04883, 0.77209, -0.63364, 0.04883, 0.76472, -0.62759, 0.14604, 0.76472, -0.62759, 0.14604, 0.76472, -0.62759, 0.14604, 0.76472, -0.62759, 0.14604, 0.75006, -0.61556, 0.24188, 0.75006, -0.61556, 0.24188, 0.75006, -0.61556, 0.24188, 0.75006, -0.61556, 0.24188, 0.72822, -0.59763, 0.33545, 0.72822, -0.59763, 0.33545, 0.72822, -0.59763, 0.33545, 0.72822, -0.59763, 0.33545, 0.69941, -0.57399, 0.42587, 0.69941, -0.57399, 0.42587, 0.69941, -0.57399, 0.42587, 0.69941, -0.57399, 0.42587, 0.66388, -0.54483, 0.51228, 0.66388, -0.54483, 0.51228, 0.66388, -0.54483, 0.51228, 0.66388, -0.54483, 0.51228, 0.62195, -0.51042, 0.59384, 0.62195, -0.51042, 0.59384, 0.62195, -0.51042, 0.59384, 0.62195, -0.51042, 0.59384, 0.57401, -0.47108, 0.66978, 0.57401, -0.47108, 0.66978, 0.57401, -0.47108, 0.66978, 0.57401, -0.47108, 0.66978, 0.5205, -0.42716, 0.73934, 0.5205, -0.42716, 0.73934, 0.5205, -0.42716, 0.73934, 0.5205, -0.42716, 0.73934, 0.46192, -0.37908, 0.80183, 0.46192, -0.37908, 0.80183, 0.46192, -0.37908, 0.80183, 0.46192, -0.37908, 0.80183, 0.39882, -0.3273, 0.85663, 0.39882, -0.3273, 0.85663, 0.39882, -0.3273, 0.85663, 0.39882, -0.3273, 0.85663, 0.33181, -0.27231, 0.90319, 0.33181, -0.27231, 0.90319, 0.33181, -0.27231, 0.90319, 0.33181, -0.27231, 0.90319, 0.26154, -0.21464, 0.94103, 0.26154, -0.21464, 0.94103, 0.26154, -0.21464, 0.94103, 0.26154, -0.21464, 0.94103, 0.18868, -0.15485, 0.96975, 0.18868, -0.15485, 0.96975, 0.18868, -0.15485, 0.96975, 0.18868, -0.15485, 0.96975, 0.11396, -0.09353, 0.98907, 0.11396, -0.09353, 0.98907, 0.11396, -0.09353, 0.98907, 0.11396, -0.09353, 0.98907, 0.03811, -0.03128, 0.99878, 0.03811, -0.03128, 0.99878, 0.03811, -0.03128, 0.99878, 0.04348, -0.02324, 0.99878, 0.04348, -0.02324, 0.99878, 0.04348, -0.02324, 0.99878, 0.13002, -0.0695, 0.98907, 0.13002, -0.0695, 0.98907, 0.13002, -0.0695, 0.98907, 0.13002, -0.0695, 0.98907, 0.21526, -0.11506, 0.96975, 0.21526, -0.11506, 0.96975, 0.21526, -0.11506, 0.96975, 0.21526, -0.11506, 0.96975, 0.29838, -0.15949, 0.94103, 0.29838, -0.15949, 0.94103, 0.29838, -0.15949, 0.94103, 0.29838, -0.15949, 0.94103, 0.37856, -0.20234, 0.90319, 0.37856, -0.20234, 0.90319, 0.37856, -0.20234, 0.90319, 0.37856, -0.20234, 0.90319, 0.45501, -0.24321, 0.85663, 0.45501, -0.24321, 0.85663, 0.45501, -0.24321, 0.85663, 0.45501, -0.24321, 0.85663, 0.527, -0.28168, 0.80183, 0.527, -0.28168, 0.80183, 0.527, -0.28168, 0.80183, 0.527, -0.28168, 0.80183, 0.59383, -0.31741, 0.73934, 0.59383, -0.31741, 0.73934, 0.59383, -0.31741, 0.73934, 0.59383, -0.31741, 0.73934, 0.65488, -0.35004, 0.66978, 0.65488, -0.35004, 0.66978, 0.65488, -0.35004, 0.66978, 0.65488, -0.35004, 0.66978, 0.70958, -0.37928, 0.59384, 0.70958, -0.37928, 0.59384, 0.70958, -0.37928, 0.59384, 0.70958, -0.37928, 0.59384, 0.75741, -0.40484, 0.51228, 0.75741, -0.40484, 0.51228, 0.75741, -0.40484, 0.51228, 0.75741, -0.40484, 0.51228, 0.79795, -0.42651, 0.42587, 0.79795, -0.42651, 0.42587, 0.79795, -0.42651, 0.42587, 0.79795, -0.42651, 0.42587, 0.83082, -0.44408, 0.33545, 0.83082, -0.44408, 0.33545, 0.83082, -0.44408, 0.33545, 0.83082, -0.44408, 0.33545, 0.85573, -0.4574, 0.24188, 0.85573, -0.4574, 0.24188, 0.85573, -0.4574, 0.24188, 0.85573, -0.4574, 0.24188, 0.87247, -0.46634, 0.14604, 0.87247, -0.46634, 0.14604, 0.87247, -0.46634, 0.14604, 0.87247, -0.46634, 0.14604, 0.88087, -0.47083, 0.04883, 0.88087, -0.47083, 0.04883, 0.88087, -0.47083, 0.04883, 0.88087, -0.47083, 0.04883, 0.88087, -0.47083, -0.04883, 0.88087, -0.47083, -0.04883, 0.88087, -0.47083, -0.04883, 0.88087, -0.47083, -0.04883, 0.87247, -0.46634, -0.14604, 0.87247, -0.46634, -0.14604, 0.87247, -0.46634, -0.14604, 0.87247, -0.46634, -0.14604, 0.85573, -0.4574, -0.24188, 0.85573, -0.4574, -0.24188, 0.85573, -0.4574, -0.24188, 0.85573, -0.4574, -0.24188, 0.83082, -0.44408, -0.33545, 0.83082, -0.44408, -0.33545, 0.83082, -0.44408, -0.33545, 0.83082, -0.44408, -0.33545, 0.79795, -0.42651, -0.42587, 0.79795, -0.42651, -0.42587, 0.79795, -0.42651, -0.42587, 0.79795, -0.42651, -0.42587, 0.75741, -0.40484, -0.51228, 0.75741, -0.40484, -0.51228, 0.75741, -0.40484, -0.51228, 0.75741, -0.40484, -0.51228, 0.70958, -0.37928, -0.59384, 0.70958, -0.37928, -0.59384, 0.70958, -0.37928, -0.59384, 0.70958, -0.37928, -0.59384, 0.65488, -0.35004, -0.66978, 0.65488, -0.35004, -0.66978, 0.65488, -0.35004, -0.66978, 0.65488, -0.35004, -0.66978, 0.59383, -0.31741, -0.73934, 0.59383, -0.31741, -0.73934, 0.59383, -0.31741, -0.73934, 0.59383, -0.31741, -0.73934, 0.527, -0.28168, -0.80183, 0.527, -0.28168, -0.80183, 0.527, -0.28168, -0.80183, 0.527, -0.28168, -0.80183, 0.45501, -0.24321, -0.85663, 0.45501, -0.24321, -0.85663, 0.45501, -0.24321, -0.85663, 0.45501, -0.24321, -0.85663, 0.37856, -0.20234, -0.90319, 0.37856, -0.20234, -0.90319, 0.37856, -0.20234, -0.90319, 0.37856, -0.20234, -0.90319, 0.29838, -0.15949, -0.94103, 0.29838, -0.15949, -0.94103, 0.29838, -0.15949, -0.94103, 0.29838, -0.15949, -0.94103, 0.21526, -0.11506, -0.96975, 0.21526, -0.11506, -0.96975, 0.21526, -0.11506, -0.96975, 0.21526, -0.11506, -0.96975, 0.13002, -0.0695, -0.98907, 0.13002, -0.0695, -0.98907, 0.13002, -0.0695, -0.98907, 0.13002, -0.0695, -0.98907, 0.04348, -0.02324, -0.99878, 0.04348, -0.02324, -0.99878, 0.04348, -0.02324, -0.99878, 0.04718, -0.01431, -0.99878, 0.04718, -0.01431, -0.99878, 0.04718, -0.01431, -0.99878, 0.14108, -0.0428, -0.98907, 0.14108, -0.0428, -0.98907, 0.14108, -0.0428, -0.98907, 0.14108, -0.0428, -0.98907, 0.23357, -0.07085, -0.96975, 0.23357, -0.07085, -0.96975, 0.23357, -0.07085, -0.96975, 0.23357, -0.07085, -0.96975, 0.32377, -0.09821, -0.94103, 0.32377, -0.09821, -0.94103, 0.32377, -0.09821, -0.94103, 0.32377, -0.09821, -0.94103, 0.41076, -0.1246, -0.90319, 0.41076, -0.1246, -0.90319, 0.41076, -0.1246, -0.90319, 0.41076, -0.1246, -0.90319, 0.49371, -0.14977, -0.85663, 0.49371, -0.14977, -0.85663, 0.49371, -0.14977, -0.85663, 0.49371, -0.14977, -0.85663, 0.57182, -0.17346, -0.80183, 0.57182, -0.17346, -0.80183, 0.57182, -0.17346, -0.80183, 0.57182, -0.17346, -0.80183, 0.64434, -0.19546, -0.73934, 0.64434, -0.19546, -0.73934, 0.64434, -0.19546, -0.73934, 0.64434, -0.19546, -0.73934, 0.71059, -0.21555, -0.66978, 0.71059, -0.21555, -0.66978, 0.71059, -0.21555, -0.66978, 0.71059, -0.21555, -0.66978, 0.76994, -0.23356, -0.59384, 0.76994, -0.23356, -0.59384, 0.76994, -0.23356, -0.59384, 0.76994, -0.23356, -0.59384, 0.82184, -0.2493, -0.51228, 0.82184, -0.2493, -0.51228, 0.82184, -0.2493, -0.51228, 0.82184, -0.2493, -0.51228, 0.86583, -0.26264, -0.42587, 0.86583, -0.26264, -0.42587, 0.86583, -0.26264, -0.42587, 0.86583, -0.26264, -0.42587, 0.90149, -0.27346, -0.33545, 0.90149, -0.27346, -0.33545, 0.90149, -0.27346, -0.33545, 0.90149, -0.27346, -0.33545, 0.92853, -0.28166, -0.24188, 0.92853, -0.28166, -0.24188, 0.92853, -0.28166, -0.24188, 0.92853, -0.28166, -0.24188, 0.94668, -0.28717, -0.14604, 0.94668, -0.28717, -0.14604, 0.94668, -0.28717, -0.14604, 0.94668, -0.28717, -0.14604, 0.9558, -0.28994, -0.04883, 0.9558, -0.28994, -0.04883, 0.9558, -0.28994, -0.04883, 0.9558, -0.28994, -0.04883, 0.9558, -0.28994, 0.04883, 0.9558, -0.28994, 0.04883, 0.9558, -0.28994, 0.04883, 0.9558, -0.28994, 0.04883, 0.94668, -0.28717, 0.14604, 0.94668, -0.28717, 0.14604, 0.94668, -0.28717, 0.14604, 0.94668, -0.28717, 0.14604, 0.92853, -0.28166, 0.24188, 0.92853, -0.28166, 0.24188, 0.92853, -0.28166, 0.24188, 0.92853, -0.28166, 0.24188, 0.90149, -0.27346, 0.33545, 0.90149, -0.27346, 0.33545, 0.90149, -0.27346, 0.33545, 0.90149, -0.27346, 0.33545, 0.86583, -0.26264, 0.42587, 0.86583, -0.26264, 0.42587, 0.86583, -0.26264, 0.42587, 0.86583, -0.26264, 0.42587, 0.82184, -0.2493, 0.51228, 0.82184, -0.2493, 0.51228, 0.82184, -0.2493, 0.51228, 0.82184, -0.2493, 0.51228, 0.76994, -0.23356, 0.59384, 0.76994, -0.23356, 0.59384, 0.76994, -0.23356, 0.59384, 0.76994, -0.23356, 0.59384, 0.71059, -0.21555, 0.66978, 0.71059, -0.21555, 0.66978, 0.71059, -0.21555, 0.66978, 0.71059, -0.21555, 0.66978, 0.64434, -0.19546, 0.73934, 0.64434, -0.19546, 0.73934, 0.64434, -0.19546, 0.73934, 0.64434, -0.19546, 0.73934, 0.57182, -0.17346, 0.80183, 0.57182, -0.17346, 0.80183, 0.57182, -0.17346, 0.80183, 0.57182, -0.17346, 0.80183, 0.49371, -0.14977, 0.85663, 0.49371, -0.14977, 0.85663, 0.49371, -0.14977, 0.85663, 0.49371, -0.14977, 0.85663, 0.41076, -0.1246, 0.90319, 0.41076, -0.1246, 0.90319, 0.41076, -0.1246, 0.90319, 0.41076, -0.1246, 0.90319, 0.32377, -0.09821, 0.94103, 0.32377, -0.09821, 0.94103, 0.32377, -0.09821, 0.94103, 0.32377, -0.09821, 0.94103, 0.23358, -0.07085, 0.96975, 0.23358, -0.07085, 0.96975, 0.23358, -0.07085, 0.96975, 0.23358, -0.07085, 0.96975, 0.14108, -0.0428, 0.98907, 0.14108, -0.0428, 0.98907, 0.14108, -0.0428, 0.98907, 0.14108, -0.0428, 0.98907, 0.04718, -0.01431, 0.99878, 0.04718, -0.01431, 0.99878, 0.04718, -0.01431, 0.99878, 0.04907, -0.00483, 0.99878, 0.04907, -0.00483, 0.99878, 0.04907, -0.00483, 0.99878, 0.14672, -0.01445, 0.98907, 0.14672, -0.01445, 0.98907, 0.14672, -0.01445, 0.98907, 0.14672, -0.01445, 0.98907, 0.24291, -0.02392, 0.96975, 0.24291, -0.02392, 0.96975, 0.24291, -0.02392, 0.96975, 0.24291, -0.02392, 0.96975, 0.33671, -0.03316, 0.94103, 0.33671, -0.03316, 0.94103, 0.33671, -0.03316, 0.94103, 0.33671, -0.03316, 0.94103, 0.42718, -0.04207, 0.90319, 0.42718, -0.04207, 0.90319, 0.42718, -0.04207, 0.90319, 0.42718, -0.04207, 0.90319, 0.51345, -0.05057, 0.85663, 0.51345, -0.05057, 0.85663, 0.51345, -0.05057, 0.85663, 0.51345, -0.05057, 0.85663, 0.59468, -0.05857, 0.80183, 0.59468, -0.05857, 0.80183, 0.59468, -0.05857, 0.80183, 0.59468, -0.05857, 0.80183, 0.67009, -0.066, 0.73934, 0.67009, -0.066, 0.73934, 0.67009, -0.066, 0.73934, 0.67009, -0.066, 0.73934, 0.73899, -0.07278, 0.66978, 0.73899, -0.07278, 0.66978, 0.73899, -0.07278, 0.66978, 0.73899, -0.07278, 0.66978, 0.80071, -0.07886, 0.59384, 0.80071, -0.07886, 0.59384, 0.80071, -0.07886, 0.59384, 0.80071, -0.07886, 0.59384, 0.85468, -0.08418, 0.51228, 0.85468, -0.08418, 0.51228, 0.85468, -0.08418, 0.51228, 0.85468, -0.08418, 0.51228, 0.90043, -0.08868, 0.42587, 0.90043, -0.08868, 0.42587, 0.90043, -0.08868, 0.42587, 0.90043, -0.08868, 0.42587, 0.93752, -0.09234, 0.33545, 0.93752, -0.09234, 0.33545, 0.93752, -0.09234, 0.33545, 0.93752, -0.09234, 0.33545, 0.96563, -0.09511, 0.24188, 0.96563, -0.09511, 0.24188, 0.96563, -0.09511, 0.24188, 0.96563, -0.09511, 0.24188, 0.98452, -0.09697, 0.14604, 0.98452, -0.09697, 0.14604, 0.98452, -0.09697, 0.14604, 0.98452, -0.09697, 0.14604, 0.994, -0.0979, 0.04883, 0.994, -0.0979, 0.04883, 0.994, -0.0979, 0.04883, 0.994, -0.0979, 0.04883, 0.994, -0.0979, -0.04883, 0.994, -0.0979, -0.04883, 0.994, -0.0979, -0.04883, 0.994, -0.0979, -0.04883, 0.98452, -0.09697, -0.14604, 0.98452, -0.09697, -0.14604, 0.98452, -0.09697, -0.14604, 0.98452, -0.09697, -0.14604, 0.96563, -0.09511, -0.24188, 0.96563, -0.09511, -0.24188, 0.96563, -0.09511, -0.24188, 0.96563, -0.09511, -0.24188, 0.93752, -0.09234, -0.33545, 0.93752, -0.09234, -0.33545, 0.93752, -0.09234, -0.33545, 0.93752, -0.09234, -0.33545, 0.90043, -0.08868, -0.42587, 0.90043, -0.08868, -0.42587, 0.90043, -0.08868, -0.42587, 0.90043, -0.08868, -0.42587, 0.85468, -0.08418, -0.51228, 0.85468, -0.08418, -0.51228, 0.85468, -0.08418, -0.51228, 0.85468, -0.08418, -0.51228, 0.80071, -0.07886, -0.59384, 0.80071, -0.07886, -0.59384, 0.80071, -0.07886, -0.59384, 0.80071, -0.07886, -0.59384, 0.73899, -0.07278, -0.66978, 0.73899, -0.07278, -0.66978, 0.73899, -0.07278, -0.66978, 0.73899, -0.07278, -0.66978, 0.6701, -0.066, -0.73934, 0.6701, -0.066, -0.73934, 0.6701, -0.066, -0.73934, 0.6701, -0.066, -0.73934, 0.59468, -0.05857, -0.80183, 0.59468, -0.05857, -0.80183, 0.59468, -0.05857, -0.80183, 0.59468, -0.05857, -0.80183, 0.51345, -0.05057, -0.85663, 0.51345, -0.05057, -0.85663, 0.51345, -0.05057, -0.85663, 0.51345, -0.05057, -0.85663, 0.42718, -0.04207, -0.90319, 0.42718, -0.04207, -0.90319, 0.42718, -0.04207, -0.90319, 0.42718, -0.04207, -0.90319, 0.3367, -0.03316, -0.94103, 0.3367, -0.03316, -0.94103, 0.3367, -0.03316, -0.94103, 0.3367, -0.03316, -0.94103, 0.24291, -0.02392, -0.96975, 0.24291, -0.02392, -0.96975, 0.24291, -0.02392, -0.96975, 0.24291, -0.02392, -0.96975, 0.14671, -0.01445, -0.98907, 0.14671, -0.01445, -0.98907, 0.14671, -0.01445, -0.98907, 0.14671, -0.01445, -0.98907, 0.04907, -0.00483, -0.99878, 0.04907, -0.00483, -0.99878, 0.04907, -0.00483, -0.99878 ],
+	                                'itemSize': 3,
+	                                'type': 'ARRAY_BUFFER'
+	                            },
+	                            'TexCoord0': {
+	                                'elements': [ 0.3212, -0, 0.78125, 0.03125, 0.75, 0.03125, 0.75, 0.03125, 0.78125, 0.03125, 0.78125, 0.0625, 0.75, 0.0625, 0.75, 0.0625, 0.78125, 0.0625, 0.78125, 0.09375, 0.75, 0.09375, 0.75, 0.09375, 0.78125, 0.09375, 0.78125, 0.125, 0.75, 0.125, 0.75, 0.125, 0.78125, 0.125, 0.78125, 0.15625, 0.75, 0.15625, 0.75, 0.15625, 0.78125, 0.15625, 0.78125, 0.1875, 0.75, 0.1875, 0.75, 0.1875, 0.78125, 0.1875, 0.78125, 0.21875, 0.75, 0.21875, 0.75, 0.21875, 0.78125, 0.21875, 0.78125, 0.25, 0.75, 0.25, 0.75, 0.25, 0.78125, 0.25, 0.78125, 0.28125, 0.75, 0.28125, 0.75, 0.28125, 0.78125, 0.28125, 0.78125, 0.3125, 0.75, 0.3125, 0.75, 0.3125, 0.78125, 0.3125, 0.78125, 0.34375, 0.75, 0.34375, 0.75, 0.34375, 0.78125, 0.34375, 0.78125, 0.375, 0.75, 0.375, 0.75, 0.375, 0.78125, 0.375, 0.78125, 0.40625, 0.75, 0.40625, 0.75, 0.40625, 0.78125, 0.40625, 0.78125, 0.4375, 0.75, 0.4375, 0.75, 0.4375, 0.78125, 0.4375, 0.78125, 0.46875, 0.75, 0.46875, 0.75, 0.46875, 0.78125, 0.46875, 0.78125, 0.5, 0.75, 0.5, 0.75, 0.5, 0.78125, 0.5, 0.78125, 0.53125, 0.75, 0.53125, 0.75, 0.53125, 0.78125, 0.53125, 0.78125, 0.5625, 0.75, 0.5625, 0.75, 0.5625, 0.78125, 0.5625, 0.78125, 0.59375, 0.75, 0.59375, 0.75, 0.59375, 0.78125, 0.59375, 0.78125, 0.625, 0.75, 0.625, 0.75, 0.625, 0.78125, 0.625, 0.78125, 0.65625, 0.75, 0.65625, 0.75, 0.65625, 0.78125, 0.65625, 0.78125, 0.6875, 0.75, 0.6875, 0.75, 0.6875, 0.78125, 0.6875, 0.78125, 0.71875, 0.75, 0.71875, 0.75, 0.71875, 0.78125, 0.71875, 0.78125, 0.75, 0.75, 0.75, 0.75, 0.75, 0.78125, 0.75, 0.78125, 0.78125, 0.75, 0.78125, 0.75, 0.78125, 0.78125, 0.78125, 0.78125, 0.8125, 0.75, 0.8125, 0.75, 0.8125, 0.78125, 0.8125, 0.78125, 0.84375, 0.75, 0.84375, 0.75, 0.84375, 0.78125, 0.84375, 0.78125, 0.875, 0.75, 0.875, 0.75, 0.875, 0.78125, 0.875, 0.78125, 0.90625, 0.75, 0.90625, 0.75, 0.90625, 0.78125, 0.90625, 0.78125, 0.9375, 0.75, 0.9375, 0.75, 0.9375, 0.78125, 0.9375, 0.78125, 0.96875, 0.75, 0.96875, 0.78125, 0.96875, 0.63412, 1, 0.75, 0.96875, 0.8125, 0.96875, 0.63412, 1, 0.78125, 0.96875, 0.78125, 0.9375, 0.8125, 0.9375, 0.8125, 0.96875, 0.78125, 0.96875, 0.78125, 0.90625, 0.8125, 0.90625, 0.8125, 0.9375, 0.78125, 0.9375, 0.78125, 0.875, 0.8125, 0.875, 0.8125, 0.90625, 0.78125, 0.90625, 0.78125, 0.84375, 0.8125, 0.84375, 0.8125, 0.875, 0.78125, 0.875, 0.78125, 0.8125, 0.8125, 0.8125, 0.8125, 0.84375, 0.78125, 0.84375, 0.78125, 0.78125, 0.8125, 0.78125, 0.8125, 0.8125, 0.78125, 0.8125, 0.78125, 0.75, 0.8125, 0.75, 0.8125, 0.78125, 0.78125, 0.78125, 0.78125, 0.71875, 0.8125, 0.71875, 0.8125, 0.75, 0.78125, 0.75, 0.78125, 0.6875, 0.8125, 0.6875, 0.8125, 0.71875, 0.78125, 0.71875, 0.78125, 0.65625, 0.8125, 0.65625, 0.8125, 0.6875, 0.78125, 0.6875, 0.78125, 0.625, 0.8125, 0.625, 0.8125, 0.65625, 0.78125, 0.65625, 0.78125, 0.59375, 0.8125, 0.59375, 0.8125, 0.625, 0.78125, 0.625, 0.78125, 0.5625, 0.8125, 0.5625, 0.8125, 0.59375, 0.78125, 0.59375, 0.78125, 0.53125, 0.8125, 0.53125, 0.8125, 0.5625, 0.78125, 0.5625, 0.78125, 0.5, 0.8125, 0.5, 0.8125, 0.53125, 0.78125, 0.53125, 0.78125, 0.46875, 0.8125, 0.46875, 0.8125, 0.5, 0.78125, 0.5, 0.78125, 0.4375, 0.8125, 0.4375, 0.8125, 0.46875, 0.78125, 0.46875, 0.78125, 0.40625, 0.8125, 0.40625, 0.8125, 0.4375, 0.78125, 0.4375, 0.78125, 0.375, 0.8125, 0.375, 0.8125, 0.40625, 0.78125, 0.40625, 0.78125, 0.34375, 0.8125, 0.34375, 0.8125, 0.375, 0.78125, 0.375, 0.78125, 0.3125, 0.8125, 0.3125, 0.8125, 0.34375, 0.78125, 0.34375, 0.78125, 0.28125, 0.8125, 0.28125, 0.8125, 0.3125, 0.78125, 0.3125, 0.78125, 0.25, 0.8125, 0.25, 0.8125, 0.28125, 0.78125, 0.28125, 0.78125, 0.21875, 0.8125, 0.21875, 0.8125, 0.25, 0.78125, 0.25, 0.78125, 0.1875, 0.8125, 0.1875, 0.8125, 0.21875, 0.78125, 0.21875, 0.78125, 0.15625, 0.8125, 0.15625, 0.8125, 0.1875, 0.78125, 0.1875, 0.78125, 0.125, 0.8125, 0.125, 0.8125, 0.15625, 0.78125, 0.15625, 0.78125, 0.09375, 0.8125, 0.09375, 0.8125, 0.125, 0.78125, 0.125, 0.78125, 0.0625, 0.8125, 0.0625, 0.8125, 0.09375, 0.78125, 0.09375, 0.78125, 0.03125, 0.8125, 0.03125, 0.8125, 0.0625, 0.78125, 0.0625, 0.3212, -0, 0.8125, 0.03125, 0.78125, 0.03125, 1.3212, -0, 0.84375, 0.03125, 0.8125, 0.03125, 0.8125, 0.03125, 0.84375, 0.03125, 0.84375, 0.0625, 0.8125, 0.0625, 0.8125, 0.0625, 0.84375, 0.0625, 0.84375, 0.09375, 0.8125, 0.09375, 0.8125, 0.09375, 0.84375, 0.09375, 0.84375, 0.125, 0.8125, 0.125, 0.8125, 0.125, 0.84375, 0.125, 0.84375, 0.15625, 0.8125, 0.15625, 0.8125, 0.15625, 0.84375, 0.15625, 0.84375, 0.1875, 0.8125, 0.1875, 0.8125, 0.1875, 0.84375, 0.1875, 0.84375, 0.21875, 0.8125, 0.21875, 0.8125, 0.21875, 0.84375, 0.21875, 0.84375, 0.25, 0.8125, 0.25, 0.8125, 0.25, 0.84375, 0.25, 0.84375, 0.28125, 0.8125, 0.28125, 0.8125, 0.28125, 0.84375, 0.28125, 0.84375, 0.3125, 0.8125, 0.3125, 0.8125, 0.3125, 0.84375, 0.3125, 0.84375, 0.34375, 0.8125, 0.34375, 0.8125, 0.34375, 0.84375, 0.34375, 0.84375, 0.375, 0.8125, 0.375, 0.8125, 0.375, 0.84375, 0.375, 0.84375, 0.40625, 0.8125, 0.40625, 0.8125, 0.40625, 0.84375, 0.40625, 0.84375, 0.4375, 0.8125, 0.4375, 0.8125, 0.4375, 0.84375, 0.4375, 0.84375, 0.46875, 0.8125, 0.46875, 0.8125, 0.46875, 0.84375, 0.46875, 0.84375, 0.5, 0.8125, 0.5, 0.8125, 0.5, 0.84375, 0.5, 0.84375, 0.53125, 0.8125, 0.53125, 0.8125, 0.53125, 0.84375, 0.53125, 0.84375, 0.5625, 0.8125, 0.5625, 0.8125, 0.5625, 0.84375, 0.5625, 0.84375, 0.59375, 0.8125, 0.59375, 0.8125, 0.59375, 0.84375, 0.59375, 0.84375, 0.625, 0.8125, 0.625, 0.8125, 0.625, 0.84375, 0.625, 0.84375, 0.65625, 0.8125, 0.65625, 0.8125, 0.65625, 0.84375, 0.65625, 0.84375, 0.6875, 0.8125, 0.6875, 0.8125, 0.6875, 0.84375, 0.6875, 0.84375, 0.71875, 0.8125, 0.71875, 0.8125, 0.71875, 0.84375, 0.71875, 0.84375, 0.75, 0.8125, 0.75, 0.8125, 0.75, 0.84375, 0.75, 0.84375, 0.78125, 0.8125, 0.78125, 0.8125, 0.78125, 0.84375, 0.78125, 0.84375, 0.8125, 0.8125, 0.8125, 0.8125, 0.8125, 0.84375, 0.8125, 0.84375, 0.84375, 0.8125, 0.84375, 0.8125, 0.84375, 0.84375, 0.84375, 0.84375, 0.875, 0.8125, 0.875, 0.8125, 0.875, 0.84375, 0.875, 0.84375, 0.90625, 0.8125, 0.90625, 0.8125, 0.90625, 0.84375, 0.90625, 0.84375, 0.9375, 0.8125, 0.9375, 0.8125, 0.9375, 0.84375, 0.9375, 0.84375, 0.96875, 0.8125, 0.96875, 0.84375, 0.96875, 0.63412, 1, 0.8125, 0.96875, 0.875, 0.96875, 0.63412, 1, 0.84375, 0.96875, 0.84375, 0.9375, 0.875, 0.9375, 0.875, 0.96875, 0.84375, 0.96875, 0.84375, 0.90625, 0.875, 0.90625, 0.875, 0.9375, 0.84375, 0.9375, 0.84375, 0.875, 0.875, 0.875, 0.875, 0.90625, 0.84375, 0.90625, 0.84375, 0.84375, 0.875, 0.84375, 0.875, 0.875, 0.84375, 0.875, 0.84375, 0.8125, 0.875, 0.8125, 0.875, 0.84375, 0.84375, 0.84375, 0.84375, 0.78125, 0.875, 0.78125, 0.875, 0.8125, 0.84375, 0.8125, 0.84375, 0.75, 0.875, 0.75, 0.875, 0.78125, 0.84375, 0.78125, 0.84375, 0.71875, 0.875, 0.71875, 0.875, 0.75, 0.84375, 0.75, 0.84375, 0.6875, 0.875, 0.6875, 0.875, 0.71875, 0.84375, 0.71875, 0.84375, 0.65625, 0.875, 0.65625, 0.875, 0.6875, 0.84375, 0.6875, 0.84375, 0.625, 0.875, 0.625, 0.875, 0.65625, 0.84375, 0.65625, 0.84375, 0.59375, 0.875, 0.59375, 0.875, 0.625, 0.84375, 0.625, 0.84375, 0.5625, 0.875, 0.5625, 0.875, 0.59375, 0.84375, 0.59375, 0.84375, 0.53125, 0.875, 0.53125, 0.875, 0.5625, 0.84375, 0.5625, 0.84375, 0.5, 0.875, 0.5, 0.875, 0.53125, 0.84375, 0.53125, 0.84375, 0.46875, 0.875, 0.46875, 0.875, 0.5, 0.84375, 0.5, 0.84375, 0.4375, 0.875, 0.4375, 0.875, 0.46875, 0.84375, 0.46875, 0.84375, 0.40625, 0.875, 0.40625, 0.875, 0.4375, 0.84375, 0.4375, 0.84375, 0.375, 0.875, 0.375, 0.875, 0.40625, 0.84375, 0.40625, 0.84375, 0.34375, 0.875, 0.34375, 0.875, 0.375, 0.84375, 0.375, 0.84375, 0.3125, 0.875, 0.3125, 0.875, 0.34375, 0.84375, 0.34375, 0.84375, 0.28125, 0.875, 0.28125, 0.875, 0.3125, 0.84375, 0.3125, 0.84375, 0.25, 0.875, 0.25, 0.875, 0.28125, 0.84375, 0.28125, 0.84375, 0.21875, 0.875, 0.21875, 0.875, 0.25, 0.84375, 0.25, 0.84375, 0.1875, 0.875, 0.1875, 0.875, 0.21875, 0.84375, 0.21875, 0.84375, 0.15625, 0.875, 0.15625, 0.875, 0.1875, 0.84375, 0.1875, 0.84375, 0.125, 0.875, 0.125, 0.875, 0.15625, 0.84375, 0.15625, 0.84375, 0.09375, 0.875, 0.09375, 0.875, 0.125, 0.84375, 0.125, 0.84375, 0.0625, 0.875, 0.0625, 0.875, 0.09375, 0.84375, 0.09375, 0.84375, 0.03125, 0.875, 0.03125, 0.875, 0.0625, 0.84375, 0.0625, 1.3212, -0, 0.875, 0.03125, 0.84375, 0.03125, 1.3212, -0, 0.90625, 0.03125, 0.875, 0.03125, 0.875, 0.03125, 0.90625, 0.03125, 0.90625, 0.0625, 0.875, 0.0625, 0.875, 0.0625, 0.90625, 0.0625, 0.90625, 0.09375, 0.875, 0.09375, 0.875, 0.09375, 0.90625, 0.09375, 0.90625, 0.125, 0.875, 0.125, 0.875, 0.125, 0.90625, 0.125, 0.90625, 0.15625, 0.875, 0.15625, 0.875, 0.15625, 0.90625, 0.15625, 0.90625, 0.1875, 0.875, 0.1875, 0.875, 0.1875, 0.90625, 0.1875, 0.90625, 0.21875, 0.875, 0.21875, 0.875, 0.21875, 0.90625, 0.21875, 0.90625, 0.25, 0.875, 0.25, 0.875, 0.25, 0.90625, 0.25, 0.90625, 0.28125, 0.875, 0.28125, 0.875, 0.28125, 0.90625, 0.28125, 0.90625, 0.3125, 0.875, 0.3125, 0.875, 0.3125, 0.90625, 0.3125, 0.90625, 0.34375, 0.875, 0.34375, 0.875, 0.34375, 0.90625, 0.34375, 0.90625, 0.375, 0.875, 0.375, 0.875, 0.375, 0.90625, 0.375, 0.90625, 0.40625, 0.875, 0.40625, 0.875, 0.40625, 0.90625, 0.40625, 0.90625, 0.4375, 0.875, 0.4375, 0.875, 0.4375, 0.90625, 0.4375, 0.90625, 0.46875, 0.875, 0.46875, 0.875, 0.46875, 0.90625, 0.46875, 0.90625, 0.5, 0.875, 0.5, 0.875, 0.5, 0.90625, 0.5, 0.90625, 0.53125, 0.875, 0.53125, 0.875, 0.53125, 0.90625, 0.53125, 0.90625, 0.5625, 0.875, 0.5625, 0.875, 0.5625, 0.90625, 0.5625, 0.90625, 0.59375, 0.875, 0.59375, 0.875, 0.59375, 0.90625, 0.59375, 0.90625, 0.625, 0.875, 0.625, 0.875, 0.625, 0.90625, 0.625, 0.90625, 0.65625, 0.875, 0.65625, 0.875, 0.65625, 0.90625, 0.65625, 0.90625, 0.6875, 0.875, 0.6875, 0.875, 0.6875, 0.90625, 0.6875, 0.90625, 0.71875, 0.875, 0.71875, 0.875, 0.71875, 0.90625, 0.71875, 0.90625, 0.75, 0.875, 0.75, 0.875, 0.75, 0.90625, 0.75, 0.90625, 0.78125, 0.875, 0.78125, 0.875, 0.78125, 0.90625, 0.78125, 0.90625, 0.8125, 0.875, 0.8125, 0.875, 0.8125, 0.90625, 0.8125, 0.90625, 0.84375, 0.875, 0.84375, 0.875, 0.84375, 0.90625, 0.84375, 0.90625, 0.875, 0.875, 0.875, 0.875, 0.875, 0.90625, 0.875, 0.90625, 0.90625, 0.875, 0.90625, 0.875, 0.90625, 0.90625, 0.90625, 0.90625, 0.9375, 0.875, 0.9375, 0.875, 0.9375, 0.90625, 0.9375, 0.90625, 0.96875, 0.875, 0.96875, 0.90625, 0.96875, 0.63412, 1, 0.875, 0.96875, 0.9375, 0.96875, 0.63412, 1, 0.90625, 0.96875, 0.90625, 0.9375, 0.9375, 0.9375, 0.9375, 0.96875, 0.90625, 0.96875, 0.90625, 0.90625, 0.9375, 0.90625, 0.9375, 0.9375, 0.90625, 0.9375, 0.90625, 0.875, 0.9375, 0.875, 0.9375, 0.90625, 0.90625, 0.90625, 0.90625, 0.84375, 0.9375, 0.84375, 0.9375, 0.875, 0.90625, 0.875, 0.90625, 0.8125, 0.9375, 0.8125, 0.9375, 0.84375, 0.90625, 0.84375, 0.90625, 0.78125, 0.9375, 0.78125, 0.9375, 0.8125, 0.90625, 0.8125, 0.90625, 0.75, 0.9375, 0.75, 0.9375, 0.78125, 0.90625, 0.78125, 0.90625, 0.71875, 0.9375, 0.71875, 0.9375, 0.75, 0.90625, 0.75, 0.90625, 0.6875, 0.9375, 0.6875, 0.9375, 0.71875, 0.90625, 0.71875, 0.90625, 0.65625, 0.9375, 0.65625, 0.9375, 0.6875, 0.90625, 0.6875, 0.90625, 0.625, 0.9375, 0.625, 0.9375, 0.65625, 0.90625, 0.65625, 0.90625, 0.59375, 0.9375, 0.59375, 0.9375, 0.625, 0.90625, 0.625, 0.90625, 0.5625, 0.9375, 0.5625, 0.9375, 0.59375, 0.90625, 0.59375, 0.90625, 0.53125, 0.9375, 0.53125, 0.9375, 0.5625, 0.90625, 0.5625, 0.90625, 0.5, 0.9375, 0.5, 0.9375, 0.53125, 0.90625, 0.53125, 0.90625, 0.46875, 0.9375, 0.46875, 0.9375, 0.5, 0.90625, 0.5, 0.90625, 0.4375, 0.9375, 0.4375, 0.9375, 0.46875, 0.90625, 0.46875, 0.90625, 0.40625, 0.9375, 0.40625, 0.9375, 0.4375, 0.90625, 0.4375, 0.90625, 0.375, 0.9375, 0.375, 0.9375, 0.40625, 0.90625, 0.40625, 0.90625, 0.34375, 0.9375, 0.34375, 0.9375, 0.375, 0.90625, 0.375, 0.90625, 0.3125, 0.9375, 0.3125, 0.9375, 0.34375, 0.90625, 0.34375, 0.90625, 0.28125, 0.9375, 0.28125, 0.9375, 0.3125, 0.90625, 0.3125, 0.90625, 0.25, 0.9375, 0.25, 0.9375, 0.28125, 0.90625, 0.28125, 0.90625, 0.21875, 0.9375, 0.21875, 0.9375, 0.25, 0.90625, 0.25, 0.90625, 0.1875, 0.9375, 0.1875, 0.9375, 0.21875, 0.90625, 0.21875, 0.90625, 0.15625, 0.9375, 0.15625, 0.9375, 0.1875, 0.90625, 0.1875, 0.90625, 0.125, 0.9375, 0.125, 0.9375, 0.15625, 0.90625, 0.15625, 0.90625, 0.09375, 0.9375, 0.09375, 0.9375, 0.125, 0.90625, 0.125, 0.90625, 0.0625, 0.9375, 0.0625, 0.9375, 0.09375, 0.90625, 0.09375, 0.90625, 0.03125, 0.9375, 0.03125, 0.9375, 0.0625, 0.90625, 0.0625, 1.3212, -0, 0.9375, 0.03125, 0.90625, 0.03125, 1.3212, -0, 0.96875, 0.03125, 0.9375, 0.03125, 0.9375, 0.03125, 0.96875, 0.03125, 0.96875, 0.0625, 0.9375, 0.0625, 0.9375, 0.0625, 0.96875, 0.0625, 0.96875, 0.09375, 0.9375, 0.09375, 0.9375, 0.09375, 0.96875, 0.09375, 0.96875, 0.125, 0.9375, 0.125, 0.9375, 0.125, 0.96875, 0.125, 0.96875, 0.15625, 0.9375, 0.15625, 0.9375, 0.15625, 0.96875, 0.15625, 0.96875, 0.1875, 0.9375, 0.1875, 0.9375, 0.1875, 0.96875, 0.1875, 0.96875, 0.21875, 0.9375, 0.21875, 0.9375, 0.21875, 0.96875, 0.21875, 0.96875, 0.25, 0.9375, 0.25, 0.9375, 0.25, 0.96875, 0.25, 0.96875, 0.28125, 0.9375, 0.28125, 0.9375, 0.28125, 0.96875, 0.28125, 0.96875, 0.3125, 0.9375, 0.3125, 0.9375, 0.3125, 0.96875, 0.3125, 0.96875, 0.34375, 0.9375, 0.34375, 0.9375, 0.34375, 0.96875, 0.34375, 0.96875, 0.375, 0.9375, 0.375, 0.9375, 0.375, 0.96875, 0.375, 0.96875, 0.40625, 0.9375, 0.40625, 0.9375, 0.40625, 0.96875, 0.40625, 0.96875, 0.4375, 0.9375, 0.4375, 0.9375, 0.4375, 0.96875, 0.4375, 0.96875, 0.46875, 0.9375, 0.46875, 0.9375, 0.46875, 0.96875, 0.46875, 0.96875, 0.5, 0.9375, 0.5, 0.9375, 0.5, 0.96875, 0.5, 0.96875, 0.53125, 0.9375, 0.53125, 0.9375, 0.53125, 0.96875, 0.53125, 0.96875, 0.5625, 0.9375, 0.5625, 0.9375, 0.5625, 0.96875, 0.5625, 0.96875, 0.59375, 0.9375, 0.59375, 0.9375, 0.59375, 0.96875, 0.59375, 0.96875, 0.625, 0.9375, 0.625, 0.9375, 0.625, 0.96875, 0.625, 0.96875, 0.65625, 0.9375, 0.65625, 0.9375, 0.65625, 0.96875, 0.65625, 0.96875, 0.6875, 0.9375, 0.6875, 0.9375, 0.6875, 0.96875, 0.6875, 0.96875, 0.71875, 0.9375, 0.71875, 0.9375, 0.71875, 0.96875, 0.71875, 0.96875, 0.75, 0.9375, 0.75, 0.9375, 0.75, 0.96875, 0.75, 0.96875, 0.78125, 0.9375, 0.78125, 0.9375, 0.78125, 0.96875, 0.78125, 0.96875, 0.8125, 0.9375, 0.8125, 0.9375, 0.8125, 0.96875, 0.8125, 0.96875, 0.84375, 0.9375, 0.84375, 0.9375, 0.84375, 0.96875, 0.84375, 0.96875, 0.875, 0.9375, 0.875, 0.9375, 0.875, 0.96875, 0.875, 0.96875, 0.90625, 0.9375, 0.90625, 0.9375, 0.90625, 0.96875, 0.90625, 0.96875, 0.9375, 0.9375, 0.9375, 0.9375, 0.9375, 0.96875, 0.9375, 0.96875, 0.96875, 0.9375, 0.96875, 0.96875, 0.96875, 0.63412, 1, 0.9375, 0.96875, 1, 0.96875, 0.63412, 1, 0.96875, 0.96875, 0.96875, 0.9375, 1, 0.9375, 1, 0.96875, 0.96875, 0.96875, 0.96875, 0.90625, 1, 0.90625, 1, 0.9375, 0.96875, 0.9375, 0.96875, 0.875, 1, 0.875, 1, 0.90625, 0.96875, 0.90625, 0.96875, 0.84375, 1, 0.84375, 1, 0.875, 0.96875, 0.875, 0.96875, 0.8125, 1, 0.8125, 1, 0.84375, 0.96875, 0.84375, 0.96875, 0.78125, 1, 0.78125, 1, 0.8125, 0.96875, 0.8125, 0.96875, 0.75, 1, 0.75, 1, 0.78125, 0.96875, 0.78125, 0.96875, 0.71875, 1, 0.71875, 1, 0.75, 0.96875, 0.75, 0.96875, 0.6875, 1, 0.6875, 1, 0.71875, 0.96875, 0.71875, 0.96875, 0.65625, 1, 0.65625, 1, 0.6875, 0.96875, 0.6875, 0.96875, 0.625, 1, 0.625, 1, 0.65625, 0.96875, 0.65625, 0.96875, 0.59375, 1, 0.59375, 1, 0.625, 0.96875, 0.625, 0.96875, 0.5625, 1, 0.5625, 1, 0.59375, 0.96875, 0.59375, 0.96875, 0.53125, 1, 0.53125, 1, 0.5625, 0.96875, 0.5625, 0.96875, 0.5, 1, 0.5, 1, 0.53125, 0.96875, 0.53125, 0.96875, 0.46875, 1, 0.46875, 1, 0.5, 0.96875, 0.5, 0.96875, 0.4375, 1, 0.4375, 1, 0.46875, 0.96875, 0.46875, 0.96875, 0.40625, 1, 0.40625, 1, 0.4375, 0.96875, 0.4375, 0.96875, 0.375, 1, 0.375, 1, 0.40625, 0.96875, 0.40625, 0.96875, 0.34375, 1, 0.34375, 1, 0.375, 0.96875, 0.375, 0.96875, 0.3125, 1, 0.3125, 1, 0.34375, 0.96875, 0.34375, 0.96875, 0.28125, 1, 0.28125, 1, 0.3125, 0.96875, 0.3125, 0.96875, 0.25, 1, 0.25, 1, 0.28125, 0.96875, 0.28125, 0.96875, 0.21875, 1, 0.21875, 1, 0.25, 0.96875, 0.25, 0.96875, 0.1875, 1, 0.1875, 1, 0.21875, 0.96875, 0.21875, 0.96875, 0.15625, 1, 0.15625, 1, 0.1875, 0.96875, 0.1875, 0.96875, 0.125, 1, 0.125, 1, 0.15625, 0.96875, 0.15625, 0.96875, 0.09375, 1, 0.09375, 1, 0.125, 0.96875, 0.125, 0.96875, 0.0625, 1, 0.0625, 1, 0.09375, 0.96875, 0.09375, 0.96875, 0.03125, 1, 0.03125, 1, 0.0625, 0.96875, 0.0625, 1.3212, -0, 1, 0.03125, 0.96875, 0.03125, 0.3212, -0, 0.03125, 0.03125, 0, 0.03125, 0, 0.03125, 0.03125, 0.03125, 0.03125, 0.0625, 0, 0.0625, 0, 0.0625, 0.03125, 0.0625, 0.03125, 0.09375, 0, 0.09375, 0, 0.09375, 0.03125, 0.09375, 0.03125, 0.125, 0, 0.125, 0, 0.125, 0.03125, 0.125, 0.03125, 0.15625, 0, 0.15625, 0, 0.15625, 0.03125, 0.15625, 0.03125, 0.1875, 0, 0.1875, 0, 0.1875, 0.03125, 0.1875, 0.03125, 0.21875, 0, 0.21875, 0, 0.21875, 0.03125, 0.21875, 0.03125, 0.25, 0, 0.25, 0, 0.25, 0.03125, 0.25, 0.03125, 0.28125, 0, 0.28125, 0, 0.28125, 0.03125, 0.28125, 0.03125, 0.3125, 0, 0.3125, 0, 0.3125, 0.03125, 0.3125, 0.03125, 0.34375, 0, 0.34375, 0, 0.34375, 0.03125, 0.34375, 0.03125, 0.375, 0, 0.375, 0, 0.375, 0.03125, 0.375, 0.03125, 0.40625, 0, 0.40625, 0, 0.40625, 0.03125, 0.40625, 0.03125, 0.4375, 0, 0.4375, 0, 0.4375, 0.03125, 0.4375, 0.03125, 0.46875, 0, 0.46875, 0, 0.46875, 0.03125, 0.46875, 0.03125, 0.5, 0, 0.5, 0, 0.5, 0.03125, 0.5, 0.03125, 0.53125, 0, 0.53125, 0, 0.53125, 0.03125, 0.53125, 0.03125, 0.5625, 0, 0.5625, 0, 0.5625, 0.03125, 0.5625, 0.03125, 0.59375, 0, 0.59375, 0, 0.59375, 0.03125, 0.59375, 0.03125, 0.625, 0, 0.625, 0, 0.625, 0.03125, 0.625, 0.03125, 0.65625, 0, 0.65625, 0, 0.65625, 0.03125, 0.65625, 0.03125, 0.6875, 0, 0.6875, 0, 0.6875, 0.03125, 0.6875, 0.03125, 0.71875, 0, 0.71875, 0, 0.71875, 0.03125, 0.71875, 0.03125, 0.75, 0, 0.75, 0, 0.75, 0.03125, 0.75, 0.03125, 0.78125, 0, 0.78125, 0, 0.78125, 0.03125, 0.78125, 0.03125, 0.8125, 0, 0.8125, 0, 0.8125, 0.03125, 0.8125, 0.03125, 0.84375, 0, 0.84375, 0, 0.84375, 0.03125, 0.84375, 0.03125, 0.875, 0, 0.875, 1, 0.875, 1.03125, 0.875, 1.03125, 0.90625, 1, 0.90625, 1, 0.90625, 1.03125, 0.90625, 1.03125, 0.9375, 1, 0.9375, 1, 0.9375, 1.03125, 0.9375, 1.03125, 0.96875, 1, 0.96875, 1.03125, 0.96875, 0.63412, 1, 1, 0.96875, 1.0625, 0.96875, 0.63412, 1, 1.03125, 0.96875, 0.03125, 0.9375, 0.0625, 0.9375, 0.0625, 0.96875, 0.03125, 0.96875, 0.03125, 0.90625, 0.0625, 0.90625, 0.0625, 0.9375, 0.03125, 0.9375, 0.03125, 0.875, 0.0625, 0.875, 0.0625, 0.90625, 0.03125, 0.90625, 0.03125, 0.84375, 0.0625, 0.84375, 0.0625, 0.875, 0.03125, 0.875, 0.03125, 0.8125, 0.0625, 0.8125, 0.0625, 0.84375, 0.03125, 0.84375, 0.03125, 0.78125, 0.0625, 0.78125, 0.0625, 0.8125, 0.03125, 0.8125, 0.03125, 0.75, 0.0625, 0.75, 0.0625, 0.78125, 0.03125, 0.78125, 0.03125, 0.71875, 0.0625, 0.71875, 0.0625, 0.75, 0.03125, 0.75, 0.03125, 0.6875, 0.0625, 0.6875, 0.0625, 0.71875, 0.03125, 0.71875, 0.03125, 0.65625, 0.0625, 0.65625, 0.0625, 0.6875, 0.03125, 0.6875, 0.03125, 0.625, 0.0625, 0.625, 0.0625, 0.65625, 0.03125, 0.65625, 0.03125, 0.59375, 0.0625, 0.59375, 0.0625, 0.625, 0.03125, 0.625, 0.03125, 0.5625, 0.0625, 0.5625, 0.0625, 0.59375, 0.03125, 0.59375, 0.03125, 0.53125, 0.0625, 0.53125, 0.0625, 0.5625, 0.03125, 0.5625, 0.03125, 0.5, 0.0625, 0.5, 0.0625, 0.53125, 0.03125, 0.53125, 0.03125, 0.46875, 0.0625, 0.46875, 0.0625, 0.5, 0.03125, 0.5, 0.03125, 0.4375, 0.0625, 0.4375, 0.0625, 0.46875, 0.03125, 0.46875, 0.03125, 0.40625, 0.0625, 0.40625, 0.0625, 0.4375, 0.03125, 0.4375, 0.03125, 0.375, 0.0625, 0.375, 0.0625, 0.40625, 0.03125, 0.40625, 0.03125, 0.34375, 0.0625, 0.34375, 0.0625, 0.375, 0.03125, 0.375, 0.03125, 0.3125, 0.0625, 0.3125, 0.0625, 0.34375, 0.03125, 0.34375, 0.03125, 0.28125, 0.0625, 0.28125, 0.0625, 0.3125, 0.03125, 0.3125, 0.03125, 0.25, 0.0625, 0.25, 0.0625, 0.28125, 0.03125, 0.28125, 0.03125, 0.21875, 0.0625, 0.21875, 0.0625, 0.25, 0.03125, 0.25, 0.03125, 0.1875, 0.0625, 0.1875, 0.0625, 0.21875, 0.03125, 0.21875, 0.03125, 0.15625, 0.0625, 0.15625, 0.0625, 0.1875, 0.03125, 0.1875, 0.03125, 0.125, 0.0625, 0.125, 0.0625, 0.15625, 0.03125, 0.15625, 0.03125, 0.09375, 0.0625, 0.09375, 0.0625, 0.125, 0.03125, 0.125, 0.03125, 0.0625, 0.0625, 0.0625, 0.0625, 0.09375, 0.03125, 0.09375, 0.03125, 0.03125, 0.0625, 0.03125, 0.0625, 0.0625, 0.03125, 0.0625, 0.3212, -0, 0.0625, 0.03125, 0.03125, 0.03125, 0.3212, -0, 0.09375, 0.03125, 0.0625, 0.03125, 0.0625, 0.03125, 0.09375, 0.03125, 0.09375, 0.0625, 0.0625, 0.0625, 0.0625, 0.0625, 0.09375, 0.0625, 0.09375, 0.09375, 0.0625, 0.09375, 0.0625, 0.09375, 0.09375, 0.09375, 0.09375, 0.125, 0.0625, 0.125, 0.0625, 0.125, 0.09375, 0.125, 0.09375, 0.15625, 0.0625, 0.15625, 0.0625, 0.15625, 0.09375, 0.15625, 0.09375, 0.1875, 0.0625, 0.1875, 0.0625, 0.1875, 0.09375, 0.1875, 0.09375, 0.21875, 0.0625, 0.21875, 0.0625, 0.21875, 0.09375, 0.21875, 0.09375, 0.25, 0.0625, 0.25, 0.0625, 0.25, 0.09375, 0.25, 0.09375, 0.28125, 0.0625, 0.28125, 0.0625, 0.28125, 0.09375, 0.28125, 0.09375, 0.3125, 0.0625, 0.3125, 0.0625, 0.3125, 0.09375, 0.3125, 0.09375, 0.34375, 0.0625, 0.34375, 0.0625, 0.34375, 0.09375, 0.34375, 0.09375, 0.375, 0.0625, 0.375, 0.0625, 0.375, 0.09375, 0.375, 0.09375, 0.40625, 0.0625, 0.40625, 0.0625, 0.40625, 0.09375, 0.40625, 0.09375, 0.4375, 0.0625, 0.4375, 0.0625, 0.4375, 0.09375, 0.4375, 0.09375, 0.46875, 0.0625, 0.46875, 0.0625, 0.46875, 0.09375, 0.46875, 0.09375, 0.5, 0.0625, 0.5, 0.0625, 0.5, 0.09375, 0.5, 0.09375, 0.53125, 0.0625, 0.53125, 0.0625, 0.53125, 0.09375, 0.53125, 0.09375, 0.5625, 0.0625, 0.5625, 0.0625, 0.5625, 0.09375, 0.5625, 0.09375, 0.59375, 0.0625, 0.59375, 0.0625, 0.59375, 0.09375, 0.59375, 0.09375, 0.625, 0.0625, 0.625, 0.0625, 0.625, 0.09375, 0.625, 0.09375, 0.65625, 0.0625, 0.65625, 0.0625, 0.65625, 0.09375, 0.65625, 0.09375, 0.6875, 0.0625, 0.6875, 0.0625, 0.6875, 0.09375, 0.6875, 0.09375, 0.71875, 0.0625, 0.71875, 0.0625, 0.71875, 0.09375, 0.71875, 0.09375, 0.75, 0.0625, 0.75, 0.0625, 0.75, 0.09375, 0.75, 0.09375, 0.78125, 0.0625, 0.78125, 0.0625, 0.78125, 0.09375, 0.78125, 0.09375, 0.8125, 0.0625, 0.8125, 0.0625, 0.8125, 0.09375, 0.8125, 0.09375, 0.84375, 0.0625, 0.84375, 0.0625, 0.84375, 0.09375, 0.84375, 0.09375, 0.875, 0.0625, 0.875, 0.0625, 0.875, 0.09375, 0.875, 0.09375, 0.90625, 0.0625, 0.90625, 0.0625, 0.90625, 0.09375, 0.90625, 0.09375, 0.9375, 0.0625, 0.9375, 0.0625, 0.9375, 0.09375, 0.9375, 0.09375, 0.96875, 0.0625, 0.96875, 1.09375, 0.96875, 0.63412, 1, 1.0625, 0.96875, 1.125, 0.96875, 0.63412, 1, 1.09375, 0.96875, 0.09375, 0.9375, 0.125, 0.9375, 0.125, 0.96875, 0.09375, 0.96875, 0.09375, 0.90625, 0.125, 0.90625, 0.125, 0.9375, 0.09375, 0.9375, 0.09375, 0.875, 0.125, 0.875, 0.125, 0.90625, 0.09375, 0.90625, 0.09375, 0.84375, 0.125, 0.84375, 0.125, 0.875, 0.09375, 0.875, 0.09375, 0.8125, 0.125, 0.8125, 0.125, 0.84375, 0.09375, 0.84375, 0.09375, 0.78125, 0.125, 0.78125, 0.125, 0.8125, 0.09375, 0.8125, 0.09375, 0.75, 0.125, 0.75, 0.125, 0.78125, 0.09375, 0.78125, 0.09375, 0.71875, 0.125, 0.71875, 0.125, 0.75, 0.09375, 0.75, 0.09375, 0.6875, 0.125, 0.6875, 0.125, 0.71875, 0.09375, 0.71875, 0.09375, 0.65625, 0.125, 0.65625, 0.125, 0.6875, 0.09375, 0.6875, 0.09375, 0.625, 0.125, 0.625, 0.125, 0.65625, 0.09375, 0.65625, 0.09375, 0.59375, 0.125, 0.59375, 0.125, 0.625, 0.09375, 0.625, 0.09375, 0.5625, 0.125, 0.5625, 0.125, 0.59375, 0.09375, 0.59375, 0.09375, 0.53125, 0.125, 0.53125, 0.125, 0.5625, 0.09375, 0.5625, 0.09375, 0.5, 0.125, 0.5, 0.125, 0.53125, 0.09375, 0.53125, 0.09375, 0.46875, 0.125, 0.46875, 0.125, 0.5, 0.09375, 0.5, 0.09375, 0.4375, 0.125, 0.4375, 0.125, 0.46875, 0.09375, 0.46875, 0.09375, 0.40625, 0.125, 0.40625, 0.125, 0.4375, 0.09375, 0.4375, 0.09375, 0.375, 0.125, 0.375, 0.125, 0.40625, 0.09375, 0.40625, 0.09375, 0.34375, 0.125, 0.34375, 0.125, 0.375, 0.09375, 0.375, 0.09375, 0.3125, 0.125, 0.3125, 0.125, 0.34375, 0.09375, 0.34375, 0.09375, 0.28125, 0.125, 0.28125, 0.125, 0.3125, 0.09375, 0.3125, 0.09375, 0.25, 0.125, 0.25, 0.125, 0.28125, 0.09375, 0.28125, 0.09375, 0.21875, 0.125, 0.21875, 0.125, 0.25, 0.09375, 0.25, 0.09375, 0.1875, 0.125, 0.1875, 0.125, 0.21875, 0.09375, 0.21875, 0.09375, 0.15625, 0.125, 0.15625, 0.125, 0.1875, 0.09375, 0.1875, 0.09375, 0.125, 0.125, 0.125, 0.125, 0.15625, 0.09375, 0.15625, 0.09375, 0.09375, 0.125, 0.09375, 0.125, 0.125, 0.09375, 0.125, 0.09375, 0.0625, 0.125, 0.0625, 0.125, 0.09375, 0.09375, 0.09375, 0.09375, 0.03125, 0.125, 0.03125, 0.125, 0.0625, 0.09375, 0.0625, 0.3212, -0, 0.125, 0.03125, 0.09375, 0.03125, 0.3212, -0, 0.15625, 0.03125, 0.125, 0.03125, 0.125, 0.03125, 0.15625, 0.03125, 0.15625, 0.0625, 0.125, 0.0625, 0.125, 0.0625, 0.15625, 0.0625, 0.15625, 0.09375, 0.125, 0.09375, 0.125, 0.09375, 0.15625, 0.09375, 0.15625, 0.125, 0.125, 0.125, 0.125, 0.125, 0.15625, 0.125, 0.15625, 0.15625, 0.125, 0.15625, 0.125, 0.15625, 0.15625, 0.15625, 0.15625, 0.1875, 0.125, 0.1875, 0.125, 0.1875, 0.15625, 0.1875, 0.15625, 0.21875, 0.125, 0.21875, 0.125, 0.21875, 0.15625, 0.21875, 0.15625, 0.25, 0.125, 0.25, 0.125, 0.25, 0.15625, 0.25, 0.15625, 0.28125, 0.125, 0.28125, 0.125, 0.28125, 0.15625, 0.28125, 0.15625, 0.3125, 0.125, 0.3125, 0.125, 0.3125, 0.15625, 0.3125, 0.15625, 0.34375, 0.125, 0.34375, 0.125, 0.34375, 0.15625, 0.34375, 0.15625, 0.375, 0.125, 0.375, 0.125, 0.375, 0.15625, 0.375, 0.15625, 0.40625, 0.125, 0.40625, 0.125, 0.40625, 0.15625, 0.40625, 0.15625, 0.4375, 0.125, 0.4375, 0.125, 0.4375, 0.15625, 0.4375, 0.15625, 0.46875, 0.125, 0.46875, 0.125, 0.46875, 0.15625, 0.46875, 0.15625, 0.5, 0.125, 0.5, 0.125, 0.5, 0.15625, 0.5, 0.15625, 0.53125, 0.125, 0.53125, 0.125, 0.53125, 0.15625, 0.53125, 0.15625, 0.5625, 0.125, 0.5625, 0.125, 0.5625, 0.15625, 0.5625, 0.15625, 0.59375, 0.125, 0.59375, 0.125, 0.59375, 0.15625, 0.59375, 0.15625, 0.625, 0.125, 0.625, 0.125, 0.625, 0.15625, 0.625, 0.15625, 0.65625, 0.125, 0.65625, 0.125, 0.65625, 0.15625, 0.65625, 0.15625, 0.6875, 0.125, 0.6875, 0.125, 0.6875, 0.15625, 0.6875, 0.15625, 0.71875, 0.125, 0.71875, 0.125, 0.71875, 0.15625, 0.71875, 0.15625, 0.75, 0.125, 0.75, 0.125, 0.75, 0.15625, 0.75, 0.15625, 0.78125, 0.125, 0.78125, 0.125, 0.78125, 0.15625, 0.78125, 0.15625, 0.8125, 0.125, 0.8125, 0.125, 0.8125, 0.15625, 0.8125, 0.15625, 0.84375, 0.125, 0.84375, 0.125, 0.84375, 0.15625, 0.84375, 0.15625, 0.875, 0.125, 0.875, 0.125, 0.875, 0.15625, 0.875, 0.15625, 0.90625, 0.125, 0.90625, 0.125, 0.90625, 0.15625, 0.90625, 0.15625, 0.9375, 0.125, 0.9375, 0.125, 0.9375, 0.15625, 0.9375, 0.15625, 0.96875, 0.125, 0.96875, 0.15625, 0.96875, 0.63412, 1, 1.125, 0.96875, 0.1875, 0.96875, 0.63412, 1, 0.15625, 0.96875, 0.15625, 0.9375, 0.1875, 0.9375, 0.1875, 0.96875, 0.15625, 0.96875, 0.15625, 0.90625, 0.1875, 0.90625, 0.1875, 0.9375, 0.15625, 0.9375, 0.15625, 0.875, 0.1875, 0.875, 0.1875, 0.90625, 0.15625, 0.90625, 0.15625, 0.84375, 0.1875, 0.84375, 0.1875, 0.875, 0.15625, 0.875, 0.15625, 0.8125, 0.1875, 0.8125, 0.1875, 0.84375, 0.15625, 0.84375, 0.15625, 0.78125, 0.1875, 0.78125, 0.1875, 0.8125, 0.15625, 0.8125, 0.15625, 0.75, 0.1875, 0.75, 0.1875, 0.78125, 0.15625, 0.78125, 0.15625, 0.71875, 0.1875, 0.71875, 0.1875, 0.75, 0.15625, 0.75, 0.15625, 0.6875, 0.1875, 0.6875, 0.1875, 0.71875, 0.15625, 0.71875, 0.15625, 0.65625, 0.1875, 0.65625, 0.1875, 0.6875, 0.15625, 0.6875, 0.15625, 0.625, 0.1875, 0.625, 0.1875, 0.65625, 0.15625, 0.65625, 0.15625, 0.59375, 0.1875, 0.59375, 0.1875, 0.625, 0.15625, 0.625, 0.15625, 0.5625, 0.1875, 0.5625, 0.1875, 0.59375, 0.15625, 0.59375, 0.15625, 0.53125, 0.1875, 0.53125, 0.1875, 0.5625, 0.15625, 0.5625, 0.15625, 0.5, 0.1875, 0.5, 0.1875, 0.53125, 0.15625, 0.53125, 0.15625, 0.46875, 0.1875, 0.46875, 0.1875, 0.5, 0.15625, 0.5, 0.15625, 0.4375, 0.1875, 0.4375, 0.1875, 0.46875, 0.15625, 0.46875, 0.15625, 0.40625, 0.1875, 0.40625, 0.1875, 0.4375, 0.15625, 0.4375, 0.15625, 0.375, 0.1875, 0.375, 0.1875, 0.40625, 0.15625, 0.40625, 0.15625, 0.34375, 0.1875, 0.34375, 0.1875, 0.375, 0.15625, 0.375, 0.15625, 0.3125, 0.1875, 0.3125, 0.1875, 0.34375, 0.15625, 0.34375, 0.15625, 0.28125, 0.1875, 0.28125, 0.1875, 0.3125, 0.15625, 0.3125, 0.15625, 0.25, 0.1875, 0.25, 0.1875, 0.28125, 0.15625, 0.28125, 0.15625, 0.21875, 0.1875, 0.21875, 0.1875, 0.25, 0.15625, 0.25, 0.15625, 0.1875, 0.1875, 0.1875, 0.1875, 0.21875, 0.15625, 0.21875, 0.15625, 0.15625, 0.1875, 0.15625, 0.1875, 0.1875, 0.15625, 0.1875, 0.15625, 0.125, 0.1875, 0.125, 0.1875, 0.15625, 0.15625, 0.15625, 0.15625, 0.09375, 0.1875, 0.09375, 0.1875, 0.125, 0.15625, 0.125, 0.15625, 0.0625, 0.1875, 0.0625, 0.1875, 0.09375, 0.15625, 0.09375, 0.15625, 0.03125, 0.1875, 0.03125, 0.1875, 0.0625, 0.15625, 0.0625, 0.3212, -0, 0.1875, 0.03125, 0.15625, 0.03125, 0.3212, -0, 0.21875, 0.03125, 0.1875, 0.03125, 0.1875, 0.03125, 0.21875, 0.03125, 0.21875, 0.0625, 0.1875, 0.0625, 0.1875, 0.0625, 0.21875, 0.0625, 0.21875, 0.09375, 0.1875, 0.09375, 0.1875, 0.09375, 0.21875, 0.09375, 0.21875, 0.125, 0.1875, 0.125, 0.1875, 0.125, 0.21875, 0.125, 0.21875, 0.15625, 0.1875, 0.15625, 0.1875, 0.15625, 0.21875, 0.15625, 0.21875, 0.1875, 0.1875, 0.1875, 0.1875, 0.1875, 0.21875, 0.1875, 0.21875, 0.21875, 0.1875, 0.21875, 0.1875, 0.21875, 0.21875, 0.21875, 0.21875, 0.25, 0.1875, 0.25, 0.1875, 0.25, 0.21875, 0.25, 0.21875, 0.28125, 0.1875, 0.28125, 0.1875, 0.28125, 0.21875, 0.28125, 0.21875, 0.3125, 0.1875, 0.3125, 0.1875, 0.3125, 0.21875, 0.3125, 0.21875, 0.34375, 0.1875, 0.34375, 0.1875, 0.34375, 0.21875, 0.34375, 0.21875, 0.375, 0.1875, 0.375, 0.1875, 0.375, 0.21875, 0.375, 0.21875, 0.40625, 0.1875, 0.40625, 0.1875, 0.40625, 0.21875, 0.40625, 0.21875, 0.4375, 0.1875, 0.4375, 0.1875, 0.4375, 0.21875, 0.4375, 0.21875, 0.46875, 0.1875, 0.46875, 0.1875, 0.46875, 0.21875, 0.46875, 0.21875, 0.5, 0.1875, 0.5, 0.1875, 0.5, 0.21875, 0.5, 0.21875, 0.53125, 0.1875, 0.53125, 0.1875, 0.53125, 0.21875, 0.53125, 0.21875, 0.5625, 0.1875, 0.5625, 0.1875, 0.5625, 0.21875, 0.5625, 0.21875, 0.59375, 0.1875, 0.59375, 0.1875, 0.59375, 0.21875, 0.59375, 0.21875, 0.625, 0.1875, 0.625, 0.1875, 0.625, 0.21875, 0.625, 0.21875, 0.65625, 0.1875, 0.65625, 0.1875, 0.65625, 0.21875, 0.65625, 0.21875, 0.6875, 0.1875, 0.6875, 0.1875, 0.6875, 0.21875, 0.6875, 0.21875, 0.71875, 0.1875, 0.71875, 0.1875, 0.71875, 0.21875, 0.71875, 0.21875, 0.75, 0.1875, 0.75, 0.1875, 0.75, 0.21875, 0.75, 0.21875, 0.78125, 0.1875, 0.78125, 0.1875, 0.78125, 0.21875, 0.78125, 0.21875, 0.8125, 0.1875, 0.8125, 0.1875, 0.8125, 0.21875, 0.8125, 0.21875, 0.84375, 0.1875, 0.84375, 0.1875, 0.84375, 0.21875, 0.84375, 0.21875, 0.875, 0.1875, 0.875, 0.1875, 0.875, 0.21875, 0.875, 0.21875, 0.90625, 0.1875, 0.90625, 0.1875, 0.90625, 0.21875, 0.90625, 0.21875, 0.9375, 0.1875, 0.9375, 0.1875, 0.9375, 0.21875, 0.9375, 0.21875, 0.96875, 0.1875, 0.96875, 0.21875, 0.96875, 0.63412, 1, 0.1875, 0.96875, 0.25, 0.96875, 0.63412, 1, 0.21875, 0.96875, 0.21875, 0.9375, 0.25, 0.9375, 0.25, 0.96875, 0.21875, 0.96875, 0.21875, 0.90625, 0.25, 0.90625, 0.25, 0.9375, 0.21875, 0.9375, 0.21875, 0.875, 0.25, 0.875, 0.25, 0.90625, 0.21875, 0.90625, 0.21875, 0.84375, 0.25, 0.84375, 0.25, 0.875, 0.21875, 0.875, 0.21875, 0.8125, 0.25, 0.8125, 0.25, 0.84375, 0.21875, 0.84375, 0.21875, 0.78125, 0.25, 0.78125, 0.25, 0.8125, 0.21875, 0.8125, 0.21875, 0.75, 0.25, 0.75, 0.25, 0.78125, 0.21875, 0.78125, 0.21875, 0.71875, 0.25, 0.71875, 0.25, 0.75, 0.21875, 0.75, 0.21875, 0.6875, 0.25, 0.6875, 0.25, 0.71875, 0.21875, 0.71875, 0.21875, 0.65625, 0.25, 0.65625, 0.25, 0.6875, 0.21875, 0.6875, 0.21875, 0.625, 0.25, 0.625, 0.25, 0.65625, 0.21875, 0.65625, 0.21875, 0.59375, 0.25, 0.59375, 0.25, 0.625, 0.21875, 0.625, 0.21875, 0.5625, 0.25, 0.5625, 0.25, 0.59375, 0.21875, 0.59375, 0.21875, 0.53125, 0.25, 0.53125, 0.25, 0.5625, 0.21875, 0.5625, 0.21875, 0.5, 0.25, 0.5, 0.25, 0.53125, 0.21875, 0.53125, 0.21875, 0.46875, 0.25, 0.46875, 0.25, 0.5, 0.21875, 0.5, 0.21875, 0.4375, 0.25, 0.4375, 0.25, 0.46875, 0.21875, 0.46875, 0.21875, 0.40625, 0.25, 0.40625, 0.25, 0.4375, 0.21875, 0.4375, 0.21875, 0.375, 0.25, 0.375, 0.25, 0.40625, 0.21875, 0.40625, 0.21875, 0.34375, 0.25, 0.34375, 0.25, 0.375, 0.21875, 0.375, 0.21875, 0.3125, 0.25, 0.3125, 0.25, 0.34375, 0.21875, 0.34375, 0.21875, 0.28125, 0.25, 0.28125, 0.25, 0.3125, 0.21875, 0.3125, 0.21875, 0.25, 0.25, 0.25, 0.25, 0.28125, 0.21875, 0.28125, 0.21875, 0.21875, 0.25, 0.21875, 0.25, 0.25, 0.21875, 0.25, 0.21875, 0.1875, 0.25, 0.1875, 0.25, 0.21875, 0.21875, 0.21875, 0.21875, 0.15625, 0.25, 0.15625, 0.25, 0.1875, 0.21875, 0.1875, 0.21875, 0.125, 0.25, 0.125, 0.25, 0.15625, 0.21875, 0.15625, 0.21875, 0.09375, 0.25, 0.09375, 0.25, 0.125, 0.21875, 0.125, 0.21875, 0.0625, 0.25, 0.0625, 0.25, 0.09375, 0.21875, 0.09375, 0.21875, 0.03125, 0.25, 0.03125, 0.25, 0.0625, 0.21875, 0.0625, 0.3212, -0, 0.25, 0.03125, 0.21875, 0.03125, 0.3212, -0, 0.28125, 0.03125, 0.25, 0.03125, 0.25, 0.03125, 0.28125, 0.03125, 0.28125, 0.0625, 0.25, 0.0625, 0.25, 0.0625, 0.28125, 0.0625, 0.28125, 0.09375, 0.25, 0.09375, 0.25, 0.09375, 0.28125, 0.09375, 0.28125, 0.125, 0.25, 0.125, 0.25, 0.125, 0.28125, 0.125, 0.28125, 0.15625, 0.25, 0.15625, 0.25, 0.15625, 0.28125, 0.15625, 0.28125, 0.1875, 0.25, 0.1875, 0.25, 0.1875, 0.28125, 0.1875, 0.28125, 0.21875, 0.25, 0.21875, 0.25, 0.21875, 0.28125, 0.21875, 0.28125, 0.25, 0.25, 0.25, 0.25, 0.25, 0.28125, 0.25, 0.28125, 0.28125, 0.25, 0.28125, 0.25, 0.28125, 0.28125, 0.28125, 0.28125, 0.3125, 0.25, 0.3125, 0.25, 0.3125, 0.28125, 0.3125, 0.28125, 0.34375, 0.25, 0.34375, 0.25, 0.34375, 0.28125, 0.34375, 0.28125, 0.375, 0.25, 0.375, 0.25, 0.375, 0.28125, 0.375, 0.28125, 0.40625, 0.25, 0.40625, 0.25, 0.40625, 0.28125, 0.40625, 0.28125, 0.4375, 0.25, 0.4375, 0.25, 0.4375, 0.28125, 0.4375, 0.28125, 0.46875, 0.25, 0.46875, 0.25, 0.46875, 0.28125, 0.46875, 0.28125, 0.5, 0.25, 0.5, 0.25, 0.5, 0.28125, 0.5, 0.28125, 0.53125, 0.25, 0.53125, 0.25, 0.53125, 0.28125, 0.53125, 0.28125, 0.5625, 0.25, 0.5625, 0.25, 0.5625, 0.28125, 0.5625, 0.28125, 0.59375, 0.25, 0.59375, 0.25, 0.59375, 0.28125, 0.59375, 0.28125, 0.625, 0.25, 0.625, 0.25, 0.625, 0.28125, 0.625, 0.28125, 0.65625, 0.25, 0.65625, 0.25, 0.65625, 0.28125, 0.65625, 0.28125, 0.6875, 0.25, 0.6875, 0.25, 0.6875, 0.28125, 0.6875, 0.28125, 0.71875, 0.25, 0.71875, 0.25, 0.71875, 0.28125, 0.71875, 0.28125, 0.75, 0.25, 0.75, 0.25, 0.75, 0.28125, 0.75, 0.28125, 0.78125, 0.25, 0.78125, 0.25, 0.78125, 0.28125, 0.78125, 0.28125, 0.8125, 0.25, 0.8125, 0.25, 0.8125, 0.28125, 0.8125, 0.28125, 0.84375, 0.25, 0.84375, 0.25, 0.84375, 0.28125, 0.84375, 0.28125, 0.875, 0.25, 0.875, 0.25, 0.875, 0.28125, 0.875, 0.28125, 0.90625, 0.25, 0.90625, 0.25, 0.90625, 0.28125, 0.90625, 0.28125, 0.9375, 0.25, 0.9375, 0.25, 0.9375, 0.28125, 0.9375, 0.28125, 0.96875, 0.25, 0.96875, 0.28125, 0.96875, 0.63412, 1, 0.25, 0.96875, 0.3125, 0.96875, 0.63412, 1, 0.28125, 0.96875, 0.28125, 0.9375, 0.3125, 0.9375, 0.3125, 0.96875, 0.28125, 0.96875, 0.28125, 0.90625, 0.3125, 0.90625, 0.3125, 0.9375, 0.28125, 0.9375, 0.28125, 0.875, 0.3125, 0.875, 0.3125, 0.90625, 0.28125, 0.90625, 0.28125, 0.84375, 0.3125, 0.84375, 0.3125, 0.875, 0.28125, 0.875, 0.28125, 0.8125, 0.3125, 0.8125, 0.3125, 0.84375, 0.28125, 0.84375, 0.28125, 0.78125, 0.3125, 0.78125, 0.3125, 0.8125, 0.28125, 0.8125, 0.28125, 0.75, 0.3125, 0.75, 0.3125, 0.78125, 0.28125, 0.78125, 0.28125, 0.71875, 0.3125, 0.71875, 0.3125, 0.75, 0.28125, 0.75, 0.28125, 0.6875, 0.3125, 0.6875, 0.3125, 0.71875, 0.28125, 0.71875, 0.28125, 0.65625, 0.3125, 0.65625, 0.3125, 0.6875, 0.28125, 0.6875, 0.28125, 0.625, 0.3125, 0.625, 0.3125, 0.65625, 0.28125, 0.65625, 0.28125, 0.59375, 0.3125, 0.59375, 0.3125, 0.625, 0.28125, 0.625, 0.28125, 0.5625, 0.3125, 0.5625, 0.3125, 0.59375, 0.28125, 0.59375, 0.28125, 0.53125, 0.3125, 0.53125, 0.3125, 0.5625, 0.28125, 0.5625, 0.28125, 0.5, 0.3125, 0.5, 0.3125, 0.53125, 0.28125, 0.53125, 0.28125, 0.46875, 0.3125, 0.46875, 0.3125, 0.5, 0.28125, 0.5, 0.28125, 0.4375, 0.3125, 0.4375, 0.3125, 0.46875, 0.28125, 0.46875, 0.28125, 0.40625, 0.3125, 0.40625, 0.3125, 0.4375, 0.28125, 0.4375, 0.28125, 0.375, 0.3125, 0.375, 0.3125, 0.40625, 0.28125, 0.40625, 0.28125, 0.34375, 0.3125, 0.34375, 0.3125, 0.375, 0.28125, 0.375, 0.28125, 0.3125, 0.3125, 0.3125, 0.3125, 0.34375, 0.28125, 0.34375, 0.28125, 0.28125, 0.3125, 0.28125, 0.3125, 0.3125, 0.28125, 0.3125, 0.28125, 0.25, 0.3125, 0.25, 0.3125, 0.28125, 0.28125, 0.28125, 0.28125, 0.21875, 0.3125, 0.21875, 0.3125, 0.25, 0.28125, 0.25, 0.28125, 0.1875, 0.3125, 0.1875, 0.3125, 0.21875, 0.28125, 0.21875, 0.28125, 0.15625, 0.3125, 0.15625, 0.3125, 0.1875, 0.28125, 0.1875, 0.28125, 0.125, 0.3125, 0.125, 0.3125, 0.15625, 0.28125, 0.15625, 0.28125, 0.09375, 0.3125, 0.09375, 0.3125, 0.125, 0.28125, 0.125, 0.28125, 0.0625, 0.3125, 0.0625, 0.3125, 0.09375, 0.28125, 0.09375, 0.28125, 0.03125, 0.3125, 0.03125, 0.3125, 0.0625, 0.28125, 0.0625, 0.3212, -0, 0.3125, 0.03125, 0.28125, 0.03125, 0.3212, -0, 0.34375, 0.03125, 0.3125, 0.03125, 0.3125, 0.03125, 0.34375, 0.03125, 0.34375, 0.0625, 0.3125, 0.0625, 0.3125, 0.0625, 0.34375, 0.0625, 0.34375, 0.09375, 0.3125, 0.09375, 0.3125, 0.09375, 0.34375, 0.09375, 0.34375, 0.125, 0.3125, 0.125, 0.3125, 0.125, 0.34375, 0.125, 0.34375, 0.15625, 0.3125, 0.15625, 0.3125, 0.15625, 0.34375, 0.15625, 0.34375, 0.1875, 0.3125, 0.1875, 0.3125, 0.1875, 0.34375, 0.1875, 0.34375, 0.21875, 0.3125, 0.21875, 0.3125, 0.21875, 0.34375, 0.21875, 0.34375, 0.25, 0.3125, 0.25, 0.3125, 0.25, 0.34375, 0.25, 0.34375, 0.28125, 0.3125, 0.28125, 0.3125, 0.28125, 0.34375, 0.28125, 0.34375, 0.3125, 0.3125, 0.3125, 0.3125, 0.3125, 0.34375, 0.3125, 0.34375, 0.34375, 0.3125, 0.34375, 0.3125, 0.34375, 0.34375, 0.34375, 0.34375, 0.375, 0.3125, 0.375, 0.3125, 0.375, 0.34375, 0.375, 0.34375, 0.40625, 0.3125, 0.40625, 0.3125, 0.40625, 0.34375, 0.40625, 0.34375, 0.4375, 0.3125, 0.4375, 0.3125, 0.4375, 0.34375, 0.4375, 0.34375, 0.46875, 0.3125, 0.46875, 0.3125, 0.46875, 0.34375, 0.46875, 0.34375, 0.5, 0.3125, 0.5, 0.3125, 0.5, 0.34375, 0.5, 0.34375, 0.53125, 0.3125, 0.53125, 0.3125, 0.53125, 0.34375, 0.53125, 0.34375, 0.5625, 0.3125, 0.5625, 0.3125, 0.5625, 0.34375, 0.5625, 0.34375, 0.59375, 0.3125, 0.59375, 0.3125, 0.59375, 0.34375, 0.59375, 0.34375, 0.625, 0.3125, 0.625, 0.3125, 0.625, 0.34375, 0.625, 0.34375, 0.65625, 0.3125, 0.65625, 0.3125, 0.65625, 0.34375, 0.65625, 0.34375, 0.6875, 0.3125, 0.6875, 0.3125, 0.6875, 0.34375, 0.6875, 0.34375, 0.71875, 0.3125, 0.71875, 0.3125, 0.71875, 0.34375, 0.71875, 0.34375, 0.75, 0.3125, 0.75, 0.3125, 0.75, 0.34375, 0.75, 0.34375, 0.78125, 0.3125, 0.78125, 0.3125, 0.78125, 0.34375, 0.78125, 0.34375, 0.8125, 0.3125, 0.8125, 0.3125, 0.8125, 0.34375, 0.8125, 0.34375, 0.84375, 0.3125, 0.84375, 0.3125, 0.84375, 0.34375, 0.84375, 0.34375, 0.875, 0.3125, 0.875, 0.3125, 0.875, 0.34375, 0.875, 0.34375, 0.90625, 0.3125, 0.90625, 0.3125, 0.90625, 0.34375, 0.90625, 0.34375, 0.9375, 0.3125, 0.9375, 0.3125, 0.9375, 0.34375, 0.9375, 0.34375, 0.96875, 0.3125, 0.96875, 0.34375, 0.96875, 0.63412, 1, 0.3125, 0.96875, 0.375, 0.96875, 0.63412, 1, 0.34375, 0.96875, 0.34375, 0.9375, 0.375, 0.9375, 0.375, 0.96875, 0.34375, 0.96875, 0.34375, 0.90625, 0.375, 0.90625, 0.375, 0.9375, 0.34375, 0.9375, 0.34375, 0.875, 0.375, 0.875, 0.375, 0.90625, 0.34375, 0.90625, 0.34375, 0.84375, 0.375, 0.84375, 0.375, 0.875, 0.34375, 0.875, 0.34375, 0.8125, 0.375, 0.8125, 0.375, 0.84375, 0.34375, 0.84375, 0.34375, 0.78125, 0.375, 0.78125, 0.375, 0.8125, 0.34375, 0.8125, 0.34375, 0.75, 0.375, 0.75, 0.375, 0.78125, 0.34375, 0.78125, 0.34375, 0.71875, 0.375, 0.71875, 0.375, 0.75, 0.34375, 0.75, 0.34375, 0.6875, 0.375, 0.6875, 0.375, 0.71875, 0.34375, 0.71875, 0.34375, 0.65625, 0.375, 0.65625, 0.375, 0.6875, 0.34375, 0.6875, 0.34375, 0.625, 0.375, 0.625, 0.375, 0.65625, 0.34375, 0.65625, 0.34375, 0.59375, 0.375, 0.59375, 0.375, 0.625, 0.34375, 0.625, 0.34375, 0.5625, 0.375, 0.5625, 0.375, 0.59375, 0.34375, 0.59375, 0.34375, 0.53125, 0.375, 0.53125, 0.375, 0.5625, 0.34375, 0.5625, 0.34375, 0.5, 0.375, 0.5, 0.375, 0.53125, 0.34375, 0.53125, 0.34375, 0.46875, 0.375, 0.46875, 0.375, 0.5, 0.34375, 0.5, 0.34375, 0.4375, 0.375, 0.4375, 0.375, 0.46875, 0.34375, 0.46875, 0.34375, 0.40625, 0.375, 0.40625, 0.375, 0.4375, 0.34375, 0.4375, 0.34375, 0.375, 0.375, 0.375, 0.375, 0.40625, 0.34375, 0.40625, 0.34375, 0.34375, 0.375, 0.34375, 0.375, 0.375, 0.34375, 0.375, 0.34375, 0.3125, 0.375, 0.3125, 0.375, 0.34375, 0.34375, 0.34375, 0.34375, 0.28125, 0.375, 0.28125, 0.375, 0.3125, 0.34375, 0.3125, 0.34375, 0.25, 0.375, 0.25, 0.375, 0.28125, 0.34375, 0.28125, 0.34375, 0.21875, 0.375, 0.21875, 0.375, 0.25, 0.34375, 0.25, 0.34375, 0.1875, 0.375, 0.1875, 0.375, 0.21875, 0.34375, 0.21875, 0.34375, 0.15625, 0.375, 0.15625, 0.375, 0.1875, 0.34375, 0.1875, 0.34375, 0.125, 0.375, 0.125, 0.375, 0.15625, 0.34375, 0.15625, 0.34375, 0.09375, 0.375, 0.09375, 0.375, 0.125, 0.34375, 0.125, 0.34375, 0.0625, 0.375, 0.0625, 0.375, 0.09375, 0.34375, 0.09375, 0.34375, 0.03125, 0.375, 0.03125, 0.375, 0.0625, 0.34375, 0.0625, 0.3212, -0, 0.375, 0.03125, 0.34375, 0.03125, 0.3212, -0, 0.40625, 0.03125, 0.375, 0.03125, 0.375, 0.03125, 0.40625, 0.03125, 0.40625, 0.0625, 0.375, 0.0625, 0.375, 0.0625, 0.40625, 0.0625, 0.40625, 0.09375, 0.375, 0.09375, 0.375, 0.09375, 0.40625, 0.09375, 0.40625, 0.125, 0.375, 0.125, 0.375, 0.125, 0.40625, 0.125, 0.40625, 0.15625, 0.375, 0.15625, 0.375, 0.15625, 0.40625, 0.15625, 0.40625, 0.1875, 0.375, 0.1875, 0.375, 0.1875, 0.40625, 0.1875, 0.40625, 0.21875, 0.375, 0.21875, 0.375, 0.21875, 0.40625, 0.21875, 0.40625, 0.25, 0.375, 0.25, 0.375, 0.25, 0.40625, 0.25, 0.40625, 0.28125, 0.375, 0.28125, 0.375, 0.28125, 0.40625, 0.28125, 0.40625, 0.3125, 0.375, 0.3125, 0.375, 0.3125, 0.40625, 0.3125, 0.40625, 0.34375, 0.375, 0.34375, 0.375, 0.34375, 0.40625, 0.34375, 0.40625, 0.375, 0.375, 0.375, 0.375, 0.375, 0.40625, 0.375, 0.40625, 0.40625, 0.375, 0.40625, 0.375, 0.40625, 0.40625, 0.40625, 0.40625, 0.4375, 0.375, 0.4375, 0.375, 0.4375, 0.40625, 0.4375, 0.40625, 0.46875, 0.375, 0.46875, 0.375, 0.46875, 0.40625, 0.46875, 0.40625, 0.5, 0.375, 0.5, 0.375, 0.5, 0.40625, 0.5, 0.40625, 0.53125, 0.375, 0.53125, 0.375, 0.53125, 0.40625, 0.53125, 0.40625, 0.5625, 0.375, 0.5625, 0.375, 0.5625, 0.40625, 0.5625, 0.40625, 0.59375, 0.375, 0.59375, 0.375, 0.59375, 0.40625, 0.59375, 0.40625, 0.625, 0.375, 0.625, 0.375, 0.625, 0.40625, 0.625, 0.40625, 0.65625, 0.375, 0.65625, 0.375, 0.65625, 0.40625, 0.65625, 0.40625, 0.6875, 0.375, 0.6875, 0.375, 0.6875, 0.40625, 0.6875, 0.40625, 0.71875, 0.375, 0.71875, 0.375, 0.71875, 0.40625, 0.71875, 0.40625, 0.75, 0.375, 0.75, 0.375, 0.75, 0.40625, 0.75, 0.40625, 0.78125, 0.375, 0.78125, 0.375, 0.78125, 0.40625, 0.78125, 0.40625, 0.8125, 0.375, 0.8125, 0.375, 0.8125, 0.40625, 0.8125, 0.40625, 0.84375, 0.375, 0.84375, 0.375, 0.84375, 0.40625, 0.84375, 0.40625, 0.875, 0.375, 0.875, 0.375, 0.875, 0.40625, 0.875, 0.40625, 0.90625, 0.375, 0.90625, 0.375, 0.90625, 0.40625, 0.90625, 0.40625, 0.9375, 0.375, 0.9375, 0.375, 0.9375, 0.40625, 0.9375, 0.40625, 0.96875, 0.375, 0.96875, 0.40625, 0.96875, 0.63412, 1, 0.375, 0.96875, 0.4375, 0.96875, 0.63412, 1, 0.40625, 0.96875, 0.40625, 0.9375, 0.4375, 0.9375, 0.4375, 0.96875, 0.40625, 0.96875, 0.40625, 0.90625, 0.4375, 0.90625, 0.4375, 0.9375, 0.40625, 0.9375, 0.40625, 0.875, 0.4375, 0.875, 0.4375, 0.90625, 0.40625, 0.90625, 0.40625, 0.84375, 0.4375, 0.84375, 0.4375, 0.875, 0.40625, 0.875, 0.40625, 0.8125, 0.4375, 0.8125, 0.4375, 0.84375, 0.40625, 0.84375, 0.40625, 0.78125, 0.4375, 0.78125, 0.4375, 0.8125, 0.40625, 0.8125, 0.40625, 0.75, 0.4375, 0.75, 0.4375, 0.78125, 0.40625, 0.78125, 0.40625, 0.71875, 0.4375, 0.71875, 0.4375, 0.75, 0.40625, 0.75, 0.40625, 0.6875, 0.4375, 0.6875, 0.4375, 0.71875, 0.40625, 0.71875, 0.40625, 0.65625, 0.4375, 0.65625, 0.4375, 0.6875, 0.40625, 0.6875, 0.40625, 0.625, 0.4375, 0.625, 0.4375, 0.65625, 0.40625, 0.65625, 0.40625, 0.59375, 0.4375, 0.59375, 0.4375, 0.625, 0.40625, 0.625, 0.40625, 0.5625, 0.4375, 0.5625, 0.4375, 0.59375, 0.40625, 0.59375, 0.40625, 0.53125, 0.4375, 0.53125, 0.4375, 0.5625, 0.40625, 0.5625, 0.40625, 0.5, 0.4375, 0.5, 0.4375, 0.53125, 0.40625, 0.53125, 0.40625, 0.46875, 0.4375, 0.46875, 0.4375, 0.5, 0.40625, 0.5, 0.40625, 0.4375, 0.4375, 0.4375, 0.4375, 0.46875, 0.40625, 0.46875, 0.40625, 0.40625, 0.4375, 0.40625, 0.4375, 0.4375, 0.40625, 0.4375, 0.40625, 0.375, 0.4375, 0.375, 0.4375, 0.40625, 0.40625, 0.40625, 0.40625, 0.34375, 0.4375, 0.34375, 0.4375, 0.375, 0.40625, 0.375, 0.40625, 0.3125, 0.4375, 0.3125, 0.4375, 0.34375, 0.40625, 0.34375, 0.40625, 0.28125, 0.4375, 0.28125, 0.4375, 0.3125, 0.40625, 0.3125, 0.40625, 0.25, 0.4375, 0.25, 0.4375, 0.28125, 0.40625, 0.28125, 0.40625, 0.21875, 0.4375, 0.21875, 0.4375, 0.25, 0.40625, 0.25, 0.40625, 0.1875, 0.4375, 0.1875, 0.4375, 0.21875, 0.40625, 0.21875, 0.40625, 0.15625, 0.4375, 0.15625, 0.4375, 0.1875, 0.40625, 0.1875, 0.40625, 0.125, 0.4375, 0.125, 0.4375, 0.15625, 0.40625, 0.15625, 0.40625, 0.09375, 0.4375, 0.09375, 0.4375, 0.125, 0.40625, 0.125, 0.40625, 0.0625, 0.4375, 0.0625, 0.4375, 0.09375, 0.40625, 0.09375, 0.40625, 0.03125, 0.4375, 0.03125, 0.4375, 0.0625, 0.40625, 0.0625, 0.3212, -0, 0.4375, 0.03125, 0.40625, 0.03125, 0.3212, -0, 0.46875, 0.03125, 0.4375, 0.03125, 0.4375, 0.03125, 0.46875, 0.03125, 0.46875, 0.0625, 0.4375, 0.0625, 0.4375, 0.0625, 0.46875, 0.0625, 0.46875, 0.09375, 0.4375, 0.09375, 0.4375, 0.09375, 0.46875, 0.09375, 0.46875, 0.125, 0.4375, 0.125, 0.4375, 0.125, 0.46875, 0.125, 0.46875, 0.15625, 0.4375, 0.15625, 0.4375, 0.15625, 0.46875, 0.15625, 0.46875, 0.1875, 0.4375, 0.1875, 0.4375, 0.1875, 0.46875, 0.1875, 0.46875, 0.21875, 0.4375, 0.21875, 0.4375, 0.21875, 0.46875, 0.21875, 0.46875, 0.25, 0.4375, 0.25, 0.4375, 0.25, 0.46875, 0.25, 0.46875, 0.28125, 0.4375, 0.28125, 0.4375, 0.28125, 0.46875, 0.28125, 0.46875, 0.3125, 0.4375, 0.3125, 0.4375, 0.3125, 0.46875, 0.3125, 0.46875, 0.34375, 0.4375, 0.34375, 0.4375, 0.34375, 0.46875, 0.34375, 0.46875, 0.375, 0.4375, 0.375, 0.4375, 0.375, 0.46875, 0.375, 0.46875, 0.40625, 0.4375, 0.40625, 0.4375, 0.40625, 0.46875, 0.40625, 0.46875, 0.4375, 0.4375, 0.4375, 0.4375, 0.4375, 0.46875, 0.4375, 0.46875, 0.46875, 0.4375, 0.46875, 0.4375, 0.46875, 0.46875, 0.46875, 0.46875, 0.5, 0.4375, 0.5, 0.4375, 0.5, 0.46875, 0.5, 0.46875, 0.53125, 0.4375, 0.53125, 0.4375, 0.53125, 0.46875, 0.53125, 0.46875, 0.5625, 0.4375, 0.5625, 0.4375, 0.5625, 0.46875, 0.5625, 0.46875, 0.59375, 0.4375, 0.59375, 0.4375, 0.59375, 0.46875, 0.59375, 0.46875, 0.625, 0.4375, 0.625, 0.4375, 0.625, 0.46875, 0.625, 0.46875, 0.65625, 0.4375, 0.65625, 0.4375, 0.65625, 0.46875, 0.65625, 0.46875, 0.6875, 0.4375, 0.6875, 0.4375, 0.6875, 0.46875, 0.6875, 0.46875, 0.71875, 0.4375, 0.71875, 0.4375, 0.71875, 0.46875, 0.71875, 0.46875, 0.75, 0.4375, 0.75, 0.4375, 0.75, 0.46875, 0.75, 0.46875, 0.78125, 0.4375, 0.78125, 0.4375, 0.78125, 0.46875, 0.78125, 0.46875, 0.8125, 0.4375, 0.8125, 0.4375, 0.8125, 0.46875, 0.8125, 0.46875, 0.84375, 0.4375, 0.84375, 0.4375, 0.84375, 0.46875, 0.84375, 0.46875, 0.875, 0.4375, 0.875, 0.4375, 0.875, 0.46875, 0.875, 0.46875, 0.90625, 0.4375, 0.90625, 0.4375, 0.90625, 0.46875, 0.90625, 0.46875, 0.9375, 0.4375, 0.9375, 0.4375, 0.9375, 0.46875, 0.9375, 0.46875, 0.96875, 0.4375, 0.96875, 0.46875, 0.96875, 0.63412, 1, 0.4375, 0.96875, 0.5, 0.96875, 0.63412, 1, 0.46875, 0.96875, 0.46875, 0.9375, 0.5, 0.9375, 0.5, 0.96875, 0.46875, 0.96875, 0.46875, 0.90625, 0.5, 0.90625, 0.5, 0.9375, 0.46875, 0.9375, 0.46875, 0.875, 0.5, 0.875, 0.5, 0.90625, 0.46875, 0.90625, 0.46875, 0.84375, 0.5, 0.84375, 0.5, 0.875, 0.46875, 0.875, 0.46875, 0.8125, 0.5, 0.8125, 0.5, 0.84375, 0.46875, 0.84375, 0.46875, 0.78125, 0.5, 0.78125, 0.5, 0.8125, 0.46875, 0.8125, 0.46875, 0.75, 0.5, 0.75, 0.5, 0.78125, 0.46875, 0.78125, 0.46875, 0.71875, 0.5, 0.71875, 0.5, 0.75, 0.46875, 0.75, 0.46875, 0.6875, 0.5, 0.6875, 0.5, 0.71875, 0.46875, 0.71875, 0.46875, 0.65625, 0.5, 0.65625, 0.5, 0.6875, 0.46875, 0.6875, 0.46875, 0.625, 0.5, 0.625, 0.5, 0.65625, 0.46875, 0.65625, 0.46875, 0.59375, 0.5, 0.59375, 0.5, 0.625, 0.46875, 0.625, 0.46875, 0.5625, 0.5, 0.5625, 0.5, 0.59375, 0.46875, 0.59375, 0.46875, 0.53125, 0.5, 0.53125, 0.5, 0.5625, 0.46875, 0.5625, 0.46875, 0.5, 0.5, 0.5, 0.5, 0.53125, 0.46875, 0.53125, 0.46875, 0.46875, 0.5, 0.46875, 0.5, 0.5, 0.46875, 0.5, 0.46875, 0.4375, 0.5, 0.4375, 0.5, 0.46875, 0.46875, 0.46875, 0.46875, 0.40625, 0.5, 0.40625, 0.5, 0.4375, 0.46875, 0.4375, 0.46875, 0.375, 0.5, 0.375, 0.5, 0.40625, 0.46875, 0.40625, 0.46875, 0.34375, 0.5, 0.34375, 0.5, 0.375, 0.46875, 0.375, 0.46875, 0.3125, 0.5, 0.3125, 0.5, 0.34375, 0.46875, 0.34375, 0.46875, 0.28125, 0.5, 0.28125, 0.5, 0.3125, 0.46875, 0.3125, 0.46875, 0.25, 0.5, 0.25, 0.5, 0.28125, 0.46875, 0.28125, 0.46875, 0.21875, 0.5, 0.21875, 0.5, 0.25, 0.46875, 0.25, 0.46875, 0.1875, 0.5, 0.1875, 0.5, 0.21875, 0.46875, 0.21875, 0.46875, 0.15625, 0.5, 0.15625, 0.5, 0.1875, 0.46875, 0.1875, 0.46875, 0.125, 0.5, 0.125, 0.5, 0.15625, 0.46875, 0.15625, 0.46875, 0.09375, 0.5, 0.09375, 0.5, 0.125, 0.46875, 0.125, 0.46875, 0.0625, 0.5, 0.0625, 0.5, 0.09375, 0.46875, 0.09375, 0.46875, 0.03125, 0.5, 0.03125, 0.5, 0.0625, 0.46875, 0.0625, 0.3212, -0, 0.5, 0.03125, 0.46875, 0.03125, 0.3212, -0, 0.53125, 0.03125, 0.5, 0.03125, 0.5, 0.03125, 0.53125, 0.03125, 0.53125, 0.0625, 0.5, 0.0625, 0.5, 0.0625, 0.53125, 0.0625, 0.53125, 0.09375, 0.5, 0.09375, 0.5, 0.09375, 0.53125, 0.09375, 0.53125, 0.125, 0.5, 0.125, 0.5, 0.125, 0.53125, 0.125, 0.53125, 0.15625, 0.5, 0.15625, 0.5, 0.15625, 0.53125, 0.15625, 0.53125, 0.1875, 0.5, 0.1875, 0.5, 0.1875, 0.53125, 0.1875, 0.53125, 0.21875, 0.5, 0.21875, 0.5, 0.21875, 0.53125, 0.21875, 0.53125, 0.25, 0.5, 0.25, 0.5, 0.25, 0.53125, 0.25, 0.53125, 0.28125, 0.5, 0.28125, 0.5, 0.28125, 0.53125, 0.28125, 0.53125, 0.3125, 0.5, 0.3125, 0.5, 0.3125, 0.53125, 0.3125, 0.53125, 0.34375, 0.5, 0.34375, 0.5, 0.34375, 0.53125, 0.34375, 0.53125, 0.375, 0.5, 0.375, 0.5, 0.375, 0.53125, 0.375, 0.53125, 0.40625, 0.5, 0.40625, 0.5, 0.40625, 0.53125, 0.40625, 0.53125, 0.4375, 0.5, 0.4375, 0.5, 0.4375, 0.53125, 0.4375, 0.53125, 0.46875, 0.5, 0.46875, 0.5, 0.46875, 0.53125, 0.46875, 0.53125, 0.5, 0.5, 0.5, 0.5, 0.5, 0.53125, 0.5, 0.53125, 0.53125, 0.5, 0.53125, 0.5, 0.53125, 0.53125, 0.53125, 0.53125, 0.5625, 0.5, 0.5625, 0.5, 0.5625, 0.53125, 0.5625, 0.53125, 0.59375, 0.5, 0.59375, 0.5, 0.59375, 0.53125, 0.59375, 0.53125, 0.625, 0.5, 0.625, 0.5, 0.625, 0.53125, 0.625, 0.53125, 0.65625, 0.5, 0.65625, 0.5, 0.65625, 0.53125, 0.65625, 0.53125, 0.6875, 0.5, 0.6875, 0.5, 0.6875, 0.53125, 0.6875, 0.53125, 0.71875, 0.5, 0.71875, 0.5, 0.71875, 0.53125, 0.71875, 0.53125, 0.75, 0.5, 0.75, 0.5, 0.75, 0.53125, 0.75, 0.53125, 0.78125, 0.5, 0.78125, 0.5, 0.78125, 0.53125, 0.78125, 0.53125, 0.8125, 0.5, 0.8125, 0.5, 0.8125, 0.53125, 0.8125, 0.53125, 0.84375, 0.5, 0.84375, 0.5, 0.84375, 0.53125, 0.84375, 0.53125, 0.875, 0.5, 0.875, 0.5, 0.875, 0.53125, 0.875, 0.53125, 0.90625, 0.5, 0.90625, 0.5, 0.90625, 0.53125, 0.90625, 0.53125, 0.9375, 0.5, 0.9375, 0.5, 0.9375, 0.53125, 0.9375, 0.53125, 0.96875, 0.5, 0.96875, 0.53125, 0.96875, 0.63412, 1, 0.5, 0.96875, 0.5625, 0.96875, 0.63412, 1, 0.53125, 0.96875, 0.53125, 0.9375, 0.5625, 0.9375, 0.5625, 0.96875, 0.53125, 0.96875, 0.53125, 0.90625, 0.5625, 0.90625, 0.5625, 0.9375, 0.53125, 0.9375, 0.53125, 0.875, 0.5625, 0.875, 0.5625, 0.90625, 0.53125, 0.90625, 0.53125, 0.84375, 0.5625, 0.84375, 0.5625, 0.875, 0.53125, 0.875, 0.53125, 0.8125, 0.5625, 0.8125, 0.5625, 0.84375, 0.53125, 0.84375, 0.53125, 0.78125, 0.5625, 0.78125, 0.5625, 0.8125, 0.53125, 0.8125, 0.53125, 0.75, 0.5625, 0.75, 0.5625, 0.78125, 0.53125, 0.78125, 0.53125, 0.71875, 0.5625, 0.71875, 0.5625, 0.75, 0.53125, 0.75, 0.53125, 0.6875, 0.5625, 0.6875, 0.5625, 0.71875, 0.53125, 0.71875, 0.53125, 0.65625, 0.5625, 0.65625, 0.5625, 0.6875, 0.53125, 0.6875, 0.53125, 0.625, 0.5625, 0.625, 0.5625, 0.65625, 0.53125, 0.65625, 0.53125, 0.59375, 0.5625, 0.59375, 0.5625, 0.625, 0.53125, 0.625, 0.53125, 0.5625, 0.5625, 0.5625, 0.5625, 0.59375, 0.53125, 0.59375, 0.53125, 0.53125, 0.5625, 0.53125, 0.5625, 0.5625, 0.53125, 0.5625, 0.53125, 0.5, 0.5625, 0.5, 0.5625, 0.53125, 0.53125, 0.53125, 0.53125, 0.46875, 0.5625, 0.46875, 0.5625, 0.5, 0.53125, 0.5, 0.53125, 0.4375, 0.5625, 0.4375, 0.5625, 0.46875, 0.53125, 0.46875, 0.53125, 0.40625, 0.5625, 0.40625, 0.5625, 0.4375, 0.53125, 0.4375, 0.53125, 0.375, 0.5625, 0.375, 0.5625, 0.40625, 0.53125, 0.40625, 0.53125, 0.34375, 0.5625, 0.34375, 0.5625, 0.375, 0.53125, 0.375, 0.53125, 0.3125, 0.5625, 0.3125, 0.5625, 0.34375, 0.53125, 0.34375, 0.53125, 0.28125, 0.5625, 0.28125, 0.5625, 0.3125, 0.53125, 0.3125, 0.53125, 0.25, 0.5625, 0.25, 0.5625, 0.28125, 0.53125, 0.28125, 0.53125, 0.21875, 0.5625, 0.21875, 0.5625, 0.25, 0.53125, 0.25, 0.53125, 0.1875, 0.5625, 0.1875, 0.5625, 0.21875, 0.53125, 0.21875, 0.53125, 0.15625, 0.5625, 0.15625, 0.5625, 0.1875, 0.53125, 0.1875, 0.53125, 0.125, 0.5625, 0.125, 0.5625, 0.15625, 0.53125, 0.15625, 0.53125, 0.09375, 0.5625, 0.09375, 0.5625, 0.125, 0.53125, 0.125, 0.53125, 0.0625, 0.5625, 0.0625, 0.5625, 0.09375, 0.53125, 0.09375, 0.53125, 0.03125, 0.5625, 0.03125, 0.5625, 0.0625, 0.53125, 0.0625, 0.3212, -0, 0.5625, 0.03125, 0.53125, 0.03125, 0.3212, -0, 0.59375, 0.03125, 0.5625, 0.03125, 0.5625, 0.03125, 0.59375, 0.03125, 0.59375, 0.0625, 0.5625, 0.0625, 0.5625, 0.0625, 0.59375, 0.0625, 0.59375, 0.09375, 0.5625, 0.09375, 0.5625, 0.09375, 0.59375, 0.09375, 0.59375, 0.125, 0.5625, 0.125, 0.5625, 0.125, 0.59375, 0.125, 0.59375, 0.15625, 0.5625, 0.15625, 0.5625, 0.15625, 0.59375, 0.15625, 0.59375, 0.1875, 0.5625, 0.1875, 0.5625, 0.1875, 0.59375, 0.1875, 0.59375, 0.21875, 0.5625, 0.21875, 0.5625, 0.21875, 0.59375, 0.21875, 0.59375, 0.25, 0.5625, 0.25, 0.5625, 0.25, 0.59375, 0.25, 0.59375, 0.28125, 0.5625, 0.28125, 0.5625, 0.28125, 0.59375, 0.28125, 0.59375, 0.3125, 0.5625, 0.3125, 0.5625, 0.3125, 0.59375, 0.3125, 0.59375, 0.34375, 0.5625, 0.34375, 0.5625, 0.34375, 0.59375, 0.34375, 0.59375, 0.375, 0.5625, 0.375, 0.5625, 0.375, 0.59375, 0.375, 0.59375, 0.40625, 0.5625, 0.40625, 0.5625, 0.40625, 0.59375, 0.40625, 0.59375, 0.4375, 0.5625, 0.4375, 0.5625, 0.4375, 0.59375, 0.4375, 0.59375, 0.46875, 0.5625, 0.46875, 0.5625, 0.46875, 0.59375, 0.46875, 0.59375, 0.5, 0.5625, 0.5, 0.5625, 0.5, 0.59375, 0.5, 0.59375, 0.53125, 0.5625, 0.53125, 0.5625, 0.53125, 0.59375, 0.53125, 0.59375, 0.5625, 0.5625, 0.5625, 0.5625, 0.5625, 0.59375, 0.5625, 0.59375, 0.59375, 0.5625, 0.59375, 0.5625, 0.59375, 0.59375, 0.59375, 0.59375, 0.625, 0.5625, 0.625, 0.5625, 0.625, 0.59375, 0.625, 0.59375, 0.65625, 0.5625, 0.65625, 0.5625, 0.65625, 0.59375, 0.65625, 0.59375, 0.6875, 0.5625, 0.6875, 0.5625, 0.6875, 0.59375, 0.6875, 0.59375, 0.71875, 0.5625, 0.71875, 0.5625, 0.71875, 0.59375, 0.71875, 0.59375, 0.75, 0.5625, 0.75, 0.5625, 0.75, 0.59375, 0.75, 0.59375, 0.78125, 0.5625, 0.78125, 0.5625, 0.78125, 0.59375, 0.78125, 0.59375, 0.8125, 0.5625, 0.8125, 0.5625, 0.8125, 0.59375, 0.8125, 0.59375, 0.84375, 0.5625, 0.84375, 0.5625, 0.84375, 0.59375, 0.84375, 0.59375, 0.875, 0.5625, 0.875, 0.5625, 0.875, 0.59375, 0.875, 0.59375, 0.90625, 0.5625, 0.90625, 0.5625, 0.90625, 0.59375, 0.90625, 0.59375, 0.9375, 0.5625, 0.9375, 0.5625, 0.9375, 0.59375, 0.9375, 0.59375, 0.96875, 0.5625, 0.96875, 0.59375, 0.96875, 0.63412, 1, 0.5625, 0.96875, 0.625, 0.96875, 0.63412, 1, 0.59375, 0.96875, 0.59375, 0.9375, 0.625, 0.9375, 0.625, 0.96875, 0.59375, 0.96875, 0.59375, 0.90625, 0.625, 0.90625, 0.625, 0.9375, 0.59375, 0.9375, 0.59375, 0.875, 0.625, 0.875, 0.625, 0.90625, 0.59375, 0.90625, 0.59375, 0.84375, 0.625, 0.84375, 0.625, 0.875, 0.59375, 0.875, 0.59375, 0.8125, 0.625, 0.8125, 0.625, 0.84375, 0.59375, 0.84375, 0.59375, 0.78125, 0.625, 0.78125, 0.625, 0.8125, 0.59375, 0.8125, 0.59375, 0.75, 0.625, 0.75, 0.625, 0.78125, 0.59375, 0.78125, 0.59375, 0.71875, 0.625, 0.71875, 0.625, 0.75, 0.59375, 0.75, 0.59375, 0.6875, 0.625, 0.6875, 0.625, 0.71875, 0.59375, 0.71875, 0.59375, 0.65625, 0.625, 0.65625, 0.625, 0.6875, 0.59375, 0.6875, 0.59375, 0.625, 0.625, 0.625, 0.625, 0.65625, 0.59375, 0.65625, 0.59375, 0.59375, 0.625, 0.59375, 0.625, 0.625, 0.59375, 0.625, 0.59375, 0.5625, 0.625, 0.5625, 0.625, 0.59375, 0.59375, 0.59375, 0.59375, 0.53125, 0.625, 0.53125, 0.625, 0.5625, 0.59375, 0.5625, 0.59375, 0.5, 0.625, 0.5, 0.625, 0.53125, 0.59375, 0.53125, 0.59375, 0.46875, 0.625, 0.46875, 0.625, 0.5, 0.59375, 0.5, 0.59375, 0.4375, 0.625, 0.4375, 0.625, 0.46875, 0.59375, 0.46875, 0.59375, 0.40625, 0.625, 0.40625, 0.625, 0.4375, 0.59375, 0.4375, 0.59375, 0.375, 0.625, 0.375, 0.625, 0.40625, 0.59375, 0.40625, 0.59375, 0.34375, 0.625, 0.34375, 0.625, 0.375, 0.59375, 0.375, 0.59375, 0.3125, 0.625, 0.3125, 0.625, 0.34375, 0.59375, 0.34375, 0.59375, 0.28125, 0.625, 0.28125, 0.625, 0.3125, 0.59375, 0.3125, 0.59375, 0.25, 0.625, 0.25, 0.625, 0.28125, 0.59375, 0.28125, 0.59375, 0.21875, 0.625, 0.21875, 0.625, 0.25, 0.59375, 0.25, 0.59375, 0.1875, 0.625, 0.1875, 0.625, 0.21875, 0.59375, 0.21875, 0.59375, 0.15625, 0.625, 0.15625, 0.625, 0.1875, 0.59375, 0.1875, 0.59375, 0.125, 0.625, 0.125, 0.625, 0.15625, 0.59375, 0.15625, 0.59375, 0.09375, 0.625, 0.09375, 0.625, 0.125, 0.59375, 0.125, 0.59375, 0.0625, 0.625, 0.0625, 0.625, 0.09375, 0.59375, 0.09375, 0.59375, 0.03125, 0.625, 0.03125, 0.625, 0.0625, 0.59375, 0.0625, 0.3212, -0, 0.625, 0.03125, 0.59375, 0.03125, 0.3212, -0, 0.65625, 0.03125, 0.625, 0.03125, 0.625, 0.03125, 0.65625, 0.03125, 0.65625, 0.0625, 0.625, 0.0625, 0.625, 0.0625, 0.65625, 0.0625, 0.65625, 0.09375, 0.625, 0.09375, 0.625, 0.09375, 0.65625, 0.09375, 0.65625, 0.125, 0.625, 0.125, 0.625, 0.125, 0.65625, 0.125, 0.65625, 0.15625, 0.625, 0.15625, 0.625, 0.15625, 0.65625, 0.15625, 0.65625, 0.1875, 0.625, 0.1875, 0.625, 0.1875, 0.65625, 0.1875, 0.65625, 0.21875, 0.625, 0.21875, 0.625, 0.21875, 0.65625, 0.21875, 0.65625, 0.25, 0.625, 0.25, 0.625, 0.25, 0.65625, 0.25, 0.65625, 0.28125, 0.625, 0.28125, 0.625, 0.28125, 0.65625, 0.28125, 0.65625, 0.3125, 0.625, 0.3125, 0.625, 0.3125, 0.65625, 0.3125, 0.65625, 0.34375, 0.625, 0.34375, 0.625, 0.34375, 0.65625, 0.34375, 0.65625, 0.375, 0.625, 0.375, 0.625, 0.375, 0.65625, 0.375, 0.65625, 0.40625, 0.625, 0.40625, 0.625, 0.40625, 0.65625, 0.40625, 0.65625, 0.4375, 0.625, 0.4375, 0.625, 0.4375, 0.65625, 0.4375, 0.65625, 0.46875, 0.625, 0.46875, 0.625, 0.46875, 0.65625, 0.46875, 0.65625, 0.5, 0.625, 0.5, 0.625, 0.5, 0.65625, 0.5, 0.65625, 0.53125, 0.625, 0.53125, 0.625, 0.53125, 0.65625, 0.53125, 0.65625, 0.5625, 0.625, 0.5625, 0.625, 0.5625, 0.65625, 0.5625, 0.65625, 0.59375, 0.625, 0.59375, 0.625, 0.59375, 0.65625, 0.59375, 0.65625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.65625, 0.625, 0.65625, 0.65625, 0.625, 0.65625, 0.625, 0.65625, 0.65625, 0.65625, 0.65625, 0.6875, 0.625, 0.6875, 0.625, 0.6875, 0.65625, 0.6875, 0.65625, 0.71875, 0.625, 0.71875, 0.625, 0.71875, 0.65625, 0.71875, 0.65625, 0.75, 0.625, 0.75, 0.625, 0.75, 0.65625, 0.75, 0.65625, 0.78125, 0.625, 0.78125, 0.625, 0.78125, 0.65625, 0.78125, 0.65625, 0.8125, 0.625, 0.8125, 0.625, 0.8125, 0.65625, 0.8125, 0.65625, 0.84375, 0.625, 0.84375, 0.625, 0.84375, 0.65625, 0.84375, 0.65625, 0.875, 0.625, 0.875, 0.625, 0.875, 0.65625, 0.875, 0.65625, 0.90625, 0.625, 0.90625, 0.625, 0.90625, 0.65625, 0.90625, 0.65625, 0.9375, 0.625, 0.9375, 0.625, 0.9375, 0.65625, 0.9375, 0.65625, 0.96875, 0.625, 0.96875, 0.65625, 0.96875, 0.63412, 1, 0.625, 0.96875, 0.6875, 0.96875, 0.63412, 1, 0.65625, 0.96875, 0.65625, 0.9375, 0.6875, 0.9375, 0.6875, 0.96875, 0.65625, 0.96875, 0.65625, 0.90625, 0.6875, 0.90625, 0.6875, 0.9375, 0.65625, 0.9375, 0.65625, 0.875, 0.6875, 0.875, 0.6875, 0.90625, 0.65625, 0.90625, 0.65625, 0.84375, 0.6875, 0.84375, 0.6875, 0.875, 0.65625, 0.875, 0.65625, 0.8125, 0.6875, 0.8125, 0.6875, 0.84375, 0.65625, 0.84375, 0.65625, 0.78125, 0.6875, 0.78125, 0.6875, 0.8125, 0.65625, 0.8125, 0.65625, 0.75, 0.6875, 0.75, 0.6875, 0.78125, 0.65625, 0.78125, 0.65625, 0.71875, 0.6875, 0.71875, 0.6875, 0.75, 0.65625, 0.75, 0.65625, 0.6875, 0.6875, 0.6875, 0.6875, 0.71875, 0.65625, 0.71875, 0.65625, 0.65625, 0.6875, 0.65625, 0.6875, 0.6875, 0.65625, 0.6875, 0.65625, 0.625, 0.6875, 0.625, 0.6875, 0.65625, 0.65625, 0.65625, 0.65625, 0.59375, 0.6875, 0.59375, 0.6875, 0.625, 0.65625, 0.625, 0.65625, 0.5625, 0.6875, 0.5625, 0.6875, 0.59375, 0.65625, 0.59375, 0.65625, 0.53125, 0.6875, 0.53125, 0.6875, 0.5625, 0.65625, 0.5625, 0.65625, 0.5, 0.6875, 0.5, 0.6875, 0.53125, 0.65625, 0.53125, 0.65625, 0.46875, 0.6875, 0.46875, 0.6875, 0.5, 0.65625, 0.5, 0.65625, 0.4375, 0.6875, 0.4375, 0.6875, 0.46875, 0.65625, 0.46875, 0.65625, 0.40625, 0.6875, 0.40625, 0.6875, 0.4375, 0.65625, 0.4375, 0.65625, 0.375, 0.6875, 0.375, 0.6875, 0.40625, 0.65625, 0.40625, 0.65625, 0.34375, 0.6875, 0.34375, 0.6875, 0.375, 0.65625, 0.375, 0.65625, 0.3125, 0.6875, 0.3125, 0.6875, 0.34375, 0.65625, 0.34375, 0.65625, 0.28125, 0.6875, 0.28125, 0.6875, 0.3125, 0.65625, 0.3125, 0.65625, 0.25, 0.6875, 0.25, 0.6875, 0.28125, 0.65625, 0.28125, 0.65625, 0.21875, 0.6875, 0.21875, 0.6875, 0.25, 0.65625, 0.25, 0.65625, 0.1875, 0.6875, 0.1875, 0.6875, 0.21875, 0.65625, 0.21875, 0.65625, 0.15625, 0.6875, 0.15625, 0.6875, 0.1875, 0.65625, 0.1875, 0.65625, 0.125, 0.6875, 0.125, 0.6875, 0.15625, 0.65625, 0.15625, 0.65625, 0.09375, 0.6875, 0.09375, 0.6875, 0.125, 0.65625, 0.125, 0.65625, 0.0625, 0.6875, 0.0625, 0.6875, 0.09375, 0.65625, 0.09375, 0.65625, 0.03125, 0.6875, 0.03125, 0.6875, 0.0625, 0.65625, 0.0625, 0.3212, -0, 0.6875, 0.03125, 0.65625, 0.03125, 0.3212, -0, 0.71875, 0.03125, 0.6875, 0.03125, 0.6875, 0.03125, 0.71875, 0.03125, 0.71875, 0.0625, 0.6875, 0.0625, 0.6875, 0.0625, 0.71875, 0.0625, 0.71875, 0.09375, 0.6875, 0.09375, 0.6875, 0.09375, 0.71875, 0.09375, 0.71875, 0.125, 0.6875, 0.125, 0.6875, 0.125, 0.71875, 0.125, 0.71875, 0.15625, 0.6875, 0.15625, 0.6875, 0.15625, 0.71875, 0.15625, 0.71875, 0.1875, 0.6875, 0.1875, 0.6875, 0.1875, 0.71875, 0.1875, 0.71875, 0.21875, 0.6875, 0.21875, 0.6875, 0.21875, 0.71875, 0.21875, 0.71875, 0.25, 0.6875, 0.25, 0.6875, 0.25, 0.71875, 0.25, 0.71875, 0.28125, 0.6875, 0.28125, 0.6875, 0.28125, 0.71875, 0.28125, 0.71875, 0.3125, 0.6875, 0.3125, 0.6875, 0.3125, 0.71875, 0.3125, 0.71875, 0.34375, 0.6875, 0.34375, 0.6875, 0.34375, 0.71875, 0.34375, 0.71875, 0.375, 0.6875, 0.375, 0.6875, 0.375, 0.71875, 0.375, 0.71875, 0.40625, 0.6875, 0.40625, 0.6875, 0.40625, 0.71875, 0.40625, 0.71875, 0.4375, 0.6875, 0.4375, 0.6875, 0.4375, 0.71875, 0.4375, 0.71875, 0.46875, 0.6875, 0.46875, 0.6875, 0.46875, 0.71875, 0.46875, 0.71875, 0.5, 0.6875, 0.5, 0.6875, 0.5, 0.71875, 0.5, 0.71875, 0.53125, 0.6875, 0.53125, 0.6875, 0.53125, 0.71875, 0.53125, 0.71875, 0.5625, 0.6875, 0.5625, 0.6875, 0.5625, 0.71875, 0.5625, 0.71875, 0.59375, 0.6875, 0.59375, 0.6875, 0.59375, 0.71875, 0.59375, 0.71875, 0.625, 0.6875, 0.625, 0.6875, 0.625, 0.71875, 0.625, 0.71875, 0.65625, 0.6875, 0.65625, 0.6875, 0.65625, 0.71875, 0.65625, 0.71875, 0.6875, 0.6875, 0.6875, 0.6875, 0.6875, 0.71875, 0.6875, 0.71875, 0.71875, 0.6875, 0.71875, 0.6875, 0.71875, 0.71875, 0.71875, 0.71875, 0.75, 0.6875, 0.75, 0.6875, 0.75, 0.71875, 0.75, 0.71875, 0.78125, 0.6875, 0.78125, 0.6875, 0.78125, 0.71875, 0.78125, 0.71875, 0.8125, 0.6875, 0.8125, 0.6875, 0.8125, 0.71875, 0.8125, 0.71875, 0.84375, 0.6875, 0.84375, 0.6875, 0.84375, 0.71875, 0.84375, 0.71875, 0.875, 0.6875, 0.875, 0.6875, 0.875, 0.71875, 0.875, 0.71875, 0.90625, 0.6875, 0.90625, 0.6875, 0.90625, 0.71875, 0.90625, 0.71875, 0.9375, 0.6875, 0.9375, 0.6875, 0.9375, 0.71875, 0.9375, 0.71875, 0.96875, 0.6875, 0.96875, 0.71875, 0.96875, 0.63412, 1, 0.6875, 0.96875, 0.75, 0.96875, 0.63412, 1, 0.71875, 0.96875, 0.71875, 0.9375, 0.75, 0.9375, 0.75, 0.96875, 0.71875, 0.96875, 0.71875, 0.90625, 0.75, 0.90625, 0.75, 0.9375, 0.71875, 0.9375, 0.71875, 0.875, 0.75, 0.875, 0.75, 0.90625, 0.71875, 0.90625, 0.71875, 0.84375, 0.75, 0.84375, 0.75, 0.875, 0.71875, 0.875, 0.71875, 0.8125, 0.75, 0.8125, 0.75, 0.84375, 0.71875, 0.84375, 0.71875, 0.78125, 0.75, 0.78125, 0.75, 0.8125, 0.71875, 0.8125, 0.71875, 0.75, 0.75, 0.75, 0.75, 0.78125, 0.71875, 0.78125, 0.71875, 0.71875, 0.75, 0.71875, 0.75, 0.75, 0.71875, 0.75, 0.71875, 0.6875, 0.75, 0.6875, 0.75, 0.71875, 0.71875, 0.71875, 0.71875, 0.65625, 0.75, 0.65625, 0.75, 0.6875, 0.71875, 0.6875, 0.71875, 0.625, 0.75, 0.625, 0.75, 0.65625, 0.71875, 0.65625, 0.71875, 0.59375, 0.75, 0.59375, 0.75, 0.625, 0.71875, 0.625, 0.71875, 0.5625, 0.75, 0.5625, 0.75, 0.59375, 0.71875, 0.59375, 0.71875, 0.53125, 0.75, 0.53125, 0.75, 0.5625, 0.71875, 0.5625, 0.71875, 0.5, 0.75, 0.5, 0.75, 0.53125, 0.71875, 0.53125, 0.71875, 0.46875, 0.75, 0.46875, 0.75, 0.5, 0.71875, 0.5, 0.71875, 0.4375, 0.75, 0.4375, 0.75, 0.46875, 0.71875, 0.46875, 0.71875, 0.40625, 0.75, 0.40625, 0.75, 0.4375, 0.71875, 0.4375, 0.71875, 0.375, 0.75, 0.375, 0.75, 0.40625, 0.71875, 0.40625, 0.71875, 0.34375, 0.75, 0.34375, 0.75, 0.375, 0.71875, 0.375, 0.71875, 0.3125, 0.75, 0.3125, 0.75, 0.34375, 0.71875, 0.34375, 0.71875, 0.28125, 0.75, 0.28125, 0.75, 0.3125, 0.71875, 0.3125, 0.71875, 0.25, 0.75, 0.25, 0.75, 0.28125, 0.71875, 0.28125, 0.71875, 0.21875, 0.75, 0.21875, 0.75, 0.25, 0.71875, 0.25, 0.71875, 0.1875, 0.75, 0.1875, 0.75, 0.21875, 0.71875, 0.21875, 0.71875, 0.15625, 0.75, 0.15625, 0.75, 0.1875, 0.71875, 0.1875, 0.71875, 0.125, 0.75, 0.125, 0.75, 0.15625, 0.71875, 0.15625, 0.71875, 0.09375, 0.75, 0.09375, 0.75, 0.125, 0.71875, 0.125, 0.71875, 0.0625, 0.75, 0.0625, 0.75, 0.09375, 0.71875, 0.09375, 0.71875, 0.03125, 0.75, 0.03125, 0.75, 0.0625, 0.71875, 0.0625, 0.3212, -0, 0.75, 0.03125, 0.71875, 0.03125 ],
+	                                'itemSize': 2,
+	                                'type': 'ARRAY_BUFFER'
+	                            },
+	                            'Vertex': {
+	                                'elements': [ -0, -0, -1, 0.09613, 0.01912, -0.99518, 0.09802, 0, -0.99518, 0.09802, 0, -0.99518, 0.09613, 0.01912, -0.99518, 0.19134, 0.03806, -0.98079, 0.19509, 0, -0.98079, 0.19509, 0, -0.98079, 0.19134, 0.03806, -0.98079, 0.28471, 0.05663, -0.95694, 0.29028, 0, -0.95694, 0.29028, 0, -0.95694, 0.28471, 0.05663, -0.95694, 0.37533, 0.07466, -0.92388, 0.38268, 0, -0.92388, 0.38268, 0, -0.92388, 0.37533, 0.07466, -0.92388, 0.46234, 0.09196, -0.88192, 0.4714, 0, -0.88192, 0.4714, 0, -0.88192, 0.46234, 0.09196, -0.88192, 0.54489, 0.10839, -0.83147, 0.55557, 0, -0.83147, 0.55557, 0, -0.83147, 0.54489, 0.10839, -0.83147, 0.6222, 0.12376, -0.77301, 0.63439, 0, -0.77301, 0.63439, 0, -0.77301, 0.6222, 0.12376, -0.77301, 0.69352, 0.13795, -0.70711, 0.70711, 0, -0.70711, 0.70711, 0, -0.70711, 0.69352, 0.13795, -0.70711, 0.75816, 0.15081, -0.63439, 0.77301, 0, -0.63439, 0.77301, 0, -0.63439, 0.75816, 0.15081, -0.63439, 0.81549, 0.16221, -0.55557, 0.83147, 0, -0.55557, 0.83147, 0, -0.55557, 0.81549, 0.16221, -0.55557, 0.86498, 0.17205, -0.4714, 0.88192, 0, -0.4714, 0.88192, 0, -0.4714, 0.86498, 0.17205, -0.4714, 0.90613, 0.18024, -0.38268, 0.92388, 0, -0.38268, 0.92388, 0, -0.38268, 0.90613, 0.18024, -0.38268, 0.93855, 0.18669, -0.29028, 0.95694, 0, -0.29028, 0.95694, 0, -0.29028, 0.93855, 0.18669, -0.29028, 0.96194, 0.19134, -0.19509, 0.98078, 0, -0.19509, 0.98078, 0, -0.19509, 0.96194, 0.19134, -0.19509, 0.97606, 0.19415, -0.09802, 0.99518, 0, -0.09802, 0.99518, 0, -0.09802, 0.97606, 0.19415, -0.09802, 0.98079, 0.19509, -0, 1, 0, -0, 1, 0, -0, 0.98079, 0.19509, -0, 0.97606, 0.19415, 0.09802, 0.99518, 0, 0.09802, 0.99518, 0, 0.09802, 0.97606, 0.19415, 0.09802, 0.96194, 0.19134, 0.19509, 0.98078, 0, 0.19509, 0.98078, 0, 0.19509, 0.96194, 0.19134, 0.19509, 0.93855, 0.18669, 0.29028, 0.95694, 0, 0.29028, 0.95694, 0, 0.29028, 0.93855, 0.18669, 0.29028, 0.90613, 0.18024, 0.38268, 0.92388, 0, 0.38268, 0.92388, 0, 0.38268, 0.90613, 0.18024, 0.38268, 0.86498, 0.17205, 0.4714, 0.88192, 0, 0.4714, 0.88192, 0, 0.4714, 0.86498, 0.17205, 0.4714, 0.81549, 0.16221, 0.55557, 0.83147, 0, 0.55557, 0.83147, 0, 0.55557, 0.81549, 0.16221, 0.55557, 0.75816, 0.15081, 0.63439, 0.77301, 0, 0.63439, 0.77301, 0, 0.63439, 0.75816, 0.15081, 0.63439, 0.69352, 0.13795, 0.70711, 0.70711, 0, 0.70711, 0.70711, 0, 0.70711, 0.69352, 0.13795, 0.70711, 0.6222, 0.12376, 0.77301, 0.63439, 0, 0.77301, 0.63439, 0, 0.77301, 0.6222, 0.12376, 0.77301, 0.5449, 0.10839, 0.83147, 0.55557, 0, 0.83147, 0.55557, 0, 0.83147, 0.5449, 0.10839, 0.83147, 0.46234, 0.09196, 0.88192, 0.4714, 0, 0.88192, 0.4714, 0, 0.88192, 0.46234, 0.09196, 0.88192, 0.37533, 0.07466, 0.92388, 0.38268, 0, 0.92388, 0.38268, 0, 0.92388, 0.37533, 0.07466, 0.92388, 0.28471, 0.05663, 0.95694, 0.29028, 0, 0.95694, 0.29028, 0, 0.95694, 0.28471, 0.05663, 0.95694, 0.19134, 0.03806, 0.98079, 0.19509, 0, 0.98079, 0.19509, 0, 0.98079, 0.19134, 0.03806, 0.98079, 0.09613, 0.01912, 0.99518, 0.09802, 0, 0.99518, 0.09613, 0.01912, 0.99518, 0, 0, 1, 0.09802, 0, 0.99518, 0.09056, 0.03751, 0.99518, 0, 0, 1, 0.09613, 0.01912, 0.99518, 0.19134, 0.03806, 0.98079, 0.18024, 0.07466, 0.98079, 0.09056, 0.03751, 0.99518, 0.09613, 0.01912, 0.99518, 0.28471, 0.05663, 0.95694, 0.26819, 0.11109, 0.95694, 0.18024, 0.07466, 0.98079, 0.19134, 0.03806, 0.98079, 0.37533, 0.07466, 0.92388, 0.35355, 0.14645, 0.92388, 0.26819, 0.11109, 0.95694, 0.28471, 0.05663, 0.95694, 0.46234, 0.09196, 0.88192, 0.43551, 0.1804, 0.88192, 0.35355, 0.14645, 0.92388, 0.37533, 0.07466, 0.92388, 0.5449, 0.10839, 0.83147, 0.51328, 0.21261, 0.83147, 0.43551, 0.1804, 0.88192, 0.46234, 0.09196, 0.88192, 0.6222, 0.12376, 0.77301, 0.5861, 0.24277, 0.77301, 0.51328, 0.21261, 0.83147, 0.5449, 0.10839, 0.83147, 0.69352, 0.13795, 0.70711, 0.65328, 0.2706, 0.70711, 0.5861, 0.24277, 0.77301, 0.6222, 0.12376, 0.77301, 0.75816, 0.15081, 0.63439, 0.71417, 0.29582, 0.63439, 0.65328, 0.2706, 0.70711, 0.69352, 0.13795, 0.70711, 0.81549, 0.16221, 0.55557, 0.76818, 0.31819, 0.55557, 0.71417, 0.29582, 0.63439, 0.75816, 0.15081, 0.63439, 0.86498, 0.17205, 0.4714, 0.81479, 0.3375, 0.4714, 0.76818, 0.31819, 0.55557, 0.81549, 0.16221, 0.55557, 0.90613, 0.18024, 0.38268, 0.85355, 0.35355, 0.38268, 0.81479, 0.3375, 0.4714, 0.86498, 0.17205, 0.4714, 0.93855, 0.18669, 0.29028, 0.8841, 0.36621, 0.29028, 0.85355, 0.35355, 0.38268, 0.90613, 0.18024, 0.38268, 0.96194, 0.19134, 0.19509, 0.90613, 0.37533, 0.19509, 0.8841, 0.36621, 0.29028, 0.93855, 0.18669, 0.29028, 0.97606, 0.19415, 0.09802, 0.91943, 0.38084, 0.09802, 0.90613, 0.37533, 0.19509, 0.96194, 0.19134, 0.19509, 0.98079, 0.19509, -0, 0.92388, 0.38268, -0, 0.91943, 0.38084, 0.09802, 0.97606, 0.19415, 0.09802, 0.97606, 0.19415, -0.09802, 0.91943, 0.38084, -0.09802, 0.92388, 0.38268, -0, 0.98079, 0.19509, -0, 0.96194, 0.19134, -0.19509, 0.90613, 0.37533, -0.19509, 0.91943, 0.38084, -0.09802, 0.97606, 0.19415, -0.09802, 0.93855, 0.18669, -0.29028, 0.8841, 0.36621, -0.29028, 0.90613, 0.37533, -0.19509, 0.96194, 0.19134, -0.19509, 0.90613, 0.18024, -0.38268, 0.85355, 0.35355, -0.38268, 0.8841, 0.36621, -0.29028, 0.93855, 0.18669, -0.29028, 0.86498, 0.17205, -0.4714, 0.81479, 0.3375, -0.4714, 0.85355, 0.35355, -0.38268, 0.90613, 0.18024, -0.38268, 0.81549, 0.16221, -0.55557, 0.76818, 0.31819, -0.55557, 0.81479, 0.3375, -0.4714, 0.86498, 0.17205, -0.4714, 0.75816, 0.15081, -0.63439, 0.71417, 0.29582, -0.63439, 0.76818, 0.31819, -0.55557, 0.81549, 0.16221, -0.55557, 0.69352, 0.13795, -0.70711, 0.65328, 0.2706, -0.70711, 0.71417, 0.29582, -0.63439, 0.75816, 0.15081, -0.63439, 0.6222, 0.12376, -0.77301, 0.5861, 0.24277, -0.77301, 0.65328, 0.2706, -0.70711, 0.69352, 0.13795, -0.70711, 0.54489, 0.10839, -0.83147, 0.51328, 0.21261, -0.83147, 0.5861, 0.24277, -0.77301, 0.6222, 0.12376, -0.77301, 0.46234, 0.09196, -0.88192, 0.43551, 0.1804, -0.88192, 0.51328, 0.21261, -0.83147, 0.54489, 0.10839, -0.83147, 0.37533, 0.07466, -0.92388, 0.35355, 0.14645, -0.92388, 0.43551, 0.1804, -0.88192, 0.46234, 0.09196, -0.88192, 0.28471, 0.05663, -0.95694, 0.26819, 0.11109, -0.95694, 0.35355, 0.14645, -0.92388, 0.37533, 0.07466, -0.92388, 0.19134, 0.03806, -0.98079, 0.18024, 0.07466, -0.98079, 0.26819, 0.11109, -0.95694, 0.28471, 0.05663, -0.95694, 0.09613, 0.01912, -0.99518, 0.09056, 0.03751, -0.99518, 0.18024, 0.07466, -0.98079, 0.19134, 0.03806, -0.98079, -0, -0, -1, 0.09056, 0.03751, -0.99518, 0.09613, 0.01912, -0.99518, -0, -0, -1, 0.0815, 0.05446, -0.99518, 0.09056, 0.03751, -0.99518, 0.09056, 0.03751, -0.99518, 0.0815, 0.05446, -0.99518, 0.16221, 0.10839, -0.98079, 0.18024, 0.07466, -0.98079, 0.18024, 0.07466, -0.98079, 0.16221, 0.10839, -0.98079, 0.24136, 0.16127, -0.95694, 0.26819, 0.11109, -0.95694, 0.26819, 0.11109, -0.95694, 0.24136, 0.16127, -0.95694, 0.31819, 0.21261, -0.92388, 0.35355, 0.14645, -0.92388, 0.35355, 0.14645, -0.92388, 0.31819, 0.21261, -0.92388, 0.39195, 0.26189, -0.88192, 0.43551, 0.1804, -0.88192, 0.43551, 0.1804, -0.88192, 0.39195, 0.26189, -0.88192, 0.46194, 0.30866, -0.83147, 0.51328, 0.21261, -0.83147, 0.51328, 0.21261, -0.83147, 0.46194, 0.30866, -0.83147, 0.52748, 0.35245, -0.77301, 0.5861, 0.24277, -0.77301, 0.5861, 0.24277, -0.77301, 0.52748, 0.35245, -0.77301, 0.58794, 0.39285, -0.70711, 0.65328, 0.2706, -0.70711, 0.65328, 0.2706, -0.70711, 0.58794, 0.39285, -0.70711, 0.64273, 0.42946, -0.63439, 0.71417, 0.29582, -0.63439, 0.71417, 0.29582, -0.63439, 0.64273, 0.42946, -0.63439, 0.69134, 0.46194, -0.55557, 0.76818, 0.31819, -0.55557, 0.76818, 0.31819, -0.55557, 0.69134, 0.46194, -0.55557, 0.73329, 0.48997, -0.4714, 0.81479, 0.3375, -0.4714, 0.81479, 0.3375, -0.4714, 0.73329, 0.48997, -0.4714, 0.76818, 0.51328, -0.38268, 0.85355, 0.35355, -0.38268, 0.85355, 0.35355, -0.38268, 0.76818, 0.51328, -0.38268, 0.79567, 0.53165, -0.29028, 0.8841, 0.36621, -0.29028, 0.8841, 0.36621, -0.29028, 0.79567, 0.53165, -0.29028, 0.81549, 0.5449, -0.19509, 0.90613, 0.37533, -0.19509, 0.90613, 0.37533, -0.19509, 0.81549, 0.5449, -0.19509, 0.82747, 0.55289, -0.09802, 0.91943, 0.38084, -0.09802, 0.91943, 0.38084, -0.09802, 0.82747, 0.55289, -0.09802, 0.83147, 0.55557, -0, 0.92388, 0.38268, -0, 0.92388, 0.38268, -0, 0.83147, 0.55557, -0, 0.82747, 0.55289, 0.09802, 0.91943, 0.38084, 0.09802, 0.91943, 0.38084, 0.09802, 0.82747, 0.55289, 0.09802, 0.81549, 0.5449, 0.19509, 0.90613, 0.37533, 0.19509, 0.90613, 0.37533, 0.19509, 0.81549, 0.5449, 0.19509, 0.79567, 0.53165, 0.29028, 0.8841, 0.36621, 0.29028, 0.8841, 0.36621, 0.29028, 0.79567, 0.53165, 0.29028, 0.76818, 0.51328, 0.38268, 0.85355, 0.35355, 0.38268, 0.85355, 0.35355, 0.38268, 0.76818, 0.51328, 0.38268, 0.73329, 0.48997, 0.4714, 0.81479, 0.3375, 0.4714, 0.81479, 0.3375, 0.4714, 0.73329, 0.48997, 0.4714, 0.69134, 0.46194, 0.55557, 0.76818, 0.31819, 0.55557, 0.76818, 0.31819, 0.55557, 0.69134, 0.46194, 0.55557, 0.64273, 0.42946, 0.63439, 0.71417, 0.29582, 0.63439, 0.71417, 0.29582, 0.63439, 0.64273, 0.42946, 0.63439, 0.58794, 0.39285, 0.70711, 0.65328, 0.2706, 0.70711, 0.65328, 0.2706, 0.70711, 0.58794, 0.39285, 0.70711, 0.52748, 0.35245, 0.77301, 0.5861, 0.24277, 0.77301, 0.5861, 0.24277, 0.77301, 0.52748, 0.35245, 0.77301, 0.46194, 0.30866, 0.83147, 0.51328, 0.21261, 0.83147, 0.51328, 0.21261, 0.83147, 0.46194, 0.30866, 0.83147, 0.39195, 0.26189, 0.88192, 0.43551, 0.1804, 0.88192, 0.43551, 0.1804, 0.88192, 0.39195, 0.26189, 0.88192, 0.31819, 0.21261, 0.92388, 0.35355, 0.14645, 0.92388, 0.35355, 0.14645, 0.92388, 0.31819, 0.21261, 0.92388, 0.24136, 0.16127, 0.95694, 0.26819, 0.11109, 0.95694, 0.26819, 0.11109, 0.95694, 0.24136, 0.16127, 0.95694, 0.16221, 0.10839, 0.98079, 0.18024, 0.07466, 0.98079, 0.18024, 0.07466, 0.98079, 0.16221, 0.10839, 0.98079, 0.0815, 0.05446, 0.99518, 0.09056, 0.03751, 0.99518, 0.0815, 0.05446, 0.99518, 0, 0, 1, 0.09056, 0.03751, 0.99518, 0.06931, 0.06931, 0.99518, 0, 0, 1, 0.0815, 0.05446, 0.99518, 0.16221, 0.10839, 0.98079, 0.13795, 0.13795, 0.98079, 0.06931, 0.06931, 0.99518, 0.0815, 0.05446, 0.99518, 0.24136, 0.16127, 0.95694, 0.20526, 0.20526, 0.95694, 0.13795, 0.13795, 0.98079, 0.16221, 0.10839, 0.98079, 0.31819, 0.21261, 0.92388, 0.2706, 0.2706, 0.92388, 0.20526, 0.20526, 0.95694, 0.24136, 0.16127, 0.95694, 0.39195, 0.26189, 0.88192, 0.33333, 0.33333, 0.88192, 0.2706, 0.2706, 0.92388, 0.31819, 0.21261, 0.92388, 0.46194, 0.30866, 0.83147, 0.39285, 0.39285, 0.83147, 0.33333, 0.33333, 0.88192, 0.39195, 0.26189, 0.88192, 0.52748, 0.35245, 0.77301, 0.44858, 0.44858, 0.77301, 0.39285, 0.39285, 0.83147, 0.46194, 0.30866, 0.83147, 0.58794, 0.39285, 0.70711, 0.5, 0.5, 0.70711, 0.44858, 0.44858, 0.77301, 0.52748, 0.35245, 0.77301, 0.64273, 0.42946, 0.63439, 0.5466, 0.5466, 0.63439, 0.5, 0.5, 0.70711, 0.58794, 0.39285, 0.70711, 0.69134, 0.46194, 0.55557, 0.58794, 0.58794, 0.55557, 0.5466, 0.5466, 0.63439, 0.64273, 0.42946, 0.63439, 0.73329, 0.48997, 0.4714, 0.62361, 0.62361, 0.4714, 0.58794, 0.58794, 0.55557, 0.69134, 0.46194, 0.55557, 0.76818, 0.51328, 0.38268, 0.65328, 0.65328, 0.38268, 0.62361, 0.62361, 0.4714, 0.73329, 0.48997, 0.4714, 0.79567, 0.53165, 0.29028, 0.67666, 0.67666, 0.29028, 0.65328, 0.65328, 0.38268, 0.76818, 0.51328, 0.38268, 0.81549, 0.5449, 0.19509, 0.69352, 0.69352, 0.19509, 0.67666, 0.67666, 0.29028, 0.79567, 0.53165, 0.29028, 0.82747, 0.55289, 0.09802, 0.7037, 0.7037, 0.09802, 0.69352, 0.69352, 0.19509, 0.81549, 0.5449, 0.19509, 0.83147, 0.55557, -0, 0.70711, 0.70711, -0, 0.7037, 0.7037, 0.09802, 0.82747, 0.55289, 0.09802, 0.82747, 0.55289, -0.09802, 0.7037, 0.7037, -0.09802, 0.70711, 0.70711, -0, 0.83147, 0.55557, -0, 0.81549, 0.5449, -0.19509, 0.69352, 0.69352, -0.19509, 0.7037, 0.7037, -0.09802, 0.82747, 0.55289, -0.09802, 0.79567, 0.53165, -0.29028, 0.67666, 0.67666, -0.29028, 0.69352, 0.69352, -0.19509, 0.81549, 0.5449, -0.19509, 0.76818, 0.51328, -0.38268, 0.65328, 0.65328, -0.38268, 0.67666, 0.67666, -0.29028, 0.79567, 0.53165, -0.29028, 0.73329, 0.48997, -0.4714, 0.62361, 0.62361, -0.4714, 0.65328, 0.65328, -0.38268, 0.76818, 0.51328, -0.38268, 0.69134, 0.46194, -0.55557, 0.58794, 0.58794, -0.55557, 0.62361, 0.62361, -0.4714, 0.73329, 0.48997, -0.4714, 0.64273, 0.42946, -0.63439, 0.5466, 0.5466, -0.63439, 0.58794, 0.58794, -0.55557, 0.69134, 0.46194, -0.55557, 0.58794, 0.39285, -0.70711, 0.5, 0.5, -0.70711, 0.5466, 0.5466, -0.63439, 0.64273, 0.42946, -0.63439, 0.52748, 0.35245, -0.77301, 0.44858, 0.44858, -0.77301, 0.5, 0.5, -0.70711, 0.58794, 0.39285, -0.70711, 0.46194, 0.30866, -0.83147, 0.39285, 0.39285, -0.83147, 0.44858, 0.44858, -0.77301, 0.52748, 0.35245, -0.77301, 0.39195, 0.26189, -0.88192, 0.33333, 0.33333, -0.88192, 0.39285, 0.39285, -0.83147, 0.46194, 0.30866, -0.83147, 0.31819, 0.21261, -0.92388, 0.2706, 0.2706, -0.92388, 0.33333, 0.33333, -0.88192, 0.39195, 0.26189, -0.88192, 0.24136, 0.16127, -0.95694, 0.20526, 0.20526, -0.95694, 0.2706, 0.2706, -0.92388, 0.31819, 0.21261, -0.92388, 0.16221, 0.10839, -0.98079, 0.13795, 0.13795, -0.98079, 0.20526, 0.20526, -0.95694, 0.24136, 0.16127, -0.95694, 0.0815, 0.05446, -0.99518, 0.06931, 0.06931, -0.99518, 0.13795, 0.13795, -0.98079, 0.16221, 0.10839, -0.98079, -0, -0, -1, 0.06931, 0.06931, -0.99518, 0.0815, 0.05446, -0.99518, -0, -0, -1, 0.05445, 0.0815, -0.99518, 0.06931, 0.06931, -0.99518, 0.06931, 0.06931, -0.99518, 0.05445, 0.0815, -0.99518, 0.10839, 0.16221, -0.98079, 0.13795, 0.13795, -0.98079, 0.13795, 0.13795, -0.98079, 0.10839, 0.16221, -0.98079, 0.16127, 0.24136, -0.95694, 0.20526, 0.20526, -0.95694, 0.20526, 0.20526, -0.95694, 0.16127, 0.24136, -0.95694, 0.21261, 0.31819, -0.92388, 0.2706, 0.2706, -0.92388, 0.2706, 0.2706, -0.92388, 0.21261, 0.31819, -0.92388, 0.26189, 0.39195, -0.88192, 0.33333, 0.33333, -0.88192, 0.33333, 0.33333, -0.88192, 0.26189, 0.39195, -0.88192, 0.30866, 0.46194, -0.83147, 0.39285, 0.39285, -0.83147, 0.39285, 0.39285, -0.83147, 0.30866, 0.46194, -0.83147, 0.35245, 0.52748, -0.77301, 0.44858, 0.44858, -0.77301, 0.44858, 0.44858, -0.77301, 0.35245, 0.52748, -0.77301, 0.39285, 0.58794, -0.70711, 0.5, 0.5, -0.70711, 0.5, 0.5, -0.70711, 0.39285, 0.58794, -0.70711, 0.42946, 0.64273, -0.63439, 0.5466, 0.5466, -0.63439, 0.5466, 0.5466, -0.63439, 0.42946, 0.64273, -0.63439, 0.46194, 0.69134, -0.55557, 0.58794, 0.58794, -0.55557, 0.58794, 0.58794, -0.55557, 0.46194, 0.69134, -0.55557, 0.48997, 0.73329, -0.4714, 0.62361, 0.62361, -0.4714, 0.62361, 0.62361, -0.4714, 0.48997, 0.73329, -0.4714, 0.51328, 0.76818, -0.38268, 0.65328, 0.65328, -0.38268, 0.65328, 0.65328, -0.38268, 0.51328, 0.76818, -0.38268, 0.53165, 0.79567, -0.29028, 0.67666, 0.67666, -0.29028, 0.67666, 0.67666, -0.29028, 0.53165, 0.79567, -0.29028, 0.54489, 0.81549, -0.19509, 0.69352, 0.69352, -0.19509, 0.69352, 0.69352, -0.19509, 0.54489, 0.81549, -0.19509, 0.55289, 0.82747, -0.09802, 0.7037, 0.7037, -0.09802, 0.7037, 0.7037, -0.09802, 0.55289, 0.82747, -0.09802, 0.55557, 0.83147, -0, 0.70711, 0.70711, -0, 0.70711, 0.70711, -0, 0.55557, 0.83147, -0, 0.55289, 0.82747, 0.09802, 0.7037, 0.7037, 0.09802, 0.7037, 0.7037, 0.09802, 0.55289, 0.82747, 0.09802, 0.54489, 0.81549, 0.19509, 0.69352, 0.69352, 0.19509, 0.69352, 0.69352, 0.19509, 0.54489, 0.81549, 0.19509, 0.53165, 0.79567, 0.29028, 0.67666, 0.67666, 0.29028, 0.67666, 0.67666, 0.29028, 0.53165, 0.79567, 0.29028, 0.51328, 0.76818, 0.38268, 0.65328, 0.65328, 0.38268, 0.65328, 0.65328, 0.38268, 0.51328, 0.76818, 0.38268, 0.48997, 0.73329, 0.4714, 0.62361, 0.62361, 0.4714, 0.62361, 0.62361, 0.4714, 0.48997, 0.73329, 0.4714, 0.46194, 0.69134, 0.55557, 0.58794, 0.58794, 0.55557, 0.58794, 0.58794, 0.55557, 0.46194, 0.69134, 0.55557, 0.42946, 0.64273, 0.63439, 0.5466, 0.5466, 0.63439, 0.5466, 0.5466, 0.63439, 0.42946, 0.64273, 0.63439, 0.39285, 0.58794, 0.70711, 0.5, 0.5, 0.70711, 0.5, 0.5, 0.70711, 0.39285, 0.58794, 0.70711, 0.35245, 0.52748, 0.77301, 0.44858, 0.44858, 0.77301, 0.44858, 0.44858, 0.77301, 0.35245, 0.52748, 0.77301, 0.30866, 0.46194, 0.83147, 0.39285, 0.39285, 0.83147, 0.39285, 0.39285, 0.83147, 0.30866, 0.46194, 0.83147, 0.26189, 0.39195, 0.88192, 0.33333, 0.33333, 0.88192, 0.33333, 0.33333, 0.88192, 0.26189, 0.39195, 0.88192, 0.21261, 0.31819, 0.92388, 0.2706, 0.2706, 0.92388, 0.2706, 0.2706, 0.92388, 0.21261, 0.31819, 0.92388, 0.16127, 0.24136, 0.95694, 0.20526, 0.20526, 0.95694, 0.20526, 0.20526, 0.95694, 0.16127, 0.24136, 0.95694, 0.10839, 0.16221, 0.98079, 0.13795, 0.13795, 0.98079, 0.13795, 0.13795, 0.98079, 0.10839, 0.16221, 0.98079, 0.05446, 0.0815, 0.99518, 0.06931, 0.06931, 0.99518, 0.05446, 0.0815, 0.99518, 0, 0, 1, 0.06931, 0.06931, 0.99518, 0.03751, 0.09056, 0.99518, 0, 0, 1, 0.05446, 0.0815, 0.99518, 0.10839, 0.16221, 0.98079, 0.07466, 0.18024, 0.98079, 0.03751, 0.09056, 0.99518, 0.05446, 0.0815, 0.99518, 0.16127, 0.24136, 0.95694, 0.11109, 0.26819, 0.95694, 0.07466, 0.18024, 0.98079, 0.10839, 0.16221, 0.98079, 0.21261, 0.31819, 0.92388, 0.14645, 0.35355, 0.92388, 0.11109, 0.26819, 0.95694, 0.16127, 0.24136, 0.95694, 0.26189, 0.39195, 0.88192, 0.1804, 0.43551, 0.88192, 0.14645, 0.35355, 0.92388, 0.21261, 0.31819, 0.92388, 0.30866, 0.46194, 0.83147, 0.21261, 0.51328, 0.83147, 0.1804, 0.43551, 0.88192, 0.26189, 0.39195, 0.88192, 0.35245, 0.52748, 0.77301, 0.24277, 0.5861, 0.77301, 0.21261, 0.51328, 0.83147, 0.30866, 0.46194, 0.83147, 0.39285, 0.58794, 0.70711, 0.2706, 0.65328, 0.70711, 0.24277, 0.5861, 0.77301, 0.35245, 0.52748, 0.77301, 0.42946, 0.64273, 0.63439, 0.29582, 0.71417, 0.63439, 0.2706, 0.65328, 0.70711, 0.39285, 0.58794, 0.70711, 0.46194, 0.69134, 0.55557, 0.31819, 0.76818, 0.55557, 0.29582, 0.71417, 0.63439, 0.42946, 0.64273, 0.63439, 0.48997, 0.73329, 0.4714, 0.3375, 0.81479, 0.4714, 0.31819, 0.76818, 0.55557, 0.46194, 0.69134, 0.55557, 0.51328, 0.76818, 0.38268, 0.35355, 0.85355, 0.38268, 0.3375, 0.81479, 0.4714, 0.48997, 0.73329, 0.4714, 0.53165, 0.79567, 0.29028, 0.36621, 0.8841, 0.29028, 0.35355, 0.85355, 0.38268, 0.51328, 0.76818, 0.38268, 0.54489, 0.81549, 0.19509, 0.37533, 0.90613, 0.19509, 0.36621, 0.8841, 0.29028, 0.53165, 0.79567, 0.29028, 0.55289, 0.82747, 0.09802, 0.38084, 0.91943, 0.09802, 0.37533, 0.90613, 0.19509, 0.54489, 0.81549, 0.19509, 0.55557, 0.83147, -0, 0.38268, 0.92388, -0, 0.38084, 0.91943, 0.09802, 0.55289, 0.82747, 0.09802, 0.55289, 0.82747, -0.09802, 0.38084, 0.91943, -0.09802, 0.38268, 0.92388, -0, 0.55557, 0.83147, -0, 0.54489, 0.81549, -0.19509, 0.37533, 0.90613, -0.19509, 0.38084, 0.91943, -0.09802, 0.55289, 0.82747, -0.09802, 0.53165, 0.79567, -0.29028, 0.36621, 0.8841, -0.29028, 0.37533, 0.90613, -0.19509, 0.54489, 0.81549, -0.19509, 0.51328, 0.76818, -0.38268, 0.35355, 0.85355, -0.38268, 0.36621, 0.8841, -0.29028, 0.53165, 0.79567, -0.29028, 0.48997, 0.73329, -0.4714, 0.3375, 0.81479, -0.4714, 0.35355, 0.85355, -0.38268, 0.51328, 0.76818, -0.38268, 0.46194, 0.69134, -0.55557, 0.31819, 0.76818, -0.55557, 0.3375, 0.81479, -0.4714, 0.48997, 0.73329, -0.4714, 0.42946, 0.64273, -0.63439, 0.29582, 0.71417, -0.63439, 0.31819, 0.76818, -0.55557, 0.46194, 0.69134, -0.55557, 0.39285, 0.58794, -0.70711, 0.2706, 0.65328, -0.70711, 0.29582, 0.71417, -0.63439, 0.42946, 0.64273, -0.63439, 0.35245, 0.52748, -0.77301, 0.24277, 0.5861, -0.77301, 0.2706, 0.65328, -0.70711, 0.39285, 0.58794, -0.70711, 0.30866, 0.46194, -0.83147, 0.21261, 0.51328, -0.83147, 0.24277, 0.5861, -0.77301, 0.35245, 0.52748, -0.77301, 0.26189, 0.39195, -0.88192, 0.1804, 0.43551, -0.88192, 0.21261, 0.51328, -0.83147, 0.30866, 0.46194, -0.83147, 0.21261, 0.31819, -0.92388, 0.14645, 0.35355, -0.92388, 0.1804, 0.43551, -0.88192, 0.26189, 0.39195, -0.88192, 0.16127, 0.24136, -0.95694, 0.11109, 0.26819, -0.95694, 0.14645, 0.35355, -0.92388, 0.21261, 0.31819, -0.92388, 0.10839, 0.16221, -0.98079, 0.07466, 0.18024, -0.98079, 0.11109, 0.26819, -0.95694, 0.16127, 0.24136, -0.95694, 0.05445, 0.0815, -0.99518, 0.03751, 0.09056, -0.99518, 0.07466, 0.18024, -0.98079, 0.10839, 0.16221, -0.98079, -0, -0, -1, 0.03751, 0.09056, -0.99518, 0.05445, 0.0815, -0.99518, -0, -0, -1, 0.01912, 0.09613, -0.99518, 0.03751, 0.09056, -0.99518, 0.03751, 0.09056, -0.99518, 0.01912, 0.09613, -0.99518, 0.03806, 0.19134, -0.98079, 0.07466, 0.18024, -0.98079, 0.07466, 0.18024, -0.98079, 0.03806, 0.19134, -0.98079, 0.05663, 0.28471, -0.95694, 0.11109, 0.26819, -0.95694, 0.11109, 0.26819, -0.95694, 0.05663, 0.28471, -0.95694, 0.07466, 0.37533, -0.92388, 0.14645, 0.35355, -0.92388, 0.14645, 0.35355, -0.92388, 0.07466, 0.37533, -0.92388, 0.09196, 0.46234, -0.88192, 0.1804, 0.43551, -0.88192, 0.1804, 0.43551, -0.88192, 0.09196, 0.46234, -0.88192, 0.10839, 0.54489, -0.83147, 0.21261, 0.51328, -0.83147, 0.21261, 0.51328, -0.83147, 0.10839, 0.54489, -0.83147, 0.12376, 0.6222, -0.77301, 0.24277, 0.5861, -0.77301, 0.24277, 0.5861, -0.77301, 0.12376, 0.6222, -0.77301, 0.13795, 0.69352, -0.70711, 0.2706, 0.65328, -0.70711, 0.2706, 0.65328, -0.70711, 0.13795, 0.69352, -0.70711, 0.15081, 0.75816, -0.63439, 0.29582, 0.71417, -0.63439, 0.29582, 0.71417, -0.63439, 0.15081, 0.75816, -0.63439, 0.16221, 0.81549, -0.55557, 0.31819, 0.76818, -0.55557, 0.31819, 0.76818, -0.55557, 0.16221, 0.81549, -0.55557, 0.17205, 0.86498, -0.4714, 0.3375, 0.81479, -0.4714, 0.3375, 0.81479, -0.4714, 0.17205, 0.86498, -0.4714, 0.18024, 0.90613, -0.38268, 0.35355, 0.85355, -0.38268, 0.35355, 0.85355, -0.38268, 0.18024, 0.90613, -0.38268, 0.18669, 0.93855, -0.29028, 0.36621, 0.8841, -0.29028, 0.36621, 0.8841, -0.29028, 0.18669, 0.93855, -0.29028, 0.19134, 0.96194, -0.19509, 0.37533, 0.90613, -0.19509, 0.37533, 0.90613, -0.19509, 0.19134, 0.96194, -0.19509, 0.19415, 0.97606, -0.09802, 0.38084, 0.91943, -0.09802, 0.38084, 0.91943, -0.09802, 0.19415, 0.97606, -0.09802, 0.19509, 0.98079, -0, 0.38268, 0.92388, -0, 0.38268, 0.92388, -0, 0.19509, 0.98079, -0, 0.19415, 0.97606, 0.09802, 0.38084, 0.91943, 0.09802, 0.38084, 0.91943, 0.09802, 0.19415, 0.97606, 0.09802, 0.19134, 0.96194, 0.19509, 0.37533, 0.90613, 0.19509, 0.37533, 0.90613, 0.19509, 0.19134, 0.96194, 0.19509, 0.18669, 0.93855, 0.29028, 0.36621, 0.8841, 0.29028, 0.36621, 0.8841, 0.29028, 0.18669, 0.93855, 0.29028, 0.18024, 0.90613, 0.38268, 0.35355, 0.85355, 0.38268, 0.35355, 0.85355, 0.38268, 0.18024, 0.90613, 0.38268, 0.17205, 0.86498, 0.4714, 0.3375, 0.81479, 0.4714, 0.3375, 0.81479, 0.4714, 0.17205, 0.86498, 0.4714, 0.16221, 0.81549, 0.55557, 0.31819, 0.76818, 0.55557, 0.31819, 0.76818, 0.55557, 0.16221, 0.81549, 0.55557, 0.15081, 0.75816, 0.63439, 0.29582, 0.71417, 0.63439, 0.29582, 0.71417, 0.63439, 0.15081, 0.75816, 0.63439, 0.13795, 0.69352, 0.70711, 0.2706, 0.65328, 0.70711, 0.2706, 0.65328, 0.70711, 0.13795, 0.69352, 0.70711, 0.12376, 0.6222, 0.77301, 0.24277, 0.5861, 0.77301, 0.24277, 0.5861, 0.77301, 0.12376, 0.6222, 0.77301, 0.10839, 0.5449, 0.83147, 0.21261, 0.51328, 0.83147, 0.21261, 0.51328, 0.83147, 0.10839, 0.5449, 0.83147, 0.09196, 0.46234, 0.88192, 0.1804, 0.43551, 0.88192, 0.1804, 0.43551, 0.88192, 0.09196, 0.46234, 0.88192, 0.07466, 0.37533, 0.92388, 0.14645, 0.35355, 0.92388, 0.14645, 0.35355, 0.92388, 0.07466, 0.37533, 0.92388, 0.05663, 0.28471, 0.95694, 0.11109, 0.26819, 0.95694, 0.11109, 0.26819, 0.95694, 0.05663, 0.28471, 0.95694, 0.03806, 0.19134, 0.98079, 0.07466, 0.18024, 0.98079, 0.07466, 0.18024, 0.98079, 0.03806, 0.19134, 0.98079, 0.01912, 0.09613, 0.99518, 0.03751, 0.09056, 0.99518, 0.01912, 0.09613, 0.99518, 0, 0, 1, 0.03751, 0.09056, 0.99518, -0, 0.09802, 0.99518, 0, 0, 1, 0.01912, 0.09613, 0.99518, 0.03806, 0.19134, 0.98079, -0, 0.19509, 0.98079, -0, 0.09802, 0.99518, 0.01912, 0.09613, 0.99518, 0.05663, 0.28471, 0.95694, -0, 0.29028, 0.95694, -0, 0.19509, 0.98079, 0.03806, 0.19134, 0.98079, 0.07466, 0.37533, 0.92388, -0, 0.38268, 0.92388, -0, 0.29028, 0.95694, 0.05663, 0.28471, 0.95694, 0.09196, 0.46234, 0.88192, -0, 0.4714, 0.88192, -0, 0.38268, 0.92388, 0.07466, 0.37533, 0.92388, 0.10839, 0.5449, 0.83147, -0, 0.55557, 0.83147, -0, 0.4714, 0.88192, 0.09196, 0.46234, 0.88192, 0.12376, 0.6222, 0.77301, -0, 0.63439, 0.77301, -0, 0.55557, 0.83147, 0.10839, 0.5449, 0.83147, 0.13795, 0.69352, 0.70711, -0, 0.70711, 0.70711, -0, 0.63439, 0.77301, 0.12376, 0.6222, 0.77301, 0.15081, 0.75816, 0.63439, -0, 0.77301, 0.63439, -0, 0.70711, 0.70711, 0.13795, 0.69352, 0.70711, 0.16221, 0.81549, 0.55557, 0, 0.83147, 0.55557, -0, 0.77301, 0.63439, 0.15081, 0.75816, 0.63439, 0.17205, 0.86498, 0.4714, -0, 0.88192, 0.4714, 0, 0.83147, 0.55557, 0.16221, 0.81549, 0.55557, 0.18024, 0.90613, 0.38268, -0, 0.92388, 0.38268, -0, 0.88192, 0.4714, 0.17205, 0.86498, 0.4714, 0.18669, 0.93855, 0.29028, -0, 0.95694, 0.29028, -0, 0.92388, 0.38268, 0.18024, 0.90613, 0.38268, 0.19134, 0.96194, 0.19509, -0, 0.98079, 0.19509, -0, 0.95694, 0.29028, 0.18669, 0.93855, 0.29028, 0.19415, 0.97606, 0.09802, -0, 0.99518, 0.09802, -0, 0.98079, 0.19509, 0.19134, 0.96194, 0.19509, 0.19509, 0.98079, -0, -0, 1, -0, -0, 0.99518, 0.09802, 0.19415, 0.97606, 0.09802, 0.19415, 0.97606, -0.09802, -0, 0.99518, -0.09802, -0, 1, -0, 0.19509, 0.98079, -0, 0.19134, 0.96194, -0.19509, -0, 0.98078, -0.19509, -0, 0.99518, -0.09802, 0.19415, 0.97606, -0.09802, 0.18669, 0.93855, -0.29028, -0, 0.95694, -0.29028, -0, 0.98078, -0.19509, 0.19134, 0.96194, -0.19509, 0.18024, 0.90613, -0.38268, -0, 0.92388, -0.38268, -0, 0.95694, -0.29028, 0.18669, 0.93855, -0.29028, 0.17205, 0.86498, -0.4714, -0, 0.88192, -0.4714, -0, 0.92388, -0.38268, 0.18024, 0.90613, -0.38268, 0.16221, 0.81549, -0.55557, -0, 0.83147, -0.55557, -0, 0.88192, -0.4714, 0.17205, 0.86498, -0.4714, 0.15081, 0.75816, -0.63439, -0, 0.77301, -0.63439, -0, 0.83147, -0.55557, 0.16221, 0.81549, -0.55557, 0.13795, 0.69352, -0.70711, -0, 0.70711, -0.70711, -0, 0.77301, -0.63439, 0.15081, 0.75816, -0.63439, 0.12376, 0.6222, -0.77301, -0, 0.63439, -0.77301, -0, 0.70711, -0.70711, 0.13795, 0.69352, -0.70711, 0.10839, 0.54489, -0.83147, -0, 0.55557, -0.83147, -0, 0.63439, -0.77301, 0.12376, 0.6222, -0.77301, 0.09196, 0.46234, -0.88192, -0, 0.4714, -0.88192, -0, 0.55557, -0.83147, 0.10839, 0.54489, -0.83147, 0.07466, 0.37533, -0.92388, -0, 0.38268, -0.92388, -0, 0.4714, -0.88192, 0.09196, 0.46234, -0.88192, 0.05663, 0.28471, -0.95694, -0, 0.29028, -0.95694, -0, 0.38268, -0.92388, 0.07466, 0.37533, -0.92388, 0.03806, 0.19134, -0.98079, -0, 0.19509, -0.98079, -0, 0.29028, -0.95694, 0.05663, 0.28471, -0.95694, 0.01912, 0.09613, -0.99518, -0, 0.09802, -0.99518, -0, 0.19509, -0.98079, 0.03806, 0.19134, -0.98079, -0, -0, -1, -0, 0.09802, -0.99518, 0.01912, 0.09613, -0.99518, -0, -0, -1, -0.01912, 0.09613, -0.99518, -0, 0.09802, -0.99518, -0, 0.09802, -0.99518, -0.01912, 0.09613, -0.99518, -0.03806, 0.19134, -0.98079, -0, 0.19509, -0.98079, -0, 0.19509, -0.98079, -0.03806, 0.19134, -0.98079, -0.05663, 0.28471, -0.95694, -0, 0.29028, -0.95694, -0, 0.29028, -0.95694, -0.05663, 0.28471, -0.95694, -0.07466, 0.37533, -0.92388, -0, 0.38268, -0.92388, -0, 0.38268, -0.92388, -0.07466, 0.37533, -0.92388, -0.09196, 0.46234, -0.88192, -0, 0.4714, -0.88192, -0, 0.4714, -0.88192, -0.09196, 0.46234, -0.88192, -0.10839, 0.54489, -0.83147, -0, 0.55557, -0.83147, -0, 0.55557, -0.83147, -0.10839, 0.54489, -0.83147, -0.12376, 0.6222, -0.77301, -0, 0.63439, -0.77301, -0, 0.63439, -0.77301, -0.12376, 0.6222, -0.77301, -0.13795, 0.69352, -0.70711, -0, 0.70711, -0.70711, -0, 0.70711, -0.70711, -0.13795, 0.69352, -0.70711, -0.15081, 0.75816, -0.63439, -0, 0.77301, -0.63439, -0, 0.77301, -0.63439, -0.15081, 0.75816, -0.63439, -0.16221, 0.81549, -0.55557, -0, 0.83147, -0.55557, -0, 0.83147, -0.55557, -0.16221, 0.81549, -0.55557, -0.17205, 0.86498, -0.4714, -0, 0.88192, -0.4714, -0, 0.88192, -0.4714, -0.17205, 0.86498, -0.4714, -0.18024, 0.90613, -0.38268, -0, 0.92388, -0.38268, -0, 0.92388, -0.38268, -0.18024, 0.90613, -0.38268, -0.18669, 0.93855, -0.29028, -0, 0.95694, -0.29028, -0, 0.95694, -0.29028, -0.18669, 0.93855, -0.29028, -0.19134, 0.96194, -0.19509, -0, 0.98078, -0.19509, -0, 0.98078, -0.19509, -0.19134, 0.96194, -0.19509, -0.19415, 0.97606, -0.09802, -0, 0.99518, -0.09802, -0, 0.99518, -0.09802, -0.19415, 0.97606, -0.09802, -0.19509, 0.98078, -0, -0, 1, -0, -0, 1, -0, -0.19509, 0.98078, -0, -0.19415, 0.97606, 0.09802, -0, 0.99518, 0.09802, -0, 0.99518, 0.09802, -0.19415, 0.97606, 0.09802, -0.19134, 0.96194, 0.19509, -0, 0.98079, 0.19509, -0, 0.98079, 0.19509, -0.19134, 0.96194, 0.19509, -0.18669, 0.93855, 0.29028, -0, 0.95694, 0.29028, -0, 0.95694, 0.29028, -0.18669, 0.93855, 0.29028, -0.18024, 0.90613, 0.38268, -0, 0.92388, 0.38268, -0, 0.92388, 0.38268, -0.18024, 0.90613, 0.38268, -0.17205, 0.86498, 0.4714, -0, 0.88192, 0.4714, -0, 0.88192, 0.4714, -0.17205, 0.86498, 0.4714, -0.16221, 0.81549, 0.55557, 0, 0.83147, 0.55557, 0, 0.83147, 0.55557, -0.16221, 0.81549, 0.55557, -0.15081, 0.75816, 0.63439, -0, 0.77301, 0.63439, -0, 0.77301, 0.63439, -0.15081, 0.75816, 0.63439, -0.13795, 0.69352, 0.70711, -0, 0.70711, 0.70711, -0, 0.70711, 0.70711, -0.13795, 0.69352, 0.70711, -0.12376, 0.6222, 0.77301, -0, 0.63439, 0.77301, -0, 0.63439, 0.77301, -0.12376, 0.6222, 0.77301, -0.10839, 0.54489, 0.83147, -0, 0.55557, 0.83147, -0, 0.55557, 0.83147, -0.10839, 0.54489, 0.83147, -0.09196, 0.46234, 0.88192, -0, 0.4714, 0.88192, -0, 0.4714, 0.88192, -0.09196, 0.46234, 0.88192, -0.07466, 0.37533, 0.92388, -0, 0.38268, 0.92388, -0, 0.38268, 0.92388, -0.07466, 0.37533, 0.92388, -0.05663, 0.28471, 0.95694, -0, 0.29028, 0.95694, -0, 0.29028, 0.95694, -0.05663, 0.28471, 0.95694, -0.03806, 0.19134, 0.98079, -0, 0.19509, 0.98079, -0, 0.19509, 0.98079, -0.03806, 0.19134, 0.98079, -0.01912, 0.09613, 0.99518, -0, 0.09802, 0.99518, -0.01912, 0.09613, 0.99518, 0, 0, 1, -0, 0.09802, 0.99518, -0.03751, 0.09056, 0.99518, 0, 0, 1, -0.01912, 0.09613, 0.99518, -0.03806, 0.19134, 0.98079, -0.07466, 0.18024, 0.98079, -0.03751, 0.09056, 0.99518, -0.01912, 0.09613, 0.99518, -0.05663, 0.28471, 0.95694, -0.11109, 0.26819, 0.95694, -0.07466, 0.18024, 0.98079, -0.03806, 0.19134, 0.98079, -0.07466, 0.37533, 0.92388, -0.14645, 0.35355, 0.92388, -0.11109, 0.26819, 0.95694, -0.05663, 0.28471, 0.95694, -0.09196, 0.46234, 0.88192, -0.1804, 0.43551, 0.88192, -0.14645, 0.35355, 0.92388, -0.07466, 0.37533, 0.92388, -0.10839, 0.54489, 0.83147, -0.21261, 0.51328, 0.83147, -0.1804, 0.43551, 0.88192, -0.09196, 0.46234, 0.88192, -0.12376, 0.6222, 0.77301, -0.24277, 0.5861, 0.77301, -0.21261, 0.51328, 0.83147, -0.10839, 0.54489, 0.83147, -0.13795, 0.69352, 0.70711, -0.2706, 0.65328, 0.70711, -0.24277, 0.5861, 0.77301, -0.12376, 0.6222, 0.77301, -0.15081, 0.75816, 0.63439, -0.29582, 0.71417, 0.63439, -0.2706, 0.65328, 0.70711, -0.13795, 0.69352, 0.70711, -0.16221, 0.81549, 0.55557, -0.31819, 0.76818, 0.55557, -0.29582, 0.71417, 0.63439, -0.15081, 0.75816, 0.63439, -0.17205, 0.86498, 0.4714, -0.3375, 0.81479, 0.4714, -0.31819, 0.76818, 0.55557, -0.16221, 0.81549, 0.55557, -0.18024, 0.90613, 0.38268, -0.35355, 0.85355, 0.38268, -0.3375, 0.81479, 0.4714, -0.17205, 0.86498, 0.4714, -0.18669, 0.93855, 0.29028, -0.36621, 0.8841, 0.29028, -0.35355, 0.85355, 0.38268, -0.18024, 0.90613, 0.38268, -0.19134, 0.96194, 0.19509, -0.37533, 0.90613, 0.19509, -0.36621, 0.8841, 0.29028, -0.18669, 0.93855, 0.29028, -0.19415, 0.97606, 0.09802, -0.38084, 0.91943, 0.09802, -0.37533, 0.90613, 0.19509, -0.19134, 0.96194, 0.19509, -0.19509, 0.98078, -0, -0.38268, 0.92388, -0, -0.38084, 0.91943, 0.09802, -0.19415, 0.97606, 0.09802, -0.19415, 0.97606, -0.09802, -0.38084, 0.91943, -0.09802, -0.38268, 0.92388, -0, -0.19509, 0.98078, -0, -0.19134, 0.96194, -0.19509, -0.37533, 0.90613, -0.19509, -0.38084, 0.91943, -0.09802, -0.19415, 0.97606, -0.09802, -0.18669, 0.93855, -0.29028, -0.36621, 0.8841, -0.29028, -0.37533, 0.90613, -0.19509, -0.19134, 0.96194, -0.19509, -0.18024, 0.90613, -0.38268, -0.35355, 0.85355, -0.38268, -0.36621, 0.8841, -0.29028, -0.18669, 0.93855, -0.29028, -0.17205, 0.86498, -0.4714, -0.3375, 0.81479, -0.4714, -0.35355, 0.85355, -0.38268, -0.18024, 0.90613, -0.38268, -0.16221, 0.81549, -0.55557, -0.31819, 0.76818, -0.55557, -0.3375, 0.81479, -0.4714, -0.17205, 0.86498, -0.4714, -0.15081, 0.75816, -0.63439, -0.29582, 0.71417, -0.63439, -0.31819, 0.76818, -0.55557, -0.16221, 0.81549, -0.55557, -0.13795, 0.69352, -0.70711, -0.2706, 0.65328, -0.70711, -0.29582, 0.71417, -0.63439, -0.15081, 0.75816, -0.63439, -0.12376, 0.6222, -0.77301, -0.24277, 0.5861, -0.77301, -0.2706, 0.65328, -0.70711, -0.13795, 0.69352, -0.70711, -0.10839, 0.54489, -0.83147, -0.21261, 0.51328, -0.83147, -0.24277, 0.5861, -0.77301, -0.12376, 0.6222, -0.77301, -0.09196, 0.46234, -0.88192, -0.1804, 0.43551, -0.88192, -0.21261, 0.51328, -0.83147, -0.10839, 0.54489, -0.83147, -0.07466, 0.37533, -0.92388, -0.14645, 0.35355, -0.92388, -0.1804, 0.43551, -0.88192, -0.09196, 0.46234, -0.88192, -0.05663, 0.28471, -0.95694, -0.11109, 0.26819, -0.95694, -0.14645, 0.35355, -0.92388, -0.07466, 0.37533, -0.92388, -0.03806, 0.19134, -0.98079, -0.07466, 0.18024, -0.98079, -0.11109, 0.26819, -0.95694, -0.05663, 0.28471, -0.95694, -0.01912, 0.09613, -0.99518, -0.03751, 0.09056, -0.99518, -0.07466, 0.18024, -0.98079, -0.03806, 0.19134, -0.98079, -0, -0, -1, -0.03751, 0.09056, -0.99518, -0.01912, 0.09613, -0.99518, -0, -0, -1, -0.05445, 0.0815, -0.99518, -0.03751, 0.09056, -0.99518, -0.03751, 0.09056, -0.99518, -0.05445, 0.0815, -0.99518, -0.10839, 0.16221, -0.98079, -0.07466, 0.18024, -0.98079, -0.07466, 0.18024, -0.98079, -0.10839, 0.16221, -0.98079, -0.16127, 0.24136, -0.95694, -0.11109, 0.26819, -0.95694, -0.11109, 0.26819, -0.95694, -0.16127, 0.24136, -0.95694, -0.21261, 0.31819, -0.92388, -0.14645, 0.35355, -0.92388, -0.14645, 0.35355, -0.92388, -0.21261, 0.31819, -0.92388, -0.26189, 0.39195, -0.88192, -0.1804, 0.43551, -0.88192, -0.1804, 0.43551, -0.88192, -0.26189, 0.39195, -0.88192, -0.30866, 0.46194, -0.83147, -0.21261, 0.51328, -0.83147, -0.21261, 0.51328, -0.83147, -0.30866, 0.46194, -0.83147, -0.35245, 0.52748, -0.77301, -0.24277, 0.5861, -0.77301, -0.24277, 0.5861, -0.77301, -0.35245, 0.52748, -0.77301, -0.39285, 0.58794, -0.70711, -0.2706, 0.65328, -0.70711, -0.2706, 0.65328, -0.70711, -0.39285, 0.58794, -0.70711, -0.42946, 0.64273, -0.63439, -0.29582, 0.71417, -0.63439, -0.29582, 0.71417, -0.63439, -0.42946, 0.64273, -0.63439, -0.46194, 0.69134, -0.55557, -0.31819, 0.76818, -0.55557, -0.31819, 0.76818, -0.55557, -0.46194, 0.69134, -0.55557, -0.48997, 0.73329, -0.4714, -0.3375, 0.81479, -0.4714, -0.3375, 0.81479, -0.4714, -0.48997, 0.73329, -0.4714, -0.51328, 0.76818, -0.38268, -0.35355, 0.85355, -0.38268, -0.35355, 0.85355, -0.38268, -0.51328, 0.76818, -0.38268, -0.53165, 0.79567, -0.29028, -0.36621, 0.8841, -0.29028, -0.36621, 0.8841, -0.29028, -0.53165, 0.79567, -0.29028, -0.54489, 0.81549, -0.19509, -0.37533, 0.90613, -0.19509, -0.37533, 0.90613, -0.19509, -0.54489, 0.81549, -0.19509, -0.55289, 0.82747, -0.09802, -0.38084, 0.91943, -0.09802, -0.38084, 0.91943, -0.09802, -0.55289, 0.82747, -0.09802, -0.55557, 0.83147, -0, -0.38268, 0.92388, -0, -0.38268, 0.92388, -0, -0.55557, 0.83147, -0, -0.55289, 0.82747, 0.09802, -0.38084, 0.91943, 0.09802, -0.38084, 0.91943, 0.09802, -0.55289, 0.82747, 0.09802, -0.54489, 0.81549, 0.19509, -0.37533, 0.90613, 0.19509, -0.37533, 0.90613, 0.19509, -0.54489, 0.81549, 0.19509, -0.53165, 0.79567, 0.29028, -0.36621, 0.8841, 0.29028, -0.36621, 0.8841, 0.29028, -0.53165, 0.79567, 0.29028, -0.51328, 0.76818, 0.38268, -0.35355, 0.85355, 0.38268, -0.35355, 0.85355, 0.38268, -0.51328, 0.76818, 0.38268, -0.48997, 0.73329, 0.4714, -0.3375, 0.81479, 0.4714, -0.3375, 0.81479, 0.4714, -0.48997, 0.73329, 0.4714, -0.46194, 0.69134, 0.55557, -0.31819, 0.76818, 0.55557, -0.31819, 0.76818, 0.55557, -0.46194, 0.69134, 0.55557, -0.42946, 0.64273, 0.63439, -0.29582, 0.71417, 0.63439, -0.29582, 0.71417, 0.63439, -0.42946, 0.64273, 0.63439, -0.39285, 0.58794, 0.70711, -0.2706, 0.65328, 0.70711, -0.2706, 0.65328, 0.70711, -0.39285, 0.58794, 0.70711, -0.35245, 0.52748, 0.77301, -0.24277, 0.5861, 0.77301, -0.24277, 0.5861, 0.77301, -0.35245, 0.52748, 0.77301, -0.30866, 0.46194, 0.83147, -0.21261, 0.51328, 0.83147, -0.21261, 0.51328, 0.83147, -0.30866, 0.46194, 0.83147, -0.26189, 0.39195, 0.88192, -0.1804, 0.43551, 0.88192, -0.1804, 0.43551, 0.88192, -0.26189, 0.39195, 0.88192, -0.21261, 0.31819, 0.92388, -0.14645, 0.35355, 0.92388, -0.14645, 0.35355, 0.92388, -0.21261, 0.31819, 0.92388, -0.16127, 0.24136, 0.95694, -0.11109, 0.26819, 0.95694, -0.11109, 0.26819, 0.95694, -0.16127, 0.24136, 0.95694, -0.10839, 0.16221, 0.98079, -0.07466, 0.18024, 0.98079, -0.07466, 0.18024, 0.98079, -0.10839, 0.16221, 0.98079, -0.05446, 0.0815, 0.99518, -0.03751, 0.09056, 0.99518, -0.05446, 0.0815, 0.99518, 0, 0, 1, -0.03751, 0.09056, 0.99518, -0.06931, 0.06931, 0.99518, 0, 0, 1, -0.05446, 0.0815, 0.99518, -0.10839, 0.16221, 0.98079, -0.13795, 0.13795, 0.98079, -0.06931, 0.06931, 0.99518, -0.05446, 0.0815, 0.99518, -0.16127, 0.24136, 0.95694, -0.20526, 0.20526, 0.95694, -0.13795, 0.13795, 0.98079, -0.10839, 0.16221, 0.98079, -0.21261, 0.31819, 0.92388, -0.2706, 0.2706, 0.92388, -0.20526, 0.20526, 0.95694, -0.16127, 0.24136, 0.95694, -0.26189, 0.39195, 0.88192, -0.33333, 0.33333, 0.88192, -0.2706, 0.2706, 0.92388, -0.21261, 0.31819, 0.92388, -0.30866, 0.46194, 0.83147, -0.39285, 0.39285, 0.83147, -0.33333, 0.33333, 0.88192, -0.26189, 0.39195, 0.88192, -0.35245, 0.52748, 0.77301, -0.44858, 0.44858, 0.77301, -0.39285, 0.39285, 0.83147, -0.30866, 0.46194, 0.83147, -0.39285, 0.58794, 0.70711, -0.5, 0.5, 0.70711, -0.44858, 0.44858, 0.77301, -0.35245, 0.52748, 0.77301, -0.42946, 0.64273, 0.63439, -0.5466, 0.5466, 0.63439, -0.5, 0.5, 0.70711, -0.39285, 0.58794, 0.70711, -0.46194, 0.69134, 0.55557, -0.58794, 0.58794, 0.55557, -0.5466, 0.5466, 0.63439, -0.42946, 0.64273, 0.63439, -0.48997, 0.73329, 0.4714, -0.62361, 0.62361, 0.4714, -0.58794, 0.58794, 0.55557, -0.46194, 0.69134, 0.55557, -0.51328, 0.76818, 0.38268, -0.65328, 0.65328, 0.38268, -0.62361, 0.62361, 0.4714, -0.48997, 0.73329, 0.4714, -0.53165, 0.79567, 0.29028, -0.67666, 0.67666, 0.29028, -0.65328, 0.65328, 0.38268, -0.51328, 0.76818, 0.38268, -0.54489, 0.81549, 0.19509, -0.69352, 0.69352, 0.19509, -0.67666, 0.67666, 0.29028, -0.53165, 0.79567, 0.29028, -0.55289, 0.82747, 0.09802, -0.7037, 0.7037, 0.09802, -0.69352, 0.69352, 0.19509, -0.54489, 0.81549, 0.19509, -0.55557, 0.83147, -0, -0.70711, 0.70711, -0, -0.7037, 0.7037, 0.09802, -0.55289, 0.82747, 0.09802, -0.55289, 0.82747, -0.09802, -0.7037, 0.7037, -0.09802, -0.70711, 0.70711, -0, -0.55557, 0.83147, -0, -0.54489, 0.81549, -0.19509, -0.69352, 0.69352, -0.19509, -0.7037, 0.7037, -0.09802, -0.55289, 0.82747, -0.09802, -0.53165, 0.79567, -0.29028, -0.67666, 0.67666, -0.29028, -0.69352, 0.69352, -0.19509, -0.54489, 0.81549, -0.19509, -0.51328, 0.76818, -0.38268, -0.65328, 0.65328, -0.38268, -0.67666, 0.67666, -0.29028, -0.53165, 0.79567, -0.29028, -0.48997, 0.73329, -0.4714, -0.62361, 0.62361, -0.4714, -0.65328, 0.65328, -0.38268, -0.51328, 0.76818, -0.38268, -0.46194, 0.69134, -0.55557, -0.58794, 0.58794, -0.55557, -0.62361, 0.62361, -0.4714, -0.48997, 0.73329, -0.4714, -0.42946, 0.64273, -0.63439, -0.5466, 0.5466, -0.63439, -0.58794, 0.58794, -0.55557, -0.46194, 0.69134, -0.55557, -0.39285, 0.58794, -0.70711, -0.5, 0.5, -0.70711, -0.5466, 0.5466, -0.63439, -0.42946, 0.64273, -0.63439, -0.35245, 0.52748, -0.77301, -0.44858, 0.44858, -0.77301, -0.5, 0.5, -0.70711, -0.39285, 0.58794, -0.70711, -0.30866, 0.46194, -0.83147, -0.39285, 0.39285, -0.83147, -0.44858, 0.44858, -0.77301, -0.35245, 0.52748, -0.77301, -0.26189, 0.39195, -0.88192, -0.33333, 0.33333, -0.88192, -0.39285, 0.39285, -0.83147, -0.30866, 0.46194, -0.83147, -0.21261, 0.31819, -0.92388, -0.2706, 0.2706, -0.92388, -0.33333, 0.33333, -0.88192, -0.26189, 0.39195, -0.88192, -0.16127, 0.24136, -0.95694, -0.20526, 0.20526, -0.95694, -0.2706, 0.2706, -0.92388, -0.21261, 0.31819, -0.92388, -0.10839, 0.16221, -0.98079, -0.13795, 0.13795, -0.98079, -0.20526, 0.20526, -0.95694, -0.16127, 0.24136, -0.95694, -0.05445, 0.0815, -0.99518, -0.06931, 0.06931, -0.99518, -0.13795, 0.13795, -0.98079, -0.10839, 0.16221, -0.98079, -0, -0, -1, -0.06931, 0.06931, -0.99518, -0.05445, 0.0815, -0.99518, -0, -0, -1, -0.0815, 0.05445, -0.99518, -0.06931, 0.06931, -0.99518, -0.06931, 0.06931, -0.99518, -0.0815, 0.05445, -0.99518, -0.16221, 0.10839, -0.98079, -0.13795, 0.13795, -0.98079, -0.13795, 0.13795, -0.98079, -0.16221, 0.10839, -0.98079, -0.24136, 0.16127, -0.95694, -0.20526, 0.20526, -0.95694, -0.20526, 0.20526, -0.95694, -0.24136, 0.16127, -0.95694, -0.31819, 0.21261, -0.92388, -0.2706, 0.2706, -0.92388, -0.2706, 0.2706, -0.92388, -0.31819, 0.21261, -0.92388, -0.39195, 0.26189, -0.88192, -0.33333, 0.33333, -0.88192, -0.33333, 0.33333, -0.88192, -0.39195, 0.26189, -0.88192, -0.46194, 0.30866, -0.83147, -0.39285, 0.39285, -0.83147, -0.39285, 0.39285, -0.83147, -0.46194, 0.30866, -0.83147, -0.52748, 0.35245, -0.77301, -0.44858, 0.44858, -0.77301, -0.44858, 0.44858, -0.77301, -0.52748, 0.35245, -0.77301, -0.58794, 0.39285, -0.70711, -0.5, 0.5, -0.70711, -0.5, 0.5, -0.70711, -0.58794, 0.39285, -0.70711, -0.64273, 0.42946, -0.63439, -0.5466, 0.5466, -0.63439, -0.5466, 0.5466, -0.63439, -0.64273, 0.42946, -0.63439, -0.69134, 0.46194, -0.55557, -0.58794, 0.58794, -0.55557, -0.58794, 0.58794, -0.55557, -0.69134, 0.46194, -0.55557, -0.73329, 0.48997, -0.4714, -0.62361, 0.62361, -0.4714, -0.62361, 0.62361, -0.4714, -0.73329, 0.48997, -0.4714, -0.76818, 0.51328, -0.38268, -0.65328, 0.65328, -0.38268, -0.65328, 0.65328, -0.38268, -0.76818, 0.51328, -0.38268, -0.79567, 0.53165, -0.29028, -0.67666, 0.67666, -0.29028, -0.67666, 0.67666, -0.29028, -0.79567, 0.53165, -0.29028, -0.81549, 0.54489, -0.19509, -0.69352, 0.69352, -0.19509, -0.69352, 0.69352, -0.19509, -0.81549, 0.54489, -0.19509, -0.82747, 0.55289, -0.09802, -0.7037, 0.7037, -0.09802, -0.7037, 0.7037, -0.09802, -0.82747, 0.55289, -0.09802, -0.83147, 0.55557, -0, -0.70711, 0.70711, -0, -0.70711, 0.70711, -0, -0.83147, 0.55557, -0, -0.82747, 0.55289, 0.09802, -0.7037, 0.7037, 0.09802, -0.7037, 0.7037, 0.09802, -0.82747, 0.55289, 0.09802, -0.81549, 0.54489, 0.19509, -0.69352, 0.69352, 0.19509, -0.69352, 0.69352, 0.19509, -0.81549, 0.54489, 0.19509, -0.79567, 0.53165, 0.29028, -0.67666, 0.67666, 0.29028, -0.67666, 0.67666, 0.29028, -0.79567, 0.53165, 0.29028, -0.76818, 0.51328, 0.38268, -0.65328, 0.65328, 0.38268, -0.65328, 0.65328, 0.38268, -0.76818, 0.51328, 0.38268, -0.73329, 0.48997, 0.4714, -0.62361, 0.62361, 0.4714, -0.62361, 0.62361, 0.4714, -0.73329, 0.48997, 0.4714, -0.69134, 0.46194, 0.55557, -0.58794, 0.58794, 0.55557, -0.58794, 0.58794, 0.55557, -0.69134, 0.46194, 0.55557, -0.64273, 0.42946, 0.63439, -0.5466, 0.5466, 0.63439, -0.5466, 0.5466, 0.63439, -0.64273, 0.42946, 0.63439, -0.58794, 0.39285, 0.70711, -0.5, 0.5, 0.70711, -0.5, 0.5, 0.70711, -0.58794, 0.39285, 0.70711, -0.52748, 0.35245, 0.77301, -0.44858, 0.44858, 0.77301, -0.44858, 0.44858, 0.77301, -0.52748, 0.35245, 0.77301, -0.46194, 0.30866, 0.83147, -0.39285, 0.39285, 0.83147, -0.39285, 0.39285, 0.83147, -0.46194, 0.30866, 0.83147, -0.39195, 0.26189, 0.88192, -0.33333, 0.33333, 0.88192, -0.33333, 0.33333, 0.88192, -0.39195, 0.26189, 0.88192, -0.31819, 0.21261, 0.92388, -0.2706, 0.2706, 0.92388, -0.2706, 0.2706, 0.92388, -0.31819, 0.21261, 0.92388, -0.24136, 0.16127, 0.95694, -0.20526, 0.20526, 0.95694, -0.20526, 0.20526, 0.95694, -0.24136, 0.16127, 0.95694, -0.16221, 0.10839, 0.98079, -0.13795, 0.13795, 0.98079, -0.13795, 0.13795, 0.98079, -0.16221, 0.10839, 0.98079, -0.0815, 0.05446, 0.99518, -0.06931, 0.06931, 0.99518, -0.0815, 0.05446, 0.99518, 0, 0, 1, -0.06931, 0.06931, 0.99518, -0.09056, 0.03751, 0.99518, 0, 0, 1, -0.0815, 0.05446, 0.99518, -0.16221, 0.10839, 0.98079, -0.18024, 0.07466, 0.98079, -0.09056, 0.03751, 0.99518, -0.0815, 0.05446, 0.99518, -0.24136, 0.16127, 0.95694, -0.26819, 0.11109, 0.95694, -0.18024, 0.07466, 0.98079, -0.16221, 0.10839, 0.98079, -0.31819, 0.21261, 0.92388, -0.35355, 0.14645, 0.92388, -0.26819, 0.11109, 0.95694, -0.24136, 0.16127, 0.95694, -0.39195, 0.26189, 0.88192, -0.43551, 0.1804, 0.88192, -0.35355, 0.14645, 0.92388, -0.31819, 0.21261, 0.92388, -0.46194, 0.30866, 0.83147, -0.51328, 0.21261, 0.83147, -0.43551, 0.1804, 0.88192, -0.39195, 0.26189, 0.88192, -0.52748, 0.35245, 0.77301, -0.5861, 0.24277, 0.77301, -0.51328, 0.21261, 0.83147, -0.46194, 0.30866, 0.83147, -0.58794, 0.39285, 0.70711, -0.65328, 0.2706, 0.70711, -0.5861, 0.24277, 0.77301, -0.52748, 0.35245, 0.77301, -0.64273, 0.42946, 0.63439, -0.71417, 0.29582, 0.63439, -0.65328, 0.2706, 0.70711, -0.58794, 0.39285, 0.70711, -0.69134, 0.46194, 0.55557, -0.76818, 0.31819, 0.55557, -0.71417, 0.29582, 0.63439, -0.64273, 0.42946, 0.63439, -0.73329, 0.48997, 0.4714, -0.81479, 0.3375, 0.4714, -0.76818, 0.31819, 0.55557, -0.69134, 0.46194, 0.55557, -0.76818, 0.51328, 0.38268, -0.85355, 0.35355, 0.38268, -0.81479, 0.3375, 0.4714, -0.73329, 0.48997, 0.4714, -0.79567, 0.53165, 0.29028, -0.8841, 0.3662, 0.29028, -0.85355, 0.35355, 0.38268, -0.76818, 0.51328, 0.38268, -0.81549, 0.54489, 0.19509, -0.90613, 0.37533, 0.19509, -0.8841, 0.3662, 0.29028, -0.79567, 0.53165, 0.29028, -0.82747, 0.55289, 0.09802, -0.91943, 0.38084, 0.09802, -0.90613, 0.37533, 0.19509, -0.81549, 0.54489, 0.19509, -0.83147, 0.55557, -0, -0.92388, 0.38268, -0, -0.91943, 0.38084, 0.09802, -0.82747, 0.55289, 0.09802, -0.82747, 0.55289, -0.09802, -0.91943, 0.38084, -0.09802, -0.92388, 0.38268, -0, -0.83147, 0.55557, -0, -0.81549, 0.54489, -0.19509, -0.90613, 0.37533, -0.19509, -0.91943, 0.38084, -0.09802, -0.82747, 0.55289, -0.09802, -0.79567, 0.53165, -0.29028, -0.8841, 0.3662, -0.29028, -0.90613, 0.37533, -0.19509, -0.81549, 0.54489, -0.19509, -0.76818, 0.51328, -0.38268, -0.85355, 0.35355, -0.38268, -0.8841, 0.3662, -0.29028, -0.79567, 0.53165, -0.29028, -0.73329, 0.48997, -0.4714, -0.81479, 0.3375, -0.4714, -0.85355, 0.35355, -0.38268, -0.76818, 0.51328, -0.38268, -0.69134, 0.46194, -0.55557, -0.76818, 0.31819, -0.55557, -0.81479, 0.3375, -0.4714, -0.73329, 0.48997, -0.4714, -0.64273, 0.42946, -0.63439, -0.71417, 0.29582, -0.63439, -0.76818, 0.31819, -0.55557, -0.69134, 0.46194, -0.55557, -0.58794, 0.39285, -0.70711, -0.65328, 0.2706, -0.70711, -0.71417, 0.29582, -0.63439, -0.64273, 0.42946, -0.63439, -0.52748, 0.35245, -0.77301, -0.5861, 0.24277, -0.77301, -0.65328, 0.2706, -0.70711, -0.58794, 0.39285, -0.70711, -0.46194, 0.30866, -0.83147, -0.51328, 0.21261, -0.83147, -0.5861, 0.24277, -0.77301, -0.52748, 0.35245, -0.77301, -0.39195, 0.26189, -0.88192, -0.43551, 0.1804, -0.88192, -0.51328, 0.21261, -0.83147, -0.46194, 0.30866, -0.83147, -0.31819, 0.21261, -0.92388, -0.35355, 0.14645, -0.92388, -0.43551, 0.1804, -0.88192, -0.39195, 0.26189, -0.88192, -0.24136, 0.16127, -0.95694, -0.26819, 0.11109, -0.95694, -0.35355, 0.14645, -0.92388, -0.31819, 0.21261, -0.92388, -0.16221, 0.10839, -0.98079, -0.18024, 0.07466, -0.98079, -0.26819, 0.11109, -0.95694, -0.24136, 0.16127, -0.95694, -0.0815, 0.05445, -0.99518, -0.09056, 0.03751, -0.99518, -0.18024, 0.07466, -0.98079, -0.16221, 0.10839, -0.98079, -0, -0, -1, -0.09056, 0.03751, -0.99518, -0.0815, 0.05445, -0.99518, -0, -0, -1, -0.09613, 0.01912, -0.99518, -0.09056, 0.03751, -0.99518, -0.09056, 0.03751, -0.99518, -0.09613, 0.01912, -0.99518, -0.19134, 0.03806, -0.98079, -0.18024, 0.07466, -0.98079, -0.18024, 0.07466, -0.98079, -0.19134, 0.03806, -0.98079, -0.28471, 0.05663, -0.95694, -0.26819, 0.11109, -0.95694, -0.26819, 0.11109, -0.95694, -0.28471, 0.05663, -0.95694, -0.37533, 0.07466, -0.92388, -0.35355, 0.14645, -0.92388, -0.35355, 0.14645, -0.92388, -0.37533, 0.07466, -0.92388, -0.46234, 0.09196, -0.88192, -0.43551, 0.1804, -0.88192, -0.43551, 0.1804, -0.88192, -0.46234, 0.09196, -0.88192, -0.54489, 0.10839, -0.83147, -0.51328, 0.21261, -0.83147, -0.51328, 0.21261, -0.83147, -0.54489, 0.10839, -0.83147, -0.6222, 0.12376, -0.77301, -0.5861, 0.24277, -0.77301, -0.5861, 0.24277, -0.77301, -0.6222, 0.12376, -0.77301, -0.69352, 0.13795, -0.70711, -0.65328, 0.2706, -0.70711, -0.65328, 0.2706, -0.70711, -0.69352, 0.13795, -0.70711, -0.75816, 0.15081, -0.63439, -0.71417, 0.29582, -0.63439, -0.71417, 0.29582, -0.63439, -0.75816, 0.15081, -0.63439, -0.81549, 0.16221, -0.55557, -0.76818, 0.31819, -0.55557, -0.76818, 0.31819, -0.55557, -0.81549, 0.16221, -0.55557, -0.86497, 0.17205, -0.4714, -0.81479, 0.3375, -0.4714, -0.81479, 0.3375, -0.4714, -0.86497, 0.17205, -0.4714, -0.90613, 0.18024, -0.38268, -0.85355, 0.35355, -0.38268, -0.85355, 0.35355, -0.38268, -0.90613, 0.18024, -0.38268, -0.93855, 0.18669, -0.29028, -0.8841, 0.3662, -0.29028, -0.8841, 0.3662, -0.29028, -0.93855, 0.18669, -0.29028, -0.96194, 0.19134, -0.19509, -0.90613, 0.37533, -0.19509, -0.90613, 0.37533, -0.19509, -0.96194, 0.19134, -0.19509, -0.97606, 0.19415, -0.09802, -0.91943, 0.38084, -0.09802, -0.91943, 0.38084, -0.09802, -0.97606, 0.19415, -0.09802, -0.98078, 0.19509, -0, -0.92388, 0.38268, -0, -0.92388, 0.38268, -0, -0.98078, 0.19509, -0, -0.97606, 0.19415, 0.09802, -0.91943, 0.38084, 0.09802, -0.91943, 0.38084, 0.09802, -0.97606, 0.19415, 0.09802, -0.96194, 0.19134, 0.19509, -0.90613, 0.37533, 0.19509, -0.90613, 0.37533, 0.19509, -0.96194, 0.19134, 0.19509, -0.93855, 0.18669, 0.29028, -0.8841, 0.3662, 0.29028, -0.8841, 0.3662, 0.29028, -0.93855, 0.18669, 0.29028, -0.90613, 0.18024, 0.38268, -0.85355, 0.35355, 0.38268, -0.85355, 0.35355, 0.38268, -0.90613, 0.18024, 0.38268, -0.86498, 0.17205, 0.4714, -0.81479, 0.3375, 0.4714, -0.81479, 0.3375, 0.4714, -0.86498, 0.17205, 0.4714, -0.81549, 0.16221, 0.55557, -0.76818, 0.31819, 0.55557, -0.76818, 0.31819, 0.55557, -0.81549, 0.16221, 0.55557, -0.75816, 0.15081, 0.63439, -0.71417, 0.29582, 0.63439, -0.71417, 0.29582, 0.63439, -0.75816, 0.15081, 0.63439, -0.69352, 0.13795, 0.70711, -0.65328, 0.2706, 0.70711, -0.65328, 0.2706, 0.70711, -0.69352, 0.13795, 0.70711, -0.6222, 0.12376, 0.77301, -0.5861, 0.24277, 0.77301, -0.5861, 0.24277, 0.77301, -0.6222, 0.12376, 0.77301, -0.54489, 0.10839, 0.83147, -0.51328, 0.21261, 0.83147, -0.51328, 0.21261, 0.83147, -0.54489, 0.10839, 0.83147, -0.46234, 0.09196, 0.88192, -0.43551, 0.1804, 0.88192, -0.43551, 0.1804, 0.88192, -0.46234, 0.09196, 0.88192, -0.37533, 0.07466, 0.92388, -0.35355, 0.14645, 0.92388, -0.35355, 0.14645, 0.92388, -0.37533, 0.07466, 0.92388, -0.28471, 0.05663, 0.95694, -0.26819, 0.11109, 0.95694, -0.26819, 0.11109, 0.95694, -0.28471, 0.05663, 0.95694, -0.19134, 0.03806, 0.98079, -0.18024, 0.07466, 0.98079, -0.18024, 0.07466, 0.98079, -0.19134, 0.03806, 0.98079, -0.09613, 0.01912, 0.99518, -0.09056, 0.03751, 0.99518, -0.09613, 0.01912, 0.99518, 0, 0, 1, -0.09056, 0.03751, 0.99518, -0.09802, -0, 0.99518, 0, 0, 1, -0.09613, 0.01912, 0.99518, -0.19134, 0.03806, 0.98079, -0.19509, -0, 0.98079, -0.09802, -0, 0.99518, -0.09613, 0.01912, 0.99518, -0.28471, 0.05663, 0.95694, -0.29028, -0, 0.95694, -0.19509, -0, 0.98079, -0.19134, 0.03806, 0.98079, -0.37533, 0.07466, 0.92388, -0.38268, -0, 0.92388, -0.29028, -0, 0.95694, -0.28471, 0.05663, 0.95694, -0.46234, 0.09196, 0.88192, -0.4714, -0, 0.88192, -0.38268, -0, 0.92388, -0.37533, 0.07466, 0.92388, -0.54489, 0.10839, 0.83147, -0.55557, -0, 0.83147, -0.4714, -0, 0.88192, -0.46234, 0.09196, 0.88192, -0.6222, 0.12376, 0.77301, -0.63439, -0, 0.77301, -0.55557, -0, 0.83147, -0.54489, 0.10839, 0.83147, -0.69352, 0.13795, 0.70711, -0.70711, -0, 0.70711, -0.63439, -0, 0.77301, -0.6222, 0.12376, 0.77301, -0.75816, 0.15081, 0.63439, -0.77301, -0, 0.63439, -0.70711, -0, 0.70711, -0.69352, 0.13795, 0.70711, -0.81549, 0.16221, 0.55557, -0.83147, -0, 0.55557, -0.77301, -0, 0.63439, -0.75816, 0.15081, 0.63439, -0.86498, 0.17205, 0.4714, -0.88192, -0, 0.4714, -0.83147, -0, 0.55557, -0.81549, 0.16221, 0.55557, -0.90613, 0.18024, 0.38268, -0.92388, -0, 0.38268, -0.88192, -0, 0.4714, -0.86498, 0.17205, 0.4714, -0.93855, 0.18669, 0.29028, -0.95694, -0, 0.29028, -0.92388, -0, 0.38268, -0.90613, 0.18024, 0.38268, -0.96194, 0.19134, 0.19509, -0.98078, -0, 0.19509, -0.95694, -0, 0.29028, -0.93855, 0.18669, 0.29028, -0.97606, 0.19415, 0.09802, -0.99518, -0, 0.09802, -0.98078, -0, 0.19509, -0.96194, 0.19134, 0.19509, -0.98078, 0.19509, -0, -1, -0, -0, -0.99518, -0, 0.09802, -0.97606, 0.19415, 0.09802, -0.97606, 0.19415, -0.09802, -0.99518, -0, -0.09802, -1, -0, -0, -0.98078, 0.19509, -0, -0.96194, 0.19134, -0.19509, -0.98078, -0, -0.19509, -0.99518, -0, -0.09802, -0.97606, 0.19415, -0.09802, -0.93855, 0.18669, -0.29028, -0.95694, -0, -0.29028, -0.98078, -0, -0.19509, -0.96194, 0.19134, -0.19509, -0.90613, 0.18024, -0.38268, -0.92388, -0, -0.38268, -0.95694, -0, -0.29028, -0.93855, 0.18669, -0.29028, -0.86497, 0.17205, -0.4714, -0.88192, -0, -0.4714, -0.92388, -0, -0.38268, -0.90613, 0.18024, -0.38268, -0.81549, 0.16221, -0.55557, -0.83147, -0, -0.55557, -0.88192, -0, -0.4714, -0.86497, 0.17205, -0.4714, -0.75816, 0.15081, -0.63439, -0.77301, -0, -0.63439, -0.83147, -0, -0.55557, -0.81549, 0.16221, -0.55557, -0.69352, 0.13795, -0.70711, -0.70711, -0, -0.70711, -0.77301, -0, -0.63439, -0.75816, 0.15081, -0.63439, -0.6222, 0.12376, -0.77301, -0.63439, -0, -0.77301, -0.70711, -0, -0.70711, -0.69352, 0.13795, -0.70711, -0.54489, 0.10839, -0.83147, -0.55557, -0, -0.83147, -0.63439, -0, -0.77301, -0.6222, 0.12376, -0.77301, -0.46234, 0.09196, -0.88192, -0.4714, -0, -0.88192, -0.55557, -0, -0.83147, -0.54489, 0.10839, -0.83147, -0.37533, 0.07466, -0.92388, -0.38268, -0, -0.92388, -0.4714, -0, -0.88192, -0.46234, 0.09196, -0.88192, -0.28471, 0.05663, -0.95694, -0.29028, -0, -0.95694, -0.38268, -0, -0.92388, -0.37533, 0.07466, -0.92388, -0.19134, 0.03806, -0.98079, -0.19509, -0, -0.98079, -0.29028, -0, -0.95694, -0.28471, 0.05663, -0.95694, -0.09613, 0.01912, -0.99518, -0.09802, -0, -0.99518, -0.19509, -0, -0.98079, -0.19134, 0.03806, -0.98079, -0, -0, -1, -0.09802, -0, -0.99518, -0.09613, 0.01912, -0.99518, -0, -0, -1, -0.09613, -0.01912, -0.99518, -0.09802, -0, -0.99518, -0.09802, -0, -0.99518, -0.09613, -0.01912, -0.99518, -0.19134, -0.03806, -0.98079, -0.19509, -0, -0.98079, -0.19509, -0, -0.98079, -0.19134, -0.03806, -0.98079, -0.28471, -0.05663, -0.95694, -0.29028, -0, -0.95694, -0.29028, -0, -0.95694, -0.28471, -0.05663, -0.95694, -0.37533, -0.07466, -0.92388, -0.38268, -0, -0.92388, -0.38268, -0, -0.92388, -0.37533, -0.07466, -0.92388, -0.46234, -0.09196, -0.88192, -0.4714, -0, -0.88192, -0.4714, -0, -0.88192, -0.46234, -0.09196, -0.88192, -0.54489, -0.10839, -0.83147, -0.55557, -0, -0.83147, -0.55557, -0, -0.83147, -0.54489, -0.10839, -0.83147, -0.6222, -0.12376, -0.77301, -0.63439, -0, -0.77301, -0.63439, -0, -0.77301, -0.6222, -0.12376, -0.77301, -0.69352, -0.13795, -0.70711, -0.70711, -0, -0.70711, -0.70711, -0, -0.70711, -0.69352, -0.13795, -0.70711, -0.75816, -0.15081, -0.63439, -0.77301, -0, -0.63439, -0.77301, -0, -0.63439, -0.75816, -0.15081, -0.63439, -0.81549, -0.16221, -0.55557, -0.83147, -0, -0.55557, -0.83147, -0, -0.55557, -0.81549, -0.16221, -0.55557, -0.86497, -0.17205, -0.4714, -0.88192, -0, -0.4714, -0.88192, -0, -0.4714, -0.86497, -0.17205, -0.4714, -0.90613, -0.18024, -0.38268, -0.92388, -0, -0.38268, -0.92388, -0, -0.38268, -0.90613, -0.18024, -0.38268, -0.93855, -0.18669, -0.29028, -0.95694, -0, -0.29028, -0.95694, -0, -0.29028, -0.93855, -0.18669, -0.29028, -0.96194, -0.19134, -0.19509, -0.98078, -0, -0.19509, -0.98078, -0, -0.19509, -0.96194, -0.19134, -0.19509, -0.97606, -0.19415, -0.09802, -0.99518, -0, -0.09802, -0.99518, -0, -0.09802, -0.97606, -0.19415, -0.09802, -0.98078, -0.19509, -0, -1, -0, -0, -1, -0, -0, -0.98078, -0.19509, -0, -0.97606, -0.19415, 0.09802, -0.99518, -0, 0.09802, -0.99518, -0, 0.09802, -0.97606, -0.19415, 0.09802, -0.96194, -0.19134, 0.19509, -0.98078, -0, 0.19509, -0.98078, -0, 0.19509, -0.96194, -0.19134, 0.19509, -0.93855, -0.18669, 0.29028, -0.95694, -0, 0.29028, -0.95694, -0, 0.29028, -0.93855, -0.18669, 0.29028, -0.90613, -0.18024, 0.38268, -0.92388, -0, 0.38268, -0.92388, -0, 0.38268, -0.90613, -0.18024, 0.38268, -0.86497, -0.17205, 0.4714, -0.88192, -0, 0.4714, -0.88192, -0, 0.4714, -0.86497, -0.17205, 0.4714, -0.81549, -0.16221, 0.55557, -0.83147, -0, 0.55557, -0.83147, -0, 0.55557, -0.81549, -0.16221, 0.55557, -0.75816, -0.15081, 0.63439, -0.77301, -0, 0.63439, -0.77301, -0, 0.63439, -0.75816, -0.15081, 0.63439, -0.69352, -0.13795, 0.70711, -0.70711, -0, 0.70711, -0.70711, -0, 0.70711, -0.69352, -0.13795, 0.70711, -0.6222, -0.12376, 0.77301, -0.63439, -0, 0.77301, -0.63439, -0, 0.77301, -0.6222, -0.12376, 0.77301, -0.54489, -0.10839, 0.83147, -0.55557, -0, 0.83147, -0.55557, -0, 0.83147, -0.54489, -0.10839, 0.83147, -0.46234, -0.09196, 0.88192, -0.4714, -0, 0.88192, -0.4714, -0, 0.88192, -0.46234, -0.09196, 0.88192, -0.37533, -0.07466, 0.92388, -0.38268, -0, 0.92388, -0.38268, -0, 0.92388, -0.37533, -0.07466, 0.92388, -0.28471, -0.05663, 0.95694, -0.29028, -0, 0.95694, -0.29028, -0, 0.95694, -0.28471, -0.05663, 0.95694, -0.19134, -0.03806, 0.98079, -0.19509, -0, 0.98079, -0.19509, -0, 0.98079, -0.19134, -0.03806, 0.98079, -0.09613, -0.01912, 0.99518, -0.09802, -0, 0.99518, -0.09613, -0.01912, 0.99518, 0, 0, 1, -0.09802, -0, 0.99518, -0.09056, -0.03751, 0.99518, 0, 0, 1, -0.09613, -0.01912, 0.99518, -0.19134, -0.03806, 0.98079, -0.18024, -0.07466, 0.98079, -0.09056, -0.03751, 0.99518, -0.09613, -0.01912, 0.99518, -0.28471, -0.05663, 0.95694, -0.26819, -0.11109, 0.95694, -0.18024, -0.07466, 0.98079, -0.19134, -0.03806, 0.98079, -0.37533, -0.07466, 0.92388, -0.35355, -0.14645, 0.92388, -0.26819, -0.11109, 0.95694, -0.28471, -0.05663, 0.95694, -0.46234, -0.09196, 0.88192, -0.43551, -0.1804, 0.88192, -0.35355, -0.14645, 0.92388, -0.37533, -0.07466, 0.92388, -0.54489, -0.10839, 0.83147, -0.51328, -0.21261, 0.83147, -0.43551, -0.1804, 0.88192, -0.46234, -0.09196, 0.88192, -0.6222, -0.12376, 0.77301, -0.5861, -0.24277, 0.77301, -0.51328, -0.21261, 0.83147, -0.54489, -0.10839, 0.83147, -0.69352, -0.13795, 0.70711, -0.65328, -0.2706, 0.70711, -0.5861, -0.24277, 0.77301, -0.6222, -0.12376, 0.77301, -0.75816, -0.15081, 0.63439, -0.71417, -0.29582, 0.63439, -0.65328, -0.2706, 0.70711, -0.69352, -0.13795, 0.70711, -0.81549, -0.16221, 0.55557, -0.76818, -0.31819, 0.55557, -0.71417, -0.29582, 0.63439, -0.75816, -0.15081, 0.63439, -0.86497, -0.17205, 0.4714, -0.81479, -0.3375, 0.4714, -0.76818, -0.31819, 0.55557, -0.81549, -0.16221, 0.55557, -0.90613, -0.18024, 0.38268, -0.85355, -0.35355, 0.38268, -0.81479, -0.3375, 0.4714, -0.86497, -0.17205, 0.4714, -0.93855, -0.18669, 0.29028, -0.8841, -0.36621, 0.29028, -0.85355, -0.35355, 0.38268, -0.90613, -0.18024, 0.38268, -0.96194, -0.19134, 0.19509, -0.90613, -0.37533, 0.19509, -0.8841, -0.36621, 0.29028, -0.93855, -0.18669, 0.29028, -0.97606, -0.19415, 0.09802, -0.91943, -0.38084, 0.09802, -0.90613, -0.37533, 0.19509, -0.96194, -0.19134, 0.19509, -0.98078, -0.19509, -0, -0.92388, -0.38268, -0, -0.91943, -0.38084, 0.09802, -0.97606, -0.19415, 0.09802, -0.97606, -0.19415, -0.09802, -0.91943, -0.38084, -0.09802, -0.92388, -0.38268, -0, -0.98078, -0.19509, -0, -0.96194, -0.19134, -0.19509, -0.90613, -0.37533, -0.19509, -0.91943, -0.38084, -0.09802, -0.97606, -0.19415, -0.09802, -0.93855, -0.18669, -0.29028, -0.8841, -0.36621, -0.29028, -0.90613, -0.37533, -0.19509, -0.96194, -0.19134, -0.19509, -0.90613, -0.18024, -0.38268, -0.85355, -0.35355, -0.38268, -0.8841, -0.36621, -0.29028, -0.93855, -0.18669, -0.29028, -0.86497, -0.17205, -0.4714, -0.81479, -0.3375, -0.4714, -0.85355, -0.35355, -0.38268, -0.90613, -0.18024, -0.38268, -0.81549, -0.16221, -0.55557, -0.76818, -0.31819, -0.55557, -0.81479, -0.3375, -0.4714, -0.86497, -0.17205, -0.4714, -0.75816, -0.15081, -0.63439, -0.71417, -0.29582, -0.63439, -0.76818, -0.31819, -0.55557, -0.81549, -0.16221, -0.55557, -0.69352, -0.13795, -0.70711, -0.65328, -0.2706, -0.70711, -0.71417, -0.29582, -0.63439, -0.75816, -0.15081, -0.63439, -0.6222, -0.12376, -0.77301, -0.5861, -0.24277, -0.77301, -0.65328, -0.2706, -0.70711, -0.69352, -0.13795, -0.70711, -0.54489, -0.10839, -0.83147, -0.51328, -0.21261, -0.83147, -0.5861, -0.24277, -0.77301, -0.6222, -0.12376, -0.77301, -0.46234, -0.09196, -0.88192, -0.43551, -0.1804, -0.88192, -0.51328, -0.21261, -0.83147, -0.54489, -0.10839, -0.83147, -0.37533, -0.07466, -0.92388, -0.35355, -0.14645, -0.92388, -0.43551, -0.1804, -0.88192, -0.46234, -0.09196, -0.88192, -0.28471, -0.05663, -0.95694, -0.26819, -0.11109, -0.95694, -0.35355, -0.14645, -0.92388, -0.37533, -0.07466, -0.92388, -0.19134, -0.03806, -0.98079, -0.18024, -0.07466, -0.98079, -0.26819, -0.11109, -0.95694, -0.28471, -0.05663, -0.95694, -0.09613, -0.01912, -0.99518, -0.09056, -0.03751, -0.99518, -0.18024, -0.07466, -0.98079, -0.19134, -0.03806, -0.98079, -0, -0, -1, -0.09056, -0.03751, -0.99518, -0.09613, -0.01912, -0.99518, -0, -0, -1, -0.0815, -0.05445, -0.99518, -0.09056, -0.03751, -0.99518, -0.09056, -0.03751, -0.99518, -0.0815, -0.05445, -0.99518, -0.16221, -0.10839, -0.98079, -0.18024, -0.07466, -0.98079, -0.18024, -0.07466, -0.98079, -0.16221, -0.10839, -0.98079, -0.24136, -0.16127, -0.95694, -0.26819, -0.11109, -0.95694, -0.26819, -0.11109, -0.95694, -0.24136, -0.16127, -0.95694, -0.31819, -0.21261, -0.92388, -0.35355, -0.14645, -0.92388, -0.35355, -0.14645, -0.92388, -0.31819, -0.21261, -0.92388, -0.39195, -0.26189, -0.88192, -0.43551, -0.1804, -0.88192, -0.43551, -0.1804, -0.88192, -0.39195, -0.26189, -0.88192, -0.46194, -0.30866, -0.83147, -0.51328, -0.21261, -0.83147, -0.51328, -0.21261, -0.83147, -0.46194, -0.30866, -0.83147, -0.52748, -0.35245, -0.77301, -0.5861, -0.24277, -0.77301, -0.5861, -0.24277, -0.77301, -0.52748, -0.35245, -0.77301, -0.58794, -0.39285, -0.70711, -0.65328, -0.2706, -0.70711, -0.65328, -0.2706, -0.70711, -0.58794, -0.39285, -0.70711, -0.64273, -0.42946, -0.63439, -0.71417, -0.29582, -0.63439, -0.71417, -0.29582, -0.63439, -0.64273, -0.42946, -0.63439, -0.69134, -0.46194, -0.55557, -0.76818, -0.31819, -0.55557, -0.76818, -0.31819, -0.55557, -0.69134, -0.46194, -0.55557, -0.73329, -0.48997, -0.4714, -0.81479, -0.3375, -0.4714, -0.81479, -0.3375, -0.4714, -0.73329, -0.48997, -0.4714, -0.76818, -0.51328, -0.38268, -0.85355, -0.35355, -0.38268, -0.85355, -0.35355, -0.38268, -0.76818, -0.51328, -0.38268, -0.79567, -0.53165, -0.29028, -0.8841, -0.36621, -0.29028, -0.8841, -0.36621, -0.29028, -0.79567, -0.53165, -0.29028, -0.81549, -0.54489, -0.19509, -0.90613, -0.37533, -0.19509, -0.90613, -0.37533, -0.19509, -0.81549, -0.54489, -0.19509, -0.82747, -0.55289, -0.09802, -0.91943, -0.38084, -0.09802, -0.91943, -0.38084, -0.09802, -0.82747, -0.55289, -0.09802, -0.83147, -0.55557, -0, -0.92388, -0.38268, -0, -0.92388, -0.38268, -0, -0.83147, -0.55557, -0, -0.82747, -0.55289, 0.09802, -0.91943, -0.38084, 0.09802, -0.91943, -0.38084, 0.09802, -0.82747, -0.55289, 0.09802, -0.81549, -0.54489, 0.19509, -0.90613, -0.37533, 0.19509, -0.90613, -0.37533, 0.19509, -0.81549, -0.54489, 0.19509, -0.79567, -0.53165, 0.29028, -0.8841, -0.36621, 0.29028, -0.8841, -0.36621, 0.29028, -0.79567, -0.53165, 0.29028, -0.76818, -0.51328, 0.38268, -0.85355, -0.35355, 0.38268, -0.85355, -0.35355, 0.38268, -0.76818, -0.51328, 0.38268, -0.73329, -0.48997, 0.4714, -0.81479, -0.3375, 0.4714, -0.81479, -0.3375, 0.4714, -0.73329, -0.48997, 0.4714, -0.69134, -0.46194, 0.55557, -0.76818, -0.31819, 0.55557, -0.76818, -0.31819, 0.55557, -0.69134, -0.46194, 0.55557, -0.64273, -0.42946, 0.63439, -0.71417, -0.29582, 0.63439, -0.71417, -0.29582, 0.63439, -0.64273, -0.42946, 0.63439, -0.58794, -0.39285, 0.70711, -0.65328, -0.2706, 0.70711, -0.65328, -0.2706, 0.70711, -0.58794, -0.39285, 0.70711, -0.52748, -0.35245, 0.77301, -0.5861, -0.24277, 0.77301, -0.5861, -0.24277, 0.77301, -0.52748, -0.35245, 0.77301, -0.46194, -0.30866, 0.83147, -0.51328, -0.21261, 0.83147, -0.51328, -0.21261, 0.83147, -0.46194, -0.30866, 0.83147, -0.39195, -0.26189, 0.88192, -0.43551, -0.1804, 0.88192, -0.43551, -0.1804, 0.88192, -0.39195, -0.26189, 0.88192, -0.31819, -0.21261, 0.92388, -0.35355, -0.14645, 0.92388, -0.35355, -0.14645, 0.92388, -0.31819, -0.21261, 0.92388, -0.24136, -0.16127, 0.95694, -0.26819, -0.11109, 0.95694, -0.26819, -0.11109, 0.95694, -0.24136, -0.16127, 0.95694, -0.16221, -0.10839, 0.98079, -0.18024, -0.07466, 0.98079, -0.18024, -0.07466, 0.98079, -0.16221, -0.10839, 0.98079, -0.0815, -0.05446, 0.99518, -0.09056, -0.03751, 0.99518, -0.0815, -0.05446, 0.99518, 0, 0, 1, -0.09056, -0.03751, 0.99518, -0.06931, -0.06931, 0.99518, 0, 0, 1, -0.0815, -0.05446, 0.99518, -0.16221, -0.10839, 0.98079, -0.13795, -0.13795, 0.98079, -0.06931, -0.06931, 0.99518, -0.0815, -0.05446, 0.99518, -0.24136, -0.16127, 0.95694, -0.20526, -0.20526, 0.95694, -0.13795, -0.13795, 0.98079, -0.16221, -0.10839, 0.98079, -0.31819, -0.21261, 0.92388, -0.2706, -0.2706, 0.92388, -0.20526, -0.20526, 0.95694, -0.24136, -0.16127, 0.95694, -0.39195, -0.26189, 0.88192, -0.33333, -0.33333, 0.88192, -0.2706, -0.2706, 0.92388, -0.31819, -0.21261, 0.92388, -0.46194, -0.30866, 0.83147, -0.39285, -0.39285, 0.83147, -0.33333, -0.33333, 0.88192, -0.39195, -0.26189, 0.88192, -0.52748, -0.35245, 0.77301, -0.44858, -0.44858, 0.77301, -0.39285, -0.39285, 0.83147, -0.46194, -0.30866, 0.83147, -0.58794, -0.39285, 0.70711, -0.5, -0.5, 0.70711, -0.44858, -0.44858, 0.77301, -0.52748, -0.35245, 0.77301, -0.64273, -0.42946, 0.63439, -0.5466, -0.5466, 0.63439, -0.5, -0.5, 0.70711, -0.58794, -0.39285, 0.70711, -0.69134, -0.46194, 0.55557, -0.58794, -0.58794, 0.55557, -0.5466, -0.5466, 0.63439, -0.64273, -0.42946, 0.63439, -0.73329, -0.48997, 0.4714, -0.62361, -0.62361, 0.4714, -0.58794, -0.58794, 0.55557, -0.69134, -0.46194, 0.55557, -0.76818, -0.51328, 0.38268, -0.65328, -0.65328, 0.38268, -0.62361, -0.62361, 0.4714, -0.73329, -0.48997, 0.4714, -0.79567, -0.53165, 0.29028, -0.67666, -0.67666, 0.29028, -0.65328, -0.65328, 0.38268, -0.76818, -0.51328, 0.38268, -0.81549, -0.54489, 0.19509, -0.69352, -0.69352, 0.19509, -0.67666, -0.67666, 0.29028, -0.79567, -0.53165, 0.29028, -0.82747, -0.55289, 0.09802, -0.7037, -0.7037, 0.09802, -0.69352, -0.69352, 0.19509, -0.81549, -0.54489, 0.19509, -0.83147, -0.55557, -0, -0.70711, -0.70711, -0, -0.7037, -0.7037, 0.09802, -0.82747, -0.55289, 0.09802, -0.82747, -0.55289, -0.09802, -0.7037, -0.7037, -0.09802, -0.70711, -0.70711, -0, -0.83147, -0.55557, -0, -0.81549, -0.54489, -0.19509, -0.69352, -0.69352, -0.19509, -0.7037, -0.7037, -0.09802, -0.82747, -0.55289, -0.09802, -0.79567, -0.53165, -0.29028, -0.67666, -0.67666, -0.29028, -0.69352, -0.69352, -0.19509, -0.81549, -0.54489, -0.19509, -0.76818, -0.51328, -0.38268, -0.65328, -0.65328, -0.38268, -0.67666, -0.67666, -0.29028, -0.79567, -0.53165, -0.29028, -0.73329, -0.48997, -0.4714, -0.62361, -0.62361, -0.4714, -0.65328, -0.65328, -0.38268, -0.76818, -0.51328, -0.38268, -0.69134, -0.46194, -0.55557, -0.58794, -0.58794, -0.55557, -0.62361, -0.62361, -0.4714, -0.73329, -0.48997, -0.4714, -0.64273, -0.42946, -0.63439, -0.5466, -0.5466, -0.63439, -0.58794, -0.58794, -0.55557, -0.69134, -0.46194, -0.55557, -0.58794, -0.39285, -0.70711, -0.5, -0.5, -0.70711, -0.5466, -0.5466, -0.63439, -0.64273, -0.42946, -0.63439, -0.52748, -0.35245, -0.77301, -0.44858, -0.44858, -0.77301, -0.5, -0.5, -0.70711, -0.58794, -0.39285, -0.70711, -0.46194, -0.30866, -0.83147, -0.39285, -0.39285, -0.83147, -0.44858, -0.44858, -0.77301, -0.52748, -0.35245, -0.77301, -0.39195, -0.26189, -0.88192, -0.33333, -0.33333, -0.88192, -0.39285, -0.39285, -0.83147, -0.46194, -0.30866, -0.83147, -0.31819, -0.21261, -0.92388, -0.2706, -0.2706, -0.92388, -0.33333, -0.33333, -0.88192, -0.39195, -0.26189, -0.88192, -0.24136, -0.16127, -0.95694, -0.20526, -0.20526, -0.95694, -0.2706, -0.2706, -0.92388, -0.31819, -0.21261, -0.92388, -0.16221, -0.10839, -0.98079, -0.13795, -0.13795, -0.98079, -0.20526, -0.20526, -0.95694, -0.24136, -0.16127, -0.95694, -0.0815, -0.05445, -0.99518, -0.06931, -0.06931, -0.99518, -0.13795, -0.13795, -0.98079, -0.16221, -0.10839, -0.98079, -0, -0, -1, -0.06931, -0.06931, -0.99518, -0.0815, -0.05445, -0.99518, -0, -0, -1, -0.05445, -0.0815, -0.99518, -0.06931, -0.06931, -0.99518, -0.06931, -0.06931, -0.99518, -0.05445, -0.0815, -0.99518, -0.10839, -0.16221, -0.98079, -0.13795, -0.13795, -0.98079, -0.13795, -0.13795, -0.98079, -0.10839, -0.16221, -0.98079, -0.16127, -0.24136, -0.95694, -0.20526, -0.20526, -0.95694, -0.20526, -0.20526, -0.95694, -0.16127, -0.24136, -0.95694, -0.21261, -0.31819, -0.92388, -0.2706, -0.2706, -0.92388, -0.2706, -0.2706, -0.92388, -0.21261, -0.31819, -0.92388, -0.26189, -0.39195, -0.88192, -0.33333, -0.33333, -0.88192, -0.33333, -0.33333, -0.88192, -0.26189, -0.39195, -0.88192, -0.30866, -0.46194, -0.83147, -0.39285, -0.39285, -0.83147, -0.39285, -0.39285, -0.83147, -0.30866, -0.46194, -0.83147, -0.35245, -0.52748, -0.77301, -0.44858, -0.44858, -0.77301, -0.44858, -0.44858, -0.77301, -0.35245, -0.52748, -0.77301, -0.39285, -0.58794, -0.70711, -0.5, -0.5, -0.70711, -0.5, -0.5, -0.70711, -0.39285, -0.58794, -0.70711, -0.42946, -0.64273, -0.63439, -0.5466, -0.5466, -0.63439, -0.5466, -0.5466, -0.63439, -0.42946, -0.64273, -0.63439, -0.46194, -0.69134, -0.55557, -0.58794, -0.58794, -0.55557, -0.58794, -0.58794, -0.55557, -0.46194, -0.69134, -0.55557, -0.48997, -0.73329, -0.4714, -0.62361, -0.62361, -0.4714, -0.62361, -0.62361, -0.4714, -0.48997, -0.73329, -0.4714, -0.51328, -0.76818, -0.38268, -0.65328, -0.65328, -0.38268, -0.65328, -0.65328, -0.38268, -0.51328, -0.76818, -0.38268, -0.53165, -0.79567, -0.29028, -0.67666, -0.67666, -0.29028, -0.67666, -0.67666, -0.29028, -0.53165, -0.79567, -0.29028, -0.54489, -0.81549, -0.19509, -0.69352, -0.69352, -0.19509, -0.69352, -0.69352, -0.19509, -0.54489, -0.81549, -0.19509, -0.55289, -0.82747, -0.09802, -0.7037, -0.7037, -0.09802, -0.7037, -0.7037, -0.09802, -0.55289, -0.82747, -0.09802, -0.55557, -0.83147, -0, -0.70711, -0.70711, -0, -0.70711, -0.70711, -0, -0.55557, -0.83147, -0, -0.55289, -0.82747, 0.09802, -0.7037, -0.7037, 0.09802, -0.7037, -0.7037, 0.09802, -0.55289, -0.82747, 0.09802, -0.54489, -0.81549, 0.19509, -0.69352, -0.69352, 0.19509, -0.69352, -0.69352, 0.19509, -0.54489, -0.81549, 0.19509, -0.53165, -0.79567, 0.29028, -0.67666, -0.67666, 0.29028, -0.67666, -0.67666, 0.29028, -0.53165, -0.79567, 0.29028, -0.51328, -0.76818, 0.38268, -0.65328, -0.65328, 0.38268, -0.65328, -0.65328, 0.38268, -0.51328, -0.76818, 0.38268, -0.48997, -0.73329, 0.4714, -0.62361, -0.62361, 0.4714, -0.62361, -0.62361, 0.4714, -0.48997, -0.73329, 0.4714, -0.46194, -0.69134, 0.55557, -0.58794, -0.58794, 0.55557, -0.58794, -0.58794, 0.55557, -0.46194, -0.69134, 0.55557, -0.42946, -0.64273, 0.63439, -0.5466, -0.5466, 0.63439, -0.5466, -0.5466, 0.63439, -0.42946, -0.64273, 0.63439, -0.39285, -0.58794, 0.70711, -0.5, -0.5, 0.70711, -0.5, -0.5, 0.70711, -0.39285, -0.58794, 0.70711, -0.35245, -0.52748, 0.77301, -0.44858, -0.44858, 0.77301, -0.44858, -0.44858, 0.77301, -0.35245, -0.52748, 0.77301, -0.30866, -0.46194, 0.83147, -0.39285, -0.39285, 0.83147, -0.39285, -0.39285, 0.83147, -0.30866, -0.46194, 0.83147, -0.26189, -0.39195, 0.88192, -0.33333, -0.33333, 0.88192, -0.33333, -0.33333, 0.88192, -0.26189, -0.39195, 0.88192, -0.21261, -0.31819, 0.92388, -0.2706, -0.2706, 0.92388, -0.2706, -0.2706, 0.92388, -0.21261, -0.31819, 0.92388, -0.16127, -0.24136, 0.95694, -0.20526, -0.20526, 0.95694, -0.20526, -0.20526, 0.95694, -0.16127, -0.24136, 0.95694, -0.10839, -0.16221, 0.98079, -0.13795, -0.13795, 0.98079, -0.13795, -0.13795, 0.98079, -0.10839, -0.16221, 0.98079, -0.05446, -0.0815, 0.99518, -0.06931, -0.06931, 0.99518, -0.05446, -0.0815, 0.99518, 0, 0, 1, -0.06931, -0.06931, 0.99518, -0.03751, -0.09056, 0.99518, 0, 0, 1, -0.05446, -0.0815, 0.99518, -0.10839, -0.16221, 0.98079, -0.07466, -0.18024, 0.98079, -0.03751, -0.09056, 0.99518, -0.05446, -0.0815, 0.99518, -0.16127, -0.24136, 0.95694, -0.11109, -0.26819, 0.95694, -0.07466, -0.18024, 0.98079, -0.10839, -0.16221, 0.98079, -0.21261, -0.31819, 0.92388, -0.14645, -0.35355, 0.92388, -0.11109, -0.26819, 0.95694, -0.16127, -0.24136, 0.95694, -0.26189, -0.39195, 0.88192, -0.1804, -0.43551, 0.88192, -0.14645, -0.35355, 0.92388, -0.21261, -0.31819, 0.92388, -0.30866, -0.46194, 0.83147, -0.21261, -0.51328, 0.83147, -0.1804, -0.43551, 0.88192, -0.26189, -0.39195, 0.88192, -0.35245, -0.52748, 0.77301, -0.24277, -0.5861, 0.77301, -0.21261, -0.51328, 0.83147, -0.30866, -0.46194, 0.83147, -0.39285, -0.58794, 0.70711, -0.2706, -0.65328, 0.70711, -0.24277, -0.5861, 0.77301, -0.35245, -0.52748, 0.77301, -0.42946, -0.64273, 0.63439, -0.29582, -0.71417, 0.63439, -0.2706, -0.65328, 0.70711, -0.39285, -0.58794, 0.70711, -0.46194, -0.69134, 0.55557, -0.31819, -0.76818, 0.55557, -0.29582, -0.71417, 0.63439, -0.42946, -0.64273, 0.63439, -0.48997, -0.73329, 0.4714, -0.3375, -0.81479, 0.4714, -0.31819, -0.76818, 0.55557, -0.46194, -0.69134, 0.55557, -0.51328, -0.76818, 0.38268, -0.35355, -0.85355, 0.38268, -0.3375, -0.81479, 0.4714, -0.48997, -0.73329, 0.4714, -0.53165, -0.79567, 0.29028, -0.3662, -0.8841, 0.29028, -0.35355, -0.85355, 0.38268, -0.51328, -0.76818, 0.38268, -0.54489, -0.81549, 0.19509, -0.37533, -0.90613, 0.19509, -0.3662, -0.8841, 0.29028, -0.53165, -0.79567, 0.29028, -0.55289, -0.82747, 0.09802, -0.38084, -0.91943, 0.09802, -0.37533, -0.90613, 0.19509, -0.54489, -0.81549, 0.19509, -0.55557, -0.83147, -0, -0.38268, -0.92388, -0, -0.38084, -0.91943, 0.09802, -0.55289, -0.82747, 0.09802, -0.55289, -0.82747, -0.09802, -0.38084, -0.91943, -0.09802, -0.38268, -0.92388, -0, -0.55557, -0.83147, -0, -0.54489, -0.81549, -0.19509, -0.37533, -0.90613, -0.19509, -0.38084, -0.91943, -0.09802, -0.55289, -0.82747, -0.09802, -0.53165, -0.79567, -0.29028, -0.3662, -0.8841, -0.29028, -0.37533, -0.90613, -0.19509, -0.54489, -0.81549, -0.19509, -0.51328, -0.76818, -0.38268, -0.35355, -0.85355, -0.38268, -0.3662, -0.8841, -0.29028, -0.53165, -0.79567, -0.29028, -0.48997, -0.73329, -0.4714, -0.3375, -0.81479, -0.4714, -0.35355, -0.85355, -0.38268, -0.51328, -0.76818, -0.38268, -0.46194, -0.69134, -0.55557, -0.31819, -0.76818, -0.55557, -0.3375, -0.81479, -0.4714, -0.48997, -0.73329, -0.4714, -0.42946, -0.64273, -0.63439, -0.29582, -0.71417, -0.63439, -0.31819, -0.76818, -0.55557, -0.46194, -0.69134, -0.55557, -0.39285, -0.58794, -0.70711, -0.2706, -0.65328, -0.70711, -0.29582, -0.71417, -0.63439, -0.42946, -0.64273, -0.63439, -0.35245, -0.52748, -0.77301, -0.24277, -0.5861, -0.77301, -0.2706, -0.65328, -0.70711, -0.39285, -0.58794, -0.70711, -0.30866, -0.46194, -0.83147, -0.21261, -0.51328, -0.83147, -0.24277, -0.5861, -0.77301, -0.35245, -0.52748, -0.77301, -0.26189, -0.39195, -0.88192, -0.1804, -0.43551, -0.88192, -0.21261, -0.51328, -0.83147, -0.30866, -0.46194, -0.83147, -0.21261, -0.31819, -0.92388, -0.14645, -0.35355, -0.92388, -0.1804, -0.43551, -0.88192, -0.26189, -0.39195, -0.88192, -0.16127, -0.24136, -0.95694, -0.11109, -0.26819, -0.95694, -0.14645, -0.35355, -0.92388, -0.21261, -0.31819, -0.92388, -0.10839, -0.16221, -0.98079, -0.07466, -0.18024, -0.98079, -0.11109, -0.26819, -0.95694, -0.16127, -0.24136, -0.95694, -0.05445, -0.0815, -0.99518, -0.03751, -0.09056, -0.99518, -0.07466, -0.18024, -0.98079, -0.10839, -0.16221, -0.98079, -0, -0, -1, -0.03751, -0.09056, -0.99518, -0.05445, -0.0815, -0.99518, -0, -0, -1, -0.01912, -0.09613, -0.99518, -0.03751, -0.09056, -0.99518, -0.03751, -0.09056, -0.99518, -0.01912, -0.09613, -0.99518, -0.03806, -0.19134, -0.98079, -0.07466, -0.18024, -0.98079, -0.07466, -0.18024, -0.98079, -0.03806, -0.19134, -0.98079, -0.05663, -0.28471, -0.95694, -0.11109, -0.26819, -0.95694, -0.11109, -0.26819, -0.95694, -0.05663, -0.28471, -0.95694, -0.07466, -0.37533, -0.92388, -0.14645, -0.35355, -0.92388, -0.14645, -0.35355, -0.92388, -0.07466, -0.37533, -0.92388, -0.09196, -0.46234, -0.88192, -0.1804, -0.43551, -0.88192, -0.1804, -0.43551, -0.88192, -0.09196, -0.46234, -0.88192, -0.10839, -0.54489, -0.83147, -0.21261, -0.51328, -0.83147, -0.21261, -0.51328, -0.83147, -0.10839, -0.54489, -0.83147, -0.12376, -0.6222, -0.77301, -0.24277, -0.5861, -0.77301, -0.24277, -0.5861, -0.77301, -0.12376, -0.6222, -0.77301, -0.13795, -0.69352, -0.70711, -0.2706, -0.65328, -0.70711, -0.2706, -0.65328, -0.70711, -0.13795, -0.69352, -0.70711, -0.15081, -0.75816, -0.63439, -0.29582, -0.71417, -0.63439, -0.29582, -0.71417, -0.63439, -0.15081, -0.75816, -0.63439, -0.16221, -0.81549, -0.55557, -0.31819, -0.76818, -0.55557, -0.31819, -0.76818, -0.55557, -0.16221, -0.81549, -0.55557, -0.17205, -0.86497, -0.4714, -0.3375, -0.81479, -0.4714, -0.3375, -0.81479, -0.4714, -0.17205, -0.86497, -0.4714, -0.18024, -0.90613, -0.38268, -0.35355, -0.85355, -0.38268, -0.35355, -0.85355, -0.38268, -0.18024, -0.90613, -0.38268, -0.18669, -0.93855, -0.29028, -0.3662, -0.8841, -0.29028, -0.3662, -0.8841, -0.29028, -0.18669, -0.93855, -0.29028, -0.19134, -0.96194, -0.19509, -0.37533, -0.90613, -0.19509, -0.37533, -0.90613, -0.19509, -0.19134, -0.96194, -0.19509, -0.19415, -0.97606, -0.09802, -0.38084, -0.91943, -0.09802, -0.38084, -0.91943, -0.09802, -0.19415, -0.97606, -0.09802, -0.19509, -0.98078, -0, -0.38268, -0.92388, -0, -0.38268, -0.92388, -0, -0.19509, -0.98078, -0, -0.19415, -0.97606, 0.09802, -0.38084, -0.91943, 0.09802, -0.38084, -0.91943, 0.09802, -0.19415, -0.97606, 0.09802, -0.19134, -0.96194, 0.19509, -0.37533, -0.90613, 0.19509, -0.37533, -0.90613, 0.19509, -0.19134, -0.96194, 0.19509, -0.18669, -0.93855, 0.29028, -0.3662, -0.8841, 0.29028, -0.3662, -0.8841, 0.29028, -0.18669, -0.93855, 0.29028, -0.18024, -0.90613, 0.38268, -0.35355, -0.85355, 0.38268, -0.35355, -0.85355, 0.38268, -0.18024, -0.90613, 0.38268, -0.17205, -0.86497, 0.4714, -0.3375, -0.81479, 0.4714, -0.3375, -0.81479, 0.4714, -0.17205, -0.86497, 0.4714, -0.16221, -0.81549, 0.55557, -0.31819, -0.76818, 0.55557, -0.31819, -0.76818, 0.55557, -0.16221, -0.81549, 0.55557, -0.15081, -0.75816, 0.63439, -0.29582, -0.71417, 0.63439, -0.29582, -0.71417, 0.63439, -0.15081, -0.75816, 0.63439, -0.13795, -0.69352, 0.70711, -0.2706, -0.65328, 0.70711, -0.2706, -0.65328, 0.70711, -0.13795, -0.69352, 0.70711, -0.12376, -0.6222, 0.77301, -0.24277, -0.5861, 0.77301, -0.24277, -0.5861, 0.77301, -0.12376, -0.6222, 0.77301, -0.10839, -0.54489, 0.83147, -0.21261, -0.51328, 0.83147, -0.21261, -0.51328, 0.83147, -0.10839, -0.54489, 0.83147, -0.09196, -0.46234, 0.88192, -0.1804, -0.43551, 0.88192, -0.1804, -0.43551, 0.88192, -0.09196, -0.46234, 0.88192, -0.07466, -0.37533, 0.92388, -0.14645, -0.35355, 0.92388, -0.14645, -0.35355, 0.92388, -0.07466, -0.37533, 0.92388, -0.05663, -0.28471, 0.95694, -0.11109, -0.26819, 0.95694, -0.11109, -0.26819, 0.95694, -0.05663, -0.28471, 0.95694, -0.03806, -0.19134, 0.98079, -0.07466, -0.18024, 0.98079, -0.07466, -0.18024, 0.98079, -0.03806, -0.19134, 0.98079, -0.01912, -0.09613, 0.99518, -0.03751, -0.09056, 0.99518, -0.01912, -0.09613, 0.99518, 0, 0, 1, -0.03751, -0.09056, 0.99518, 0, -0.09802, 0.99518, 0, 0, 1, -0.01912, -0.09613, 0.99518, -0.03806, -0.19134, 0.98079, 0, -0.19509, 0.98079, 0, -0.09802, 0.99518, -0.01912, -0.09613, 0.99518, -0.05663, -0.28471, 0.95694, 0, -0.29028, 0.95694, 0, -0.19509, 0.98079, -0.03806, -0.19134, 0.98079, -0.07466, -0.37533, 0.92388, 0, -0.38268, 0.92388, 0, -0.29028, 0.95694, -0.05663, -0.28471, 0.95694, -0.09196, -0.46234, 0.88192, 0, -0.4714, 0.88192, 0, -0.38268, 0.92388, -0.07466, -0.37533, 0.92388, -0.10839, -0.54489, 0.83147, 0, -0.55557, 0.83147, 0, -0.4714, 0.88192, -0.09196, -0.46234, 0.88192, -0.12376, -0.6222, 0.77301, 0, -0.63439, 0.77301, 0, -0.55557, 0.83147, -0.10839, -0.54489, 0.83147, -0.13795, -0.69352, 0.70711, 0, -0.70711, 0.70711, 0, -0.63439, 0.77301, -0.12376, -0.6222, 0.77301, -0.15081, -0.75816, 0.63439, 0, -0.77301, 0.63439, 0, -0.70711, 0.70711, -0.13795, -0.69352, 0.70711, -0.16221, -0.81549, 0.55557, 0, -0.83147, 0.55557, 0, -0.77301, 0.63439, -0.15081, -0.75816, 0.63439, -0.17205, -0.86497, 0.4714, 0, -0.88192, 0.4714, 0, -0.83147, 0.55557, -0.16221, -0.81549, 0.55557, -0.18024, -0.90613, 0.38268, 0, -0.92388, 0.38268, 0, -0.88192, 0.4714, -0.17205, -0.86497, 0.4714, -0.18669, -0.93855, 0.29028, 0, -0.95694, 0.29028, 0, -0.92388, 0.38268, -0.18024, -0.90613, 0.38268, -0.19134, -0.96194, 0.19509, 0, -0.98078, 0.19509, 0, -0.95694, 0.29028, -0.18669, -0.93855, 0.29028, -0.19415, -0.97606, 0.09802, 0, -0.99518, 0.09802, 0, -0.98078, 0.19509, -0.19134, -0.96194, 0.19509, -0.19509, -0.98078, -0, 0, -1, -0, 0, -0.99518, 0.09802, -0.19415, -0.97606, 0.09802, -0.19415, -0.97606, -0.09802, 0, -0.99518, -0.09802, 0, -1, -0, -0.19509, -0.98078, -0, -0.19134, -0.96194, -0.19509, 0, -0.98078, -0.19509, 0, -0.99518, -0.09802, -0.19415, -0.97606, -0.09802, -0.18669, -0.93855, -0.29028, 0, -0.95694, -0.29028, 0, -0.98078, -0.19509, -0.19134, -0.96194, -0.19509, -0.18024, -0.90613, -0.38268, 0, -0.92388, -0.38268, 0, -0.95694, -0.29028, -0.18669, -0.93855, -0.29028, -0.17205, -0.86497, -0.4714, 0, -0.88192, -0.4714, 0, -0.92388, -0.38268, -0.18024, -0.90613, -0.38268, -0.16221, -0.81549, -0.55557, 0, -0.83147, -0.55557, 0, -0.88192, -0.4714, -0.17205, -0.86497, -0.4714, -0.15081, -0.75816, -0.63439, 0, -0.77301, -0.63439, 0, -0.83147, -0.55557, -0.16221, -0.81549, -0.55557, -0.13795, -0.69352, -0.70711, 0, -0.70711, -0.70711, 0, -0.77301, -0.63439, -0.15081, -0.75816, -0.63439, -0.12376, -0.6222, -0.77301, 0, -0.63439, -0.77301, 0, -0.70711, -0.70711, -0.13795, -0.69352, -0.70711, -0.10839, -0.54489, -0.83147, 0, -0.55557, -0.83147, 0, -0.63439, -0.77301, -0.12376, -0.6222, -0.77301, -0.09196, -0.46234, -0.88192, 0, -0.4714, -0.88192, 0, -0.55557, -0.83147, -0.10839, -0.54489, -0.83147, -0.07466, -0.37533, -0.92388, 0, -0.38268, -0.92388, 0, -0.4714, -0.88192, -0.09196, -0.46234, -0.88192, -0.05663, -0.28471, -0.95694, 0, -0.29028, -0.95694, 0, -0.38268, -0.92388, -0.07466, -0.37533, -0.92388, -0.03806, -0.19134, -0.98079, 0, -0.19509, -0.98079, 0, -0.29028, -0.95694, -0.05663, -0.28471, -0.95694, -0.01912, -0.09613, -0.99518, 0, -0.09802, -0.99518, 0, -0.19509, -0.98079, -0.03806, -0.19134, -0.98079, -0, -0, -1, 0, -0.09802, -0.99518, -0.01912, -0.09613, -0.99518, -0, -0, -1, 0.01912, -0.09613, -0.99518, 0, -0.09802, -0.99518, 0, -0.09802, -0.99518, 0.01912, -0.09613, -0.99518, 0.03806, -0.19134, -0.98079, 0, -0.19509, -0.98079, 0, -0.19509, -0.98079, 0.03806, -0.19134, -0.98079, 0.05663, -0.28471, -0.95694, 0, -0.29028, -0.95694, 0, -0.29028, -0.95694, 0.05663, -0.28471, -0.95694, 0.07466, -0.37533, -0.92388, 0, -0.38268, -0.92388, 0, -0.38268, -0.92388, 0.07466, -0.37533, -0.92388, 0.09196, -0.46234, -0.88192, 0, -0.4714, -0.88192, 0, -0.4714, -0.88192, 0.09196, -0.46234, -0.88192, 0.10839, -0.54489, -0.83147, 0, -0.55557, -0.83147, 0, -0.55557, -0.83147, 0.10839, -0.54489, -0.83147, 0.12376, -0.6222, -0.77301, 0, -0.63439, -0.77301, 0, -0.63439, -0.77301, 0.12376, -0.6222, -0.77301, 0.13795, -0.69352, -0.70711, 0, -0.70711, -0.70711, 0, -0.70711, -0.70711, 0.13795, -0.69352, -0.70711, 0.15081, -0.75816, -0.63439, 0, -0.77301, -0.63439, 0, -0.77301, -0.63439, 0.15081, -0.75816, -0.63439, 0.16221, -0.81549, -0.55557, 0, -0.83147, -0.55557, 0, -0.83147, -0.55557, 0.16221, -0.81549, -0.55557, 0.17205, -0.86497, -0.4714, 0, -0.88192, -0.4714, 0, -0.88192, -0.4714, 0.17205, -0.86497, -0.4714, 0.18024, -0.90613, -0.38268, 0, -0.92388, -0.38268, 0, -0.92388, -0.38268, 0.18024, -0.90613, -0.38268, 0.18669, -0.93855, -0.29028, 0, -0.95694, -0.29028, 0, -0.95694, -0.29028, 0.18669, -0.93855, -0.29028, 0.19134, -0.96194, -0.19509, 0, -0.98078, -0.19509, 0, -0.98078, -0.19509, 0.19134, -0.96194, -0.19509, 0.19415, -0.97606, -0.09802, 0, -0.99518, -0.09802, 0, -0.99518, -0.09802, 0.19415, -0.97606, -0.09802, 0.19509, -0.98078, -0, 0, -1, -0, 0, -1, -0, 0.19509, -0.98078, -0, 0.19415, -0.97606, 0.09802, 0, -0.99518, 0.09802, 0, -0.99518, 0.09802, 0.19415, -0.97606, 0.09802, 0.19134, -0.96194, 0.19509, 0, -0.98078, 0.19509, 0, -0.98078, 0.19509, 0.19134, -0.96194, 0.19509, 0.18669, -0.93855, 0.29028, 0, -0.95694, 0.29028, 0, -0.95694, 0.29028, 0.18669, -0.93855, 0.29028, 0.18024, -0.90613, 0.38268, 0, -0.92388, 0.38268, 0, -0.92388, 0.38268, 0.18024, -0.90613, 0.38268, 0.17205, -0.86497, 0.4714, 0, -0.88192, 0.4714, 0, -0.88192, 0.4714, 0.17205, -0.86497, 0.4714, 0.16221, -0.81549, 0.55557, 0, -0.83147, 0.55557, 0, -0.83147, 0.55557, 0.16221, -0.81549, 0.55557, 0.15081, -0.75816, 0.63439, 0, -0.77301, 0.63439, 0, -0.77301, 0.63439, 0.15081, -0.75816, 0.63439, 0.13795, -0.69352, 0.70711, 0, -0.70711, 0.70711, 0, -0.70711, 0.70711, 0.13795, -0.69352, 0.70711, 0.12376, -0.6222, 0.77301, 0, -0.63439, 0.77301, 0, -0.63439, 0.77301, 0.12376, -0.6222, 0.77301, 0.10839, -0.54489, 0.83147, 0, -0.55557, 0.83147, 0, -0.55557, 0.83147, 0.10839, -0.54489, 0.83147, 0.09196, -0.46234, 0.88192, 0, -0.4714, 0.88192, 0, -0.4714, 0.88192, 0.09196, -0.46234, 0.88192, 0.07466, -0.37533, 0.92388, 0, -0.38268, 0.92388, 0, -0.38268, 0.92388, 0.07466, -0.37533, 0.92388, 0.05663, -0.28471, 0.95694, 0, -0.29028, 0.95694, 0, -0.29028, 0.95694, 0.05663, -0.28471, 0.95694, 0.03806, -0.19134, 0.98079, 0, -0.19509, 0.98079, 0, -0.19509, 0.98079, 0.03806, -0.19134, 0.98079, 0.01912, -0.09613, 0.99518, 0, -0.09802, 0.99518, 0.01912, -0.09613, 0.99518, 0, 0, 1, 0, -0.09802, 0.99518, 0.03751, -0.09056, 0.99518, 0, 0, 1, 0.01912, -0.09613, 0.99518, 0.03806, -0.19134, 0.98079, 0.07466, -0.18024, 0.98079, 0.03751, -0.09056, 0.99518, 0.01912, -0.09613, 0.99518, 0.05663, -0.28471, 0.95694, 0.11109, -0.26819, 0.95694, 0.07466, -0.18024, 0.98079, 0.03806, -0.19134, 0.98079, 0.07466, -0.37533, 0.92388, 0.14645, -0.35355, 0.92388, 0.11109, -0.26819, 0.95694, 0.05663, -0.28471, 0.95694, 0.09196, -0.46234, 0.88192, 0.1804, -0.43551, 0.88192, 0.14645, -0.35355, 0.92388, 0.07466, -0.37533, 0.92388, 0.10839, -0.54489, 0.83147, 0.21261, -0.51328, 0.83147, 0.1804, -0.43551, 0.88192, 0.09196, -0.46234, 0.88192, 0.12376, -0.6222, 0.77301, 0.24277, -0.5861, 0.77301, 0.21261, -0.51328, 0.83147, 0.10839, -0.54489, 0.83147, 0.13795, -0.69352, 0.70711, 0.2706, -0.65328, 0.70711, 0.24277, -0.5861, 0.77301, 0.12376, -0.6222, 0.77301, 0.15081, -0.75816, 0.63439, 0.29582, -0.71417, 0.63439, 0.2706, -0.65328, 0.70711, 0.13795, -0.69352, 0.70711, 0.16221, -0.81549, 0.55557, 0.31819, -0.76818, 0.55557, 0.29582, -0.71417, 0.63439, 0.15081, -0.75816, 0.63439, 0.17205, -0.86497, 0.4714, 0.3375, -0.81479, 0.4714, 0.31819, -0.76818, 0.55557, 0.16221, -0.81549, 0.55557, 0.18024, -0.90613, 0.38268, 0.35355, -0.85355, 0.38268, 0.3375, -0.81479, 0.4714, 0.17205, -0.86497, 0.4714, 0.18669, -0.93855, 0.29028, 0.36621, -0.8841, 0.29028, 0.35355, -0.85355, 0.38268, 0.18024, -0.90613, 0.38268, 0.19134, -0.96194, 0.19509, 0.37533, -0.90613, 0.19509, 0.36621, -0.8841, 0.29028, 0.18669, -0.93855, 0.29028, 0.19415, -0.97606, 0.09802, 0.38084, -0.91943, 0.09802, 0.37533, -0.90613, 0.19509, 0.19134, -0.96194, 0.19509, 0.19509, -0.98078, -0, 0.38268, -0.92388, -0, 0.38084, -0.91943, 0.09802, 0.19415, -0.97606, 0.09802, 0.19415, -0.97606, -0.09802, 0.38084, -0.91943, -0.09802, 0.38268, -0.92388, -0, 0.19509, -0.98078, -0, 0.19134, -0.96194, -0.19509, 0.37533, -0.90613, -0.19509, 0.38084, -0.91943, -0.09802, 0.19415, -0.97606, -0.09802, 0.18669, -0.93855, -0.29028, 0.36621, -0.8841, -0.29028, 0.37533, -0.90613, -0.19509, 0.19134, -0.96194, -0.19509, 0.18024, -0.90613, -0.38268, 0.35355, -0.85355, -0.38268, 0.36621, -0.8841, -0.29028, 0.18669, -0.93855, -0.29028, 0.17205, -0.86497, -0.4714, 0.3375, -0.81479, -0.4714, 0.35355, -0.85355, -0.38268, 0.18024, -0.90613, -0.38268, 0.16221, -0.81549, -0.55557, 0.31819, -0.76818, -0.55557, 0.3375, -0.81479, -0.4714, 0.17205, -0.86497, -0.4714, 0.15081, -0.75816, -0.63439, 0.29582, -0.71417, -0.63439, 0.31819, -0.76818, -0.55557, 0.16221, -0.81549, -0.55557, 0.13795, -0.69352, -0.70711, 0.2706, -0.65328, -0.70711, 0.29582, -0.71417, -0.63439, 0.15081, -0.75816, -0.63439, 0.12376, -0.6222, -0.77301, 0.24277, -0.5861, -0.77301, 0.2706, -0.65328, -0.70711, 0.13795, -0.69352, -0.70711, 0.10839, -0.54489, -0.83147, 0.21261, -0.51328, -0.83147, 0.24277, -0.5861, -0.77301, 0.12376, -0.6222, -0.77301, 0.09196, -0.46234, -0.88192, 0.1804, -0.43551, -0.88192, 0.21261, -0.51328, -0.83147, 0.10839, -0.54489, -0.83147, 0.07466, -0.37533, -0.92388, 0.14645, -0.35355, -0.92388, 0.1804, -0.43551, -0.88192, 0.09196, -0.46234, -0.88192, 0.05663, -0.28471, -0.95694, 0.11109, -0.26819, -0.95694, 0.14645, -0.35355, -0.92388, 0.07466, -0.37533, -0.92388, 0.03806, -0.19134, -0.98079, 0.07466, -0.18024, -0.98079, 0.11109, -0.26819, -0.95694, 0.05663, -0.28471, -0.95694, 0.01912, -0.09613, -0.99518, 0.03751, -0.09056, -0.99518, 0.07466, -0.18024, -0.98079, 0.03806, -0.19134, -0.98079, -0, -0, -1, 0.03751, -0.09056, -0.99518, 0.01912, -0.09613, -0.99518, -0, -0, -1, 0.05445, -0.0815, -0.99518, 0.03751, -0.09056, -0.99518, 0.03751, -0.09056, -0.99518, 0.05445, -0.0815, -0.99518, 0.10839, -0.16221, -0.98079, 0.07466, -0.18024, -0.98079, 0.07466, -0.18024, -0.98079, 0.10839, -0.16221, -0.98079, 0.16127, -0.24136, -0.95694, 0.11109, -0.26819, -0.95694, 0.11109, -0.26819, -0.95694, 0.16127, -0.24136, -0.95694, 0.21261, -0.31819, -0.92388, 0.14645, -0.35355, -0.92388, 0.14645, -0.35355, -0.92388, 0.21261, -0.31819, -0.92388, 0.26189, -0.39195, -0.88192, 0.1804, -0.43551, -0.88192, 0.1804, -0.43551, -0.88192, 0.26189, -0.39195, -0.88192, 0.30866, -0.46194, -0.83147, 0.21261, -0.51328, -0.83147, 0.21261, -0.51328, -0.83147, 0.30866, -0.46194, -0.83147, 0.35245, -0.52748, -0.77301, 0.24277, -0.5861, -0.77301, 0.24277, -0.5861, -0.77301, 0.35245, -0.52748, -0.77301, 0.39285, -0.58794, -0.70711, 0.2706, -0.65328, -0.70711, 0.2706, -0.65328, -0.70711, 0.39285, -0.58794, -0.70711, 0.42946, -0.64273, -0.63439, 0.29582, -0.71417, -0.63439, 0.29582, -0.71417, -0.63439, 0.42946, -0.64273, -0.63439, 0.46194, -0.69134, -0.55557, 0.31819, -0.76818, -0.55557, 0.31819, -0.76818, -0.55557, 0.46194, -0.69134, -0.55557, 0.48997, -0.73329, -0.4714, 0.3375, -0.81479, -0.4714, 0.3375, -0.81479, -0.4714, 0.48997, -0.73329, -0.4714, 0.51328, -0.76818, -0.38268, 0.35355, -0.85355, -0.38268, 0.35355, -0.85355, -0.38268, 0.51328, -0.76818, -0.38268, 0.53165, -0.79567, -0.29028, 0.36621, -0.8841, -0.29028, 0.36621, -0.8841, -0.29028, 0.53165, -0.79567, -0.29028, 0.54489, -0.81549, -0.19509, 0.37533, -0.90613, -0.19509, 0.37533, -0.90613, -0.19509, 0.54489, -0.81549, -0.19509, 0.55289, -0.82747, -0.09802, 0.38084, -0.91943, -0.09802, 0.38084, -0.91943, -0.09802, 0.55289, -0.82747, -0.09802, 0.55557, -0.83147, -0, 0.38268, -0.92388, -0, 0.38268, -0.92388, -0, 0.55557, -0.83147, -0, 0.55289, -0.82747, 0.09802, 0.38084, -0.91943, 0.09802, 0.38084, -0.91943, 0.09802, 0.55289, -0.82747, 0.09802, 0.54489, -0.81549, 0.19509, 0.37533, -0.90613, 0.19509, 0.37533, -0.90613, 0.19509, 0.54489, -0.81549, 0.19509, 0.53165, -0.79567, 0.29028, 0.36621, -0.8841, 0.29028, 0.36621, -0.8841, 0.29028, 0.53165, -0.79567, 0.29028, 0.51328, -0.76818, 0.38268, 0.35355, -0.85355, 0.38268, 0.35355, -0.85355, 0.38268, 0.51328, -0.76818, 0.38268, 0.48997, -0.73329, 0.4714, 0.3375, -0.81479, 0.4714, 0.3375, -0.81479, 0.4714, 0.48997, -0.73329, 0.4714, 0.46194, -0.69134, 0.55557, 0.31819, -0.76818, 0.55557, 0.31819, -0.76818, 0.55557, 0.46194, -0.69134, 0.55557, 0.42946, -0.64273, 0.63439, 0.29582, -0.71417, 0.63439, 0.29582, -0.71417, 0.63439, 0.42946, -0.64273, 0.63439, 0.39285, -0.58794, 0.70711, 0.2706, -0.65328, 0.70711, 0.2706, -0.65328, 0.70711, 0.39285, -0.58794, 0.70711, 0.35245, -0.52748, 0.77301, 0.24277, -0.5861, 0.77301, 0.24277, -0.5861, 0.77301, 0.35245, -0.52748, 0.77301, 0.30866, -0.46194, 0.83147, 0.21261, -0.51328, 0.83147, 0.21261, -0.51328, 0.83147, 0.30866, -0.46194, 0.83147, 0.26189, -0.39195, 0.88192, 0.1804, -0.43551, 0.88192, 0.1804, -0.43551, 0.88192, 0.26189, -0.39195, 0.88192, 0.21261, -0.31819, 0.92388, 0.14645, -0.35355, 0.92388, 0.14645, -0.35355, 0.92388, 0.21261, -0.31819, 0.92388, 0.16127, -0.24136, 0.95694, 0.11109, -0.26819, 0.95694, 0.11109, -0.26819, 0.95694, 0.16127, -0.24136, 0.95694, 0.10839, -0.16221, 0.98079, 0.07466, -0.18024, 0.98079, 0.07466, -0.18024, 0.98079, 0.10839, -0.16221, 0.98079, 0.05446, -0.0815, 0.99518, 0.03751, -0.09056, 0.99518, 0.05446, -0.0815, 0.99518, 0, 0, 1, 0.03751, -0.09056, 0.99518, 0.06931, -0.06931, 0.99518, 0, 0, 1, 0.05446, -0.0815, 0.99518, 0.10839, -0.16221, 0.98079, 0.13795, -0.13795, 0.98079, 0.06931, -0.06931, 0.99518, 0.05446, -0.0815, 0.99518, 0.16127, -0.24136, 0.95694, 0.20526, -0.20526, 0.95694, 0.13795, -0.13795, 0.98079, 0.10839, -0.16221, 0.98079, 0.21261, -0.31819, 0.92388, 0.2706, -0.2706, 0.92388, 0.20526, -0.20526, 0.95694, 0.16127, -0.24136, 0.95694, 0.26189, -0.39195, 0.88192, 0.33333, -0.33333, 0.88192, 0.2706, -0.2706, 0.92388, 0.21261, -0.31819, 0.92388, 0.30866, -0.46194, 0.83147, 0.39285, -0.39285, 0.83147, 0.33333, -0.33333, 0.88192, 0.26189, -0.39195, 0.88192, 0.35245, -0.52748, 0.77301, 0.44858, -0.44858, 0.77301, 0.39285, -0.39285, 0.83147, 0.30866, -0.46194, 0.83147, 0.39285, -0.58794, 0.70711, 0.5, -0.5, 0.70711, 0.44858, -0.44858, 0.77301, 0.35245, -0.52748, 0.77301, 0.42946, -0.64273, 0.63439, 0.5466, -0.5466, 0.63439, 0.5, -0.5, 0.70711, 0.39285, -0.58794, 0.70711, 0.46194, -0.69134, 0.55557, 0.58794, -0.58794, 0.55557, 0.5466, -0.5466, 0.63439, 0.42946, -0.64273, 0.63439, 0.48997, -0.73329, 0.4714, 0.62361, -0.62361, 0.4714, 0.58794, -0.58794, 0.55557, 0.46194, -0.69134, 0.55557, 0.51328, -0.76818, 0.38268, 0.65328, -0.65328, 0.38268, 0.62361, -0.62361, 0.4714, 0.48997, -0.73329, 0.4714, 0.53165, -0.79567, 0.29028, 0.67666, -0.67666, 0.29028, 0.65328, -0.65328, 0.38268, 0.51328, -0.76818, 0.38268, 0.54489, -0.81549, 0.19509, 0.69352, -0.69352, 0.19509, 0.67666, -0.67666, 0.29028, 0.53165, -0.79567, 0.29028, 0.55289, -0.82747, 0.09802, 0.7037, -0.7037, 0.09802, 0.69352, -0.69352, 0.19509, 0.54489, -0.81549, 0.19509, 0.55557, -0.83147, -0, 0.70711, -0.70711, -0, 0.7037, -0.7037, 0.09802, 0.55289, -0.82747, 0.09802, 0.55289, -0.82747, -0.09802, 0.7037, -0.7037, -0.09802, 0.70711, -0.70711, -0, 0.55557, -0.83147, -0, 0.54489, -0.81549, -0.19509, 0.69352, -0.69352, -0.19509, 0.7037, -0.7037, -0.09802, 0.55289, -0.82747, -0.09802, 0.53165, -0.79567, -0.29028, 0.67666, -0.67666, -0.29028, 0.69352, -0.69352, -0.19509, 0.54489, -0.81549, -0.19509, 0.51328, -0.76818, -0.38268, 0.65328, -0.65328, -0.38268, 0.67666, -0.67666, -0.29028, 0.53165, -0.79567, -0.29028, 0.48997, -0.73329, -0.4714, 0.62361, -0.62361, -0.4714, 0.65328, -0.65328, -0.38268, 0.51328, -0.76818, -0.38268, 0.46194, -0.69134, -0.55557, 0.58794, -0.58794, -0.55557, 0.62361, -0.62361, -0.4714, 0.48997, -0.73329, -0.4714, 0.42946, -0.64273, -0.63439, 0.5466, -0.5466, -0.63439, 0.58794, -0.58794, -0.55557, 0.46194, -0.69134, -0.55557, 0.39285, -0.58794, -0.70711, 0.5, -0.5, -0.70711, 0.5466, -0.5466, -0.63439, 0.42946, -0.64273, -0.63439, 0.35245, -0.52748, -0.77301, 0.44858, -0.44858, -0.77301, 0.5, -0.5, -0.70711, 0.39285, -0.58794, -0.70711, 0.30866, -0.46194, -0.83147, 0.39285, -0.39285, -0.83147, 0.44858, -0.44858, -0.77301, 0.35245, -0.52748, -0.77301, 0.26189, -0.39195, -0.88192, 0.33333, -0.33333, -0.88192, 0.39285, -0.39285, -0.83147, 0.30866, -0.46194, -0.83147, 0.21261, -0.31819, -0.92388, 0.2706, -0.2706, -0.92388, 0.33333, -0.33333, -0.88192, 0.26189, -0.39195, -0.88192, 0.16127, -0.24136, -0.95694, 0.20526, -0.20526, -0.95694, 0.2706, -0.2706, -0.92388, 0.21261, -0.31819, -0.92388, 0.10839, -0.16221, -0.98079, 0.13795, -0.13795, -0.98079, 0.20526, -0.20526, -0.95694, 0.16127, -0.24136, -0.95694, 0.05445, -0.0815, -0.99518, 0.06931, -0.06931, -0.99518, 0.13795, -0.13795, -0.98079, 0.10839, -0.16221, -0.98079, -0, -0, -1, 0.06931, -0.06931, -0.99518, 0.05445, -0.0815, -0.99518, -0, -0, -1, 0.0815, -0.05445, -0.99518, 0.06931, -0.06931, -0.99518, 0.06931, -0.06931, -0.99518, 0.0815, -0.05445, -0.99518, 0.16221, -0.10839, -0.98079, 0.13795, -0.13795, -0.98079, 0.13795, -0.13795, -0.98079, 0.16221, -0.10839, -0.98079, 0.24136, -0.16127, -0.95694, 0.20526, -0.20526, -0.95694, 0.20526, -0.20526, -0.95694, 0.24136, -0.16127, -0.95694, 0.31819, -0.21261, -0.92388, 0.2706, -0.2706, -0.92388, 0.2706, -0.2706, -0.92388, 0.31819, -0.21261, -0.92388, 0.39195, -0.26189, -0.88192, 0.33333, -0.33333, -0.88192, 0.33333, -0.33333, -0.88192, 0.39195, -0.26189, -0.88192, 0.46194, -0.30866, -0.83147, 0.39285, -0.39285, -0.83147, 0.39285, -0.39285, -0.83147, 0.46194, -0.30866, -0.83147, 0.52748, -0.35245, -0.77301, 0.44858, -0.44858, -0.77301, 0.44858, -0.44858, -0.77301, 0.52748, -0.35245, -0.77301, 0.58794, -0.39285, -0.70711, 0.5, -0.5, -0.70711, 0.5, -0.5, -0.70711, 0.58794, -0.39285, -0.70711, 0.64273, -0.42946, -0.63439, 0.5466, -0.5466, -0.63439, 0.5466, -0.5466, -0.63439, 0.64273, -0.42946, -0.63439, 0.69134, -0.46194, -0.55557, 0.58794, -0.58794, -0.55557, 0.58794, -0.58794, -0.55557, 0.69134, -0.46194, -0.55557, 0.73329, -0.48997, -0.4714, 0.62361, -0.62361, -0.4714, 0.62361, -0.62361, -0.4714, 0.73329, -0.48997, -0.4714, 0.76818, -0.51328, -0.38268, 0.65328, -0.65328, -0.38268, 0.65328, -0.65328, -0.38268, 0.76818, -0.51328, -0.38268, 0.79567, -0.53165, -0.29028, 0.67666, -0.67666, -0.29028, 0.67666, -0.67666, -0.29028, 0.79567, -0.53165, -0.29028, 0.81549, -0.54489, -0.19509, 0.69352, -0.69352, -0.19509, 0.69352, -0.69352, -0.19509, 0.81549, -0.54489, -0.19509, 0.82747, -0.55289, -0.09802, 0.7037, -0.7037, -0.09802, 0.7037, -0.7037, -0.09802, 0.82747, -0.55289, -0.09802, 0.83147, -0.55557, -0, 0.70711, -0.70711, -0, 0.70711, -0.70711, -0, 0.83147, -0.55557, -0, 0.82747, -0.55289, 0.09802, 0.7037, -0.7037, 0.09802, 0.7037, -0.7037, 0.09802, 0.82747, -0.55289, 0.09802, 0.81549, -0.54489, 0.19509, 0.69352, -0.69352, 0.19509, 0.69352, -0.69352, 0.19509, 0.81549, -0.54489, 0.19509, 0.79567, -0.53165, 0.29028, 0.67666, -0.67666, 0.29028, 0.67666, -0.67666, 0.29028, 0.79567, -0.53165, 0.29028, 0.76818, -0.51328, 0.38268, 0.65328, -0.65328, 0.38268, 0.65328, -0.65328, 0.38268, 0.76818, -0.51328, 0.38268, 0.73329, -0.48997, 0.4714, 0.62361, -0.62361, 0.4714, 0.62361, -0.62361, 0.4714, 0.73329, -0.48997, 0.4714, 0.69134, -0.46194, 0.55557, 0.58794, -0.58794, 0.55557, 0.58794, -0.58794, 0.55557, 0.69134, -0.46194, 0.55557, 0.64273, -0.42946, 0.63439, 0.5466, -0.5466, 0.63439, 0.5466, -0.5466, 0.63439, 0.64273, -0.42946, 0.63439, 0.58794, -0.39285, 0.70711, 0.5, -0.5, 0.70711, 0.5, -0.5, 0.70711, 0.58794, -0.39285, 0.70711, 0.52748, -0.35245, 0.77301, 0.44858, -0.44858, 0.77301, 0.44858, -0.44858, 0.77301, 0.52748, -0.35245, 0.77301, 0.46194, -0.30866, 0.83147, 0.39285, -0.39285, 0.83147, 0.39285, -0.39285, 0.83147, 0.46194, -0.30866, 0.83147, 0.39195, -0.26189, 0.88192, 0.33333, -0.33333, 0.88192, 0.33333, -0.33333, 0.88192, 0.39195, -0.26189, 0.88192, 0.31819, -0.21261, 0.92388, 0.2706, -0.2706, 0.92388, 0.2706, -0.2706, 0.92388, 0.31819, -0.21261, 0.92388, 0.24136, -0.16127, 0.95694, 0.20526, -0.20526, 0.95694, 0.20526, -0.20526, 0.95694, 0.24136, -0.16127, 0.95694, 0.16221, -0.10839, 0.98079, 0.13795, -0.13795, 0.98079, 0.13795, -0.13795, 0.98079, 0.16221, -0.10839, 0.98079, 0.0815, -0.05446, 0.99518, 0.06931, -0.06931, 0.99518, 0.0815, -0.05446, 0.99518, 0, 0, 1, 0.06931, -0.06931, 0.99518, 0.09056, -0.03751, 0.99518, 0, 0, 1, 0.0815, -0.05446, 0.99518, 0.16221, -0.10839, 0.98079, 0.18024, -0.07466, 0.98079, 0.09056, -0.03751, 0.99518, 0.0815, -0.05446, 0.99518, 0.24136, -0.16127, 0.95694, 0.26819, -0.11109, 0.95694, 0.18024, -0.07466, 0.98079, 0.16221, -0.10839, 0.98079, 0.31819, -0.21261, 0.92388, 0.35355, -0.14645, 0.92388, 0.26819, -0.11109, 0.95694, 0.24136, -0.16127, 0.95694, 0.39195, -0.26189, 0.88192, 0.43551, -0.1804, 0.88192, 0.35355, -0.14645, 0.92388, 0.31819, -0.21261, 0.92388, 0.46194, -0.30866, 0.83147, 0.51328, -0.21261, 0.83147, 0.43551, -0.1804, 0.88192, 0.39195, -0.26189, 0.88192, 0.52748, -0.35245, 0.77301, 0.5861, -0.24277, 0.77301, 0.51328, -0.21261, 0.83147, 0.46194, -0.30866, 0.83147, 0.58794, -0.39285, 0.70711, 0.65328, -0.2706, 0.70711, 0.5861, -0.24277, 0.77301, 0.52748, -0.35245, 0.77301, 0.64273, -0.42946, 0.63439, 0.71417, -0.29582, 0.63439, 0.65328, -0.2706, 0.70711, 0.58794, -0.39285, 0.70711, 0.69134, -0.46194, 0.55557, 0.76818, -0.31819, 0.55557, 0.71417, -0.29582, 0.63439, 0.64273, -0.42946, 0.63439, 0.73329, -0.48997, 0.4714, 0.81479, -0.3375, 0.4714, 0.76818, -0.31819, 0.55557, 0.69134, -0.46194, 0.55557, 0.76818, -0.51328, 0.38268, 0.85355, -0.35355, 0.38268, 0.81479, -0.3375, 0.4714, 0.73329, -0.48997, 0.4714, 0.79567, -0.53165, 0.29028, 0.8841, -0.3662, 0.29028, 0.85355, -0.35355, 0.38268, 0.76818, -0.51328, 0.38268, 0.81549, -0.54489, 0.19509, 0.90613, -0.37533, 0.19509, 0.8841, -0.3662, 0.29028, 0.79567, -0.53165, 0.29028, 0.82747, -0.55289, 0.09802, 0.91943, -0.38084, 0.09802, 0.90613, -0.37533, 0.19509, 0.81549, -0.54489, 0.19509, 0.83147, -0.55557, -0, 0.92388, -0.38268, -0, 0.91943, -0.38084, 0.09802, 0.82747, -0.55289, 0.09802, 0.82747, -0.55289, -0.09802, 0.91943, -0.38084, -0.09802, 0.92388, -0.38268, -0, 0.83147, -0.55557, -0, 0.81549, -0.54489, -0.19509, 0.90613, -0.37533, -0.19509, 0.91943, -0.38084, -0.09802, 0.82747, -0.55289, -0.09802, 0.79567, -0.53165, -0.29028, 0.8841, -0.3662, -0.29028, 0.90613, -0.37533, -0.19509, 0.81549, -0.54489, -0.19509, 0.76818, -0.51328, -0.38268, 0.85355, -0.35355, -0.38268, 0.8841, -0.3662, -0.29028, 0.79567, -0.53165, -0.29028, 0.73329, -0.48997, -0.4714, 0.81479, -0.3375, -0.4714, 0.85355, -0.35355, -0.38268, 0.76818, -0.51328, -0.38268, 0.69134, -0.46194, -0.55557, 0.76818, -0.31819, -0.55557, 0.81479, -0.3375, -0.4714, 0.73329, -0.48997, -0.4714, 0.64273, -0.42946, -0.63439, 0.71417, -0.29582, -0.63439, 0.76818, -0.31819, -0.55557, 0.69134, -0.46194, -0.55557, 0.58794, -0.39285, -0.70711, 0.65328, -0.2706, -0.70711, 0.71417, -0.29582, -0.63439, 0.64273, -0.42946, -0.63439, 0.52748, -0.35245, -0.77301, 0.5861, -0.24277, -0.77301, 0.65328, -0.2706, -0.70711, 0.58794, -0.39285, -0.70711, 0.46194, -0.30866, -0.83147, 0.51328, -0.21261, -0.83147, 0.5861, -0.24277, -0.77301, 0.52748, -0.35245, -0.77301, 0.39195, -0.26189, -0.88192, 0.43551, -0.1804, -0.88192, 0.51328, -0.21261, -0.83147, 0.46194, -0.30866, -0.83147, 0.31819, -0.21261, -0.92388, 0.35355, -0.14645, -0.92388, 0.43551, -0.1804, -0.88192, 0.39195, -0.26189, -0.88192, 0.24136, -0.16127, -0.95694, 0.26819, -0.11109, -0.95694, 0.35355, -0.14645, -0.92388, 0.31819, -0.21261, -0.92388, 0.16221, -0.10839, -0.98079, 0.18024, -0.07466, -0.98079, 0.26819, -0.11109, -0.95694, 0.24136, -0.16127, -0.95694, 0.0815, -0.05445, -0.99518, 0.09056, -0.03751, -0.99518, 0.18024, -0.07466, -0.98079, 0.16221, -0.10839, -0.98079, -0, -0, -1, 0.09056, -0.03751, -0.99518, 0.0815, -0.05445, -0.99518, -0, -0, -1, 0.09613, -0.01912, -0.99518, 0.09056, -0.03751, -0.99518, 0.09056, -0.03751, -0.99518, 0.09613, -0.01912, -0.99518, 0.19134, -0.03806, -0.98079, 0.18024, -0.07466, -0.98079, 0.18024, -0.07466, -0.98079, 0.19134, -0.03806, -0.98079, 0.28471, -0.05663, -0.95694, 0.26819, -0.11109, -0.95694, 0.26819, -0.11109, -0.95694, 0.28471, -0.05663, -0.95694, 0.37533, -0.07466, -0.92388, 0.35355, -0.14645, -0.92388, 0.35355, -0.14645, -0.92388, 0.37533, -0.07466, -0.92388, 0.46234, -0.09196, -0.88192, 0.43551, -0.1804, -0.88192, 0.43551, -0.1804, -0.88192, 0.46234, -0.09196, -0.88192, 0.54489, -0.10839, -0.83147, 0.51328, -0.21261, -0.83147, 0.51328, -0.21261, -0.83147, 0.54489, -0.10839, -0.83147, 0.6222, -0.12376, -0.77301, 0.5861, -0.24277, -0.77301, 0.5861, -0.24277, -0.77301, 0.6222, -0.12376, -0.77301, 0.69352, -0.13795, -0.70711, 0.65328, -0.2706, -0.70711, 0.65328, -0.2706, -0.70711, 0.69352, -0.13795, -0.70711, 0.75816, -0.15081, -0.63439, 0.71417, -0.29582, -0.63439, 0.71417, -0.29582, -0.63439, 0.75816, -0.15081, -0.63439, 0.81549, -0.16221, -0.55557, 0.76818, -0.31819, -0.55557, 0.76818, -0.31819, -0.55557, 0.81549, -0.16221, -0.55557, 0.86497, -0.17205, -0.4714, 0.81479, -0.3375, -0.4714, 0.81479, -0.3375, -0.4714, 0.86497, -0.17205, -0.4714, 0.90613, -0.18024, -0.38268, 0.85355, -0.35355, -0.38268, 0.85355, -0.35355, -0.38268, 0.90613, -0.18024, -0.38268, 0.93855, -0.18669, -0.29028, 0.8841, -0.3662, -0.29028, 0.8841, -0.3662, -0.29028, 0.93855, -0.18669, -0.29028, 0.96194, -0.19134, -0.19509, 0.90613, -0.37533, -0.19509, 0.90613, -0.37533, -0.19509, 0.96194, -0.19134, -0.19509, 0.97606, -0.19415, -0.09802, 0.91943, -0.38084, -0.09802, 0.91943, -0.38084, -0.09802, 0.97606, -0.19415, -0.09802, 0.98078, -0.19509, -0, 0.92388, -0.38268, -0, 0.92388, -0.38268, -0, 0.98078, -0.19509, -0, 0.97606, -0.19415, 0.09802, 0.91943, -0.38084, 0.09802, 0.91943, -0.38084, 0.09802, 0.97606, -0.19415, 0.09802, 0.96194, -0.19134, 0.19509, 0.90613, -0.37533, 0.19509, 0.90613, -0.37533, 0.19509, 0.96194, -0.19134, 0.19509, 0.93855, -0.18669, 0.29028, 0.8841, -0.3662, 0.29028, 0.8841, -0.3662, 0.29028, 0.93855, -0.18669, 0.29028, 0.90613, -0.18024, 0.38268, 0.85355, -0.35355, 0.38268, 0.85355, -0.35355, 0.38268, 0.90613, -0.18024, 0.38268, 0.86497, -0.17205, 0.4714, 0.81479, -0.3375, 0.4714, 0.81479, -0.3375, 0.4714, 0.86497, -0.17205, 0.4714, 0.81549, -0.16221, 0.55557, 0.76818, -0.31819, 0.55557, 0.76818, -0.31819, 0.55557, 0.81549, -0.16221, 0.55557, 0.75816, -0.15081, 0.63439, 0.71417, -0.29582, 0.63439, 0.71417, -0.29582, 0.63439, 0.75816, -0.15081, 0.63439, 0.69352, -0.13795, 0.70711, 0.65328, -0.2706, 0.70711, 0.65328, -0.2706, 0.70711, 0.69352, -0.13795, 0.70711, 0.6222, -0.12376, 0.77301, 0.5861, -0.24277, 0.77301, 0.5861, -0.24277, 0.77301, 0.6222, -0.12376, 0.77301, 0.54489, -0.10839, 0.83147, 0.51328, -0.21261, 0.83147, 0.51328, -0.21261, 0.83147, 0.54489, -0.10839, 0.83147, 0.46234, -0.09196, 0.88192, 0.43551, -0.1804, 0.88192, 0.43551, -0.1804, 0.88192, 0.46234, -0.09196, 0.88192, 0.37533, -0.07466, 0.92388, 0.35355, -0.14645, 0.92388, 0.35355, -0.14645, 0.92388, 0.37533, -0.07466, 0.92388, 0.28471, -0.05663, 0.95694, 0.26819, -0.11109, 0.95694, 0.26819, -0.11109, 0.95694, 0.28471, -0.05663, 0.95694, 0.19134, -0.03806, 0.98079, 0.18024, -0.07466, 0.98079, 0.18024, -0.07466, 0.98079, 0.19134, -0.03806, 0.98079, 0.09613, -0.01912, 0.99518, 0.09056, -0.03751, 0.99518, 0.09613, -0.01912, 0.99518, 0, 0, 1, 0.09056, -0.03751, 0.99518, 0.09802, 0, 0.99518, 0, 0, 1, 0.09613, -0.01912, 0.99518, 0.19134, -0.03806, 0.98079, 0.19509, 0, 0.98079, 0.09802, 0, 0.99518, 0.09613, -0.01912, 0.99518, 0.28471, -0.05663, 0.95694, 0.29028, 0, 0.95694, 0.19509, 0, 0.98079, 0.19134, -0.03806, 0.98079, 0.37533, -0.07466, 0.92388, 0.38268, 0, 0.92388, 0.29028, 0, 0.95694, 0.28471, -0.05663, 0.95694, 0.46234, -0.09196, 0.88192, 0.4714, 0, 0.88192, 0.38268, 0, 0.92388, 0.37533, -0.07466, 0.92388, 0.54489, -0.10839, 0.83147, 0.55557, 0, 0.83147, 0.4714, 0, 0.88192, 0.46234, -0.09196, 0.88192, 0.6222, -0.12376, 0.77301, 0.63439, 0, 0.77301, 0.55557, 0, 0.83147, 0.54489, -0.10839, 0.83147, 0.69352, -0.13795, 0.70711, 0.70711, 0, 0.70711, 0.63439, 0, 0.77301, 0.6222, -0.12376, 0.77301, 0.75816, -0.15081, 0.63439, 0.77301, 0, 0.63439, 0.70711, 0, 0.70711, 0.69352, -0.13795, 0.70711, 0.81549, -0.16221, 0.55557, 0.83147, 0, 0.55557, 0.77301, 0, 0.63439, 0.75816, -0.15081, 0.63439, 0.86497, -0.17205, 0.4714, 0.88192, 0, 0.4714, 0.83147, 0, 0.55557, 0.81549, -0.16221, 0.55557, 0.90613, -0.18024, 0.38268, 0.92388, 0, 0.38268, 0.88192, 0, 0.4714, 0.86497, -0.17205, 0.4714, 0.93855, -0.18669, 0.29028, 0.95694, 0, 0.29028, 0.92388, 0, 0.38268, 0.90613, -0.18024, 0.38268, 0.96194, -0.19134, 0.19509, 0.98078, 0, 0.19509, 0.95694, 0, 0.29028, 0.93855, -0.18669, 0.29028, 0.97606, -0.19415, 0.09802, 0.99518, 0, 0.09802, 0.98078, 0, 0.19509, 0.96194, -0.19134, 0.19509, 0.98078, -0.19509, -0, 1, 0, -0, 0.99518, 0, 0.09802, 0.97606, -0.19415, 0.09802, 0.97606, -0.19415, -0.09802, 0.99518, 0, -0.09802, 1, 0, -0, 0.98078, -0.19509, -0, 0.96194, -0.19134, -0.19509, 0.98078, 0, -0.19509, 0.99518, 0, -0.09802, 0.97606, -0.19415, -0.09802, 0.93855, -0.18669, -0.29028, 0.95694, 0, -0.29028, 0.98078, 0, -0.19509, 0.96194, -0.19134, -0.19509, 0.90613, -0.18024, -0.38268, 0.92388, 0, -0.38268, 0.95694, 0, -0.29028, 0.93855, -0.18669, -0.29028, 0.86497, -0.17205, -0.4714, 0.88192, 0, -0.4714, 0.92388, 0, -0.38268, 0.90613, -0.18024, -0.38268, 0.81549, -0.16221, -0.55557, 0.83147, 0, -0.55557, 0.88192, 0, -0.4714, 0.86497, -0.17205, -0.4714, 0.75816, -0.15081, -0.63439, 0.77301, 0, -0.63439, 0.83147, 0, -0.55557, 0.81549, -0.16221, -0.55557, 0.69352, -0.13795, -0.70711, 0.70711, 0, -0.70711, 0.77301, 0, -0.63439, 0.75816, -0.15081, -0.63439, 0.6222, -0.12376, -0.77301, 0.63439, 0, -0.77301, 0.70711, 0, -0.70711, 0.69352, -0.13795, -0.70711, 0.54489, -0.10839, -0.83147, 0.55557, 0, -0.83147, 0.63439, 0, -0.77301, 0.6222, -0.12376, -0.77301, 0.46234, -0.09196, -0.88192, 0.4714, 0, -0.88192, 0.55557, 0, -0.83147, 0.54489, -0.10839, -0.83147, 0.37533, -0.07466, -0.92388, 0.38268, 0, -0.92388, 0.4714, 0, -0.88192, 0.46234, -0.09196, -0.88192, 0.28471, -0.05663, -0.95694, 0.29028, 0, -0.95694, 0.38268, 0, -0.92388, 0.37533, -0.07466, -0.92388, 0.19134, -0.03806, -0.98079, 0.19509, 0, -0.98079, 0.29028, 0, -0.95694, 0.28471, -0.05663, -0.95694, 0.09613, -0.01912, -0.99518, 0.09802, 0, -0.99518, 0.19509, 0, -0.98079, 0.19134, -0.03806, -0.98079, -0, -0, -1, 0.09802, 0, -0.99518, 0.09613, -0.01912, -0.99518 ],
+	                                'itemSize': 3,
+	                                'type': 'ARRAY_BUFFER'
+	                            }
+	                        },
+	                        'name': 'Sphere',
+	                        'primitives': [ {
+	                            'indices': {
+	                                'elements': [ 0, 1, 2, 123, 124, 125, 126, 127, 128, 249, 250, 251, 252, 253, 254, 375, 376, 377, 378, 379, 380, 501, 502, 503, 504, 505, 506, 627, 628, 629, 630, 631, 632, 753, 754, 755, 756, 757, 758, 879, 880, 881, 882, 883, 884, 1005, 1006, 1007, 1008, 1009, 1010, 1131, 1132, 1133, 1134, 1135, 1136, 1257, 1258, 1259, 1260, 1261, 1262, 1383, 1384, 1385, 1386, 1387, 1388, 1509, 1510, 1511, 1512, 1513, 1514, 1635, 1636, 1637, 1638, 1639, 1640, 1761, 1762, 1763, 1764, 1765, 1766, 1887, 1888, 1889, 1890, 1891, 1892, 2013, 2014, 2015, 2016, 2017, 2018, 2139, 2140, 2141, 2142, 2143, 2144, 2265, 2266, 2267, 2268, 2269, 2270, 2391, 2392, 2393, 2394, 2395, 2396, 2517, 2518, 2519, 2520, 2521, 2522, 2643, 2644, 2645, 2646, 2647, 2648, 2769, 2770, 2771, 2772, 2773, 2774, 2895, 2896, 2897, 2898, 2899, 2900, 3021, 3022, 3023, 3024, 3025, 3026, 3147, 3148, 3149, 3150, 3151, 3152, 3273, 3274, 3275, 3276, 3277, 3278, 3399, 3400, 3401, 3402, 3403, 3404, 3525, 3526, 3527, 3528, 3529, 3530, 3651, 3652, 3653, 3654, 3655, 3656, 3777, 3778, 3779, 3780, 3781, 3782, 3903, 3904, 3905, 3906, 3907, 3908, 4029, 4030, 4031 ],
+	                                'itemSize': 1,
+	                                'type': 'ELEMENT_ARRAY_BUFFER'
+	                            },
+	                            'mode': 'TRIANGLES'
+	                        }, {
+	                            'indices': {
+	                                'elements': [ 3, 4, 6, 4, 5, 6, 7, 8, 10, 8, 9, 10, 11, 12, 14, 12, 13, 14, 15, 16, 18, 16, 17, 18, 19, 20, 22, 20, 21, 22, 23, 24, 26, 24, 25, 26, 27, 28, 30, 28, 29, 30, 31, 32, 34, 32, 33, 34, 35, 36, 38, 36, 37, 38, 39, 40, 42, 40, 41, 42, 43, 44, 46, 44, 45, 46, 47, 48, 50, 48, 49, 50, 51, 52, 54, 52, 53, 54, 55, 56, 58, 56, 57, 58, 59, 60, 62, 60, 61, 62, 63, 64, 66, 64, 65, 66, 67, 68, 70, 68, 69, 70, 71, 72, 74, 72, 73, 74, 75, 76, 78, 76, 77, 78, 79, 80, 82, 80, 81, 82, 83, 84, 86, 84, 85, 86, 87, 88, 90, 88, 89, 90, 91, 92, 94, 92, 93, 94, 95, 96, 98, 96, 97, 98, 99, 100, 102, 100, 101, 102, 103, 104, 106, 104, 105, 106, 107, 108, 110, 108, 109, 110, 111, 112, 114, 112, 113, 114, 115, 116, 118, 116, 117, 118, 119, 120, 122, 120, 121, 122, 129, 130, 132, 130, 131, 132, 133, 134, 136, 134, 135, 136, 137, 138, 140, 138, 139, 140, 141, 142, 144, 142, 143, 144, 145, 146, 148, 146, 147, 148, 149, 150, 152, 150, 151, 152, 153, 154, 156, 154, 155, 156, 157, 158, 160, 158, 159, 160, 161, 162, 164, 162, 163, 164, 165, 166, 168, 166, 167, 168, 169, 170, 172, 170, 171, 172, 173, 174, 176, 174, 175, 176, 177, 178, 180, 178, 179, 180, 181, 182, 184, 182, 183, 184, 185, 186, 188, 186, 187, 188, 189, 190, 192, 190, 191, 192, 193, 194, 196, 194, 195, 196, 197, 198, 200, 198, 199, 200, 201, 202, 204, 202, 203, 204, 205, 206, 208, 206, 207, 208, 209, 210, 212, 210, 211, 212, 213, 214, 216, 214, 215, 216, 217, 218, 220, 218, 219, 220, 221, 222, 224, 222, 223, 224, 225, 226, 228, 226, 227, 228, 229, 230, 232, 230, 231, 232, 233, 234, 236, 234, 235, 236, 237, 238, 240, 238, 239, 240, 241, 242, 244, 242, 243, 244, 245, 246, 248, 246, 247, 248, 255, 256, 258, 256, 257, 258, 259, 260, 262, 260, 261, 262, 263, 264, 266, 264, 265, 266, 267, 268, 270, 268, 269, 270, 271, 272, 274, 272, 273, 274, 275, 276, 278, 276, 277, 278, 279, 280, 282, 280, 281, 282, 283, 284, 286, 284, 285, 286, 287, 288, 290, 288, 289, 290, 291, 292, 294, 292, 293, 294, 295, 296, 298, 296, 297, 298, 299, 300, 302, 300, 301, 302, 303, 304, 306, 304, 305, 306, 307, 308, 310, 308, 309, 310, 311, 312, 314, 312, 313, 314, 315, 316, 318, 316, 317, 318, 319, 320, 322, 320, 321, 322, 323, 324, 326, 324, 325, 326, 327, 328, 330, 328, 329, 330, 331, 332, 334, 332, 333, 334, 335, 336, 338, 336, 337, 338, 339, 340, 342, 340, 341, 342, 343, 344, 346, 344, 345, 346, 347, 348, 350, 348, 349, 350, 351, 352, 354, 352, 353, 354, 355, 356, 358, 356, 357, 358, 359, 360, 362, 360, 361, 362, 363, 364, 366, 364, 365, 366, 367, 368, 370, 368, 369, 370, 371, 372, 374, 372, 373, 374, 381, 382, 384, 382, 383, 384, 385, 386, 388, 386, 387, 388, 389, 390, 392, 390, 391, 392, 393, 394, 396, 394, 395, 396, 397, 398, 400, 398, 399, 400, 401, 402, 404, 402, 403, 404, 405, 406, 408, 406, 407, 408, 409, 410, 412, 410, 411, 412, 413, 414, 416, 414, 415, 416, 417, 418, 420, 418, 419, 420, 421, 422, 424, 422, 423, 424, 425, 426, 428, 426, 427, 428, 429, 430, 432, 430, 431, 432, 433, 434, 436, 434, 435, 436, 437, 438, 440, 438, 439, 440, 441, 442, 444, 442, 443, 444, 445, 446, 448, 446, 447, 448, 449, 450, 452, 450, 451, 452, 453, 454, 456, 454, 455, 456, 457, 458, 460, 458, 459, 460, 461, 462, 464, 462, 463, 464, 465, 466, 468, 466, 467, 468, 469, 470, 472, 470, 471, 472, 473, 474, 476, 474, 475, 476, 477, 478, 480, 478, 479, 480, 481, 482, 484, 482, 483, 484, 485, 486, 488, 486, 487, 488, 489, 490, 492, 490, 491, 492, 493, 494, 496, 494, 495, 496, 497, 498, 500, 498, 499, 500, 507, 508, 510, 508, 509, 510, 511, 512, 514, 512, 513, 514, 515, 516, 518, 516, 517, 518, 519, 520, 522, 520, 521, 522, 523, 524, 526, 524, 525, 526, 527, 528, 530, 528, 529, 530, 531, 532, 534, 532, 533, 534, 535, 536, 538, 536, 537, 538, 539, 540, 542, 540, 541, 542, 543, 544, 546, 544, 545, 546, 547, 548, 550, 548, 549, 550, 551, 552, 554, 552, 553, 554, 555, 556, 558, 556, 557, 558, 559, 560, 562, 560, 561, 562, 563, 564, 566, 564, 565, 566, 567, 568, 570, 568, 569, 570, 571, 572, 574, 572, 573, 574, 575, 576, 578, 576, 577, 578, 579, 580, 582, 580, 581, 582, 583, 584, 586, 584, 585, 586, 587, 588, 590, 588, 589, 590, 591, 592, 594, 592, 593, 594, 595, 596, 598, 596, 597, 598, 599, 600, 602, 600, 601, 602, 603, 604, 606, 604, 605, 606, 607, 608, 610, 608, 609, 610, 611, 612, 614, 612, 613, 614, 615, 616, 618, 616, 617, 618, 619, 620, 622, 620, 621, 622, 623, 624, 626, 624, 625, 626, 633, 634, 636, 634, 635, 636, 637, 638, 640, 638, 639, 640, 641, 642, 644, 642, 643, 644, 645, 646, 648, 646, 647, 648, 649, 650, 652, 650, 651, 652, 653, 654, 656, 654, 655, 656, 657, 658, 660, 658, 659, 660, 661, 662, 664, 662, 663, 664, 665, 666, 668, 666, 667, 668, 669, 670, 672, 670, 671, 672, 673, 674, 676, 674, 675, 676, 677, 678, 680, 678, 679, 680, 681, 682, 684, 682, 683, 684, 685, 686, 688, 686, 687, 688, 689, 690, 692, 690, 691, 692, 693, 694, 696, 694, 695, 696, 697, 698, 700, 698, 699, 700, 701, 702, 704, 702, 703, 704, 705, 706, 708, 706, 707, 708, 709, 710, 712, 710, 711, 712, 713, 714, 716, 714, 715, 716, 717, 718, 720, 718, 719, 720, 721, 722, 724, 722, 723, 724, 725, 726, 728, 726, 727, 728, 729, 730, 732, 730, 731, 732, 733, 734, 736, 734, 735, 736, 737, 738, 740, 738, 739, 740, 741, 742, 744, 742, 743, 744, 745, 746, 748, 746, 747, 748, 749, 750, 752, 750, 751, 752, 759, 760, 762, 760, 761, 762, 763, 764, 766, 764, 765, 766, 767, 768, 770, 768, 769, 770, 771, 772, 774, 772, 773, 774, 775, 776, 778, 776, 777, 778, 779, 780, 782, 780, 781, 782, 783, 784, 786, 784, 785, 786, 787, 788, 790, 788, 789, 790, 791, 792, 794, 792, 793, 794, 795, 796, 798, 796, 797, 798, 799, 800, 802, 800, 801, 802, 803, 804, 806, 804, 805, 806, 807, 808, 810, 808, 809, 810, 811, 812, 814, 812, 813, 814, 815, 816, 818, 816, 817, 818, 819, 820, 822, 820, 821, 822, 823, 824, 826, 824, 825, 826, 827, 828, 830, 828, 829, 830, 831, 832, 834, 832, 833, 834, 835, 836, 838, 836, 837, 838, 839, 840, 842, 840, 841, 842, 843, 844, 846, 844, 845, 846, 847, 848, 850, 848, 849, 850, 851, 852, 854, 852, 853, 854, 855, 856, 858, 856, 857, 858, 859, 860, 862, 860, 861, 862, 863, 864, 866, 864, 865, 866, 867, 868, 870, 868, 869, 870, 871, 872, 874, 872, 873, 874, 875, 876, 878, 876, 877, 878, 885, 886, 888, 886, 887, 888, 889, 890, 892, 890, 891, 892, 893, 894, 896, 894, 895, 896, 897, 898, 900, 898, 899, 900, 901, 902, 904, 902, 903, 904, 905, 906, 908, 906, 907, 908, 909, 910, 912, 910, 911, 912, 913, 914, 916, 914, 915, 916, 917, 918, 920, 918, 919, 920, 921, 922, 924, 922, 923, 924, 925, 926, 928, 926, 927, 928, 929, 930, 932, 930, 931, 932, 933, 934, 936, 934, 935, 936, 937, 938, 940, 938, 939, 940, 941, 942, 944, 942, 943, 944, 945, 946, 948, 946, 947, 948, 949, 950, 952, 950, 951, 952, 953, 954, 956, 954, 955, 956, 957, 958, 960, 958, 959, 960, 961, 962, 964, 962, 963, 964, 965, 966, 968, 966, 967, 968, 969, 970, 972, 970, 971, 972, 973, 974, 976, 974, 975, 976, 977, 978, 980, 978, 979, 980, 981, 982, 984, 982, 983, 984, 985, 986, 988, 986, 987, 988, 989, 990, 992, 990, 991, 992, 993, 994, 996, 994, 995, 996, 997, 998, 1000, 998, 999, 1000, 1001, 1002, 1004, 1002, 1003, 1004, 1011, 1012, 1014, 1012, 1013, 1014, 1015, 1016, 1018, 1016, 1017, 1018, 1019, 1020, 1022, 1020, 1021, 1022, 1023, 1024, 1026, 1024, 1025, 1026, 1027, 1028, 1030, 1028, 1029, 1030, 1031, 1032, 1034, 1032, 1033, 1034, 1035, 1036, 1038, 1036, 1037, 1038, 1039, 1040, 1042, 1040, 1041, 1042, 1043, 1044, 1046, 1044, 1045, 1046, 1047, 1048, 1050, 1048, 1049, 1050, 1051, 1052, 1054, 1052, 1053, 1054, 1055, 1056, 1058, 1056, 1057, 1058, 1059, 1060, 1062, 1060, 1061, 1062, 1063, 1064, 1066, 1064, 1065, 1066, 1067, 1068, 1070, 1068, 1069, 1070, 1071, 1072, 1074, 1072, 1073, 1074, 1075, 1076, 1078, 1076, 1077, 1078, 1079, 1080, 1082, 1080, 1081, 1082, 1083, 1084, 1086, 1084, 1085, 1086, 1087, 1088, 1090, 1088, 1089, 1090, 1091, 1092, 1094, 1092, 1093, 1094, 1095, 1096, 1098, 1096, 1097, 1098, 1099, 1100, 1102, 1100, 1101, 1102, 1103, 1104, 1106, 1104, 1105, 1106, 1107, 1108, 1110, 1108, 1109, 1110, 1111, 1112, 1114, 1112, 1113, 1114, 1115, 1116, 1118, 1116, 1117, 1118, 1119, 1120, 1122, 1120, 1121, 1122, 1123, 1124, 1126, 1124, 1125, 1126, 1127, 1128, 1130, 1128, 1129, 1130, 1137, 1138, 1140, 1138, 1139, 1140, 1141, 1142, 1144, 1142, 1143, 1144, 1145, 1146, 1148, 1146, 1147, 1148, 1149, 1150, 1152, 1150, 1151, 1152, 1153, 1154, 1156, 1154, 1155, 1156, 1157, 1158, 1160, 1158, 1159, 1160, 1161, 1162, 1164, 1162, 1163, 1164, 1165, 1166, 1168, 1166, 1167, 1168, 1169, 1170, 1172, 1170, 1171, 1172, 1173, 1174, 1176, 1174, 1175, 1176, 1177, 1178, 1180, 1178, 1179, 1180, 1181, 1182, 1184, 1182, 1183, 1184, 1185, 1186, 1188, 1186, 1187, 1188, 1189, 1190, 1192, 1190, 1191, 1192, 1193, 1194, 1196, 1194, 1195, 1196, 1197, 1198, 1200, 1198, 1199, 1200, 1201, 1202, 1204, 1202, 1203, 1204, 1205, 1206, 1208, 1206, 1207, 1208, 1209, 1210, 1212, 1210, 1211, 1212, 1213, 1214, 1216, 1214, 1215, 1216, 1217, 1218, 1220, 1218, 1219, 1220, 1221, 1222, 1224, 1222, 1223, 1224, 1225, 1226, 1228, 1226, 1227, 1228, 1229, 1230, 1232, 1230, 1231, 1232, 1233, 1234, 1236, 1234, 1235, 1236, 1237, 1238, 1240, 1238, 1239, 1240, 1241, 1242, 1244, 1242, 1243, 1244, 1245, 1246, 1248, 1246, 1247, 1248, 1249, 1250, 1252, 1250, 1251, 1252, 1253, 1254, 1256, 1254, 1255, 1256, 1263, 1264, 1266, 1264, 1265, 1266, 1267, 1268, 1270, 1268, 1269, 1270, 1271, 1272, 1274, 1272, 1273, 1274, 1275, 1276, 1278, 1276, 1277, 1278, 1279, 1280, 1282, 1280, 1281, 1282, 1283, 1284, 1286, 1284, 1285, 1286, 1287, 1288, 1290, 1288, 1289, 1290, 1291, 1292, 1294, 1292, 1293, 1294, 1295, 1296, 1298, 1296, 1297, 1298, 1299, 1300, 1302, 1300, 1301, 1302, 1303, 1304, 1306, 1304, 1305, 1306, 1307, 1308, 1310, 1308, 1309, 1310, 1311, 1312, 1314, 1312, 1313, 1314, 1315, 1316, 1318, 1316, 1317, 1318, 1319, 1320, 1322, 1320, 1321, 1322, 1323, 1324, 1326, 1324, 1325, 1326, 1327, 1328, 1330, 1328, 1329, 1330, 1331, 1332, 1334, 1332, 1333, 1334, 1335, 1336, 1338, 1336, 1337, 1338, 1339, 1340, 1342, 1340, 1341, 1342, 1343, 1344, 1346, 1344, 1345, 1346, 1347, 1348, 1350, 1348, 1349, 1350, 1351, 1352, 1354, 1352, 1353, 1354, 1355, 1356, 1358, 1356, 1357, 1358, 1359, 1360, 1362, 1360, 1361, 1362, 1363, 1364, 1366, 1364, 1365, 1366, 1367, 1368, 1370, 1368, 1369, 1370, 1371, 1372, 1374, 1372, 1373, 1374, 1375, 1376, 1378, 1376, 1377, 1378, 1379, 1380, 1382, 1380, 1381, 1382, 1389, 1390, 1392, 1390, 1391, 1392, 1393, 1394, 1396, 1394, 1395, 1396, 1397, 1398, 1400, 1398, 1399, 1400, 1401, 1402, 1404, 1402, 1403, 1404, 1405, 1406, 1408, 1406, 1407, 1408, 1409, 1410, 1412, 1410, 1411, 1412, 1413, 1414, 1416, 1414, 1415, 1416, 1417, 1418, 1420, 1418, 1419, 1420, 1421, 1422, 1424, 1422, 1423, 1424, 1425, 1426, 1428, 1426, 1427, 1428, 1429, 1430, 1432, 1430, 1431, 1432, 1433, 1434, 1436, 1434, 1435, 1436, 1437, 1438, 1440, 1438, 1439, 1440, 1441, 1442, 1444, 1442, 1443, 1444, 1445, 1446, 1448, 1446, 1447, 1448, 1449, 1450, 1452, 1450, 1451, 1452, 1453, 1454, 1456, 1454, 1455, 1456, 1457, 1458, 1460, 1458, 1459, 1460, 1461, 1462, 1464, 1462, 1463, 1464, 1465, 1466, 1468, 1466, 1467, 1468, 1469, 1470, 1472, 1470, 1471, 1472, 1473, 1474, 1476, 1474, 1475, 1476, 1477, 1478, 1480, 1478, 1479, 1480, 1481, 1482, 1484, 1482, 1483, 1484, 1485, 1486, 1488, 1486, 1487, 1488, 1489, 1490, 1492, 1490, 1491, 1492, 1493, 1494, 1496, 1494, 1495, 1496, 1497, 1498, 1500, 1498, 1499, 1500, 1501, 1502, 1504, 1502, 1503, 1504, 1505, 1506, 1508, 1506, 1507, 1508, 1515, 1516, 1518, 1516, 1517, 1518, 1519, 1520, 1522, 1520, 1521, 1522, 1523, 1524, 1526, 1524, 1525, 1526, 1527, 1528, 1530, 1528, 1529, 1530, 1531, 1532, 1534, 1532, 1533, 1534, 1535, 1536, 1538, 1536, 1537, 1538, 1539, 1540, 1542, 1540, 1541, 1542, 1543, 1544, 1546, 1544, 1545, 1546, 1547, 1548, 1550, 1548, 1549, 1550, 1551, 1552, 1554, 1552, 1553, 1554, 1555, 1556, 1558, 1556, 1557, 1558, 1559, 1560, 1562, 1560, 1561, 1562, 1563, 1564, 1566, 1564, 1565, 1566, 1567, 1568, 1570, 1568, 1569, 1570, 1571, 1572, 1574, 1572, 1573, 1574, 1575, 1576, 1578, 1576, 1577, 1578, 1579, 1580, 1582, 1580, 1581, 1582, 1583, 1584, 1586, 1584, 1585, 1586, 1587, 1588, 1590, 1588, 1589, 1590, 1591, 1592, 1594, 1592, 1593, 1594, 1595, 1596, 1598, 1596, 1597, 1598, 1599, 1600, 1602, 1600, 1601, 1602, 1603, 1604, 1606, 1604, 1605, 1606, 1607, 1608, 1610, 1608, 1609, 1610, 1611, 1612, 1614, 1612, 1613, 1614, 1615, 1616, 1618, 1616, 1617, 1618, 1619, 1620, 1622, 1620, 1621, 1622, 1623, 1624, 1626, 1624, 1625, 1626, 1627, 1628, 1630, 1628, 1629, 1630, 1631, 1632, 1634, 1632, 1633, 1634, 1641, 1642, 1644, 1642, 1643, 1644, 1645, 1646, 1648, 1646, 1647, 1648, 1649, 1650, 1652, 1650, 1651, 1652, 1653, 1654, 1656, 1654, 1655, 1656, 1657, 1658, 1660, 1658, 1659, 1660, 1661, 1662, 1664, 1662, 1663, 1664, 1665, 1666, 1668, 1666, 1667, 1668, 1669, 1670, 1672, 1670, 1671, 1672, 1673, 1674, 1676, 1674, 1675, 1676, 1677, 1678, 1680, 1678, 1679, 1680, 1681, 1682, 1684, 1682, 1683, 1684, 1685, 1686, 1688, 1686, 1687, 1688, 1689, 1690, 1692, 1690, 1691, 1692, 1693, 1694, 1696, 1694, 1695, 1696, 1697, 1698, 1700, 1698, 1699, 1700, 1701, 1702, 1704, 1702, 1703, 1704, 1705, 1706, 1708, 1706, 1707, 1708, 1709, 1710, 1712, 1710, 1711, 1712, 1713, 1714, 1716, 1714, 1715, 1716, 1717, 1718, 1720, 1718, 1719, 1720, 1721, 1722, 1724, 1722, 1723, 1724, 1725, 1726, 1728, 1726, 1727, 1728, 1729, 1730, 1732, 1730, 1731, 1732, 1733, 1734, 1736, 1734, 1735, 1736, 1737, 1738, 1740, 1738, 1739, 1740, 1741, 1742, 1744, 1742, 1743, 1744, 1745, 1746, 1748, 1746, 1747, 1748, 1749, 1750, 1752, 1750, 1751, 1752, 1753, 1754, 1756, 1754, 1755, 1756, 1757, 1758, 1760, 1758, 1759, 1760, 1767, 1768, 1770, 1768, 1769, 1770, 1771, 1772, 1774, 1772, 1773, 1774, 1775, 1776, 1778, 1776, 1777, 1778, 1779, 1780, 1782, 1780, 1781, 1782, 1783, 1784, 1786, 1784, 1785, 1786, 1787, 1788, 1790, 1788, 1789, 1790, 1791, 1792, 1794, 1792, 1793, 1794, 1795, 1796, 1798, 1796, 1797, 1798, 1799, 1800, 1802, 1800, 1801, 1802, 1803, 1804, 1806, 1804, 1805, 1806, 1807, 1808, 1810, 1808, 1809, 1810, 1811, 1812, 1814, 1812, 1813, 1814, 1815, 1816, 1818, 1816, 1817, 1818, 1819, 1820, 1822, 1820, 1821, 1822, 1823, 1824, 1826, 1824, 1825, 1826, 1827, 1828, 1830, 1828, 1829, 1830, 1831, 1832, 1834, 1832, 1833, 1834, 1835, 1836, 1838, 1836, 1837, 1838, 1839, 1840, 1842, 1840, 1841, 1842, 1843, 1844, 1846, 1844, 1845, 1846, 1847, 1848, 1850, 1848, 1849, 1850, 1851, 1852, 1854, 1852, 1853, 1854, 1855, 1856, 1858, 1856, 1857, 1858, 1859, 1860, 1862, 1860, 1861, 1862, 1863, 1864, 1866, 1864, 1865, 1866, 1867, 1868, 1870, 1868, 1869, 1870, 1871, 1872, 1874, 1872, 1873, 1874, 1875, 1876, 1878, 1876, 1877, 1878, 1879, 1880, 1882, 1880, 1881, 1882, 1883, 1884, 1886, 1884, 1885, 1886, 1893, 1894, 1896, 1894, 1895, 1896, 1897, 1898, 1900, 1898, 1899, 1900, 1901, 1902, 1904, 1902, 1903, 1904, 1905, 1906, 1908, 1906, 1907, 1908, 1909, 1910, 1912, 1910, 1911, 1912, 1913, 1914, 1916, 1914, 1915, 1916, 1917, 1918, 1920, 1918, 1919, 1920, 1921, 1922, 1924, 1922, 1923, 1924, 1925, 1926, 1928, 1926, 1927, 1928, 1929, 1930, 1932, 1930, 1931, 1932, 1933, 1934, 1936, 1934, 1935, 1936, 1937, 1938, 1940, 1938, 1939, 1940, 1941, 1942, 1944, 1942, 1943, 1944, 1945, 1946, 1948, 1946, 1947, 1948, 1949, 1950, 1952, 1950, 1951, 1952, 1953, 1954, 1956, 1954, 1955, 1956, 1957, 1958, 1960, 1958, 1959, 1960, 1961, 1962, 1964, 1962, 1963, 1964, 1965, 1966, 1968, 1966, 1967, 1968, 1969, 1970, 1972, 1970, 1971, 1972, 1973, 1974, 1976, 1974, 1975, 1976, 1977, 1978, 1980, 1978, 1979, 1980, 1981, 1982, 1984, 1982, 1983, 1984, 1985, 1986, 1988, 1986, 1987, 1988, 1989, 1990, 1992, 1990, 1991, 1992, 1993, 1994, 1996, 1994, 1995, 1996, 1997, 1998, 2000, 1998, 1999, 2000, 2001, 2002, 2004, 2002, 2003, 2004, 2005, 2006, 2008, 2006, 2007, 2008, 2009, 2010, 2012, 2010, 2011, 2012, 2019, 2020, 2022, 2020, 2021, 2022, 2023, 2024, 2026, 2024, 2025, 2026, 2027, 2028, 2030, 2028, 2029, 2030, 2031, 2032, 2034, 2032, 2033, 2034, 2035, 2036, 2038, 2036, 2037, 2038, 2039, 2040, 2042, 2040, 2041, 2042, 2043, 2044, 2046, 2044, 2045, 2046, 2047, 2048, 2050, 2048, 2049, 2050, 2051, 2052, 2054, 2052, 2053, 2054, 2055, 2056, 2058, 2056, 2057, 2058, 2059, 2060, 2062, 2060, 2061, 2062, 2063, 2064, 2066, 2064, 2065, 2066, 2067, 2068, 2070, 2068, 2069, 2070, 2071, 2072, 2074, 2072, 2073, 2074, 2075, 2076, 2078, 2076, 2077, 2078, 2079, 2080, 2082, 2080, 2081, 2082, 2083, 2084, 2086, 2084, 2085, 2086, 2087, 2088, 2090, 2088, 2089, 2090, 2091, 2092, 2094, 2092, 2093, 2094, 2095, 2096, 2098, 2096, 2097, 2098, 2099, 2100, 2102, 2100, 2101, 2102, 2103, 2104, 2106, 2104, 2105, 2106, 2107, 2108, 2110, 2108, 2109, 2110, 2111, 2112, 2114, 2112, 2113, 2114, 2115, 2116, 2118, 2116, 2117, 2118, 2119, 2120, 2122, 2120, 2121, 2122, 2123, 2124, 2126, 2124, 2125, 2126, 2127, 2128, 2130, 2128, 2129, 2130, 2131, 2132, 2134, 2132, 2133, 2134, 2135, 2136, 2138, 2136, 2137, 2138, 2145, 2146, 2148, 2146, 2147, 2148, 2149, 2150, 2152, 2150, 2151, 2152, 2153, 2154, 2156, 2154, 2155, 2156, 2157, 2158, 2160, 2158, 2159, 2160, 2161, 2162, 2164, 2162, 2163, 2164, 2165, 2166, 2168, 2166, 2167, 2168, 2169, 2170, 2172, 2170, 2171, 2172, 2173, 2174, 2176, 2174, 2175, 2176, 2177, 2178, 2180, 2178, 2179, 2180, 2181, 2182, 2184, 2182, 2183, 2184, 2185, 2186, 2188, 2186, 2187, 2188, 2189, 2190, 2192, 2190, 2191, 2192, 2193, 2194, 2196, 2194, 2195, 2196, 2197, 2198, 2200, 2198, 2199, 2200, 2201, 2202, 2204, 2202, 2203, 2204, 2205, 2206, 2208, 2206, 2207, 2208, 2209, 2210, 2212, 2210, 2211, 2212, 2213, 2214, 2216, 2214, 2215, 2216, 2217, 2218, 2220, 2218, 2219, 2220, 2221, 2222, 2224, 2222, 2223, 2224, 2225, 2226, 2228, 2226, 2227, 2228, 2229, 2230, 2232, 2230, 2231, 2232, 2233, 2234, 2236, 2234, 2235, 2236, 2237, 2238, 2240, 2238, 2239, 2240, 2241, 2242, 2244, 2242, 2243, 2244, 2245, 2246, 2248, 2246, 2247, 2248, 2249, 2250, 2252, 2250, 2251, 2252, 2253, 2254, 2256, 2254, 2255, 2256, 2257, 2258, 2260, 2258, 2259, 2260, 2261, 2262, 2264, 2262, 2263, 2264, 2271, 2272, 2274, 2272, 2273, 2274, 2275, 2276, 2278, 2276, 2277, 2278, 2279, 2280, 2282, 2280, 2281, 2282, 2283, 2284, 2286, 2284, 2285, 2286, 2287, 2288, 2290, 2288, 2289, 2290, 2291, 2292, 2294, 2292, 2293, 2294, 2295, 2296, 2298, 2296, 2297, 2298, 2299, 2300, 2302, 2300, 2301, 2302, 2303, 2304, 2306, 2304, 2305, 2306, 2307, 2308, 2310, 2308, 2309, 2310, 2311, 2312, 2314, 2312, 2313, 2314, 2315, 2316, 2318, 2316, 2317, 2318, 2319, 2320, 2322, 2320, 2321, 2322, 2323, 2324, 2326, 2324, 2325, 2326, 2327, 2328, 2330, 2328, 2329, 2330, 2331, 2332, 2334, 2332, 2333, 2334, 2335, 2336, 2338, 2336, 2337, 2338, 2339, 2340, 2342, 2340, 2341, 2342, 2343, 2344, 2346, 2344, 2345, 2346, 2347, 2348, 2350, 2348, 2349, 2350, 2351, 2352, 2354, 2352, 2353, 2354, 2355, 2356, 2358, 2356, 2357, 2358, 2359, 2360, 2362, 2360, 2361, 2362, 2363, 2364, 2366, 2364, 2365, 2366, 2367, 2368, 2370, 2368, 2369, 2370, 2371, 2372, 2374, 2372, 2373, 2374, 2375, 2376, 2378, 2376, 2377, 2378, 2379, 2380, 2382, 2380, 2381, 2382, 2383, 2384, 2386, 2384, 2385, 2386, 2387, 2388, 2390, 2388, 2389, 2390, 2397, 2398, 2400, 2398, 2399, 2400, 2401, 2402, 2404, 2402, 2403, 2404, 2405, 2406, 2408, 2406, 2407, 2408, 2409, 2410, 2412, 2410, 2411, 2412, 2413, 2414, 2416, 2414, 2415, 2416, 2417, 2418, 2420, 2418, 2419, 2420, 2421, 2422, 2424, 2422, 2423, 2424, 2425, 2426, 2428, 2426, 2427, 2428, 2429, 2430, 2432, 2430, 2431, 2432, 2433, 2434, 2436, 2434, 2435, 2436, 2437, 2438, 2440, 2438, 2439, 2440, 2441, 2442, 2444, 2442, 2443, 2444, 2445, 2446, 2448, 2446, 2447, 2448, 2449, 2450, 2452, 2450, 2451, 2452, 2453, 2454, 2456, 2454, 2455, 2456, 2457, 2458, 2460, 2458, 2459, 2460, 2461, 2462, 2464, 2462, 2463, 2464, 2465, 2466, 2468, 2466, 2467, 2468, 2469, 2470, 2472, 2470, 2471, 2472, 2473, 2474, 2476, 2474, 2475, 2476, 2477, 2478, 2480, 2478, 2479, 2480, 2481, 2482, 2484, 2482, 2483, 2484, 2485, 2486, 2488, 2486, 2487, 2488, 2489, 2490, 2492, 2490, 2491, 2492, 2493, 2494, 2496, 2494, 2495, 2496, 2497, 2498, 2500, 2498, 2499, 2500, 2501, 2502, 2504, 2502, 2503, 2504, 2505, 2506, 2508, 2506, 2507, 2508, 2509, 2510, 2512, 2510, 2511, 2512, 2513, 2514, 2516, 2514, 2515, 2516, 2523, 2524, 2526, 2524, 2525, 2526, 2527, 2528, 2530, 2528, 2529, 2530, 2531, 2532, 2534, 2532, 2533, 2534, 2535, 2536, 2538, 2536, 2537, 2538, 2539, 2540, 2542, 2540, 2541, 2542, 2543, 2544, 2546, 2544, 2545, 2546, 2547, 2548, 2550, 2548, 2549, 2550, 2551, 2552, 2554, 2552, 2553, 2554, 2555, 2556, 2558, 2556, 2557, 2558, 2559, 2560, 2562, 2560, 2561, 2562, 2563, 2564, 2566, 2564, 2565, 2566, 2567, 2568, 2570, 2568, 2569, 2570, 2571, 2572, 2574, 2572, 2573, 2574, 2575, 2576, 2578, 2576, 2577, 2578, 2579, 2580, 2582, 2580, 2581, 2582, 2583, 2584, 2586, 2584, 2585, 2586, 2587, 2588, 2590, 2588, 2589, 2590, 2591, 2592, 2594, 2592, 2593, 2594, 2595, 2596, 2598, 2596, 2597, 2598, 2599, 2600, 2602, 2600, 2601, 2602, 2603, 2604, 2606, 2604, 2605, 2606, 2607, 2608, 2610, 2608, 2609, 2610, 2611, 2612, 2614, 2612, 2613, 2614, 2615, 2616, 2618, 2616, 2617, 2618, 2619, 2620, 2622, 2620, 2621, 2622, 2623, 2624, 2626, 2624, 2625, 2626, 2627, 2628, 2630, 2628, 2629, 2630, 2631, 2632, 2634, 2632, 2633, 2634, 2635, 2636, 2638, 2636, 2637, 2638, 2639, 2640, 2642, 2640, 2641, 2642, 2649, 2650, 2652, 2650, 2651, 2652, 2653, 2654, 2656, 2654, 2655, 2656, 2657, 2658, 2660, 2658, 2659, 2660, 2661, 2662, 2664, 2662, 2663, 2664, 2665, 2666, 2668, 2666, 2667, 2668, 2669, 2670, 2672, 2670, 2671, 2672, 2673, 2674, 2676, 2674, 2675, 2676, 2677, 2678, 2680, 2678, 2679, 2680, 2681, 2682, 2684, 2682, 2683, 2684, 2685, 2686, 2688, 2686, 2687, 2688, 2689, 2690, 2692, 2690, 2691, 2692, 2693, 2694, 2696, 2694, 2695, 2696, 2697, 2698, 2700, 2698, 2699, 2700, 2701, 2702, 2704, 2702, 2703, 2704, 2705, 2706, 2708, 2706, 2707, 2708, 2709, 2710, 2712, 2710, 2711, 2712, 2713, 2714, 2716, 2714, 2715, 2716, 2717, 2718, 2720, 2718, 2719, 2720, 2721, 2722, 2724, 2722, 2723, 2724, 2725, 2726, 2728, 2726, 2727, 2728, 2729, 2730, 2732, 2730, 2731, 2732, 2733, 2734, 2736, 2734, 2735, 2736, 2737, 2738, 2740, 2738, 2739, 2740, 2741, 2742, 2744, 2742, 2743, 2744, 2745, 2746, 2748, 2746, 2747, 2748, 2749, 2750, 2752, 2750, 2751, 2752, 2753, 2754, 2756, 2754, 2755, 2756, 2757, 2758, 2760, 2758, 2759, 2760, 2761, 2762, 2764, 2762, 2763, 2764, 2765, 2766, 2768, 2766, 2767, 2768, 2775, 2776, 2778, 2776, 2777, 2778, 2779, 2780, 2782, 2780, 2781, 2782, 2783, 2784, 2786, 2784, 2785, 2786, 2787, 2788, 2790, 2788, 2789, 2790, 2791, 2792, 2794, 2792, 2793, 2794, 2795, 2796, 2798, 2796, 2797, 2798, 2799, 2800, 2802, 2800, 2801, 2802, 2803, 2804, 2806, 2804, 2805, 2806, 2807, 2808, 2810, 2808, 2809, 2810, 2811, 2812, 2814, 2812, 2813, 2814, 2815, 2816, 2818, 2816, 2817, 2818, 2819, 2820, 2822, 2820, 2821, 2822, 2823, 2824, 2826, 2824, 2825, 2826, 2827, 2828, 2830, 2828, 2829, 2830, 2831, 2832, 2834, 2832, 2833, 2834, 2835, 2836, 2838, 2836, 2837, 2838, 2839, 2840, 2842, 2840, 2841, 2842, 2843, 2844, 2846, 2844, 2845, 2846, 2847, 2848, 2850, 2848, 2849, 2850, 2851, 2852, 2854, 2852, 2853, 2854, 2855, 2856, 2858, 2856, 2857, 2858, 2859, 2860, 2862, 2860, 2861, 2862, 2863, 2864, 2866, 2864, 2865, 2866, 2867, 2868, 2870, 2868, 2869, 2870, 2871, 2872, 2874, 2872, 2873, 2874, 2875, 2876, 2878, 2876, 2877, 2878, 2879, 2880, 2882, 2880, 2881, 2882, 2883, 2884, 2886, 2884, 2885, 2886, 2887, 2888, 2890, 2888, 2889, 2890, 2891, 2892, 2894, 2892, 2893, 2894, 2901, 2902, 2904, 2902, 2903, 2904, 2905, 2906, 2908, 2906, 2907, 2908, 2909, 2910, 2912, 2910, 2911, 2912, 2913, 2914, 2916, 2914, 2915, 2916, 2917, 2918, 2920, 2918, 2919, 2920, 2921, 2922, 2924, 2922, 2923, 2924, 2925, 2926, 2928, 2926, 2927, 2928, 2929, 2930, 2932, 2930, 2931, 2932, 2933, 2934, 2936, 2934, 2935, 2936, 2937, 2938, 2940, 2938, 2939, 2940, 2941, 2942, 2944, 2942, 2943, 2944, 2945, 2946, 2948, 2946, 2947, 2948, 2949, 2950, 2952, 2950, 2951, 2952, 2953, 2954, 2956, 2954, 2955, 2956, 2957, 2958, 2960, 2958, 2959, 2960, 2961, 2962, 2964, 2962, 2963, 2964, 2965, 2966, 2968, 2966, 2967, 2968, 2969, 2970, 2972, 2970, 2971, 2972, 2973, 2974, 2976, 2974, 2975, 2976, 2977, 2978, 2980, 2978, 2979, 2980, 2981, 2982, 2984, 2982, 2983, 2984, 2985, 2986, 2988, 2986, 2987, 2988, 2989, 2990, 2992, 2990, 2991, 2992, 2993, 2994, 2996, 2994, 2995, 2996, 2997, 2998, 3000, 2998, 2999, 3000, 3001, 3002, 3004, 3002, 3003, 3004, 3005, 3006, 3008, 3006, 3007, 3008, 3009, 3010, 3012, 3010, 3011, 3012, 3013, 3014, 3016, 3014, 3015, 3016, 3017, 3018, 3020, 3018, 3019, 3020, 3027, 3028, 3030, 3028, 3029, 3030, 3031, 3032, 3034, 3032, 3033, 3034, 3035, 3036, 3038, 3036, 3037, 3038, 3039, 3040, 3042, 3040, 3041, 3042, 3043, 3044, 3046, 3044, 3045, 3046, 3047, 3048, 3050, 3048, 3049, 3050, 3051, 3052, 3054, 3052, 3053, 3054, 3055, 3056, 3058, 3056, 3057, 3058, 3059, 3060, 3062, 3060, 3061, 3062, 3063, 3064, 3066, 3064, 3065, 3066, 3067, 3068, 3070, 3068, 3069, 3070, 3071, 3072, 3074, 3072, 3073, 3074, 3075, 3076, 3078, 3076, 3077, 3078, 3079, 3080, 3082, 3080, 3081, 3082, 3083, 3084, 3086, 3084, 3085, 3086, 3087, 3088, 3090, 3088, 3089, 3090, 3091, 3092, 3094, 3092, 3093, 3094, 3095, 3096, 3098, 3096, 3097, 3098, 3099, 3100, 3102, 3100, 3101, 3102, 3103, 3104, 3106, 3104, 3105, 3106, 3107, 3108, 3110, 3108, 3109, 3110, 3111, 3112, 3114, 3112, 3113, 3114, 3115, 3116, 3118, 3116, 3117, 3118, 3119, 3120, 3122, 3120, 3121, 3122, 3123, 3124, 3126, 3124, 3125, 3126, 3127, 3128, 3130, 3128, 3129, 3130, 3131, 3132, 3134, 3132, 3133, 3134, 3135, 3136, 3138, 3136, 3137, 3138, 3139, 3140, 3142, 3140, 3141, 3142, 3143, 3144, 3146, 3144, 3145, 3146, 3153, 3154, 3156, 3154, 3155, 3156, 3157, 3158, 3160, 3158, 3159, 3160, 3161, 3162, 3164, 3162, 3163, 3164, 3165, 3166, 3168, 3166, 3167, 3168, 3169, 3170, 3172, 3170, 3171, 3172, 3173, 3174, 3176, 3174, 3175, 3176, 3177, 3178, 3180, 3178, 3179, 3180, 3181, 3182, 3184, 3182, 3183, 3184, 3185, 3186, 3188, 3186, 3187, 3188, 3189, 3190, 3192, 3190, 3191, 3192, 3193, 3194, 3196, 3194, 3195, 3196, 3197, 3198, 3200, 3198, 3199, 3200, 3201, 3202, 3204, 3202, 3203, 3204, 3205, 3206, 3208, 3206, 3207, 3208, 3209, 3210, 3212, 3210, 3211, 3212, 3213, 3214, 3216, 3214, 3215, 3216, 3217, 3218, 3220, 3218, 3219, 3220, 3221, 3222, 3224, 3222, 3223, 3224, 3225, 3226, 3228, 3226, 3227, 3228, 3229, 3230, 3232, 3230, 3231, 3232, 3233, 3234, 3236, 3234, 3235, 3236, 3237, 3238, 3240, 3238, 3239, 3240, 3241, 3242, 3244, 3242, 3243, 3244, 3245, 3246, 3248, 3246, 3247, 3248, 3249, 3250, 3252, 3250, 3251, 3252, 3253, 3254, 3256, 3254, 3255, 3256, 3257, 3258, 3260, 3258, 3259, 3260, 3261, 3262, 3264, 3262, 3263, 3264, 3265, 3266, 3268, 3266, 3267, 3268, 3269, 3270, 3272, 3270, 3271, 3272, 3279, 3280, 3282, 3280, 3281, 3282, 3283, 3284, 3286, 3284, 3285, 3286, 3287, 3288, 3290, 3288, 3289, 3290, 3291, 3292, 3294, 3292, 3293, 3294, 3295, 3296, 3298, 3296, 3297, 3298, 3299, 3300, 3302, 3300, 3301, 3302, 3303, 3304, 3306, 3304, 3305, 3306, 3307, 3308, 3310, 3308, 3309, 3310, 3311, 3312, 3314, 3312, 3313, 3314, 3315, 3316, 3318, 3316, 3317, 3318, 3319, 3320, 3322, 3320, 3321, 3322, 3323, 3324, 3326, 3324, 3325, 3326, 3327, 3328, 3330, 3328, 3329, 3330, 3331, 3332, 3334, 3332, 3333, 3334, 3335, 3336, 3338, 3336, 3337, 3338, 3339, 3340, 3342, 3340, 3341, 3342, 3343, 3344, 3346, 3344, 3345, 3346, 3347, 3348, 3350, 3348, 3349, 3350, 3351, 3352, 3354, 3352, 3353, 3354, 3355, 3356, 3358, 3356, 3357, 3358, 3359, 3360, 3362, 3360, 3361, 3362, 3363, 3364, 3366, 3364, 3365, 3366, 3367, 3368, 3370, 3368, 3369, 3370, 3371, 3372, 3374, 3372, 3373, 3374, 3375, 3376, 3378, 3376, 3377, 3378, 3379, 3380, 3382, 3380, 3381, 3382, 3383, 3384, 3386, 3384, 3385, 3386, 3387, 3388, 3390, 3388, 3389, 3390, 3391, 3392, 3394, 3392, 3393, 3394, 3395, 3396, 3398, 3396, 3397, 3398, 3405, 3406, 3408, 3406, 3407, 3408, 3409, 3410, 3412, 3410, 3411, 3412, 3413, 3414, 3416, 3414, 3415, 3416, 3417, 3418, 3420, 3418, 3419, 3420, 3421, 3422, 3424, 3422, 3423, 3424, 3425, 3426, 3428, 3426, 3427, 3428, 3429, 3430, 3432, 3430, 3431, 3432, 3433, 3434, 3436, 3434, 3435, 3436, 3437, 3438, 3440, 3438, 3439, 3440, 3441, 3442, 3444, 3442, 3443, 3444, 3445, 3446, 3448, 3446, 3447, 3448, 3449, 3450, 3452, 3450, 3451, 3452, 3453, 3454, 3456, 3454, 3455, 3456, 3457, 3458, 3460, 3458, 3459, 3460, 3461, 3462, 3464, 3462, 3463, 3464, 3465, 3466, 3468, 3466, 3467, 3468, 3469, 3470, 3472, 3470, 3471, 3472, 3473, 3474, 3476, 3474, 3475, 3476, 3477, 3478, 3480, 3478, 3479, 3480, 3481, 3482, 3484, 3482, 3483, 3484, 3485, 3486, 3488, 3486, 3487, 3488, 3489, 3490, 3492, 3490, 3491, 3492, 3493, 3494, 3496, 3494, 3495, 3496, 3497, 3498, 3500, 3498, 3499, 3500, 3501, 3502, 3504, 3502, 3503, 3504, 3505, 3506, 3508, 3506, 3507, 3508, 3509, 3510, 3512, 3510, 3511, 3512, 3513, 3514, 3516, 3514, 3515, 3516, 3517, 3518, 3520, 3518, 3519, 3520, 3521, 3522, 3524, 3522, 3523, 3524, 3531, 3532, 3534, 3532, 3533, 3534, 3535, 3536, 3538, 3536, 3537, 3538, 3539, 3540, 3542, 3540, 3541, 3542, 3543, 3544, 3546, 3544, 3545, 3546, 3547, 3548, 3550, 3548, 3549, 3550, 3551, 3552, 3554, 3552, 3553, 3554, 3555, 3556, 3558, 3556, 3557, 3558, 3559, 3560, 3562, 3560, 3561, 3562, 3563, 3564, 3566, 3564, 3565, 3566, 3567, 3568, 3570, 3568, 3569, 3570, 3571, 3572, 3574, 3572, 3573, 3574, 3575, 3576, 3578, 3576, 3577, 3578, 3579, 3580, 3582, 3580, 3581, 3582, 3583, 3584, 3586, 3584, 3585, 3586, 3587, 3588, 3590, 3588, 3589, 3590, 3591, 3592, 3594, 3592, 3593, 3594, 3595, 3596, 3598, 3596, 3597, 3598, 3599, 3600, 3602, 3600, 3601, 3602, 3603, 3604, 3606, 3604, 3605, 3606, 3607, 3608, 3610, 3608, 3609, 3610, 3611, 3612, 3614, 3612, 3613, 3614, 3615, 3616, 3618, 3616, 3617, 3618, 3619, 3620, 3622, 3620, 3621, 3622, 3623, 3624, 3626, 3624, 3625, 3626, 3627, 3628, 3630, 3628, 3629, 3630, 3631, 3632, 3634, 3632, 3633, 3634, 3635, 3636, 3638, 3636, 3637, 3638, 3639, 3640, 3642, 3640, 3641, 3642, 3643, 3644, 3646, 3644, 3645, 3646, 3647, 3648, 3650, 3648, 3649, 3650, 3657, 3658, 3660, 3658, 3659, 3660, 3661, 3662, 3664, 3662, 3663, 3664, 3665, 3666, 3668, 3666, 3667, 3668, 3669, 3670, 3672, 3670, 3671, 3672, 3673, 3674, 3676, 3674, 3675, 3676, 3677, 3678, 3680, 3678, 3679, 3680, 3681, 3682, 3684, 3682, 3683, 3684, 3685, 3686, 3688, 3686, 3687, 3688, 3689, 3690, 3692, 3690, 3691, 3692, 3693, 3694, 3696, 3694, 3695, 3696, 3697, 3698, 3700, 3698, 3699, 3700, 3701, 3702, 3704, 3702, 3703, 3704, 3705, 3706, 3708, 3706, 3707, 3708, 3709, 3710, 3712, 3710, 3711, 3712, 3713, 3714, 3716, 3714, 3715, 3716, 3717, 3718, 3720, 3718, 3719, 3720, 3721, 3722, 3724, 3722, 3723, 3724, 3725, 3726, 3728, 3726, 3727, 3728, 3729, 3730, 3732, 3730, 3731, 3732, 3733, 3734, 3736, 3734, 3735, 3736, 3737, 3738, 3740, 3738, 3739, 3740, 3741, 3742, 3744, 3742, 3743, 3744, 3745, 3746, 3748, 3746, 3747, 3748, 3749, 3750, 3752, 3750, 3751, 3752, 3753, 3754, 3756, 3754, 3755, 3756, 3757, 3758, 3760, 3758, 3759, 3760, 3761, 3762, 3764, 3762, 3763, 3764, 3765, 3766, 3768, 3766, 3767, 3768, 3769, 3770, 3772, 3770, 3771, 3772, 3773, 3774, 3776, 3774, 3775, 3776, 3783, 3784, 3786, 3784, 3785, 3786, 3787, 3788, 3790, 3788, 3789, 3790, 3791, 3792, 3794, 3792, 3793, 3794, 3795, 3796, 3798, 3796, 3797, 3798, 3799, 3800, 3802, 3800, 3801, 3802, 3803, 3804, 3806, 3804, 3805, 3806, 3807, 3808, 3810, 3808, 3809, 3810, 3811, 3812, 3814, 3812, 3813, 3814, 3815, 3816, 3818, 3816, 3817, 3818, 3819, 3820, 3822, 3820, 3821, 3822, 3823, 3824, 3826, 3824, 3825, 3826, 3827, 3828, 3830, 3828, 3829, 3830, 3831, 3832, 3834, 3832, 3833, 3834, 3835, 3836, 3838, 3836, 3837, 3838, 3839, 3840, 3842, 3840, 3841, 3842, 3843, 3844, 3846, 3844, 3845, 3846, 3847, 3848, 3850, 3848, 3849, 3850, 3851, 3852, 3854, 3852, 3853, 3854, 3855, 3856, 3858, 3856, 3857, 3858, 3859, 3860, 3862, 3860, 3861, 3862, 3863, 3864, 3866, 3864, 3865, 3866, 3867, 3868, 3870, 3868, 3869, 3870, 3871, 3872, 3874, 3872, 3873, 3874, 3875, 3876, 3878, 3876, 3877, 3878, 3879, 3880, 3882, 3880, 3881, 3882, 3883, 3884, 3886, 3884, 3885, 3886, 3887, 3888, 3890, 3888, 3889, 3890, 3891, 3892, 3894, 3892, 3893, 3894, 3895, 3896, 3898, 3896, 3897, 3898, 3899, 3900, 3902, 3900, 3901, 3902, 3909, 3910, 3912, 3910, 3911, 3912, 3913, 3914, 3916, 3914, 3915, 3916, 3917, 3918, 3920, 3918, 3919, 3920, 3921, 3922, 3924, 3922, 3923, 3924, 3925, 3926, 3928, 3926, 3927, 3928, 3929, 3930, 3932, 3930, 3931, 3932, 3933, 3934, 3936, 3934, 3935, 3936, 3937, 3938, 3940, 3938, 3939, 3940, 3941, 3942, 3944, 3942, 3943, 3944, 3945, 3946, 3948, 3946, 3947, 3948, 3949, 3950, 3952, 3950, 3951, 3952, 3953, 3954, 3956, 3954, 3955, 3956, 3957, 3958, 3960, 3958, 3959, 3960, 3961, 3962, 3964, 3962, 3963, 3964, 3965, 3966, 3968, 3966, 3967, 3968, 3969, 3970, 3972, 3970, 3971, 3972, 3973, 3974, 3976, 3974, 3975, 3976, 3977, 3978, 3980, 3978, 3979, 3980, 3981, 3982, 3984, 3982, 3983, 3984, 3985, 3986, 3988, 3986, 3987, 3988, 3989, 3990, 3992, 3990, 3991, 3992, 3993, 3994, 3996, 3994, 3995, 3996, 3997, 3998, 4000, 3998, 3999, 4000, 4001, 4002, 4004, 4002, 4003, 4004, 4005, 4006, 4008, 4006, 4007, 4008, 4009, 4010, 4012, 4010, 4011, 4012, 4013, 4014, 4016, 4014, 4015, 4016, 4017, 4018, 4020, 4018, 4019, 4020, 4021, 4022, 4024, 4022, 4023, 4024, 4025, 4026, 4028, 4026, 4027, 4028 ],
+	                                'itemSize': 1,
+	                                'type': 'ELEMENT_ARRAY_BUFFER'
+	                            },
+	                            'mode': 'TRIANGLES'
+	                        } ],
+	                        'stateset': {
+	                            'material': {
+	                                'ambient': [ 0.38505, 0.16011, 0.16011, 1 ],
+	                                'diffuse': [ 0.61608, 0.25618, 0.25618, 1 ],
+	                                'emission': [ 0, 0, 0, 1 ],
+	                                'name': 'Material.001',
+	                                'shininess': 12.5,
+	                                'specular': [ 0.5, 0.5, 0.5, 1 ]
+	                            },
+	                            'textures': [ {
+	                                'file': 'background.png',
+	                                'mag_filter': 'LINEAR',
+	                                'min_filter': 'LINEAR_MIPMAP_LINEAR'
+	                            } ]
+	                        }
+	                    } ],
+	                    'name': 'GeodeSphere'
+	                } ],
+	                'matrix': [ 55.0, 0, 0, 0, 0, 55.0, 0, 0, 0, 0, 55.0, 0, 0, 0, 0, 1 ],
+	                'name': 'Sphere'
+	            }, {
+	                'children': [ {
+	                    'name': 'Lamp'
+	                } ],
+	                'matrix': [ -0.29086, 0.95517, -0.05519, 0, -0.7711, -0.19988, 0.60452, 0, 0.56639, 0.21839, 0.79467, 0, 4.07625, 1.00545, 5.90386, 1 ],
+	                'name': 'Lamp'
+	            } ],
+	            'name': 'Root'
+	        } ]
+	    };
+	};
+	
+	module.exports = getScene;
+
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	var getBoxScene = function () {
+	    return {
+	        'children': [ {
+	            'children': [ {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 0, 0, 1, 1 ],
+	                            'diffuse': [ 0, 0, 1, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane'
+	            }, {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 0, 0, 1, 1 ],
+	                            'diffuse': [ 0, 0, 1, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane_001'
+	            }, {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 0, 1, 0, 1 ],
+	                            'diffuse': [ 0, 1, 0, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane_002',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane_002'
+	            }, {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, 1, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 0, 1, 0, 1 ],
+	                            'diffuse': [ 0, 1, 0, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane_002',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane_003'
+	            }, {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ 1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 1, 0, 0, 1 ],
+	                            'diffuse': [ 1, 0, 0, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane_004',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane_004'
+	            }, {
+	                'children': [ {
+	                    'attributes': {
+	                        'Normal': {
+	                            'elements': [ -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        },
+	                        'Vertex': {
+	                            'elements': [ -1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1 ],
+	                            'itemSize': 3,
+	                            'type': 'ARRAY_BUFFER'
+	                        }
+	                    },
+	                    'name': '',
+	                    'primitives': [ {
+	                        'indices': {
+	                            'elements': [ 0, 1, 2, 2, 3, 0 ],
+	                            'itemSize': 1,
+	                            'type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'mode': 'TRIANGLES'
+	                    } ],
+	                    'stateset': {
+	                        'material': {
+	                            'ambient': [ 1, 0, 0, 1 ],
+	                            'diffuse': [ 1, 0, 0, 1 ],
+	                            'emission': [ 0, 0, 0, 1 ],
+	                            'name': 'Plane_004',
+	                            'shininess': 64,
+	                            'specular': [ 0, 0, 0, 0 ]
+	                        }
+	                    }
+	                } ],
+	                'name': 'Plane_005'
+	            } ],
+	            'name': 'box.osg'
+	        } ]
+	    };
+	};
+	
+	module.exports = getBoxScene;
+
+
+/***/ }),
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	__webpack_require__( 235 );
+	__webpack_require__( 236 );
+	
+	// add missing class for phantom js execution context
+	if ( window.HTMLVideoElement === undefined ) {
+	    window.HTMLVideoElement = function () {}; // dummy class
+	}
+	
+	var QUnit = __webpack_require__( 240 );
+	var OSG = __webpack_require__( 1 );
+	var osg = __webpack_require__( 251 );
+	var osgAnimation = __webpack_require__( 286 );
+	var osgDB = __webpack_require__( 292 );
+	var osgGA = __webpack_require__( 296 );
+	var osgUtil = __webpack_require__( 299 );
+	var osgViewer = __webpack_require__( 304 );
+	var osgShader = __webpack_require__( 307 );
+	var osgShadow = __webpack_require__( 310 );
+	var osgText = __webpack_require__( 313 );
+	var osgWrappers = __webpack_require__( 315 );
+	
+	// hack because of osgPool
+	OSG.osg.init();
+	
+	osg();
+	osgDB();
+	osgAnimation();
+	osgGA();
+	osgUtil();
+	osgViewer();
+	osgShader();
+	osgShadow();
+	osgText();
+	osgWrappers();
+	// start test when require finished its job
+	QUnit.load();
+	QUnit.start();
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Image = __webpack_require__( 252 );
+	var BlendColor = __webpack_require__( 253 );
+	var BoundingBox = __webpack_require__( 254 );
+	var BoundingSphere = __webpack_require__( 255 );
+	var BufferArray = __webpack_require__( 256 );
+	var BufferArrayProxy = __webpack_require__( 257 );
+	var Camera = __webpack_require__( 258 );
+	var ComputeBoundsVisitor = __webpack_require__( 259 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 260 );
+	var CullFace = __webpack_require__( 261 );
+	var CullVisitor = __webpack_require__( 262 );
+	var Depth = __webpack_require__( 263 );
+	var FrameBufferObject = __webpack_require__( 264 );
+	var KdTree = __webpack_require__( 265 );
+	var Light = __webpack_require__( 266 );
+	var Matrix = __webpack_require__( 267 );
+	var MatrixTransform = __webpack_require__( 268 );
+	var Node = __webpack_require__( 269 );
+	var NodeVisitor = __webpack_require__( 270 );
+	var PagedLOD = __webpack_require__( 271 );
+	var Plane = __webpack_require__( 272 );
+	var Quat = __webpack_require__( 273 );
+	var Shader = __webpack_require__( 274 );
+	var State = __webpack_require__( 275 );
+	var StateSet = __webpack_require__( 276 );
+	var Texture = __webpack_require__( 277 );
+	var TextureCubeMap = __webpack_require__( 278 );
+	var TextureManager = __webpack_require__( 279 );
+	var UpdateVisitor = __webpack_require__( 280 );
+	var Uniform = __webpack_require__( 281 );
+	var Utils = __webpack_require__( 282 );
+	var Vec2 = __webpack_require__( 283 );
+	var PrimitiveFunctor = __webpack_require__( 284 );
+	var WebGLCaps = __webpack_require__( 285 );
+	
+	
+	module.exports = function () {
+	    Image();
+	    BlendColor();
+	    BoundingBox();
+	    BoundingSphere();
+	    BufferArray();
+	    BufferArrayProxy();
+	    Camera();
+	    ComputeBoundsVisitor();
+	    ComputeMatrixFromNodePath();
+	    CullVisitor();
+	    CullFace();
+	    Depth();
+	    FrameBufferObject();
+	    KdTree();
+	    Light();
+	    Matrix();
+	    MatrixTransform();
+	    Node();
+	    NodeVisitor();
+	    Plane();
+	    PagedLOD();
+	    Quat();
+	    Shader();
+	    State();
+	    StateSet();
+	    Texture();
+	    TextureCubeMap();
+	    TextureManager();
+	    UpdateVisitor();
+	    Uniform();
+	    Utils();
+	    Vec2();
+	    PrimitiveFunctor();
+	    WebGLCaps();
+	};
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Image = __webpack_require__( 41 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.asyncTest( 'Image.isGreyScale grey image', 1, function () {
+	
+	
+	        var test = function ( img ) {
+	            var n = new Image( img );
+	
+	            equal( n.isGreyscale( 2 ), true, 'check image is grey' );
+	            start();
+	        };
+	
+	        var img = new window.Image();
+	        img.onload = function () {
+	            test( this );
+	        };
+	        img.src = 'mockup/greyscale.png';
+	
+	    } );
+	
+	    QUnit.asyncTest( 'Image.isGreyScale color image', 1, function () {
+	
+	
+	        var test = function ( img ) {
+	            var n = new Image( img );
+	
+	            equal( n.isGreyscale( 2 ), false, 'check image is not grey' );
+	            start();
+	        };
+	
+	        var img = new window.Image();
+	        img.onload = function () {
+	            test( this );
+	        };
+	        img.src = 'mockup/rgba32.png';
+	
+	    } );
+	
+	    QUnit.test( 'Image.isReady', function () {
+	
+	        var fakeImage = {
+	            complete: true,
+	            naturalWidth: 1024,
+	            isReady: function () {
+	                return true;
+	            }
+	        };
+	        var n = new Image( fakeImage );
+	        ok( n.isReady(), 'check wrapped HTML Image ' );
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var BlendColor = __webpack_require__( 13 );
+	var State = __webpack_require__( 100 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'BlendColor', function () {
+	
+	        var n = new BlendColor();
+	        ok( n.getConstantColor()[ 0 ] === 1.0 &&
+	            n.getConstantColor()[ 1 ] === 1.0 &&
+	            n.getConstantColor()[ 2 ] === 1.0 &&
+	            n.getConstantColor()[ 3 ] === 1.0, 'Check default constantColor' );
+	
+	        n.setConstantColor( [ 0, 0.5, 0, 0.5 ] );
+	        ok( n.getConstantColor()[ 0 ] === 0.0 &&
+	            n.getConstantColor()[ 1 ] === 0.5 &&
+	            n.getConstantColor()[ 2 ] === 0.0 &&
+	            n.getConstantColor()[ 3 ] === 0.5, 'Check set constant color' );
+	
+	        var state = new State( new ShaderGeneratorProxy() );
+	        state.setGraphicContext( mockup.createFakeRenderer() );
+	
+	        n.apply( state );
+	    } );
+	};
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var BoundingBox = __webpack_require__( 16 );
+	var ReaderParser = __webpack_require__( 42 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'BoundingBox', function () {
+	
+	        ( function () {
+	            var bb = new BoundingBox();
+	            var bb0 = [ -0.5, 0, -2 ];
+	            var bb1 = [ 1, 0, -1 ];
+	            var bb2 = [ 0, 1, -0.5 ];
+	            var bb3 = [ 1, 2, -0.8 ];
+	            bb.expandByVec3( bb0 );
+	            bb.expandByVec3( bb1 );
+	            bb.expandByVec3( bb2 );
+	            bb.expandByVec3( bb3 );
+	
+	            var bbTestOk = ( bb._max[ 0 ] === 1 && bb._max[ 1 ] === 2 && bb._max[ 2 ] === -0.5 && bb._min[ 0 ] === -0.5 && bb._min[ 1 ] === 0 && bb._min[ 2 ] === -2 );
+	            ok( bbTestOk, 'Expanding by BoundingBox ->  bounding box test' );
+	
+	
+	            var o = ReaderParser.parseSceneGraph( mockup.getBoxScene() );
+	            o.getBound();
+	            var bbTestSceneGraphTest = ( mockup.checkNear( o._boundingSphere.radius(), 2.41421, 0.00001 ) );
+	            ok( bbTestSceneGraphTest, 'Box.js tested  ->  bounding sphere scene graph test' );
+	        } )();
+	
+	        ( function () {
+	            var bb = new BoundingBox();
+	            bb._min = [ 1, 2, 3 ];
+	            bb._max = [ 4, 5, 6 ];
+	
+	            ok( mockup.checkNear( bb.corner( 0 ), [ 1, 2, 3 ] ), 'Box corner 0' );
+	            ok( mockup.checkNear( bb.corner( 7 ), [ 4, 5, 6 ] ), 'Box corner 0' );
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Node = __webpack_require__( 24 );
+	var Camera = __webpack_require__( 22 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Shape = __webpack_require__( 98 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Matrix = __webpack_require__( 28 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'BoundingSphere', function () {
+	
+	        var simpleBoundingSphere = new BoundingSphere();
+	        ok( simpleBoundingSphere.valid() !== 1, 'BoundingSphere is invalid' );
+	
+	        var bs0 = new BoundingSphere();
+	        bs0.expandByVec3( [ 1.0, 4.0, 0.0 ] );
+	        bs0.expandByVec3( [ 2.0, 3.0, 0.0 ] );
+	        bs0.expandByVec3( [ 3.0, 2.0, 0.0 ] );
+	        bs0.expandByVec3( [ 4.0, 1.0, 0.0 ] );
+	
+	        var cbs0 = [ 2.5, 2.5, 0 ];
+	        var rbs0 = 2.12132;
+	        var centerisequalbs0 = mockup.checkNear( cbs0, bs0._center, 0.0001 ) & mockup.checkNear( rbs0, bs0._radius, 0.0001 );
+	        ok( centerisequalbs0, 'Expanding by vec3 -> bounding sphere test 1' );
+	        var bs1 = new BoundingSphere();
+	        bs1.expandByVec3( [ -1.0, 0.0, 0.0 ] );
+	        bs1.expandByVec3( [ 2.0, -3.0, 2.0 ] );
+	        bs1.expandByVec3( [ 3.0, 3.0, 1.0 ] );
+	        bs1.expandByVec3( [ 5.0, 5.0, 0.0 ] );
+	
+	        var cbs1 = [ 2.00438, 0.862774, 0.784302 ];
+	        var rbs1 = 5.16774;
+	        var centerisequalbs1 = mockup.checkNear( cbs1, bs1._center, 0.0001 ) & mockup.checkNear( rbs1, bs1._radius, 0.0001 );
+	        ok( centerisequalbs1, 'Expanding by vec3 ->  bounding sphere test 2' );
+	
+	        var bs01 = new BoundingSphere();
+	        bs01.expandByBoundingSphere( bs0 );
+	
+	        var cbs010 = [ 2.5, 2.5, 0 ];
+	        var rbs010 = 2.12132;
+	        var centerisequalbs010 = mockup.checkNear( cbs010, bs01._center, 0.0001 ) & mockup.checkNear( rbs010, bs01._radius, 0.0001 );
+	        ok( centerisequalbs010, 'Expanding by BoundingSphere ->  bounding sphere test 1' );
+	
+	        bs01.expandByBoundingSphere( bs1 );
+	        var cbs011 = [ 2.00438, 0.862774, 0.784302 ];
+	        var rbs011 = 5.16774;
+	        var centerisequalbs011 = mockup.checkNear( cbs011, bs01._center, 0.0001 ) & mockup.checkNear( rbs011, bs01._radius, 0.0001 );
+	        ok( centerisequalbs011, 'Expanding by BoundingSphere ->  bounding sphere test 2' );
+	
+	
+	        // test case with camera and absolute transform
+	        var main = new Node();
+	        var cam = new Camera();
+	        cam.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	        var q = Shape.createTexturedQuadGeometry( -25, -25, 0,
+	            50, 0, 0,
+	            0, 50, 0 );
+	        main.addChild( q );
+	        var q2 = Shape.createTexturedQuadGeometry( -250, 0, 0,
+	            50, 0, 0,
+	            0, 50, 0 );
+	        cam.addChild( q2 );
+	        main.addChild( cam );
+	        var bscam = main.getBound();
+	        mockup.near( bscam.center(), [ 0, 0, 0 ] );
+	
+	
+	        // test case with invalid bounding sphere
+	        var main2 = new Node();
+	        var q3 = Shape.createTexturedQuadGeometry( -25, -25, 0,
+	            50, 0, 0,
+	            0, 50, 0 );
+	        var mt3 = new MatrixTransform();
+	        Matrix.makeTranslate( -1000, 0, 0, mt3.getMatrix() );
+	        main2.addChild( q3 );
+	        main2.addChild( mt3 );
+	        mockup.near( main2.getBound().center(), [ 0, 0, 0 ] );
+	    } );
+	};
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var BufferArray = __webpack_require__( 20 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'BufferArray', function () {
+	
+	        ( function () {
+	            var gl = mockup.createFakeRenderer();
+	            gl.createBuffer = function () {
+	                return {};
+	            };
+	
+	            var content = [];
+	            for ( var i = 0, l = 3 * 50; i < l; i++ ) {
+	                content.push( i );
+	            }
+	            var b = new BufferArray( BufferArray.ARRAY_BUFFER, content, 3 );
+	            b.bind( gl );
+	            ok( b._buffer !== undefined, 'Check we created gl buffer' );
+	            b.releaseGLObjects();
+	            ok( b._buffer === undefined, 'Check we released gl buffer' );
+	
+	            equal( b.getType(), 0x1406, 'Check the type set is float 32' );
+	            equal( b.getItemSize(), 3, 'Check item size is 3' );
+	
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var BufferArrayProxy = __webpack_require__( 75 );
+	var BufferArray = __webpack_require__( 20 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'BufferArrayProxy', function () {
+	
+	        ( function () {
+	            var bufferArrayA = new BufferArray();
+	            var bufferArrayB = new BufferArray();
+	
+	            var bufferArrayProxyA = new BufferArrayProxy( bufferArrayA );
+	            var bufferArrayProxyB = new BufferArrayProxy( bufferArrayB );
+	
+	            bufferArrayProxyA.setBufferArray( bufferArrayB );
+	            bufferArrayProxyB.setBufferArray( bufferArrayA );
+	
+	            equal( bufferArrayProxyA.getInstanceID(), bufferArrayB.getInstanceID(), 'check proxyA use B' );
+	            equal( bufferArrayProxyB.getInstanceID(), bufferArrayA.getInstanceID(), 'check proxyB use A' );
+	            equal( bufferArrayProxyA.getInitialBufferArray().getInstanceID(), bufferArrayA.getInstanceID(), 'check initial buffer' );
+	
+	            bufferArrayProxyA.setBufferArray( bufferArrayProxyB );
+	            equal( bufferArrayProxyA.getInstanceID(), bufferArrayProxyB.getBufferArray().getInstanceID(), 'check proxy with proxy' );
+	
+	
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Camera = __webpack_require__( 22 );
+	var Matrix = __webpack_require__( 28 );
+	var TransformEnums = __webpack_require__( 33 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Camera', function () {
+	
+	        var matrix = Matrix.makeOrtho( -1, 1, -1, 1, -2, 2, Matrix.create() );
+	        var camera = new Camera();
+	        camera.setProjectionMatrixAsOrtho( -1, 1, -1, 1, -2, 2 );
+	        mockup.near( matrix, camera.getProjectionMatrix(), 'check Camera.setProjectionMatrixAsOrtho' );
+	    } );
+	
+	    QUnit.test( 'Camera absolute vs relative', function () {
+	
+	        var rotation = Matrix.makeRotate( -Math.PI * 0.5, 1.0, 0.0, 0.0, Matrix.create() );
+	        var translate = Matrix.makeTranslate( 1, 0, 0, Matrix.create() );
+	        var invRotation = Matrix.create();
+	        Matrix.inverse( rotation, invRotation );
+	
+	
+	        var camera = new Camera();
+	        Matrix.copy( rotation, camera.getViewMatrix() );
+	
+	        var test = Matrix.create();
+	
+	        Matrix.copy( translate, test );
+	        camera.computeLocalToWorldMatrix( test );
+	        mockup.near( test, Matrix.mult( translate, rotation, Matrix.create() ), 'Should expect Translation * Rotation' );
+	
+	        Matrix.copy( translate, test );
+	        camera.computeWorldToLocalMatrix( test );
+	        mockup.near( test, Matrix.mult( translate, invRotation, Matrix.create() ), 'Should expect Translation * invRotation' );
+	
+	        camera.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	
+	        Matrix.copy( translate, test );
+	        camera.computeLocalToWorldMatrix( test );
+	        mockup.near( test, rotation, 'Should expect Rotation' );
+	
+	        Matrix.copy( translate, test );
+	        camera.computeWorldToLocalMatrix( test );
+	        mockup.near( test, invRotation, 'Should expect invRotation' );
+	
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var ComputeBoundsVisitor = __webpack_require__( 34 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Shape = __webpack_require__( 98 );
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'ComputeBoundsVisitor translate', function () {
+	
+	        var root = new MatrixTransform();
+	
+	        var child1 = new MatrixTransform();
+	        Matrix.makeTranslate( 10, 0, 0, child1.getMatrix() );
+	
+	        var child2 = new MatrixTransform();
+	        Matrix.makeTranslate( -10, 0, 0, child2.getMatrix() );
+	
+	        root.addChild( child1 );
+	        root.addChild( child2 );
+	
+	        var shape = Shape.createTexturedBoxGeometry( 0, 0, 0, 5, 5, 5 );
+	
+	        child1.addChild( shape );
+	        child2.addChild( shape );
+	
+	        child2.setNodeMask( 0 );
+	
+	        var bs = root.getBound();
+	
+	        mockup.near( bs.radius(), 14.330127018922195, 'Check radius of the scene' );
+	
+	        var visitor = new ComputeBoundsVisitor();
+	        root.accept( visitor );
+	
+	        mockup.near( visitor.getBoundingBox().corner( 0 ), [ 7.5, -2.5, -2.5 ], 'Check Min of bounding box' );
+	        mockup.near( visitor.getBoundingBox().corner( 7 ), [ 12.5, 2.5, 2.5 ], 'Check Max of bounding box' );
+	
+	        // getBoundingBox don't skip the 0 nodemask
+	        mockup.near( root.getBoundingBox().corner( 0 ), [ -12.5, -2.5, -2.5 ], 'Check Min of bounding box with getBoundingBox' );
+	        mockup.near( root.getBoundingBox().corner( 7 ), [ 12.5, 2.5, 2.5 ], 'Check Max of bounding box getBoundingBox' );
+	
+	    } );
+	
+	
+	    QUnit.test( 'ComputeBoundsVisitor translate and rotate', function () {
+	
+	        var root = new MatrixTransform();
+	        var tra = Matrix.create();
+	
+	        var child1 = new MatrixTransform();
+	        Matrix.makeRotate( -Math.PI * 0.5, 0, 1, 0, child1.getMatrix() );
+	        Matrix.postMult( Matrix.makeTranslate( -10, 0, 0, tra ), child1.getMatrix() );
+	
+	        root.addChild( child1 );
+	
+	        var child2 = new MatrixTransform();
+	        Matrix.makeRotate( Math.PI, 0, 1, 0, child2.getMatrix() );
+	        Matrix.postMult( Matrix.makeTranslate( 0, 0, 10, tra ), child2.getMatrix() );
+	
+	        child1.addChild( child2 );
+	        var shape = Shape.createTexturedBoxGeometry( 0, 0, 0, 5, 5, 5 );
+	        child2.addChild( shape );
+	
+	        var bs = root.getBound();
+	
+	        mockup.near( bs.radius(), 4.330127018922194, 'Check radius of the scene' );
+	
+	        var visitor = new ComputeBoundsVisitor();
+	        root.accept( visitor );
+	
+	        mockup.near( visitor.getBoundingBox().corner( 0 ), [ -22.5, -2.5, -2.5 ], 'Check Min of bounding box' );
+	        mockup.near( visitor.getBoundingBox().corner( 7 ), [ -17.5, 2.5, 2.5 ], 'Check Max of bounding box' );
+	
+	        // all the nodemask are active so same result as the visitor method
+	        mockup.near( root.getBoundingBox().corner( 0 ), [ -22.5, -2.5, -2.5 ], 'Check Min of bounding box with getBoundingBox' );
+	        mockup.near( root.getBoundingBox().corner( 7 ), [ -17.5, 2.5, 2.5 ], 'Check Max of bounding box getBoundingBox' );
+	
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var ComputeMatrixFromNodePath = __webpack_require__( 32 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var MACROUTILS = __webpack_require__( 6 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Matrix = __webpack_require__( 28 );
+	var Camera = __webpack_require__( 22 );
+	var Vec3 = __webpack_require__( 17 );
+	var TransformEnums = __webpack_require__( 33 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'ComputeMatrixFromNodePath', function () {
+	
+	        ( function () {
+	            // test visit parents
+	            var GetRootItem = function () {
+	                NodeVisitor.call( this, NodeVisitor.TRAVERSE_PARENTS );
+	                this.node = undefined;
+	            };
+	            GetRootItem.prototype = MACROUTILS.objectInherit( NodeVisitor.prototype, {
+	                apply: function ( node ) {
+	                    this.node = node;
+	                    this.traverse( node );
+	                }
+	            } );
+	
+	            var root = new MatrixTransform();
+	            root.setName( 'root' );
+	            Matrix.makeTranslate( 10, 0, 0, root.getMatrix() );
+	
+	            var child0 = new Camera();
+	            child0.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	            Matrix.makeTranslate( 0, 5, 0, child0.getViewMatrix() );
+	
+	            var child1 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, -10, 0, child1.getMatrix() );
+	
+	            var child2 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 10, child2.getMatrix() );
+	
+	            root.addChild( child0 );
+	            child0.addChild( child1 );
+	            child1.addChild( child2 );
+	
+	            var path = [ root, child0, child1, child2 ];
+	            var matrix = ComputeMatrixFromNodePath.computeLocalToWorld( path );
+	            var trans = Matrix.getTrans( matrix, [ 0, 0, 0 ] );
+	            mockup.near( trans, [ 0, -10, 10 ], 'Check translation of matrix' );
+	        } )();
+	
+	
+	        ( function () {
+	            var root = new Camera();
+	            root.setName( 'root' );
+	            root.setViewMatrix( Matrix.makeTranslate( 0, 0, 1000, Matrix.create() ) );
+	
+	            var child1 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, -10, 0, child1.getMatrix() );
+	
+	            var child2 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 10, child2.getMatrix() );
+	
+	            var path = [ root, child1, child2 ];
+	            var matrix = ComputeMatrixFromNodePath.computeLocalToWorld( path );
+	            var result = Vec3.create();
+	            Matrix.getTrans( matrix, result );
+	            mockup.near( result, [ 0, -10, 10 ], 'Check we dont use the camera on top' );
+	        } )();
+	
+	    } );
+	
+	
+	};
+
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var CullFace = __webpack_require__( 55 );
+	var State = __webpack_require__( 100 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'CullFace', function () {
+	
+	        var n = new CullFace();
+	        ok( n.getMode() === CullFace.BACK, 'Check default mode' );
+	
+	        var state = new State( new ShaderGeneratorProxy() );
+	        state.setGraphicContext( mockup.createFakeRenderer() );
+	
+	        n.apply( state );
+	
+	        n = new CullFace( CullFace.DISABLE );
+	        n.apply( state );
+	
+	        var n2 = new CullFace( 'FRONT' );
+	        ok( n2.getMode() === CullFace.FRONT, 'Check string parameter' );
+	    } );
+	};
+
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var BoundingBox = __webpack_require__( 16 );
+	var Camera = __webpack_require__( 22 );
+	var CullSettings = __webpack_require__( 37 );
+	var CullVisitor = __webpack_require__( 59 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Node = __webpack_require__( 24 );
+	var RenderBin = __webpack_require__( 62 );
+	var RenderStage = __webpack_require__( 63 );
+	var Shape = __webpack_require__( 98 );
+	var StateGraph = __webpack_require__( 8 );
+	var State = __webpack_require__( 100 );
+	var StateSet = __webpack_require__( 25 );
+	var TransformEnums = __webpack_require__( 33 );
+	var Vec3 = __webpack_require__( 17 );
+	var Viewport = __webpack_require__( 103 );
+	var View = __webpack_require__( 200 );
+	var Viewer = __webpack_require__( 210 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'CullVisitor', function () {
+	
+	        var canvas = mockup.createCanvas();
+	        var viewer = new Viewer( canvas );
+	        viewer.setupManipulator();
+	        viewer.init();
+	        viewer.frame();
+	        var uv = viewer.getCamera().getRenderer().getCullVisitor();
+	        var root = new Node();
+	        root.setName( 'a' );
+	        var b = new Node();
+	        b.setName( 'b' );
+	        var c = new Node();
+	        c.setName( 'c' );
+	        root.addChild( b );
+	        b.addChild( c );
+	
+	        var callb = 0;
+	        var callc = 0;
+	
+	        var fb = function () {};
+	        fb.prototype = {
+	            cull: function ( /*node, nv*/) {
+	                callb = 1;
+	                return false;
+	            }
+	        };
+	
+	        var fc = function () {};
+	        fc.prototype = {
+	            cull: function ( /*node, nv*/) {
+	                callc = 1;
+	                return true;
+	            }
+	        };
+	
+	        b.setCullCallback( new fb() );
+	        c.setCullCallback( new fc() );
+	
+	        uv.apply( root );
+	
+	        ok( callb === 1, 'Called b cull callback' );
+	        ok( callc === 0, 'Did not Call c cull callback as expected' );
+	
+	        root.setNodeMask( ~0 );
+	        ok( callb === 1, 'Called b cull callback' );
+	        ok( callc === 0, 'Did not Call c cull callback as expected' );
+	        mockup.removeCanvas( canvas );
+	    } );
+	
+	
+	    QUnit.test( 'CullVisitor 2', function () {
+	
+	        // check render stage and render bin
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.setupManipulator();
+	            viewer.init();
+	            viewer.frame();
+	            var cull = viewer.getCamera().getRenderer()._cullVisitor;
+	
+	            var camera0 = new Camera();
+	            camera0.setRenderOrder( Camera.NESTED_RENDER );
+	            var node0 = new Node();
+	            var node1 = new Node();
+	            camera0.addChild( node0 );
+	            camera0.addChild( node1 );
+	
+	            var camera1 = new Camera();
+	            camera1.setRenderOrder( Camera.NESTED_RENDER );
+	            var node00 = new Node();
+	            var node10 = new Node();
+	            camera1.addChild( node00 );
+	            camera1.addChild( node10 );
+	
+	            camera0.addChild( camera1 );
+	
+	            //var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            camera0.accept( cull );
+	
+	            ok( cull.rootRenderStage === cull.currentRenderBin, 'renderStage should stay the render bin and id ' ); //+ cull.rootRenderStage === cull.currentRenderBin
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	
+	        // check render stage and render bin
+	        ( function () {
+	            var state = new State( new ShaderGeneratorProxy() );
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            fakeRenderer.validateProgram = function () {
+	                return true;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	            fakeRenderer.isContextLost = function () {
+	                return false;
+	            };
+	
+	            state.setGraphicContext( fakeRenderer );
+	            var camera0 = new Camera();
+	            camera0.setViewport( new Viewport() );
+	            camera0.setRenderOrder( Camera.NESTED_RENDER );
+	            var geom = Shape.createTexturedQuadGeometry( -10 / 2.0, 0, -10 / 2.0,
+	                20, 0, 0,
+	                0, 0, 20,
+	                1, 1 );
+	            camera0.addChild( geom );
+	
+	
+	            var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            rs.setViewport( camera0.getViewport() );
+	
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushStateSet( new StateSet() );
+	
+	            camera0.accept( cull );
+	
+	            ok( cull.rootRenderStage === cull.currentRenderBin, 'renderStage should stay the render bin and id ' ); // + cull.rootRenderStage === cull.currentRenderBin);
+	
+	            rs.draw( state );
+	        } )();
+	
+	
+	        // check the computation of nearfar
+	        ( function () {
+	            var camera0 = new Camera();
+	
+	            var mt = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 10, mt.getMatrix() );
+	            var geom = Shape.createTexturedQuadGeometry( -5.0, -5, 0,
+	                10, 0, 0,
+	                0, 10, 0,
+	                1, 1 );
+	            mt.addChild( geom );
+	            camera0.addChild( mt );
+	
+	            Matrix.makeLookAt( [ -10, 0, 10 ], [ 0, 0, 10 ], [ 0, 1, 0 ], camera0.getViewMatrix() );
+	            Matrix.makePerspective( 60, 800 / 600, 1.0, 1000.0, camera0.getProjectionMatrix() );
+	
+	            var stack = [];
+	
+	            var setCullSettings = function ( settings ) {
+	                if ( this._computedNear !== undefined ) {
+	                    stack.push( [ this._computedNear, this._computedFar ] );
+	                }
+	                CullSettings.prototype.setCullSettings.call( this, settings );
+	            };
+	            var resultProjection;
+	
+	            var popProjectionMatrix = function () {
+	                resultProjection = this._projectionMatrixStack[ this._projectionMatrixStack.length - 1 ];
+	                CullVisitor.prototype.popProjectionMatrix.call( this );
+	            };
+	            CullVisitor.prototype.setCullSettings = setCullSettings;
+	            var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.popProjectionMatrix = popProjectionMatrix;
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	
+	            camera0.accept( cull );
+	            var supposedProjection = [ 1.299038105676658, 0, 0, 0, 0, 1.7320508075688774, 0, 0, 0, 0, -1.9423076923076918, -1, 0, 0, -14.417307692307686, 0 ];
+	            ok( mockup.checkNear( stack[ 1 ][ 0 ], 5 ), 'near should be 5.0 and is ' + stack[ 1 ][ 0 ] );
+	            ok( mockup.checkNear( stack[ 1 ][ 1 ], 15 ), 'near should be 15.0 and is ' + stack[ 1 ][ 1 ] );
+	            ok( mockup.checkNear( resultProjection, supposedProjection ), 'check projection matrix [' + resultProjection.toString() + '] [' + supposedProjection.toString() + ']' );
+	        } )();
+	
+	        // check the computation of nearfar with camera in position that it reverses near far
+	        ( function () {
+	            var camera0 = new Camera();
+	
+	            var mt = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 10, mt.getMatrix() );
+	            var geom = Shape.createTexturedQuadGeometry( -5.0, -5, 0,
+	                10, 0, 0,
+	                0, 10, 0,
+	                1, 1 );
+	            mt.addChild( geom );
+	            camera0.addChild( mt );
+	
+	            Matrix.makeLookAt( [ 0, 0, 20 ], [ 0, 0, 10 ], [ 0, 1, 0 ], camera0.getViewMatrix() );
+	            Matrix.makePerspective( 60, 800 / 600, 1.0, 1000.0, camera0.getProjectionMatrix() );
+	
+	            var stack = [];
+	
+	            var setCullSettings = function ( settings ) {
+	                if ( this._computedNear !== undefined ) {
+	                    stack.push( [ this._computedNear, this._computedFar ] );
+	                }
+	                CullSettings.prototype.setCullSettings.call( this, settings );
+	            };
+	            CullVisitor.prototype.setCullSettings = setCullSettings;
+	
+	            var resultProjection;
+	
+	            var popProjectionMatrix = function () {
+	                resultProjection = this._projectionMatrixStack[ this._projectionMatrixStack.length - 1 ];
+	                CullVisitor.prototype.popProjectionMatrix.call( this );
+	            };
+	
+	            var supposedProjection = [ 1.299038105676658, 0, 0, 0, 0, 1.7320508075688774, 0, 0, 0, 0, -49.999750101250868, -1, 0, 0, -499.79750101250352, 0 ];
+	            var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.popProjectionMatrix = popProjectionMatrix;
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	
+	            camera0.accept( cull );
+	            ok( mockup.checkNear( stack[ 1 ][ 0 ], 10 ), 'near should be 10 and is ' + stack[ 1 ][ 0 ] );
+	            ok( mockup.checkNear( stack[ 1 ][ 1 ], 10 ), 'near should be 10 and is ' + stack[ 1 ][ 1 ] );
+	            ok( mockup.checkNear( resultProjection, supposedProjection ), 'check projection matrix [' + resultProjection.toString() + '] [' + supposedProjection.toString() + ']' );
+	
+	        } )();
+	
+	
+	        ( function () {
+	            var camera0 = new Camera();
+	
+	            var geom = Shape.createTexturedQuadGeometry( -5.0, -5, 0,
+	                10, 0, 0,
+	                0, 10, 0,
+	                1, 1 );
+	            geom.getBoundingBox = function () {
+	                var bb = new BoundingBox();
+	                bb._min = [ -6131940, -6297390, -6356750 ];
+	                bb._max = [ 6353000, 6326310, 6317430 ];
+	                return bb;
+	            };
+	            camera0.addChild( geom );
+	
+	
+	            var eye = [ -8050356.805171473, 5038241.363464848, 5364184.10053209 ];
+	            var target = [ 110530, 14460, -19660 ];
+	
+	            //        var dFar = 15715646.446620844;
+	            //        var dNear = 6098715.042224069;
+	
+	            //var matrixOffset = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 9520443.940837447, 0, 0, 0, -9539501.699646605, 1];
+	            // var projectionResult = [
+	            //      0.9742785792574936, 0, 0, 0,
+	            //      0, 1.7320508075688774, 0, 0,
+	            //      0, 0, -2.1890203449875116, -1,
+	            //      0, 0, -19059947.8295044, 0];
+	
+	            // osg
+	            //      var projectionResult = [0.9742785792574936, 0, 0, 0, 0, 1.7320508075688774, 0, 0, 0, 0, -1.002002002002002, -1, 0, 0, -2.0020020020020022, 0]
+	
+	
+	            var dFar = 21546781.959391922;
+	            var dNear = 267579.84430311248;
+	            //      var bbmax = [6353000, 6326310, 6317430];
+	            //      var bbmin = [-6131940, -6297390, -6356750];
+	            //      var bbCornerFar = 1;
+	            //      var bbCornerNear = 6;
+	
+	            Matrix.makeLookAt( Vec3.add( eye, target, [] ), target, [ 0, 0, 1 ], camera0.getViewMatrix() );
+	            Matrix.makePerspective( 60, 800 / 450, 1.0, 1000.0, camera0.getProjectionMatrix() );
+	
+	            var stack = [];
+	
+	            var setCullSettings = function ( settings ) {
+	                if ( this._computedNear !== undefined ) {
+	                    stack.push( [ this._computedNear, this._computedFar ] );
+	                }
+	                CullSettings.prototype.setCullSettings.call( this, settings );
+	            };
+	            CullVisitor.prototype.setCullSettings = setCullSettings;
+	
+	            var resultProjection;
+	
+	            var popProjectionMatrix = function () {
+	                resultProjection = this._projectionMatrixStack[ this._projectionMatrixStack.length - 1 ];
+	                CullVisitor.prototype.popProjectionMatrix.call( this );
+	            };
+	
+	            var supposedProjection = [
+	                0.97427857925749362, 0, 0, 0,
+	                0, 1.7320508075688774, 0, 0,
+	                0, 0, -1.0241512629639544, -1,
+	                0, 0, -530789.63819638337, 0
+	            ];
+	            var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.popProjectionMatrix = popProjectionMatrix;
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	
+	            camera0.accept( cull );
+	            ok( mockup.checkNear( stack[ 1 ][ 0 ], dNear, 0.8 ), 'near should be ' + dNear + ' and is ' + stack[ 1 ][ 0 ] );
+	            ok( mockup.checkNear( stack[ 1 ][ 1 ], dFar, 0.8 ), 'near should be ' + dFar + ' and is ' + stack[ 1 ][ 1 ] );
+	            ok( mockup.checkNear( resultProjection, supposedProjection, 0.8 ), 'check projection matrix [' + resultProjection.toString() + '] [' + supposedProjection.toString() + ']' );
+	
+	        } )();
+	
+	
+	        ( function () {
+	
+	            var q = Shape.createTexturedBoxGeometry( 0, 0, 0, 1, 1, 1 );
+	
+	            var node3 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 20, node3.getMatrix() );
+	            node3.getOrCreateStateSet().setRenderBinDetails( 1, '' );
+	            node3.getOrCreateStateSet().setName( 'Node3' );
+	            node3.addChild( q );
+	
+	            var node0 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, -10, node0.getMatrix() );
+	            node0.getOrCreateStateSet().setRenderBinDetails( 0, 'DepthSortedBin' );
+	            node0.getOrCreateStateSet().setName( 'Node0' );
+	            node0.addChild( q );
+	
+	            var node1 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 5, node1.getMatrix() );
+	            node1.getOrCreateStateSet().setName( 'Node1' );
+	            node1.addChild( q );
+	
+	            var node2 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, -20, node2.getMatrix() );
+	            node2.getOrCreateStateSet().setRenderBinDetails( 0, 'RenderBin' );
+	            node2.getOrCreateStateSet().setName( 'Node2' );
+	            node2.addChild( q );
+	
+	            node3.addChild( node0 );
+	            node0.addChild( node1 );
+	            node1.addChild( node2 );
+	
+	            var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	            cull.setComputeNearFar( false );
+	
+	            node3.accept( cull );
+	            rs.sort();
+	
+	            ok( rs._bins[ '0' ]._leafs[ 2 ]._depth === -15, 'Check depth of leaf 0' );
+	            ok( rs._bins[ '0' ]._leafs[ 1 ]._depth === -10, 'Check depth of leaf 1' );
+	            ok( rs._bins[ '0' ]._leafs[ 0 ]._depth === 5, 'Check depth of leaf 2' );
+	            ok( rs._bins[ '0' ]._sortMode === RenderBin.SORT_BACK_TO_FRONT, 'Check RenderBin sort mode' );
+	
+	        } )();
+	
+	
+	        ( function () {
+	
+	            var q = Shape.createTexturedBoxGeometry( 0, 0, 0, 1, 1, 1 );
+	
+	            var node0 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, -10, node0.getMatrix() );
+	            node0.getOrCreateStateSet().setRenderingHint( 'OPAQUE_BIN' );
+	            node0.getOrCreateStateSet().setName( 'Node0' );
+	            node0.addChild( q );
+	
+	            var node1 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 5, node1.getMatrix() );
+	            node0.getOrCreateStateSet().setRenderingHint( 'TRANSPARENT_BIN' );
+	            node1.getOrCreateStateSet().setName( 'Node1' );
+	            node1.addChild( q );
+	
+	            var root = new Node();
+	            root.addChild( node1 );
+	            root.addChild( node0 );
+	
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.init();
+	            viewer.frame();
+	            var cull = viewer.getCamera().getRenderer()._cullVisitor;
+	            //var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	            cull.setComputeNearFar( false );
+	
+	            root.accept( cull );
+	            rs.sort();
+	
+	            ok( rs._bins[ '10' ]._leafs[ 0 ]._depth === 10, 'Check transparent bin' );
+	            ok( rs._bins[ '10' ].getStateGraphList().length === 0, 'Check transparent bin StateGraphList' );
+	            ok( rs._leafs.length === 0, 'Check leafs for normal rendering bin' );
+	            ok( rs.getStateGraphList().length === 1, 'Check StateGraphList for normal rendering bin' );
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.init();
+	            viewer.frame();
+	            var cull = viewer.getCamera().getRenderer()._cullVisitor;
+	            var q = Shape.createTexturedBoxGeometry( 0, 0, 0, 1, 1, 1 );
+	
+	            var node0 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, -10, node0.getMatrix() );
+	            node0.getOrCreateStateSet().setRenderingHint( 'OPAQUE_BIN' );
+	            node0.getOrCreateStateSet().setName( 'Node0' );
+	            node0.addChild( q );
+	
+	            var node1 = new MatrixTransform();
+	            Matrix.makeTranslate( 0, 0, 5, node1.getMatrix() );
+	            node0.getOrCreateStateSet().setRenderingHint( 'TRANSPARENT_BIN' );
+	            node1.getOrCreateStateSet().setName( 'Node1' );
+	            node1.addChild( q );
+	
+	            var root = new Node();
+	            root.addChild( node1 );
+	            root.addChild( node0 );
+	
+	            //var cull = new CullVisitor();
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            rs.setViewport( new Viewport() );
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	            cull.setComputeNearFar( false );
+	
+	            root.accept( cull );
+	            rs.sort();
+	
+	            var state = new State( new ShaderGeneratorProxy() );
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            fakeRenderer.validateProgram = function () {
+	                return true;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	            fakeRenderer.isContextLost = function () {
+	                return false;
+	            };
+	            state.setGraphicContext( fakeRenderer );
+	
+	            rs.draw( state );
+	
+	        } )();
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.init();
+	
+	            viewer.frame();
+	            var cull = viewer.getCamera().getRenderer()._cullVisitor;
+	            var m = cull._currentRenderBin.getStage().positionedAttribute[ 0 ][ 0 ];
+	            // Test for HeadLight, matrix should be identity
+	            mockup.near( m, [ 1, 0, -0, 0,
+	                0, 1, 0, 0,
+	                0, 0, 1, 0,
+	                0, 0, 0, 1
+	            ] );
+	            // Test for Sky_Light, matrix != identity
+	            viewer.setLightingMode( View.LightingMode.SKY_LIGHT );
+	            viewer.frame();
+	            m = cull._currentRenderBin.getStage().positionedAttribute[ 0 ][ 0 ];
+	            mockup.near( m, [ -1, 0, -0, 0,
+	                0, 1, -0, 0,
+	                0, -0, -1, 0,
+	                0, 0, -10, 1
+	            ] );
+	
+	
+	            mockup.removeCanvas( canvas );
+	
+	        } )();
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas, {
+	                'enableFrustumCulling': true
+	            } );
+	
+	            var scene = new Node();
+	            var mat = Matrix.create();
+	            var mt = new MatrixTransform();
+	            var quad = Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	            mt.setMatrix( mat );
+	            mt.addChild( quad );
+	            scene.addChild( mt );
+	            viewer.setSceneData( scene );
+	            viewer.init();
+	            viewer._updateVisitor.setFrameStamp( viewer.getFrameStamp() );
+	            viewer.updateTraversal();
+	
+	            // test done inside Camera cullcallback
+	            // to get all context
+	            var fb = function () {};
+	            fb.prototype = {
+	                cull: function ( cam, cull ) {
+	
+	                    cull.nodePath = [];
+	                    cull.nodePath.push( scene );
+	                    cull.nodePath.push( mt );
+	                    //  push the nodepath, simulating a scene traversal.
+	                    var culled = cull.isCulled( quad, cull.nodePath );
+	                    ok( culled === false, 'scene should not be culled' );
+	                    return false;
+	                }
+	            };
+	            //Get the cullVisitor in context
+	            viewer.getCamera().setCullCallback( new fb() );
+	            viewer._updateVisitor.setFrameStamp( viewer.getFrameStamp() );
+	            viewer.updateTraversal();
+	            // traverse so that it Build the frustum planes and cullsettings to check against them
+	            viewer.renderingTraversal();
+	
+	
+	            // TEST2
+	            Matrix.setTrans( mat, 200, 0, 0 );
+	            mt.setMatrix( mat ); // dirty Bounds
+	
+	            // test done inside Camera cullcallback
+	            // to get all context
+	            var fb2 = function () {};
+	            fb2.prototype = {
+	                cull: function ( cam, cull ) {
+	                    cull.nodePath = [];
+	                    cull.nodePath.push( scene );
+	                    cull.nodePath.push( mt );
+	                    // Translate outside of the frustum, scene should be culled now
+	                    var culled = cull.isCulled( quad, cull.nodePath );
+	                    ok( culled === true, 'scene should be culled' );
+	
+	                    return false;
+	                }
+	            };
+	            //Get the cullVisitor in context
+	            viewer.getCamera().setCullCallback( new fb2() );
+	            viewer._updateVisitor.setFrameStamp( viewer.getFrameStamp() );
+	            viewer.updateTraversal();
+	            // traverse so that it Build the frustum planes and cullsettings to check against them
+	            viewer.renderingTraversal();
+	
+	            // test3
+	            Matrix.makeScale( 500, 0, 0, mat );
+	            Matrix.setTrans( mat, 200, 0, 0 );
+	            mt.setMatrix( mat ); // dirty Bounds
+	
+	            // test done inside Camera cullcallback
+	            // to get all context
+	            var fb3 = function () {};
+	            fb3.prototype = {
+	                cull: function ( cam, cull ) {
+	                    cull.nodePath = [];
+	                    cull.nodePath.push( scene );
+	                    cull.nodePath.push( mt );
+	                    // Translate outside of the frustum and scale, node should not be culled now
+	                    var culled = cull.isCulled( quad, cull.nodePath );
+	                    ok( culled === false, 'scene should not be culled' );
+	                    return false;
+	                }
+	            };
+	            //Get the cullVisitor in context
+	            viewer.getCamera().setCullCallback( new fb3() );
+	            viewer._updateVisitor.setFrameStamp( viewer.getFrameStamp() );
+	            viewer.updateTraversal();
+	            // traverse so that it Build the frustum planes and cullsettings to check against them
+	            viewer.renderingTraversal();
+	
+	            // tests finished
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	    } );
+	
+	
+	    QUnit.test( 'CullVisitor World/View matrix', function () {
+	
+	        var checkLeaf = function ( leaf ) {
+	            var tmp = Matrix.create();
+	            Matrix.mult( leaf._view, leaf._modelWorld, tmp );
+	
+	            mockup.near( tmp, leaf._modelView );
+	            //ok( mockup.checkNear( tmp, leaf.modelview ), 'View * World === ModelView' );
+	        };
+	
+	        var q = Shape.createTexturedBoxGeometry( 0, 0, 0, 1, 1, 1 );
+	
+	        var node4 = new Node();
+	        var node5 = new Node();
+	        node4.addChild( node5 );
+	        var camera4 = new Camera();
+	        camera4.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	        Matrix.makeLookAt( [ 0, 20, 10 ], [ 0, 2, 0 ], [ 0, 0, 1 ], camera4.getViewMatrix() );
+	        node5.addChild( camera4 );
+	        var node6 = new MatrixTransform();
+	        Matrix.makeTranslate( 0, 0, -10, node6.getMatrix() );
+	        camera4.addChild( node6 );
+	        node6.addChild( q );
+	
+	        var node0 = new MatrixTransform();
+	        Matrix.makeTranslate( 0, 0, -10, node0.getMatrix() );
+	        node0.getOrCreateStateSet().setName( 'Node0' );
+	        node0.addChild( q );
+	
+	        var node1 = new MatrixTransform();
+	        Matrix.makeTranslate( 0, 0, 5, node1.getMatrix() );
+	        node1.getOrCreateStateSet().setName( 'Node1' );
+	        node1.addChild( q );
+	
+	        var camera0 = new Camera();
+	        var node2 = new MatrixTransform();
+	        Matrix.makeTranslate( 0, 0, 5, node1.getMatrix() );
+	        camera0.addChild( node2 );
+	        node2.addChild( q );
+	
+	
+	        var camera1 = new Camera();
+	        camera1.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	        Matrix.makeLookAt( [ 0, 0, 0 ], [ 0, 2, 0 ], [ 0, 0, 1 ], camera1.getViewMatrix() );
+	        var node3 = new MatrixTransform();
+	        Matrix.makeTranslate( 0, 0, 5, node3.getMatrix() );
+	        camera1.addChild( node3 );
+	        node3.addChild( q );
+	
+	        var root = new Node();
+	        root.addChild( node4 );
+	        root.addChild( node1 );
+	        root.addChild( camera0 );
+	        root.addChild( node0 );
+	        root.addChild( camera1 );
+	
+	        var cull = new CullVisitor();
+	        var rs = new RenderStage();
+	        var sg = new StateGraph();
+	        rs.setViewport( new Viewport() );
+	        cull.pushProjectionMatrix( Matrix.create() );
+	        cull.pushModelViewMatrix( Matrix.create() );
+	        cull.pushModelViewMatrix( Matrix.create() );
+	        cull.setRenderStage( rs );
+	        cull.setStateGraph( sg );
+	        cull.setComputeNearFar( false );
+	
+	        root.accept( cull );
+	
+	        ok( cull._reserveLeafStack.length > 1, 'check we have leaf to validate this test' );
+	        for ( var i = 0; i < cull._reserveLeafStack.length - 1; i++ ) {
+	            checkLeaf( cull._reserveLeafStack[ i ] );
+	        }
+	
+	    } );
+	
+	
+	};
+
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Depth = __webpack_require__( 82 );
+	var State = __webpack_require__( 100 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Depth', function () {
+	
+	        var n = new Depth();
+	        ok( n._near === 0.0, 'Check near' );
+	        ok( n._far === 1.0, 'Check far' );
+	        ok( n._func === Depth.LESS, 'Check function' );
+	        ok( n._writeMask === true, 'Check write mask' );
+	
+	        var state = new State( new ShaderGeneratorProxy() );
+	        state.setGraphicContext( mockup.createFakeRenderer() );
+	
+	        n.apply( state );
+	
+	        n = new Depth( Depth.DISABLE );
+	        n.apply( state );
+	    } );
+	};
+
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var FrameBufferObject = __webpack_require__( 64 );
+	var Texture = __webpack_require__( 38 );
+	
+	
+	module.exports = function () {
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'FrameBufferObject', function () {
+	
+	        ( function () {
+	            var gl = mockup.createFakeRenderer();
+	            var state = {
+	                getGraphicContext: function () {
+	                    return gl;
+	                },
+	                applyTextureAttribute: function () {}
+	            };
+	
+	
+	            var b = new FrameBufferObject();
+	            b.setAttachment( {
+	                texture: {
+	                    getTextureObject: function () {
+	                        return {
+	                            id: function () {}
+	                        };
+	                    }
+	                },
+	                textureTarget: 'textureTarget'
+	            } );
+	            b.setAttachment( {
+	                format: 'texture',
+	                width: 512,
+	                height: 512
+	            } );
+	
+	            b.dirty();
+	            b.apply( state );
+	
+	            ok( b.getFrameBufferObject() !== undefined, 'Check we created gl framebuffer' );
+	            b.releaseGLObjects();
+	            ok( b.getFrameBufferObject() === undefined, 'Check we released gl famebuffer' );
+	
+	
+	        } )();
+	
+	        ( function () {
+	            var gl = mockup.createFakeRenderer();
+	            var state = {
+	                getGraphicContext: function () {
+	                    return gl;
+	                },
+	                applyTextureAttribute: function () {}
+	            };
+	
+	
+	            var fbo = new FrameBufferObject();
+	
+	            fbo.createFrameBufferObject( state );
+	            fbo.bindFrameBufferObject();
+	            var renderBuffer = fbo.createRenderBuffer( FrameBufferObject.DEPTH_COMPONENT16, 800, 600 );
+	            fbo.framebufferRenderBuffer( FrameBufferObject.DEPTH_ATTACHMENT, renderBuffer );
+	
+	            var texture = new Texture();
+	            // mockup texture
+	            texture.getTextureObject = function () {
+	                return {
+	                    id: function () {
+	                        return 1;
+	                    }
+	                };
+	            };
+	
+	            fbo.framebufferTexture2D( state, FrameBufferObject.COLOR_ATTACHMENT0, Texture.TEXTURE_2D, texture );
+	
+	            fbo.apply( state );
+	
+	            ok( fbo.isDirty() === false, 'Check that applied set dirty false even with no attachement' );
+	            ok( fbo.getFrameBufferObject() !== undefined, 'Check fbo' );
+	
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Vec3 = __webpack_require__( 17 );
+	var Shape = __webpack_require__( 98 );
+	var DrawElements = __webpack_require__( 45 );
+	var DrawArrays = __webpack_require__( 44 );
+	var PrimitiveSet = __webpack_require__( 43 );
+	var BufferArray = __webpack_require__( 20 );
+	var Geometry = __webpack_require__( 35 );
+	var KdTree = __webpack_require__( 86 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'KdTree', function () {
+	
+	        //   0-3
+	        //   |\|
+	        //   1-2
+	        //
+	        // 1 being [0, 0, 0]
+	        // 3 being [1, 1, 0]
+	
+	        var createTrianglesIndexed = function () {
+	            // triangles
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	            return quad;
+	        };
+	
+	        var createTriangleStripIndex = function () {
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	            var indexes = [];
+	            indexes[ 0 ] = 1;
+	            indexes[ 1 ] = 0;
+	            indexes[ 2 ] = 2;
+	            indexes[ 3 ] = 3;
+	
+	            var primitive = new DrawElements( PrimitiveSet.TRIANGLE_STRIP, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	            quad.getPrimitives()[ 0 ] = primitive;
+	
+	            return quad;
+	        };
+	
+	        var createTriangleFanIndexed = function () {
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	            var indexes = [];
+	            indexes[ 0 ] = 0;
+	            indexes[ 1 ] = 1;
+	            indexes[ 2 ] = 2;
+	            indexes[ 3 ] = 3;
+	
+	            var primitive = new DrawElements( PrimitiveSet.TRIANGLE_FAN, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	            quad.getPrimitives()[ 0 ] = primitive;
+	
+	            return quad;
+	        };
+	
+	        var createTrianglesNotIndexed = function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx + hx;
+	            vertexes[ 1 ] = cornery + hy;
+	            vertexes[ 2 ] = cornerz + hz;
+	
+	            vertexes[ 3 ] = cornerx;
+	            vertexes[ 4 ] = cornery;
+	            vertexes[ 5 ] = cornerz;
+	
+	            vertexes[ 6 ] = cornerx + wx;
+	            vertexes[ 7 ] = cornery + wy;
+	            vertexes[ 8 ] = cornerz + wz;
+	
+	            vertexes[ 9 ] = cornerx + hx;
+	            vertexes[ 10 ] = cornery + hy;
+	            vertexes[ 11 ] = cornerz + hz;
+	
+	            vertexes[ 12 ] = cornerx + wx;
+	            vertexes[ 13 ] = cornery + wy;
+	            vertexes[ 14 ] = cornerz + wz;
+	
+	            vertexes[ 15 ] = cornerx + wx + hx;
+	            vertexes[ 16 ] = cornery + wy + hy;
+	            vertexes[ 17 ] = cornerz + wz + hz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLES, 0, 6 );
+	            quad.getPrimitives().push( primitive );
+	
+	            return quad;
+	        };
+	
+	        var createTriangleStripNotIndexed = function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx;
+	            vertexes[ 1 ] = cornery;
+	            vertexes[ 2 ] = cornerz;
+	
+	            vertexes[ 3 ] = cornerx + hx;
+	            vertexes[ 4 ] = cornery + hy;
+	            vertexes[ 5 ] = cornerz + hz;
+	
+	            vertexes[ 6 ] = cornerx + wx;
+	            vertexes[ 7 ] = cornery + wy;
+	            vertexes[ 8 ] = cornerz + wz;
+	
+	            vertexes[ 9 ] = cornerx + wx + hx;
+	            vertexes[ 10 ] = cornery + wy + hy;
+	            vertexes[ 11 ] = cornerz + wz + hz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLE_STRIP, 0, 4 );
+	            quad.getPrimitives().push( primitive );
+	
+	            return quad;
+	        };
+	
+	        var createTriangleFanNotIndexed = function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx + hx;
+	            vertexes[ 1 ] = cornery + hy;
+	            vertexes[ 2 ] = cornerz + hz;
+	
+	            vertexes[ 3 ] = cornerx;
+	            vertexes[ 4 ] = cornery;
+	            vertexes[ 5 ] = cornerz;
+	
+	            vertexes[ 6 ] = cornerx + wx;
+	            vertexes[ 7 ] = cornery + wy;
+	            vertexes[ 8 ] = cornerz + wz;
+	
+	            vertexes[ 9 ] = cornerx + wx + hx;
+	            vertexes[ 10 ] = cornery + wy + hy;
+	            vertexes[ 11 ] = cornerz + wz + hz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLE_FAN, 0, 4 );
+	            quad.getPrimitives().push( primitive );
+	
+	            return quad;
+	        };
+	
+	        var createGeometry = function () {
+	            var geom1 = createTrianglesIndexed();
+	            var geom2 = createTrianglesNotIndexed();
+	            var geom3 = createTriangleStripIndex();
+	            var geom4 = createTriangleStripNotIndexed();
+	            var geom5 = createTriangleFanIndexed();
+	            var geom6 = createTriangleFanNotIndexed();
+	
+	            var geoms = [ geom1, geom2, geom3, geom4, geom5, geom6 ];
+	            var nbGeom = geoms.length;
+	
+	            var geomTotal = new Geometry();
+	            var primitives = geomTotal.getPrimitives();
+	            var vertices = [];
+	
+	            var i = 0;
+	            var j = 0;
+	            for ( i = 0; i < nbGeom; ++i ) {
+	                var geo = geoms[ i ];
+	                var prim = geo.getPrimitives()[ 0 ];
+	                var offset = vertices.length / 3;
+	                if ( prim.getIndices ) {
+	                    var indices = prim.indices.getElements();
+	                    var nbPrim = indices.length;
+	                    for ( j = 0; j < nbPrim; ++j )
+	                        indices[ j ] += offset;
+	                } else
+	                    prim.first = offset;
+	                primitives.push( geo.getPrimitives()[ 0 ] );
+	
+	                var verts = geo.getAttributes().Vertex.getElements();
+	                var nbVerts = verts.length;
+	                for ( j = 0; j < nbVerts; ++j )
+	                    vertices.push( verts[ j ] );
+	            }
+	            geomTotal.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertices, 3 );
+	            return geomTotal;
+	        };
+	
+	        var geomTotal = createGeometry();
+	        var nbPrimitives = geomTotal.getPrimitives().length;
+	
+	        var kdTree = new KdTree();
+	        kdTree.build( {
+	            _numVerticesProcessed: 0,
+	            _targetNumTrianglesPerLeaf: 3,
+	            _maxNumLevels: 20
+	        }, geomTotal );
+	        var start = [ 0.4, 0.2, -2.0 ];
+	        var end = [ 0.4, 0.2, 0.5 ];
+	
+	        var hits = [];
+	        kdTree.intersectRay( start, end, hits, [] );
+	        //console.log( hits )
+	
+	        // test ray intersection
+	
+	        ok( hits.length === nbPrimitives, ' Hits should be ' + nbPrimitives + ' and result is ' + hits.length );
+	        var result = [ 0.4, 0.2, 0 ];
+	        var dir = Vec3.sub( end, start, [] );
+	        var found = Vec3.add( start, Vec3.mult( dir, hits[ 0 ].ratio, [] ), [] );
+	        mockup.near( found, result, 1e-4 );
+	
+	        hits.length = 0;
+	        kdTree.intersectRay( [ 1.5, 0.2, -0.5 ], [ 1.5, 0.2, 0.5 ], hits, [] );
+	        ok( hits.length === 0, ' Hits should be 0 ' + hits.length );
+	
+	        // test sphere intersection
+	        // sphere center in on vertex 1 (see ascii art on top of the file)
+	
+	        hits.length = 0;
+	        kdTree.intersectSphere( [ 0, 0, 0 ], Math.SQRT1_2 - 0.01, hits, [] );
+	        ok( hits.length === nbPrimitives, ' Hits should be ' + nbPrimitives + ' and result is ' + hits.length );
+	
+	        hits.length = 0;
+	        kdTree.intersectSphere( [ 0, 0, 0 ], Math.SQRT1_2 + 0.02, hits, [] );
+	        var nbTriangles = nbPrimitives * 2; // the geometries are quad only
+	        ok( hits.length === nbTriangles, ' Hits should be ' + nbTriangles + ' and result is ' + hits.length );
+	    } );
+	};
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Light = __webpack_require__( 93 );
+	var Viewer = __webpack_require__( 210 );
+	var Shape = __webpack_require__( 98 );
+	var Node = __webpack_require__( 24 );
+	var RenderStage = __webpack_require__( 63 );
+	var StateGraph = __webpack_require__( 8 );
+	var Matrix = __webpack_require__( 28 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Light', function () {
+	
+	        ( function () {
+	
+	            var l0 = new Light();
+	            l0.setLightNumber( 0 );
+	
+	            l0.setLightAsPoint();
+	            deepEqual( l0.getPosition(), [ 0, 0, 0, 1 ] );
+	            equal( l0.getSpotCutoff(), 180 );
+	            equal( l0.getLightType(), Light.POINT );
+	
+	            l0.setLightAsDirection();
+	            deepEqual( l0.getPosition(), [ 0, 0, 1, 0 ] );
+	            equal( l0.getLightType(), Light.DIRECTION );
+	
+	            l0.setLightAsSpot();
+	            deepEqual( l0.getPosition(), [ 0, 0, 0, 1 ] );
+	            deepEqual( l0.getDirection(), [ 0, 0, -1 ] );
+	            equal( l0.getSpotCutoff(), 90 );
+	            equal( l0.getLightType(), Light.SPOT );
+	
+	            deepEqual( l0.getAmbient(), [ 0.2, 0.2, 0.2, 1 ] );
+	            deepEqual( l0.getDiffuse(), [ 0.8, 0.8, 0.8, 1 ] );
+	            deepEqual( l0.getSpecular(), [ 0.2, 0.2, 0.2, 1 ] );
+	
+	
+	            equal( l0.getConstantAttenuation(), 1 );
+	            equal( l0.getLinearAttenuation(), 0 );
+	            equal( l0.getQuadraticAttenuation(), 0 );
+	
+	
+	        } )();
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.init();
+	
+	            var l0 = new Light();
+	            l0.setLightNumber( 0 );
+	            var l1 = new Light();
+	            l1.setLightNumber( 1 );
+	
+	            var q = Shape.createTexturedQuadGeometry( -25, -25, 0,
+	                50, 0, 0,
+	                0, 50, 0 );
+	
+	            q.getOrCreateStateSet().setAttributeAndModes( l0 );
+	            q.getOrCreateStateSet().setAttributeAndModes( l1 );
+	
+	            var state = viewer.getState();
+	
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            fakeRenderer.validateProgram = function () {
+	                return true;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	            fakeRenderer.isContextLost = function () {
+	                return false;
+	            };
+	            state.setGraphicContext( fakeRenderer );
+	
+	            viewer.setSceneData( q );
+	            viewer.frame();
+	
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            viewer.init();
+	            var root = new Node();
+	            var node0 = new Node();
+	            var node1 = new Node();
+	
+	            root.addChild( node0 );
+	            root.addChild( node1 );
+	
+	            var l0 = new Light();
+	            l0.setLightNumber( 0 );
+	            l0.setName( 'enableLight0' );
+	            node0.getOrCreateStateSet().setAttributeAndModes( l0 );
+	
+	            var l1 = new Light();
+	            l1.setLightNumber( 1 );
+	            l1.setName( 'enableLight1' );
+	
+	            node1.getOrCreateStateSet().setAttributeAndModes( l1 );
+	            var q = Shape.createTexturedQuadGeometry( -25, -25, 0,
+	                50, 0, 0,
+	                0, 50, 0 );
+	
+	            var ld0 = new Light();
+	            ld0.setLightNumber( 0 );
+	            ld0.setName( 'disableLight0' );
+	
+	            var ld1 = new Light();
+	            ld1.setLightNumber( 1 );
+	            ld1.setName( 'disableLight1' );
+	
+	            node0.addChild( q );
+	            node0.getOrCreateStateSet().setAttributeAndModes( ld1 );
+	
+	            node1.addChild( q );
+	            node1.getOrCreateStateSet().setAttributeAndModes( ld0 );
+	            viewer.frame();
+	
+	            var cull = viewer.getCamera().getRenderer()._cullVisitor;
+	            var rs = new RenderStage();
+	            var sg = new StateGraph();
+	            cull.pushProjectionMatrix( Matrix.create() );
+	            cull.pushModelViewMatrix( Matrix.create() );
+	            cull.setRenderStage( rs );
+	            cull.setStateGraph( sg );
+	
+	            root.accept( cull );
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	        ok( true, 'check no exception' );
+	    } );
+	};
+
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Matrix = __webpack_require__( 28 );
+	var Notify = __webpack_require__( 10 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Matrix.makeRotateFromQuat', function () {
+	        var m = [];
+	        Matrix.makeRotateFromQuat( [ 0.653281, 0.270598, -0.653281, 0.270598 ], m );
+	        mockup.near( m, [ 1.66533e-16, 1.11022e-16, -1, 0,
+	            0.707107, -0.707107, 0, 0, -0.707107, -0.707107, -1.66533e-16, 0,
+	            0, 0, 0, 1
+	        ] );
+	    } );
+	
+	    QUnit.test( 'Matrix.getRotate', function () {
+	        var m = [];
+	        Matrix.makeRotateFromQuat( [ 0.653281, 0.270598, -0.653281, 0.270598 ], m );
+	        var q = Matrix.getRotate( m );
+	        mockup.near( q, [ 0.653281, 0.270598, -0.653281, 0.270598 ] );
+	
+	    } );
+	
+	    QUnit.test( 'Matrix.getPerspective', function () {
+	        var m = [];
+	        Matrix.makePerspective( 60, 800 / 200, 2.0, 500.0, m );
+	        var r = {};
+	        Matrix.getPerspective( m, r );
+	        mockup.near( r.zNear, 2.0 );
+	        mockup.near( r.zFar, 500.0 );
+	        mockup.near( r.fovy, 60.0 );
+	        mockup.near( r.aspectRatio, 4.0 );
+	    } );
+	
+	    QUnit.test( 'Matrix.makeLookAt', function () {
+	        var m = Matrix.makeLookAt( [ 0, -10, 0 ], [ 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 1.0 ] );
+	        mockup.near( m, [ 1, 0, -0, 0,
+	            0, 0, -1, 0,
+	            0, 1, -0, 0,
+	            0, 0, -10, 1
+	        ] );
+	
+	
+	        var m2 = Matrix.makeLookAt( [ 0, 0, -10 ], [ 0.0, 0.0, 0.0 ], [ 0.0, 1.0, 0.0 ] );
+	        mockup.near( m2, [ -1, 0, -0, 0,
+	            0, 1, -0, 0,
+	            0, -0, -1, 0,
+	            0, 0, -10, 1
+	        ] );
+	
+	    } );
+	
+	    QUnit.test( 'Matrix.computeFustrumCornersVectors', function () {
+	        var m = [];
+	        var ratio = 16.0 / 9.0;
+	        Matrix.makePerspective( 45, ratio, 1.0, 100.0, m );
+	
+	        var ymax = 1.0 * Math.tan( 45 * Math.PI / 360.0 );
+	        var ymin = -ymax;
+	        var xmin = ymin * ratio;
+	        var xmax = ymax * ratio;
+	
+	        var corners = [];
+	        corners.push( [ xmin, ymax, 1.0 ] );
+	        corners.push( [ xmin, ymin, 1.0 ] );
+	        corners.push( [ xmax, ymin, 1.0 ] );
+	        corners.push( [ xmax, ymax, 1.0 ] );
+	
+	        var vectors = [];
+	        Matrix.computeFrustumCornersVectors( m, vectors );
+	        // Notify.log( corners );
+	        // Notify.log( vectors );
+	        mockup.near( vectors[ 0 ], corners[ 0 ] );
+	        mockup.near( vectors[ 1 ], corners[ 1 ] );
+	        mockup.near( vectors[ 2 ], corners[ 2 ] );
+	        mockup.near( vectors[ 3 ], corners[ 3 ] );
+	        ok( true, 'check computeFustrumVectors' );
+	    } );
+	
+	    QUnit.test( 'Matrix.getLookAt', function () {
+	        var m = Matrix.makeLookAt( [ 0, -10, 0 ], [ 0.0, 5.0, 0.0 ], [ 0.0, 0.0, 1.0 ] );
+	        var eye = [];
+	        var target = [];
+	        var up = [];
+	        Matrix.getLookAt( m,
+	            eye,
+	            target,
+	            up, 5.0 );
+	        mockup.near( eye, [ 0, -10, 0 ] );
+	        mockup.near( target, [ 0, -5.0, 0 ] ); // should be five but mimic same behaviour as OpenSceneGraph
+	        mockup.near( up, [ 0, 0, 1 ] );
+	    } );
+	
+	    QUnit.test( 'Matrix.transformVec3', function () {
+	        var m = Matrix.makeRotate( -Math.PI / 2.0, 0, 1, 0, [] );
+	        var vec = [ 0, 0, 10 ];
+	        var inv = [];
+	        Matrix.inverse( m, inv );
+	        var res = Matrix.transformVec3( inv, vec, [] );
+	        mockup.near( res, [ 10, 0, 0 ] );
+	
+	        var res2 = Matrix.transformVec3( m, res, [] );
+	        mockup.near( res2, [ 0, 0, 10 ] );
+	
+	
+	        m = [ -0.00003499092540543186, 0, 0, 0, 0, 0.00003499092540543186, 0, 0, 0, 0, 1.8163636363636322, -9.989999999999977, 0.013996370162172783, -0.010497277621629587, -1.7999999999999958, 9.999999999999977 ];
+	        var preMultVec3 = function ( s, vec, result ) {
+	            if ( result === undefined ) {
+	                result = [];
+	            }
+	            var d = 1.0 / ( s[ 3 ] * vec[ 0 ] + s[ 7 ] * vec[ 1 ] + s[ 11 ] * vec[ 2 ] + s[ 15 ] );
+	            result[ 0 ] = ( s[ 0 ] * vec[ 0 ] + s[ 4 ] * vec[ 1 ] + s[ 8 ] * vec[ 2 ] + s[ 12 ] ) * d;
+	            result[ 1 ] = ( s[ 1 ] * vec[ 0 ] + s[ 5 ] * vec[ 1 ] + s[ 9 ] * vec[ 2 ] + s[ 13 ] ) * d;
+	            result[ 2 ] = ( s[ 2 ] * vec[ 0 ] + s[ 6 ] * vec[ 1 ] + s[ 10 ] * vec[ 2 ] + s[ 14 ] ) * d;
+	            return result;
+	        };
+	        var r0 = preMultVec3( m, [ 400, 300, 1 ] );
+	        Matrix.transformVec3( m, [ 400, 300, 1 ], res );
+	        mockup.near( res, r0 );
+	
+	    } );
+	
+	    QUnit.test( 'Matrix.transpose', function () {
+	        var m = [ 0, 1, 2, 3,
+	            4, 5, 6, 7,
+	            8, 9, 10, 11,
+	            12, 13, 14, 15
+	        ];
+	        var res = Matrix.transpose( m, [] );
+	        mockup.near( res, [ 0, 4, 8, 12,
+	            1, 5, 9, 13,
+	            2, 6, 10, 14,
+	            3, 7, 11, 15
+	        ] );
+	
+	        var res2 = Matrix.transpose( m, [] );
+	        mockup.near( res2, [ 0, 4, 8, 12,
+	            1, 5, 9, 13,
+	            2, 6, 10, 14,
+	            3, 7, 11, 15
+	        ] );
+	
+	        var res3 = Matrix.transpose( m, m );
+	        mockup.near( res3, [ 0, 4, 8, 12,
+	            1, 5, 9, 13,
+	            2, 6, 10, 14,
+	            3, 7, 11, 15
+	        ] );
+	    } );
+	
+	    QUnit.test( 'Matrix.makeRotate', function () {
+	        var res = Matrix.makeRotate( 0, 0, 0, 1, [] );
+	        mockup.near( res, [ 1, 0, 0, 0,
+	            0, 1, 0, 0,
+	            0, 0, 1, 0,
+	            0, 0, 0, 1
+	        ] );
+	    } );
+	
+	    QUnit.test( 'Matrix.mult', function () {
+	        var width = 800;
+	        var height = 600;
+	        var translate = Matrix.create();
+	        var scale = Matrix.create();
+	        var res = Matrix.create();
+	
+	        Matrix.makeTranslate( 1.0, 1.0, 1.0, translate );
+	        Matrix.makeScale( 0.5 * width, 0.5 * height, 0.5, scale );
+	        Matrix.mult( scale, translate, res );
+	        mockup.near( res, [ 400, 0, 0, 0,
+	            0, 300, 0, 0,
+	            0, 0, 0.5, 0,
+	            400, 300, 0.5, 1
+	        ] );
+	
+	        Matrix.makeTranslate( 1.0, 1.0, 1.0, translate );
+	        Matrix.makeScale( 0.5 * width, 0.5 * height, 0.5, scale );
+	        Matrix.preMult( scale, translate, res );
+	        ok( mockup.checkNear( res, [ 400, 0, 0, 0,
+	            0, 300, 0, 0,
+	            0, 0, 0.5, 0,
+	            400, 300, 0.5, 1
+	        ] ), 'check preMult' );
+	
+	        Matrix.makeTranslate( 1.0, 1.0, 1.0, translate );
+	        Matrix.makeScale( 0.5 * width, 0.5 * height, 0.5, scale );
+	        Matrix.postMult( scale, translate, res );
+	        ok( mockup.checkNear( res, [ 400, 0, 0, 0,
+	            0, 300, 0, 0,
+	            0, 0, 0.5, 0,
+	            400, 300, 0.5, 1
+	        ] ), 'check postMult' );
+	
+	        // test to check equivalent
+	        Matrix.makeTranslate( 1.0, 1.0, 1.0, translate );
+	        Matrix.makeScale( 0.5 * width, 0.5 * height, 0.5, scale );
+	
+	        var ident = Matrix.create();
+	        Matrix.preMult( ident, scale );
+	
+	        Matrix.preMult( ident, translate );
+	        mockup.near( ident, [ 400, 0, 0, 0,
+	            0, 300, 0, 0,
+	            0, 0, 0.5, 0,
+	            400, 300, 0.5, 1
+	        ] );
+	        Matrix.preMult( scale, translate );
+	        mockup.near( scale, [ 400, 0, 0, 0,
+	            0, 300, 0, 0,
+	            0, 0, 0.5, 0,
+	            400, 300, 0.5, 1
+	        ] );
+	
+	    } );
+	
+	    test( 'Matrix.inverse4x3', function () {
+	
+	        var m = [ 1,
+	            0,
+	            0,
+	            0,
+	            0,
+	            1,
+	            0,
+	            0,
+	            0,
+	            0,
+	            1,
+	            0,
+	            10,
+	            10,
+	            10,
+	            1
+	        ];
+	
+	        var result = [];
+	        var valid = Matrix.inverse4x3( m, result );
+	        ok( true, valid );
+	        mockup.near( result, [ 1.0, 0, 0, 0,
+	            0, 1, 0, 0,
+	            0, 0, 1, 0, -10, -10, -10, 1
+	        ] );
+	
+	
+	        var m1 = [ 0.0011258089383161401, 0.00131216109033401, -0.0012747534698732, 0, -0.0002278837182292197, 0.0015857257043203033, 0.0014309996929286388, 0,
+	            0.0018151705324519383, -0.0006147558241282602, 0.0009702887644753271, 0,
+	            0, 0, 0, 1
+	        ];
+	        var m1result = [];
+	        Matrix.inverse4x3( m1, m1result );
+	        mockup.near( m1result, [ 243.988, -49.3875, 393.386, 0,
+	            284.374, 343.661, -133.23, 0, -276.267, 310.128, 210.282, 0, -0, -0, -0, 1
+	        ], 1e-3 );
+	
+	        var m2 = [ 0.0011258089383161401, -0.0002278837182292197, 0.0018151705324519383, 0,
+	            0.00131216109033401, 0.0015857257043203033, -0.0006147558241282602, 0, -0.0012747534698732, 0.0014309996929286388, 0.0009702887644753271, 0,
+	            0, 0, 0, 1
+	        ];
+	        var m2result = [];
+	        Matrix.inverse4x3( m2, m2result );
+	        mockup.near( m2result, [ 243.988, 284.374, -276.267, 0, -49.3875, 343.661, 310.128, 0,
+	            393.386, -133.23, 210.282, 0, -0, -0, -0, 1
+	        ], 1e-3 );
+	
+	    } );
+	
+	    test( 'Matrix.inverse', function () {
+	        var result = [];
+	        var m = [ -1144.3119511948212,
+	            23.865014474735936, -0.12300358188893337, -0.12288057830704444, -1553.3126291998985, -1441.499918560778, -1.619653642392287, -1.6180339887498945,
+	            0.0,
+	            0.0,
+	            0.0,
+	            0.0,
+	            25190.498321578874,
+	            13410.539616344166,
+	            21.885543812039796,
+	            21.963658268227753
+	        ];
+	
+	        ok( true, Matrix.inverse( m, result ) );
+	
+	        var result2 = [];
+	        var m2 = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1375333.5195828325, -4275596.259263198, 4514838.703939765, 1.0 ];
+	        var valid = Matrix.inverse( m2, result2 );
+	        ok( true, valid );
+	        Notify.log( 'inverse ' + result2.toString() );
+	        //    ok(true, valid);
+	
+	
+	    } );
+	
+	    test( 'Matrix.makePerspective', function () {
+	        var m = [ 1.299038105676658, 0, 0, 0, 0, 1.7320508075688774, 0, 0, 0, 0, -1.002002002002002, -1, 0, 0, -2.0020020020020022, 0 ];
+	        var res = Matrix.makePerspective( 60, 800 / 600, 1.0, 1000 );
+	        ok( mockup.checkNear( res, m ), 'makePerspective should be ' + m + ' and is ' + res );
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Matrix = __webpack_require__( 28 );
+	var ReaderParser = __webpack_require__( 42 );
+	var TransformEnums = __webpack_require__( 33 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'MatrixTransform', function () {
+	
+	        var n = new MatrixTransform();
+	        var scene = ReaderParser.parseSceneGraph( mockup.getBoxScene() );
+	        Matrix.makeTranslate( 100, 0, 0, n.getMatrix() );
+	        n.addChild( scene );
+	        var bs = n.getBound();
+	        mockup.near( bs.center(), [ 100, 0, 0 ] );
+	        mockup.near( bs.radius(), 2.414213562373095 );
+	    } );
+	
+	    QUnit.test( 'Transform', function () {
+	
+	        var n = new MatrixTransform();
+	        var scene = ReaderParser.parseSceneGraph( mockup.getBoxScene() );
+	        Matrix.makeScale( 2, 3, 4, n.getMatrix() );
+	        n.addChild( scene );
+	        var bs = n.getBound();
+	        mockup.near( bs.center(), [ 0, 0, 0 ] );
+	        mockup.near( bs.radius(), 9.65685424949238 );
+	    } );
+	
+	    QUnit.test( 'Transform absolute vs relative', function () {
+	        var mat = Matrix.makeRotate( -Math.PI * 0.5, 1.0, 0.0, 0.0, Matrix.create() );
+	        var inv = Matrix.create();
+	        Matrix.inverse( mat, inv );
+	
+	        var n = new MatrixTransform();
+	        Matrix.copy( mat, n.getMatrix() );
+	        var test = Matrix.create();
+	
+	        var checkMatrices = function ( node ) {
+	            mockup.near( node.getWorldMatrices()[ 0 ], mat );
+	
+	            node.computeLocalToWorldMatrix( Matrix.makeIdentity( Matrix.makeIdentity( test ) ) );
+	            mockup.near( test, mat );
+	
+	            node.computeWorldToLocalMatrix( Matrix.makeIdentity( Matrix.makeIdentity( test ) ) );
+	            mockup.near( test, inv );
+	        };
+	
+	        checkMatrices( n );
+	        n.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	        checkMatrices( n );
+	    } );
+	};
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Node = __webpack_require__( 24 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Node', function () {
+	
+	        var n = new Node();
+	        ok( n.children.length === 0, 'number of children must be 0' );
+	        ok( n.parents.length === 0, 'number of parents must be 0' );
+	        ok( n.nodeMask === ~0, 'nodemask must be ~0' );
+	        ok( n._boundingSphere !== undefined, 'boundingSphere must not be undefined' );
+	        ok( n._boundingSphereComputed === false, 'boundingSphereComputed must be false' );
+	        n.getBound();
+	        ok( n._boundingSphereComputed === true, 'boundingSphereComputed must be true' );
+	
+	        var n1 = new Node();
+	        n.addChild( n1 );
+	        ok( n.children.length === 1, 'n must have 1 child' );
+	        ok( n1.parents.length === 1, 'n1 must have 1 parent' );
+	        ok( n._boundingSphereComputed === false, 'boundingSphereComputed must be false after adding child' );
+	        n.getBound();
+	        ok( n._boundingSphereComputed === true, 'boundingSphereComputed must be true after calling getBound' );
+	
+	
+	        n1.dirtyBound();
+	        ok( n._boundingSphereComputed === false, 'boundingSphereComputed must be true if a child call dirtyBound' );
+	
+	        var matrixes = n1.getWorldMatrices();
+	        ok( ( matrixes.length === 1 ) && ( matrixes[ 0 ][ 0 ] === 1.0 ) && ( matrixes[ 0 ][ 5 ] === 1.0 ) && ( matrixes[ 0 ][ 10 ] === 1.0 ) && ( matrixes[ 0 ][ 15 ] === 1.0 ), 'getWorldMatrices should return one identity matrix' );
+	        // Test culling active, we need a valid bounding sphere
+	        n1.getBound()._radius = 1;
+	        n1.setCullingActive( false );
+	        ok( n.isCullingActive() === false, 'culling should be disabled because n has a child with the culling disabled' );
+	        n1.setCullingActive( true );
+	        ok( n.isCullingActive() === true, 'culling should be enabled because all of the children have their culling active' );
+	    } );
+	};
+
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var NodeVisitor = __webpack_require__( 27 );
+	var Node = __webpack_require__( 24 );
+	var MACROUTILS = __webpack_require__( 6 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'NodeVisitor', function () {
+	
+	        var FindItemAnchor = function ( search ) {
+	            NodeVisitor.call( this );
+	            this.search = search;
+	            this.result = [];
+	        };
+	
+	        FindItemAnchor.prototype = MACROUTILS.objectInherit( NodeVisitor.prototype, {
+	            apply: function ( node ) {
+	                if ( node.getName !== undefined ) {
+	                    var name = node.getName();
+	                    if ( name !== undefined && name === this.search ) {
+	                        this.result.push( node );
+	                    }
+	                }
+	                this.traverse( node );
+	            }
+	        } );
+	
+	        var root = new Node();
+	        root.setName( 'a' );
+	        var b = new Node();
+	        b.setName( 'b' );
+	        var c = new Node();
+	        c.setName( 'c' );
+	        root.addChild( b );
+	        root.addChild( c );
+	
+	        var v = new FindItemAnchor( 'c' );
+	        v.apply( root );
+	        ok( v.result[ 0 ] === c, 'Should find item named "c" ' + v.result[ 0 ].name );
+	
+	        c.setNodeMask( 0x0 );
+	        v = new FindItemAnchor( 'c' );
+	        root.accept( v );
+	        ok( v.result.length === 0, 'Should not find item named "c" because of node mask' );
+	
+	
+	        ( function () {
+	            // test visit parents
+	            var GetRootItem = function () {
+	                NodeVisitor.call( this, NodeVisitor.TRAVERSE_PARENTS );
+	                this.node = undefined;
+	            };
+	            GetRootItem.prototype = MACROUTILS.objectInherit( NodeVisitor.prototype, {
+	                apply: function ( node ) {
+	                    this.node = node;
+	                    this.traverse( node );
+	                }
+	            } );
+	
+	            var root = new Node();
+	            root.setName( 'root' );
+	            var child0 = new Node();
+	            var child1 = new Node();
+	            var child2 = new Node();
+	
+	            root.addChild( child0 );
+	            root.addChild( child1 );
+	            child1.addChild( child2 );
+	
+	            var visit = new GetRootItem();
+	            child2.accept( visit );
+	
+	            ok( visit.node.getName() === 'root', 'Should get the root node' );
+	
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Node = __webpack_require__( 24 );
+	var Lod = __webpack_require__( 65 );
+	var PagedLOD = __webpack_require__( 66 );
+	var Shape = __webpack_require__( 98 );
+	
+	
+	module.exports = function () {
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'PagedLOD', function () {
+	
+	        var plod = new PagedLOD();
+	        ok( plod.children.length === 0, 'number of children must be 0' );
+	        ok( plod.parents.length === 0, 'number of parents must be 0' );
+	        var n = new Node();
+	        plod.addChild( n, 0, 200 );
+	        ok( plod.children.length === 1, 'number of children must be 1' );
+	        ok( plod._range[ 0 ][ 0 ] === 0, 'range min should be 0' );
+	        ok( plod._range[ 0 ][ 1 ] === 200, ' range max should be 200' );
+	    } );
+	
+	    QUnit.test( 'PagedLOD.UserDefinedBound', function () {
+	
+	        var plod = new PagedLOD();
+	        // Create a quad of 2x2 with center in 0,0,0
+	
+	        var n = Shape.createTexturedQuadGeometry( -1, -1, 0, 2, 0, 0, 0, 2, 0 );
+	        plod.setRange( 0, 0, 200 );
+	        plod.addChildNode( n );
+	        console.log( plod.getBound().radius() );
+	        mockup.near( plod.getBound().radius(), 1.4142135623730951, 0.0000001 );
+	        // Set a USER_DEFINED_CENTER/radius and try again
+	        plod.setCenter( [ 0, 0, 0 ] );
+	        plod.setRadius( 10.0 );
+	        plod.dirtyBound();
+	        mockup.near( plod.getBound().radius(), 10.0, 0.0000001 );
+	        // Now test UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED
+	        plod.setCenterMode( Lod.UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED );
+	        // move the center, so the user defined bs does not contain the default bs
+	        plod.setCenter( [ 10, 10, 10 ] );
+	        plod.dirtyBound();
+	        mockup.near( plod.getBound().radius(), 14.367360819, 0.0000001 );
+	    } );
+	};
+
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Plane = __webpack_require__( 29 );
+	__webpack_require__( 17 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Plane', function () {
+	
+	        var p = Plane.create();
+	        Plane.setNormal( p, [ 2, 0, 0 ] );
+	        Plane.setDistance( p, -2 );
+	        Plane.normalizeEquation( p );
+	
+	        ok( Plane.distanceToPlane( p, [ 4, 0, 0 ] ) === 3 );
+	        ok( Plane.distanceToPlane( p, [ -4, 0, 0 ] ) === -5 );
+	        ok( Plane.distanceToPlane( p, [ 1, 0, 0 ] ) === 0 );
+	
+	        var bSphere = new BoundingSphere();
+	        bSphere.set( [ -40, 0, 0 ], 0.1 );
+	        bSphere.expandByVec3( [ -0.1, -0.1, 0.0 ] );
+	
+	        ok( Plane.intersectsOrContainsBoundingSphere( p, bSphere ) === Plane.OUTSIDE );
+	        bSphere.expandByVec3( [ 1.0, 4.0, 0.0 ] );
+	        bSphere.expandByVec3( [ 2.0, 3.0, 0.0 ] );
+	
+	        ok( Plane.intersectsOrContainsBoundingSphere( p, bSphere ) === Plane.INTERSECT );
+	        bSphere.set( [ 40, 0, 0 ], 1.0 );
+	        ok( Plane.intersectsOrContainsBoundingSphere( p, bSphere ) === Plane.INSIDE );
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Quat = __webpack_require__( 30 );
+	var Matrix = __webpack_require__( 28 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	
+	    // shared const
+	    var id = Quat.create(); // inited with identity
+	    var sqrt2 = Math.sqrt( 0.5 );
+	
+	    // remarquable quaternion list
+	    var Y90Rot = [ sqrt2, 0.0, sqrt2, 0.0 ];
+	    var Y90RotNeg = [ -sqrt2, 0.0, -sqrt2, 0.0 ];
+	    var Y90RotNegX180Rot = [ 0.0, sqrt2, 0.0, sqrt2 ];
+	    var Y180Rot = [ 0.0, 0.0, 1.0, 0.0 ];
+	    var Y180X90NegRot = [ 0.0, 0.0, sqrt2, sqrt2 ];
+	    var Y45Rot = [ 0.5, 0, 0.5, 0.7071067811865475 ];
+	    var Y45RotNeg = [ -0.5, 0, -0.5, 0.7071067811865475 ];
+	    //[ 0, 0.38, 0, 0.92 ];
+	
+	
+	    QUnit.test( 'Quat.init', function () {
+	        var q = [];
+	        Quat.init( q );
+	        deepEqual( q, [ 0, 0, 0, 1 ] );
+	    } );
+	
+	    QUnit.test( 'Quat.makeRotate', function () {
+	        var q0 = Quat.makeRotate( Math.PI, 1, 0, 0, [] );
+	        mockup.near( q0, [ 1, 0, 0, 6.12303e-17 ], 1e-5 );
+	
+	        var q1 = Quat.makeRotate( Math.PI / 2, 0, 1, 0, [] );
+	        mockup.near( q1, [ 0, 0.707107, 0, 0.707107 ] );
+	
+	        var q2 = Quat.makeRotate( Math.PI / 4, 0, 0, 1, [] );
+	        mockup.near( q2, [ 0, 0, 0.382683, 0.92388 ] );
+	    } );
+	
+	    QUnit.test( 'Quat.makeRotateFromTo', function () {
+	        var q1 = Quat.makeRotateFromTo( [ 1, 0, 0 ], [ 0, 1, 0 ], [] );
+	        mockup.near( q1, [ 0, 0, 0.707107, 0.707107 ], 1e-5 );
+	
+	        // it test both makeRotate and makeRotateFromTo
+	        var qyrot = Quat.makeRotate( Math.PI / 2, 0, 1, 0, [] );
+	        var q2 = Quat.makeRotateFromTo( [ 0, 0, 1 ], [ 1, 0, 0 ], [] );
+	        mockup.near( q2, qyrot, 1e-5 );
+	    } );
+	
+	    // QUnit.test('Quat.rotateVec3', function() {
+	    //     var q0 = Quat.makeRotate(Math.PI, 1, 0, 0);
+	    //     var result = Quat.rotateVec3(q0, [10, 0,0], []);
+	    //     near(result , [-10.0, 0, 0]);
+	    // });
+	
+	    QUnit.test( 'Quat.mult', function () {
+	        var q0 = Quat.makeRotate( Math.PI, 1, 0, 0, [] );
+	        var q1 = Quat.makeRotate( Math.PI / 2, 0, 1, 0, [] );
+	        var q2 = Quat.makeRotate( Math.PI / 4, 0, 0, 1, [] );
+	
+	        var qr = [];
+	        Quat.mult( q1, q0, qr );
+	        mockup.near( qr, [ 0.707107, 4.32964e-17, -0.707107, 4.32964e-17 ] );
+	
+	        // check consistency with quaternion and matrix multiplication order
+	        var m1 = [],
+	            m0 = [],
+	            mr = [];
+	        Matrix.makeRotateFromQuat( q1, m1 );
+	        Matrix.makeRotateFromQuat( q0, m0 );
+	        Matrix.mult( m1, m0, mr );
+	
+	        var qr2 = [];
+	        Matrix.getRotate( mr, qr2 );
+	        mockup.near( qr, qr2 );
+	        // consistency
+	
+	        mockup.near( Quat.mult( q2, Quat.mult( q1, q0, [] ), [] ), [ 0.653281, 0.270598, -0.653281, 0.270598 ] );
+	    } );
+	
+	    QUnit.test( 'Quat.slerp', function () {
+	
+	        var res = [ 0.0, 0.0, 0.0, 0.0 ];
+	
+	        // t = 0.5, half the angle between Y90RotNegX180Rot and ?Z90Rot?
+	        Quat.slerp( 0.5, Y90RotNegX180Rot, [ 0, 0, 0.382683, 0.92388 ], res );
+	        mockup.near( res, [ 0, 0.388863, 0.210451, 0.896937 ] );
+	
+	        Quat.slerp( 0.0, id, Y90Rot, res );
+	        mockup.near( res, id, 1e-5, 't = 0' );
+	
+	        Quat.slerp( 1.0, id, Y90Rot, res );
+	        mockup.near( res, Y90Rot, 1e-5, 't = 1' );
+	
+	        Quat.slerp( 0.5, id, Y90Rot, res );
+	        mockup.near( res, Y45Rot, 1e-5, '0 -> 90; t:0.5' );
+	
+	        Quat.slerp( 0.5, Y90Rot, id, res );
+	        mockup.near( res, Y45Rot, 1e-5, '90 -> 0 t:0.5' );
+	
+	        Quat.slerp( 0.5, id, Y90RotNeg, res );
+	        mockup.near( res, Y45RotNeg, 1e-5, 'shortest path t:0.5' );
+	
+	        Quat.slerp( 0.5, Y90RotNeg, id, res );
+	        mockup.near( res, Y45RotNeg, 1e-5, 'shortest path inverted t:0.5' );
+	
+	        Quat.slerp( 0.5, Y90Rot, Y90Rot, res );
+	        mockup.near( res, Y90Rot, 1e-5, 'same input t:0.5' );
+	
+	        Quat.slerp( 0.5, id, Y180Rot, res );
+	        mockup.near( res, Y180X90NegRot, 1e-5, '0 to 180 t:0.5' );
+	
+	        Quat.slerp( 0.5, id, [ 0.0, 0.0, 0.0, 0.999 ], res );
+	        mockup.near( res, id, 1e4, 'a~n, t:0.5' ); // less prec than nlerp
+	
+	        Quat.slerp( 0.5, id, [ 0.0, 0.0, 0.0, -1.0 ], res );
+	        mockup.near( res, id, 1e-5, 'opposite sign, t:0.5' );
+	    } );
+	
+	    QUnit.test( 'Quat.nlerp', function () {
+	
+	        var res = [ 0.0, 0.0, 0.0, 0.0 ];
+	
+	        // t = 0.5, half the angle between Y90RotNegX180Rot and ?Z90Rot?
+	        Quat.nlerp( 0.5, Y90RotNegX180Rot, [ 0, 0, 0.382683, 0.92388 ], res );
+	        mockup.near( res, [ 0, 0.388863, 0.210451, 0.896937 ] );
+	
+	        Quat.nlerp( 0.0, id, Y90Rot, res );
+	        mockup.near( res, id, 1e-5, 't = 0' );
+	
+	        Quat.nlerp( 1.0, id, Y90Rot, res );
+	        mockup.near( res, Y90Rot, 1e-5, 't = 1' );
+	
+	        Quat.nlerp( 0.5, id, Y90Rot, res );
+	        mockup.near( res, Y45Rot, 1e-5, '0 -> 90; t:0.5' );
+	
+	        Quat.nlerp( 0.5, Y90Rot, id, res );
+	        mockup.near( res, Y45Rot, 1e-5, '90 -> 0 t:0.5' );
+	
+	        Quat.nlerp( 0.5, id, Y90RotNeg, res );
+	        mockup.near( res, Y45RotNeg, 1e-5, 'shortest path t:0.5' );
+	
+	        Quat.nlerp( 0.5, Y90RotNeg, id, res );
+	        mockup.near( res, Y45RotNeg, 1e-5, 'shortest path inverted t:0.5' );
+	
+	        Quat.nlerp( 0.5, Y90Rot, Y90Rot, res );
+	        mockup.near( res, Y90Rot, 1e-5, 'same input t:0.5' );
+	
+	        Quat.nlerp( 0.5, id, Y180Rot, res );
+	        mockup.near( res, Y180X90NegRot, 1e-5, '0 to 180 t:0.5' );
+	
+	        Quat.nlerp( 0.5, id, [ 0.0, 0.0, 0.0, 0.999 ], res );
+	        mockup.near( res, id, 1e-5, 'a~n, t:0.5' );
+	
+	        Quat.nlerp( 0.5, id, [ 0.0, 0.0, 0.0, -1.0 ], res );
+	        mockup.near( res, id, 1e-5, 'opposite sign, t:0.5' );
+	
+	    } );
+	
+	    QUnit.test( 'Quat.transformVec3', function () {
+	        var v = [ 1.0, 2.0, 3.0 ];
+	        Quat.transformVec3( [ 0, 0.707107, 0, 0.707107 ], v, v );
+	        mockup.near( v, [ 3.0, 2.0, -1.0 ] );
+	    } );
+	
+	
+	};
+
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Shader = __webpack_require__( 97 );
+	var Notify = __webpack_require__( 10 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Shader', function () {
+	
+	        // catch logs
+	        var results = '';
+	        var resultsWarn = '';
+	        var resultsError = '';
+	        var myConsole = {
+	            warn: function ( txt ) {
+	                results += txt + '\n';
+	                resultsWarn += txt + '\n';
+	            },
+	            error: function ( txt ) {
+	                results += txt + '\n';
+	                resultsError += txt + '\n';
+	            },
+	            log: function ( txt ) {
+	                results += txt + '\n';
+	            },
+	            info: function ( txt ) {
+	                results += txt + '\n';
+	            }
+	        };
+	        Notify.setConsole( myConsole );
+	
+	
+	        var shader = '';
+	        var errors = '';
+	
+	        Shader.prototype.processErrors( errors, shader );
+	        ok( results === '', 'test empty compilation error' );
+	
+	        results = '';
+	        resultsWarn = '';
+	        resultsError = '';
+	
+	        shader = '#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\n precision highp float;\n #else\n precision mediump float;\n\n#endif\n#define SHADER_NAME CompilerOSGJS\n\n\nattribute vec3 Vertex;\nattribute vec2 TexCoord0;\nattribute vec3 Normal;\nattribute vec4 Color;\n\nuniform float ArrayColorEnabled;\nuniform mat4 ModelViewMatrix;\nuniform mat4 NormalMatrix;\nuniform mat4 ProjectionMatrix;\nvarying vec2 FragTexCoord0;\nvarying vec3 FragNormal;\nvarying vec4 FragEyeVector;\nvarying vec4 VertexColor;\n\n\n\nvoid main() {\n// vars\n\nconst float unitFloat = 1.0;\n// end vars\ngl_PointSize = unitFloat;\nFragEyeVector = ModelViewMatrix*vec4(Vertex.xyz, 1.);\ngl_Position = ProjectionMatrix*FragEyeVector;\nFragNormal = vec3(NormalMatrix*vec4(Normal.xyz, 0.));\nFragTexCoord0 = TexCoord0.rg;\n\nif (\nArrayColorEnabled == 1.0 ) \n    VertexColor = Color;e\n  else\n    VertexColor = vec4(1.0,1.0,1.0,1.0);\n}';
+	
+	        errors = "ERROR: 0:37: 'e' : undeclared identifier\nERROR: 0:38: 'else' : syntax error'";
+	        Shader.prototype.processErrors( errors, shader );
+	
+	
+	        ok( 624 === resultsWarn.length, 'test compilation warnings' );
+	        ok( 91 === resultsError.length, 'test compilation error' );
+	
+	
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var State = __webpack_require__( 100 );
+	var StateSet = __webpack_require__( 25 );
+	var Material = __webpack_require__( 52 );
+	var StateAttribute = __webpack_require__( 11 );
+	var Texture = __webpack_require__( 38 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	var mockup = __webpack_require__( 241 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'State', function () {
+	
+	        ( function () {
+	            var state = new State( new ShaderGeneratorProxy() );
+	
+	            var stateSet0 = new StateSet();
+	            var stateSet1 = new StateSet();
+	            var stateSet2 = new StateSet();
+	            stateSet0.setAttributeAndModes( new Material() );
+	            stateSet1.setAttributeAndModes( new Material(), StateAttribute.OVERRIDE );
+	            stateSet2.setAttributeAndModes( new Material(), StateAttribute.OFF );
+	
+	            state.pushStateSet( stateSet0 );
+	            state.pushStateSet( stateSet1 );
+	            state.pushStateSet( stateSet2 );
+	            var materialStack = state.attributeMap.Material;
+	            ok( materialStack[ materialStack.length - 1 ] === materialStack[ materialStack.length - 2 ], 'check Override in state' );
+	        } )();
+	    } );
+	
+	    QUnit.test( 'State setGlobalDefaultTextureAttribute', function () {
+	
+	        var state = new State( new ShaderGeneratorProxy() );
+	
+	        var texture = new Texture();
+	        state.setGlobalDefaultTextureAttribute( 0, texture );
+	
+	        equal( state.getGlobalDefaultTextureAttribute( 0, 'Texture' ), texture, 'check texture object' );
+	
+	    } );
+	
+	    QUnit.test( 'State applyStateSet', function () {
+	
+	        ( function () {
+	            var state = new State( new ShaderGeneratorProxy() );
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            var id = 0;
+	            fakeRenderer.createProgram = function () {
+	                return id++;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	
+	            var textureBindCall = new Map();
+	
+	            fakeRenderer.bindTexture = function ( target, texture ) {
+	                var value = textureBindCall.get( texture );
+	                if ( value === undefined )
+	                    value = 0;
+	                value++;
+	                textureBindCall.set( texture, value );
+	            };
+	            state.setGraphicContext( fakeRenderer );
+	
+	            var stateSet0 = new StateSet();
+	            var stateSet1 = new StateSet();
+	            var stateSet2 = new StateSet();
+	
+	            stateSet0.setAttributeAndModes( new Material() );
+	
+	            var texture0 = new Texture();
+	            texture0.setName( 'My name is 0' );
+	            texture0.setTextureSize( 1, 1 );
+	            texture0._textureObject = {
+	                bind: function ( gl ) {
+	                    gl.bindTexture( 0, 1 );
+	                }
+	            };
+	
+	            stateSet1.setTextureAttributeAndModes( 0, texture0 );
+	
+	            stateSet2.setTextureAttributeAndModes( 0, texture0 );
+	            stateSet2.setTextureAttributeAndModes( 1, new Texture() );
+	
+	
+	            state.pushStateSet( stateSet0 );
+	            state.applyStateSet( stateSet1 );
+	            state.applyStateSet( stateSet2 );
+	
+	            equal( state.getStateSetStackSize(), 1, 'check stateSet stack length' );
+	            QUnit.notEqual( state.getLastProgramApplied(), undefined, 'check last program applied' );
+	            equal( state.attributeMap.Program.values().length, 0, 'check program stack length' );
+	
+	            // check that texture 0 is applied only once
+	            equal( textureBindCall.get( 1 ), 1, 'check that texture 0 is applied only once' );
+	
+	        } )();
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var StateSet = __webpack_require__( 25 );
+	var Uniform = __webpack_require__( 39 );
+	var Shader = __webpack_require__( 97 );
+	var Program = __webpack_require__( 96 );
+	var Texture = __webpack_require__( 38 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'StateSet', function () {
+	
+	        ( function () {
+	            var stateset = new StateSet();
+	            var uniform;
+	            uniform = stateset.getUniform( 'test' );
+	            ok( uniform === undefined, 'Check getting an non existant uniform' );
+	
+	            stateset.addUniform( Uniform.createFloat1( 1.0, 'test' ) );
+	            uniform = stateset.getUniform( 'test' );
+	            ok( uniform !== undefined, 'Check getting an existant uniform' );
+	
+	        } )();
+	
+	        ( function () {
+	            var ss = new StateSet();
+	            var t = new Texture();
+	            ss.setTextureAttributeAndModes( 1, t );
+	
+	            ok( ss.getTextureAttribute( 1, 'Texture' ) === t, 'Check texture attribute accessors' );
+	
+	            ss.removeTextureAttribute( 1, 'Texture' );
+	            ok( ss.getTextureAttribute( 1, 'Texture' ) === undefined, 'Check texture attribute has been removed' );
+	        } )();
+	
+	        ( function () {
+	            var ss = new StateSet();
+	
+	
+	            function getShader() {
+	                var vertexshader = [
+	                    '',
+	                    'attribute vec3 Vertex;',
+	                    'varying vec4 position;',
+	                    'void main(void) {',
+	                    '  gl_Position = vec4(Vertex,1.0);',
+	                    '}'
+	                ].join( '\n' );
+	
+	                var fragmentshader = [
+	                    '',
+	                    'precision highp float;',
+	                    'varying vec4 position;',
+	                    'void main(void) {',
+	                    '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);',
+	                    '}',
+	                    ''
+	                ].join( '\n' );
+	
+	                var program = new Program(
+	                    new Shader( 'VERTEX_SHADER', vertexshader ),
+	                    new Shader( 'FRAGMENT_SHADER', fragmentshader ) );
+	
+	                program.trackAttributes = {};
+	                program.trackAttributes.attributeKeys = [];
+	
+	                return program;
+	            }
+	
+	            var s = getShader();
+	            ss.setAttributeAndModes( s );
+	
+	            ok( ss.getAttribute( 'Program' ) === s, 'Check stateset program' );
+	
+	            ss.removeAttribute( 'Program' );
+	            ok( ss.getAttribute( 'Program' ) === undefined, 'Check program has been removed' );
+	
+	
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Texture = __webpack_require__( 38 );
+	var State = __webpack_require__( 100 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.asyncTest( 'Texture', function () {
+	        //stop();
+	
+	        var textureFromURL = Texture.createFromURL( '"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2P8DwQACgAD/il4QJ8AAAAASUVORK5CYII="' );
+	        ok( textureFromURL !== undefined, 'Check textureFromURL' );
+	
+	        var ready;
+	        var loadingComplete = function () {
+	            loadingComplete.nbLoad--;
+	            if ( loadingComplete.nbLoad === 0 ) {
+	                ready();
+	            }
+	        };
+	        loadingComplete.nbLoad = 0;
+	        loadingComplete.addRessource = function () {
+	            loadingComplete.nbLoad++;
+	        };
+	
+	        var loadTexture = function ( name, format ) {
+	            loadingComplete.addRessource();
+	            var texture = new Texture();
+	            var image = new Image();
+	            image.onload = function () {
+	                texture.setImage( image, format );
+	                loadingComplete();
+	            };
+	            image.src = name;
+	            return texture;
+	        };
+	
+	        var greyscale = loadTexture( 'mockup/greyscale.png', Texture.ALPHA );
+	        greyscale.setUnrefImageDataAfterApply( true );
+	
+	        loadTexture( 'mockup/rgb24.png', Texture.RGB );
+	        loadTexture( 'mockup/rgba32.png', Texture.RGBA );
+	
+	        ready = function () {
+	            var cnv = document.createElement( 'canvas' );
+	            cnv.setAttribute( 'width', 128 );
+	            cnv.setAttribute( 'height', 128 );
+	            var tcanvas = new Texture();
+	            tcanvas.setImage( cnv );
+	
+	            var gl = mockup.createFakeRenderer();
+	            gl.createTexture = function () {
+	                return 1;
+	            }; // simulate texture creation
+	            var state = new State( new ShaderGeneratorProxy() );
+	            state.setGraphicContext( gl );
+	
+	            // check is ready api
+	            var texture = new Texture();
+	            texture.setImage( greyscale._image );
+	            ok( texture.getImage().isReady() === true, 'Image is ready' );
+	
+	            texture = new Texture();
+	            texture.setImage( cnv );
+	            ok( texture.getImage().isReady() === true, 'Image is ready because of canvas' );
+	
+	
+	            ok( greyscale.isDirty() === true, 'dirty is true' );
+	            greyscale.apply( state );
+	            ok( greyscale._image === undefined, 'image should be undefined because of unrefAfterApply' );
+	            ok( greyscale._textureObject !== undefined, 'texture object' );
+	            ok( greyscale.isDirty() === false, 'dirty is false' );
+	
+	            start();
+	        };
+	    } );
+	};
+
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var TextureCubeMap = __webpack_require__( 101 );
+	var Texture = __webpack_require__( 38 );
+	var State = __webpack_require__( 100 );
+	var ReaderParser = __webpack_require__( 42 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'TextureCubeMap', function () {
+	
+	        var greyscale = ReaderParser.readImage( 'mockup/greyscale.png', {
+	            promise: false
+	        } );
+	
+	        var state = new State( new ShaderGeneratorProxy() );
+	        state.setGraphicContext( mockup.createFakeRenderer() );
+	
+	        var texture = new TextureCubeMap();
+	        texture.setImage( 'TEXTURE_CUBE_MAP_POSITIVE_X', greyscale, Texture.ALPHA );
+	        texture.setImage( 'TEXTURE_CUBE_MAP_NEGATIVE_X', greyscale, Texture.ALPHA );
+	        texture.setImage( 'TEXTURE_CUBE_MAP_POSITIVE_Y', greyscale, Texture.ALPHA );
+	        texture.setImage( 'TEXTURE_CUBE_MAP_NEGATIVE_Y', greyscale, Texture.ALPHA );
+	        texture.setImage( 'TEXTURE_CUBE_MAP_POSITIVE_Z', greyscale, Texture.ALPHA );
+	        texture.setImage( 'TEXTURE_CUBE_MAP_NEGATIVE_Z', greyscale, Texture.ALPHA );
+	
+	        texture.apply( state );
+	
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_POSITIVE_X ) !== undefined, 'Check positive x' );
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_NEGATIVE_X ) !== undefined, 'Check negative x' );
+	
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_POSITIVE_Y ) !== undefined, 'Check positive y' );
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_NEGATIVE_Y ) !== undefined, 'Check negative y' );
+	
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_POSITIVE_Z ) !== undefined, 'Check positive z' );
+	        ok( texture.getImage( Texture.TEXTURE_CUBE_MAP_NEGATIVE_Z ) !== undefined, 'Check negative z' );
+	    } );
+	};
+
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var TextureManager = __webpack_require__( 53 );
+	var Texture = __webpack_require__( 38 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'TextureManager', function () {
+	        var tm = new TextureManager();
+	        var gl = mockup.createFakeRenderer();
+	        var batch0 = [];
+	        var batch1 = [];
+	        ( function () {
+	            for ( var i = 0, l = 4; i < l; i++ ) {
+	                var to = tm.generateTextureObject( gl, {},
+	                    Texture.TEXTURE_2D,
+	                    Texture.RGBA,
+	                    1024,
+	                    1024 );
+	                batch0.push( to );
+	            }
+	        } )();
+	
+	        ( function () {
+	            for ( var i = 0, l = 2; i < l; i++ ) {
+	                var to = tm.generateTextureObject( gl, {},
+	                    Texture.TEXTURE_2D,
+	                    Texture.ALPHA,
+	                    512,
+	                    1024 );
+	                batch1.push( to );
+	            }
+	        } )();
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getUsedTextureObjects().length, 4, 'check nb texture 1024x1024 created' );
+	        equal( tm._textureSetMap[ '355364065121024' ].getUsedTextureObjects().length, 2, 'check nb texture 512x1024 created' );
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length, 0, 'check orphan texture 1024x1024 null' );
+	        equal( tm._textureSetMap[ '355364065121024' ].getOrphanedTextureObjects().length, 0, 'check orphan texture 512x1024 null' );
+	
+	        batch1.forEach( function ( to ) {
+	            tm.releaseTextureObject( to );
+	        } );
+	
+	        batch0.forEach( function ( to ) {
+	            tm.releaseTextureObject( to );
+	        } );
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length, 4, 'check orphan 1024x1024 after release' );
+	        equal( tm._textureSetMap[ '355364065121024' ].getOrphanedTextureObjects().length, 2, 'check orphan 512x1024 after release' );
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getUsedTextureObjects().length, 0, 'check used 1024x1024 empty after release' );
+	        equal( tm._textureSetMap[ '355364065121024' ].getUsedTextureObjects().length, 0, 'check used 512x1024 empty after release' );
+	
+	        tm.flushAllDeletedTextureObjects( gl );
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length, 0, 'check orphan 1024x1024 empty delete' );
+	        equal( tm._textureSetMap[ '355364065121024' ].getOrphanedTextureObjects().length, 0, 'check orphan 512x1024 empty after delete' );
+	
+	    } );
+	
+	    QUnit.test( 'TextureManager flushDeletedTextureObjects', function () {
+	        var tm = new TextureManager();
+	        var gl = mockup.createFakeRenderer();
+	        var batch0 = [];
+	        // Create a bunch of texture objects
+	        ( function () {
+	            for ( var i = 0, l = 40000; i < l; i++ ) {
+	                var to = tm.generateTextureObject( gl, {},
+	                    Texture.TEXTURE_2D,
+	                    Texture.RGBA,
+	                    1024,
+	                    1024 );
+	                batch0.push( to );
+	            }
+	        } )();
+	
+	        // Release all TO's;
+	        batch0.forEach( function ( to ) {
+	            tm.releaseTextureObject( to );
+	        } );
+	
+	        equal( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length, 40000, 'check orphan 1024x1024 after release' );
+	        equal( tm._textureSetMap[ '3553640810241024' ].getUsedTextureObjects().length, 0, 'check used 1024x1024 empty after release' );
+	
+	        // flush TO's in 0.001 seconds 
+	        tm.flushDeletedTextureObjects( gl, 0.0001 );
+	        // There is no time to flush all the released texture objects
+	        ok( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length > 0, 'check orphan 1024x1024 delete not empty' );
+	        // flush all TO's
+	        tm.flushAllDeletedTextureObjects( gl );
+	        // now all the TO's should be flushed. 
+	        equal( tm._textureSetMap[ '3553640810241024' ].getOrphanedTextureObjects().length, 0, 'check orphan 1024x1024 empty delete' );
+	    } );
+	};
+
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var UpdateVisitor = __webpack_require__( 102 );
+	var Node = __webpack_require__( 24 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'UpdateVisitor', function () {
+	
+	        var uv = new UpdateVisitor();
+	
+	        var root = new Node();
+	        root.setName( 'a' );
+	        var b = new Node();
+	        b.setName( 'b' );
+	        var c = new Node();
+	        c.setName( 'c' );
+	        root.addChild( b );
+	        b.addChild( c );
+	
+	        var callRoot = 0;
+	        var callb = 0;
+	        var callc = 0;
+	        var stateSetUpdateCallbackCalled = 0;
+	
+	        var StateSetUpdateCallback = function () {
+	            this.update = function ( /*stateset, nv */) {
+	                stateSetUpdateCallbackCalled += 1;
+	            };
+	        };
+	        var ss = b.getOrCreateStateSet();
+	        ss.addUpdateCallback( new StateSetUpdateCallback() );
+	
+	        var Froot = function () {};
+	        Froot.prototype = {
+	            update: function ( node, nv ) {
+	                callRoot = 1;
+	                node.traverse( nv );
+	            }
+	        };
+	
+	        var Fb = function () {};
+	        Fb.prototype = {
+	            update: function ( /*node, nv */) {
+	                callb = 1;
+	                return false;
+	            }
+	        };
+	
+	        var Fc = function () {};
+	        Fc.prototype = {
+	            update: function ( /*node, nv */) {
+	                callc = 1;
+	                return true;
+	            }
+	        };
+	
+	        root.setUpdateCallback( new Froot() );
+	        b.setUpdateCallback( new Fb() );
+	        c.setUpdateCallback( new Fc() );
+	
+	        uv.apply( root );
+	
+	        ok( stateSetUpdateCallbackCalled > 0, 'Called stateSet update callback' );
+	
+	        ok( callRoot === 1, 'Called root update callback' );
+	        ok( callb === 1, 'Called b update callback' );
+	        ok( callc === 0, 'Did not Call c update callback as expected' );
+	
+	        root.setNodeMask( ~0 );
+	        ok( callRoot === 1, 'Called root update callback' );
+	        ok( callb === 1, 'Called b update callback' );
+	        ok( callc === 0, 'Did not Call c update callback as expected' );
+	    } );
+	};
+
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Uniform = __webpack_require__( 39 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Uniform', function () {
+	
+	        ( function () {
+	            var testInt = Uniform.createInt1( 12, 'int_uniform' );
+	            var testFloat = Uniform.createFloat1( 6.283, 'float_uniform' );
+	            var testVec3 = Uniform.createFloat3( [ 3.14, 6.28, 1.44 ], 'vec3_uniform' );
+	            var testFloatArray = Uniform.createFloat1( new Float32Array( [ 42.314 ] ), 'float_array_uniform' );
+	            var testIntArray = Uniform.createInt1( new Int32Array( [ 1234 ] ), 'int_array_uniform' );
+	
+	            ok( Uniform.isUniform( testInt ) === true, 'is uniform' );
+	            ok( Uniform.isUniform( testFloat ) === true, 'is uniform' );
+	            ok( Uniform.isUniform( testVec3 ) === true, 'is uniform' );
+	            ok( Uniform.isUniform( testFloatArray ) === true, 'is uniform' );
+	            ok( Uniform.isUniform( testIntArray ) === true, 'is uniform' );
+	            ok( Uniform.isUniform( 'text' ) === false, 'is not uniform' );
+	            ok( Uniform.isUniform( 65 ) === false, 'is not uniform' );
+	        } )();
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Utils = __webpack_require__( 6 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    var checkBaseClass = function ( BaseObject ) {
+	        var a = new BaseObject();
+	        ok( a.className() === 'Asticot', 'check className' );
+	        ok( a.libraryName() === 'toto', 'check libraryName' );
+	        ok( a.getTypeID() === BaseObject.getTypeID(), 'check typeID' );
+	    };
+	
+	    var checkExtendedClass = function ( BaseObject, ExtendedObject ) {
+	        var a = new BaseObject();
+	        var b = new ExtendedObject();
+	        ok( b.className() === 'LeRigolo', 'check className' );
+	        ok( b.libraryName() === 'toto', 'check libraryName' );
+	        ok( b.getTypeID() === ExtendedObject.getTypeID() && b.getTypeID() !== a.getTypeID(), 'check typeID' );
+	        ok( b instanceof BaseObject, 'check b is instance of BaseObject' );
+	    };
+	
+	    QUnit.test( 'createPrototypeClass', function () {
+	
+	        var BaseObject = function () {
+	            this._var0 = 1;
+	        };
+	
+	        Utils.createPrototypeClass( BaseObject, {
+	            getMember: function () {
+	                return 1;
+	            }
+	
+	        }, 'toto', 'Asticot' );
+	
+	        checkBaseClass( BaseObject );
+	
+	        var ExtendedObject = function () {
+	            BaseObject.call( this );
+	            this._var1 = 1;
+	        };
+	
+	        Utils.createPrototypeClass( ExtendedObject, Utils.objectInherit( BaseObject.prototype, {
+	            getMember: function () {
+	                return 2;
+	            }
+	        } ), 'toto', 'LeRigolo' );
+	
+	        checkExtendedClass( BaseObject, ExtendedObject );
+	
+	
+	        var BaseObjectOld = function () {
+	            this._var0 = 1;
+	        };
+	        BaseObjectOld.prototype = Utils.objectLibraryClass( {
+	            getMember: function () {
+	                return 1;
+	            }
+	
+	        }, 'toto', 'Asticot' );
+	        Utils.setTypeID( BaseObjectOld );
+	        checkBaseClass( BaseObjectOld );
+	
+	        var ExtendedObjectOld = function () {
+	            BaseObjectOld.call( this );
+	            this._var1 = 1;
+	        };
+	
+	        ExtendedObjectOld.prototype = Utils.objectLibraryClass( Utils.objectInherit( BaseObjectOld.prototype, {
+	            getMember: function () {
+	                return 2;
+	            }
+	        } ), 'toto', 'LeRigolo' );
+	        Utils.setTypeID( ExtendedObjectOld );
+	
+	        checkExtendedClass( BaseObjectOld, ExtendedObjectOld );
+	
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Vec2 = __webpack_require__( 40 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'Vec2', function () {
+	
+	        ( function () {
+	            var a = [ 2, 3 ];
+	            var b = [];
+	            deepEqual( Vec2.copy( a, b ), a, 'test copy operation' );
+	        } )();
+	
+	        ( function () {
+	            ok( Vec2.valid( [ 0 / 0, 0 ] ) === false, 'is invalid' );
+	            ok( Vec2.valid( [ 0, 0 / 0 ] ) === false, 'is invalid' );
+	            ok( Vec2.valid( [ 0, 2 ] ) === true, 'is invalid' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.set( 2, 4, [ 0, 0 ] ), [ 2, 4 ], 'test set' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.mult( [ 2, 4 ], 2.0, [ 0, 0 ] ), [ 4, 8 ], 'test mult' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.length2( [ 2, 4 ] ), 20, 'test length2' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.length( [ 2, 4 ] ), Math.sqrt( 20 ), 'test length' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.normalize( [ 2, 4 ], [ 0, 0 ] ), [ 0.4472135954999579, 0.8944271909999159 ], 'test normalize' );
+	            deepEqual( Vec2.normalize( [ 0, 0 ], [ 0, 0 ] ), [ 0.0, 0.0 ], 'test normalize' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.dot( [ 2, 4 ], [ 2, 4 ] ), 20, 'test dot product' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.sub( [ 2, 4 ], [ 2, 4 ], [ 0, 0 ] ), [ 0, 0 ], 'test sub' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.add( [ -2, -4 ], [ 2, 4 ], [ 0, 0 ] ), [ 0, 0 ], 'test add' );
+	        } )();
+	
+	        ( function () {
+	            deepEqual( Vec2.neg( [ -2, -4 ], [ 0, 0 ] ), [ 2, 4 ], 'test neg' );
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var MACROUTILS = __webpack_require__( 6 );
+	var mockup = __webpack_require__( 241 );
+	var PrimitiveFunctor = __webpack_require__( 95 );
+	var PrimitiveSet = __webpack_require__( 43 );
+	var DrawElements = __webpack_require__( 45 );
+	var DrawArrays = __webpack_require__( 44 );
+	var Geometry = __webpack_require__( 35 );
+	var BufferArray = __webpack_require__( 20 );
+	var Vec3 = __webpack_require__( 17 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'PrimitiveFunctor Points', function () {
+	        // Test DrawArrays
+	        var node = createGeometry( PrimitiveSet.POINTS, 0 );
+	        var vertices = node.getAttributes().Vertex.getElements();
+	        // The callback must be defined as a closure
+	        var vectors = [];
+	        var cb = function () {
+	            return {
+	                operatorPoint: function ( v ) {
+	                    vectors.push( v[ 0 ] );
+	                    vectors.push( v[ 1 ] );
+	                    vectors.push( v[ 2 ] );
+	                }
+	            };
+	        };
+	        var pf = new PrimitiveFunctor( node, cb, vertices );
+	        pf.apply();
+	        mockup.near( vertices, vectors, 0.00001 );
+	        // Test DrawElements
+	        node = createGeometry( PrimitiveSet.POINTS, 1 );
+	        pf = new PrimitiveFunctor( node, cb, vertices );
+	        vectors = [];
+	        pf.apply();
+	        ok( vectors[ 0 ] === -2.0, 'Vectors[ 0 ] should be -2 and result is ' + vectors[ 0 ] );
+	        ok( vectors[ 1 ] === 2.0, 'Vectors[ 1 ] should be 2 and result is ' + vectors[ 1 ] );
+	        ok( vectors[ 2 ] === 0.0, 'Vectors[ 2 ] should be 0 and result is ' + vectors[ 2 ] );
+	        ok( vectors[ 3 ] === 0.0, 'Vectors[ 3 ] should be 0 and result is ' + vectors[ 3 ] );
+	        ok( vectors[ 4 ] === 0.0, 'Vectors[ 4 ] should be 0 and result is ' + vectors[ 4 ] );
+	        ok( vectors[ 5 ] === 0.0, 'Vectors[ 5 ] should be 0 and result is ' + vectors[ 5 ] );
+	        ok( vectors[ 6 ] === 2.0, 'Vectors[ 6 ] should be 2 and result is ' + vectors[ 6 ] );
+	        ok( vectors[ 7 ] === 2.0, 'Vectors[ 7 ] should be 2 and result is ' + vectors[ 7 ] );
+	        ok( vectors[ 8 ] === 0.0, 'Vectors[ 8 ] should be 0 and result is ' + vectors[ 8 ] );
+	    } );
+	
+	
+	    QUnit.test( 'PrimitiveFunctor Lines', function () {
+	        // Test DrawArrays
+	        var node = createGeometry( PrimitiveSet.LINES, 0 );
+	        var vertices = node.getAttributes().Vertex.getElements();
+	        // The callback must be defined as a closure
+	        var vectors = [];
+	        var cb = function () {
+	            return {
+	                operatorLine: function ( v1, v2 ) {
+	                    vectors.push( v1 );
+	                    vectors.push( v2 );
+	                }
+	            };
+	        };
+	        var pf = new PrimitiveFunctor( node, cb, vertices );
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 2, 2, 0 ] );
+	        // Test DrawElements
+	        node = createGeometry( PrimitiveSet.LINES, 1 );
+	        pf = new PrimitiveFunctor( node, cb, vertices );
+	
+	        vectors = [];
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ -2.0, 2.0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 0, 0, 0 ] );
+	    } );
+	
+	    QUnit.test( 'PrimitiveFunctor LineStrip', function () {
+	        // Test DrawArrays
+	        var node = createGeometry( PrimitiveSet.LINE_STRIP, 0 );
+	        var vertices = node.getAttributes().Vertex.getElements();
+	        // The callback must be defined as a closure
+	        var vectors = [];
+	        var cb = function () {
+	            return {
+	                operatorLine: function ( v1, v2 ) {
+	                    vectors.push( Vec3.copy( v1, Vec3.create() ) );
+	                    vectors.push( Vec3.copy( v2, Vec3.create() ) );
+	                }
+	            };
+	        };
+	        var pf = new PrimitiveFunctor( node, cb, vertices );
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 2 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 3 ], [ -2, 2, 0 ] );
+	        // Test DrawElements
+	        node = createGeometry( PrimitiveSet.LINE_STRIP, 1 );
+	        pf = new PrimitiveFunctor( node, cb, vertices );
+	
+	        vectors = [];
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ -2.0, 2.0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 2 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 3 ], [ 2, 2, 0 ] );
+	    } );
+	
+	    QUnit.test( 'PrimitiveFunctor LineLoop', function () {
+	        // Test DrawArrays
+	        var node = createGeometry( PrimitiveSet.LINE_LOOP, 0 );
+	        var vertices = node.getAttributes().Vertex.getElements();
+	        // The callback must be defined as a closure
+	        var vectors = [];
+	        var cb = function () {
+	            return {
+	                operatorLine: function ( v1, v2 ) {
+	                    vectors.push( Vec3.copy( v1, Vec3.create() ) );
+	                    vectors.push( Vec3.copy( v2, Vec3.create() ) );
+	                }
+	            };
+	        };
+	        var pf = new PrimitiveFunctor( node, cb, vertices );
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 2 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 3 ], [ -2, 2, 0 ] );
+	        mockup.near( vectors[ 4 ], [ -2, 2, 0 ] );
+	        mockup.near( vectors[ 5 ], [ 0, 0, 0 ] );
+	        // Test DrawElements
+	        node = createGeometry( PrimitiveSet.LINE_LOOP, 1 );
+	        pf = new PrimitiveFunctor( node, cb, vertices );
+	
+	        vectors = [];
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ -2.0, 2.0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 2 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 3 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 4 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 5 ], [ -2.0, 2.0, 0 ] );
+	    } );
+	
+	    QUnit.test( 'PrimitiveFunctor Triangle', function () {
+	        // Test DrawArrays
+	        var node = createGeometry( PrimitiveSet.TRIANGLES, 0 );
+	        var vertices = node.getAttributes().Vertex.getElements();
+	        // The callback must be defined as a closure
+	        var vectors = [];
+	        var cb = function () {
+	            return {
+	                operatorTriangle: function ( v1, v2, v3 ) {
+	                    vectors.push( Vec3.copy( v1, Vec3.create() ) );
+	                    vectors.push( Vec3.copy( v2, Vec3.create() ) );
+	                    vectors.push( Vec3.copy( v3, Vec3.create() ) );
+	                }
+	            };
+	        };
+	        var pf = new PrimitiveFunctor( node, cb, vertices );
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 2, 2, 0 ] );
+	        mockup.near( vectors[ 2 ], [ -2, 2, 0 ] );
+	        // Test DrawElements
+	        node = createGeometry( PrimitiveSet.TRIANGLES, 1 );
+	        pf = new PrimitiveFunctor( node, cb, vertices );
+	
+	        vectors = [];
+	        pf.apply();
+	        mockup.near( vectors[ 0 ], [ -2.0, 2.0, 0 ] );
+	        mockup.near( vectors[ 1 ], [ 0, 0, 0 ] );
+	        mockup.near( vectors[ 2 ], [ 2.0, 2.0, 0 ] );
+	    } );
+	
+	
+	    var createGeometry = function ( primitiveType, arraysOrElements ) {
+	        var g = new Geometry();
+	        var vertexes = new MACROUTILS.Float32Array( 9 );
+	        vertexes[ 0 ] = 0;
+	        vertexes[ 1 ] = 0;
+	        vertexes[ 2 ] = 0;
+	
+	        vertexes[ 3 ] = 2.0;
+	        vertexes[ 4 ] = 2.0;
+	        vertexes[ 5 ] = 0.0;
+	
+	        vertexes[ 6 ] = -2.0;
+	        vertexes[ 7 ] = 2.0;
+	        vertexes[ 8 ] = 0.0;
+	
+	        var normal = new MACROUTILS.Float32Array( 9 );
+	        normal[ 0 ] = 0;
+	        normal[ 1 ] = 0;
+	        normal[ 2 ] = 1;
+	
+	        normal[ 3 ] = 0;
+	        normal[ 4 ] = 0;
+	        normal[ 5 ] = 1;
+	
+	        normal[ 6 ] = 0;
+	        normal[ 7 ] = 0;
+	        normal[ 8 ] = 1;
+	
+	        var indexes = new MACROUTILS.Uint16Array( 3 );
+	        indexes[ 0 ] = 2;
+	        indexes[ 1 ] = 0;
+	        indexes[ 2 ] = 1;
+	
+	
+	        g.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	        g.getAttributes().Normal = new BufferArray( BufferArray.ARRAY_BUFFER, normal, 3 );
+	        var primitive;
+	        if ( arraysOrElements === 0 ) // Arrays
+	        {
+	            primitive = new DrawArrays( primitiveType, 0, vertexes.length / 3 );
+	        } else {
+	            primitive = new DrawElements( primitiveType, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	        }
+	        g.getPrimitives().push( primitive );
+	        return g;
+	    };
+	
+	};
+
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Texture = __webpack_require__( 38 );
+	var WebGLCaps = __webpack_require__( 104 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osg' );
+	
+	    QUnit.test( 'WebGLCaps', function () {
+	
+	        var webglCaps = WebGLCaps.instance();
+	
+	        //var canvas = createCanvas();
+	        //var gl = canvas.getContext();
+	
+	        webglCaps.getWebGLExtensions()[ 'OES_texture_float' ] = true;
+	        webglCaps._checkRTT[ Texture.FLOAT + ',' + Texture.NEAREST ] = true;
+	
+	        ok( webglCaps.hasFloatRTT(), 'float detect' );
+	    } );
+	};
+
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Animation = __webpack_require__( 287 );
+	var BasicAnimationManager = __webpack_require__( 288 );
+	var Channel = __webpack_require__( 289 );
+	var Interpolator = __webpack_require__( 290 );
+	var StackedTransform = __webpack_require__( 291 );
+	
+	
+	module.exports = function () {
+	    Animation();
+	    BasicAnimationManager();
+	    Channel();
+	    Interpolator();
+	    StackedTransform();
+	};
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgAnimation' );
+	
+	    QUnit.test( 'Animation', function () {
+	        ok( true );
+	    } );
+	};
+
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var BasicAnimationManager = __webpack_require__( 111 );
+	var UpdateMatrixTransform = __webpack_require__( 71 );
+	var StackedRotateAxis = __webpack_require__( 118 );
+	var StackedMatrix = __webpack_require__( 116 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgAnimation' );
+	
+	    QUnit.test( 'BasicAnimationManager', function () {
+	
+	        var animation = mockup.createAnimation( 'AnimationTest' );
+	        var cbMap = mockup.createAnimationUpdateCallback( [ animation ] );
+	
+	
+	        var basicAnimationManager = new BasicAnimationManager();
+	        basicAnimationManager.init( [ animation ] );
+	        basicAnimationManager._animationsUpdateCallback = cbMap;
+	        basicAnimationManager._registerTargetFoundInAnimationCallback();
+	        basicAnimationManager._registerAnimations();
+	
+	
+	        ok( basicAnimationManager.getAnimations()[ 'AnimationTest' ] !== undefined, 'Check animation test' );
+	
+	
+	        equal( basicAnimationManager._targets[ 0 ].id, 0, 'check target ID [0] created' );
+	        equal( basicAnimationManager._targets[ 1 ].id, 1, 'check target ID [1] created' );
+	
+	        //
+	        var time = 0.0;
+	        var nv = {
+	            getFrameStamp: function () {
+	                return {
+	                    getSimulationTime: function () {
+	                        return time;
+	                    }
+	                };
+	            }
+	        };
+	
+	        var animations = basicAnimationManager.getAnimations();
+	        var animationName = Object.keys( animations )[ 0 ];
+	        basicAnimationManager.playAnimation( animationName, false );
+	        ok( basicAnimationManager._startAnimations[ animationName ] !== undefined, 'check start animation queue' );
+	
+	        basicAnimationManager._dirty = false;
+	        basicAnimationManager.update( null, nv );
+	        ok( basicAnimationManager._activeAnimations[ animationName ] !== undefined, 'check animation ' + animationName + ' is playing' );
+	
+	        // .x comes from the mockup anmation name
+	        equal( basicAnimationManager._targets[ 0 ].value, 1, 'check target a value at t = ' + time );
+	        equal( basicAnimationManager._targets[ 1 ].value, 1, 'check target b value at t = ' + time );
+	
+	        time = 0.5;
+	        basicAnimationManager.update( null, nv );
+	        equal( basicAnimationManager._targets[ 0 ].value, 0.5, 'check target a value at t = ' + time );
+	        equal( basicAnimationManager._targets[ 1 ].value, 1, 'check target b value at t = ' + time );
+	
+	
+	        time = 3.5;
+	        basicAnimationManager.update( null, nv );
+	        equal( basicAnimationManager._targets[ 0 ].value, 3, 'check target a value at t = ' + time );
+	        equal( basicAnimationManager._targets[ 1 ].value, 1.5, 'check target b value at t = ' + time );
+	
+	        time = 6.0;
+	        basicAnimationManager.update( null, nv );
+	        equal( basicAnimationManager._targets[ 0 ].value, 3, 'check target a value at t = ' + time );
+	        equal( basicAnimationManager._targets[ 1 ].value, 3, 'check target b value at t = ' + time );
+	
+	        ok( basicAnimationManager._targets[ 0 ].channels.length === 0, 'check target has not channels' );
+	        ok( basicAnimationManager._targets[ 1 ].channels.length === 0, 'check target has not channels' );
+	        ok( basicAnimationManager._activeAnimations[ animationName ] === undefined, 'check animation ' + animationName + ' is not active' );
+	
+	
+	    } );
+	
+	
+	    QUnit.test( 'BasicAnimationManager Linking', function () {
+	
+	        var animation = mockup.createAnimation( 'AnimationTest', 'testUpdateMatrixTransform' );
+	        var basicAnimationManager = new BasicAnimationManager();
+	        basicAnimationManager.init( [ animation ] );
+	
+	        // adds animationUpdateCallback to test compute UpdateMatrixTransform
+	        // create a dumy tree with simple animation update callback
+	        var node = new MatrixTransform();
+	        var animationCallback = new UpdateMatrixTransform();
+	        animationCallback.setName( 'testUpdateMatrixTransform' );
+	        var stackedRotateAxis = new StackedRotateAxis( 'rotateX' );
+	        animationCallback.getStackedTransforms().push( stackedRotateAxis );
+	
+	        animationCallback.getStackedTransforms().push( new StackedMatrix( 'matrix' ) );
+	        node.addUpdateCallback( animationCallback );
+	
+	        basicAnimationManager._findAnimationUpdateCallback( node );
+	        basicAnimationManager._registerTargetFoundInAnimationCallback();
+	        basicAnimationManager._registerAnimations();
+	
+	
+	        // get keys
+	        var keys = Object.keys( basicAnimationManager._animationsUpdateCallback );
+	        equal( keys.length, 1, 'check number of animation callback found' );
+	        var animationCB = basicAnimationManager._animationsUpdateCallback[ keys[ 0 ] ];
+	        equal( animationCB.getName(), 'testUpdateMatrixTransform', 'check name of the first animation found' );
+	
+	        equal( basicAnimationManager._animationsUpdateCallbackArray.length, 1, 'check channel assigned to animation callback' );
+	
+	
+	        //
+	        var time = 0.0;
+	        var nv = {
+	            getFrameStamp: function () {
+	                return {
+	                    getSimulationTime: function () {
+	                        return time;
+	                    }
+	                };
+	            }
+	        };
+	
+	        var animations = basicAnimationManager.getAnimations();
+	        var animationName = Object.keys( animations )[ 0 ];
+	        basicAnimationManager.playAnimation( animationName );
+	
+	        time = 0.0;
+	        basicAnimationManager.update( null, nv );
+	
+	        time = 0.5;
+	        basicAnimationManager.update( null, nv );
+	        equal( stackedRotateAxis.getTarget().value, 0.5, 'check target a value at t = ' + time );
+	
+	        deepEqual( animationCallback._matrix, [ 0.8775825618903726, 0.4794255386042031, 0, 0, -0.4794255386042031, 0.8775825618903726, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ], 'check matrix computed' );
+	
+	    } );
+	
+	    QUnit.test( 'BasicAnimationManager Controls', function () {
+	
+	        var animation = mockup.createAnimation();
+	        var duration = 4;
+	
+	        var cbMap = mockup.createAnimationUpdateCallback( [ animation ] );
+	
+	        var basicAnimationManager = new BasicAnimationManager();
+	        basicAnimationManager.init( [ animation ] );
+	        basicAnimationManager._animationsUpdateCallback = cbMap;
+	        basicAnimationManager._registerTargetFoundInAnimationCallback();
+	        basicAnimationManager._registerAnimations();
+	
+	        var managerTime = 0.0;
+	        var pauseTime;
+	
+	        basicAnimationManager.updateManager = function ( t ) {
+	            managerTime = t;
+	        };
+	
+	        var pause = false;
+	        var togglePause = function () {
+	            pause = !pause;
+	            basicAnimationManager.togglePause();
+	            if ( pause )
+	                pauseTime = time;
+	        };
+	
+	        //mockup a node visitor
+	        var time = 0.0;
+	        var nv = {
+	            getFrameStamp: function () {
+	                return {
+	                    getSimulationTime: function () {
+	                        return time;
+	                    }
+	                };
+	            }
+	        };
+	
+	        //play animation
+	        basicAnimationManager.playAnimation( 'Test Controls' );
+	
+	
+	        //Simple Pause
+	        basicAnimationManager.update( null, nv );
+	        ok( managerTime === 0, 'Manager time at 0' );
+	
+	        //
+	        time = 1;
+	        basicAnimationManager.update( null, nv );
+	
+	        togglePause();
+	        ok( ( managerTime % duration ) === time, 'Pause at ' + time );
+	
+	        //
+	        time = 2;
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === pauseTime, 'Time on pause at ' + time );
+	
+	        //
+	        time = 6;
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === pauseTime, 'Time on pause at ' + time );
+	
+	        //
+	        togglePause();
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === pauseTime, 'Time after pause at ' + time );
+	
+	        time = 7;
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === pauseTime + 1, 'Time after pause at ' + time );
+	
+	
+	        //Pause + setTime()
+	        time = 10;
+	        togglePause();
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === ( time % duration ), 'Pause at ' + time );
+	
+	        basicAnimationManager.setSimulationTime( 3 );
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 3, 'Simulation time at ' + 3 );
+	
+	        time = 11;
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 3, 'Simulation time at ' + 3 + ' t + 1' );
+	
+	        togglePause();
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 3, 'Value after pause for simulation time at 3' );
+	
+	        time = 14;
+	        basicAnimationManager.update( null, nv );
+	        togglePause();
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === ( time % duration ), 'Pause at ' + time );
+	
+	        basicAnimationManager.setSimulationTime( 0.5 );
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 0.5, 'Simulation time at ' + 0.5 );
+	
+	        basicAnimationManager.setSimulationTime( 1.5 );
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 1.5, 'Simulation time at ' + 1.5 );
+	
+	        time = 15;
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 1.5, 'Simulation time at ' + 1.5 + ' t + 1' );
+	
+	        togglePause();
+	        basicAnimationManager.update( null, nv );
+	        ok( ( managerTime % duration ) === 1.5, 'Value after pause for simulation time at 1.5' );
+	
+	        //Time factor on play
+	        var t;
+	        var timeFactor;
+	
+	        time = 17;
+	        timeFactor = 0.3;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t ), 'Value after set time factor at ' + timeFactor );
+	
+	        time = 18;
+	        timeFactor = 0.5;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time = 18.5;
+	        timeFactor = 4.4;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time = 22.5;
+	        timeFactor = 0.8;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time = 26;
+	        timeFactor = 1;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        //Time Factor on pause
+	        togglePause();
+	        ok( true, 'Toggle Pause at ' + time );
+	
+	        time += 1;
+	        timeFactor = 0.3;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time += 0.5;
+	        timeFactor = 0.5;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time += 2;
+	        timeFactor = 4.4;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time += 1;
+	        timeFactor = 0.8;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        time += 0.3;
+	        timeFactor = 1;
+	        basicAnimationManager.update( null, nv );
+	        t = managerTime;
+	        basicAnimationManager.setTimeFactor( timeFactor );
+	        basicAnimationManager.update( null, nv );
+	        ok( mockup.checkNear( managerTime % duration, t % duration ), 'Value after set time factor at ' + timeFactor );
+	
+	        start();
+	    } );
+	
+	    QUnit.test( 'BasicAnimationManager Negative time in animation key', function () {
+	
+	
+	        var animation = mockup.createAnimationWithNegativeKey( 'NegativeKeys' );
+	
+	        var cbMap = mockup.createAnimationUpdateCallback( [ animation ] );
+	
+	        var basicAnimationManager = new BasicAnimationManager();
+	        basicAnimationManager.init( [ animation ] );
+	        basicAnimationManager._animationsUpdateCallback = cbMap;
+	        basicAnimationManager._registerTargetFoundInAnimationCallback();
+	        basicAnimationManager._registerAnimations();
+	
+	        //mockup a node visitor
+	        var time = 0.0;
+	        var nv = {
+	            getFrameStamp: function () {
+	                return {
+	                    getSimulationTime: function () {
+	                        return time;
+	                    }
+	                };
+	            }
+	        };
+	
+	        //play animation
+	        basicAnimationManager.playAnimation( 'NegativeKeys' );
+	
+	        //Collect targets
+	        var a = basicAnimationManager._targetMap[ 'a.rotateX' ];
+	        var b = basicAnimationManager._targetMap[ 'b.rotateY' ];
+	
+	
+	        basicAnimationManager.update( null, nv ); //time == 0
+	
+	        ok( a.value === 1, 'Check channel a at t = ' + time );
+	        ok( b.value === 1, 'Check channel b at t = ' + time );
+	
+	        time = 0.5;
+	        basicAnimationManager.update( null, nv ); //time == 0.5
+	
+	        ok( a.value === 0.5, 'Check channel a at t = ' + time );
+	        ok( b.value === 1, 'Check channel b at t = ' + time );
+	
+	        time = -1;
+	        basicAnimationManager.update( null, nv ); //time == -1
+	
+	        ok( a.value === 1, 'Check channel a at t = ' + time );
+	        ok( b.value === 1, 'Check channel b at t = ' + time );
+	
+	        time = 2;
+	        basicAnimationManager.update( null, nv ); //time == 2
+	
+	        ok( a.value === 3, 'Check channel a at t = ' + time );
+	        ok( b.value === 1, 'Check channel b at t = ' + time );
+	
+	        time = 50;
+	        basicAnimationManager.update( null, nv ); //time == 50
+	
+	        ok( a.value === 3, 'Check channel a at t = ' + time );
+	        ok( b.value === 1, 'Check channel b at t = ' + time );
+	
+	        start();
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgAnimation' );
+	
+	    QUnit.test( 'Channel', function () {
+	        var keys = mockup.createVec3Keyframes();
+	
+	        ok( keys === keys, 'no tests' );
+	    } );
+	};
+
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Interpolator = __webpack_require__( 112 );
+	var Channel = __webpack_require__( 108 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgAnimation' );
+	
+	    QUnit.test( 'Vec3LerpInterpolator', function () {
+	
+	        var keys = mockup.createVec3Keyframes();
+	        var timeArray = [ -1,
+	            3,
+	            0.5,
+	            1.5,
+	            5.0
+	        ];
+	
+	        var channels = [];
+	
+	        var i;
+	        for ( i = 0; i < timeArray.length; i++ ) {
+	            var c = Channel.createInstanceVec3Channel( keys );
+	            channels.push( c );
+	        }
+	
+	        for ( i = 0; i < timeArray.length; i++ )
+	            Interpolator.Vec3LerpInterpolator( timeArray[ i ], channels[ i ] );
+	
+	
+	        var result;
+	        result = channels[ 0 ];
+	        ok( mockup.checkNear( result.value, [ 1, 1, 1 ] ), 'Check value when time < first key' );
+	        ok( result.key === 0, 'Check key when time < first key' );
+	
+	        result = channels[ 1 ];
+	        ok( mockup.checkNear( result.value, [ 3, 3, 3 ] ), 'Check value when time > last key' );
+	        ok( result.key === 0, 'Check key when time > last key' );
+	
+	        result = channels[ 2 ];
+	        ok( mockup.checkNear( result.value, [ 0.5, 0.5, 0.5 ] ), 'Check value when time == 0.5' );
+	        ok( result.key === 0, 'Check key when time == 0.5' );
+	
+	        result = channels[ 3 ];
+	        ok( mockup.checkNear( result.value, [ 1.5, 1.5, 1.5 ] ), 'Check value when time == 1.5' );
+	        ok( result.key === 1, 'Check key when time == 1.5' );
+	
+	        result = channels[ 4 ];
+	        ok( mockup.checkNear( result.value, [ 3.0, 3.0, 3.0 ] ), 'Check value when time == 5.0' );
+	        ok( result.key === 0, 'Check key when time == 5.0' );
+	
+	        var keys2 = {
+	            keys: [
+	                1, 1, 1
+	            ],
+	            times: [ 0 ]
+	        };
+	
+	        var channelOneKey = Channel.createInstanceVec3Channel( keys2 );
+	        result = channelOneKey;
+	
+	        Interpolator.Vec3LerpInterpolator( 1, channelOneKey );
+	        ok( mockup.checkNear( result.value, [ 1.0, 1.0, 1.0 ] ), 'Check value when time == 1.0 with 1 key' );
+	        ok( result.key === 0, 'Check key when time == 1.0 with 1 keyframes' );
+	    } );
+	
+	    QUnit.test( 'FloatLerpInterpolator', function () {
+	
+	        var keys = mockup.createFloatKeyframes();
+	
+	        var timeArray = [ -1,
+	            3,
+	            0.5,
+	            1.5,
+	            5
+	        ];
+	
+	        var channels = [];
+	
+	        var i;
+	        for ( i = 0; i < timeArray.length; i++ ) {
+	            var c = Channel.createInstanceFloatChannel( keys );
+	            channels.push( c );
+	        }
+	
+	        for ( i = 0; i < timeArray.length; i++ )
+	            Interpolator.FloatLerpInterpolator( timeArray[ i ], channels[ i ] );
+	
+	        var result;
+	
+	        result = channels[ 0 ];
+	        ok( mockup.checkNear( result.value, 1 ), 'Check value when time < first key' );
+	        ok( result.key === 0, 'Check key when time < first key' );
+	
+	        result = channels[ 1 ];
+	        ok( mockup.checkNear( result.value, 3 ), 'Check value when time > last key' );
+	        ok( result.key === 0, 'Check key when time > last key' );
+	
+	        result = channels[ 2 ];
+	        ok( mockup.checkNear( result.value, 0.5 ), 'Check value when time == 0.5' );
+	        ok( result.key === 0, 'Check key when time == 0.5' );
+	
+	        result = channels[ 3 ];
+	        ok( mockup.checkNear( result.value, 1.5 ), 'Check value when time == 1.5' );
+	        ok( result.key === 1, 'Check key when time == 1.5' );
+	
+	        result = channels[ 4 ];
+	        ok( mockup.checkNear( result.value, 3.0 ), 'Check value when time == 5.0' );
+	        ok( result.key === 0, 'Check key when time == 5.0' );
+	    } );
+	
+	    QUnit.test( 'FloatCubicBezierChannel', function () {
+	
+	        var keys = mockup.createFloatCubicBezierKeyframes();
+	
+	        var timeArray = [ -1,
+	            3,
+	            0.5,
+	            1.5,
+	            5
+	        ];
+	
+	        var channels = [];
+	
+	        var i;
+	        for ( i = 0; i < timeArray.length; i++ ) {
+	            var c = Channel.createInstanceFloatCubicBezierChannel( keys );
+	            channels.push( c );
+	        }
+	
+	        for ( i = 0; i < timeArray.length; i++ )
+	            Interpolator.FloatCubicBezierInterpolator( timeArray[ i ], channels[ i ] );
+	
+	        var result;
+	
+	        result = channels[ 0 ];
+	        ok( mockup.checkNear( result.value, 1 ), 'Check value when time < first key' );
+	        ok( result.key === 0, 'Check key when time < first key' );
+	
+	        result = channels[ 1 ];
+	        ok( mockup.checkNear( result.value, 3 ), 'Check value when time > last key' );
+	        ok( result.key === 0, 'Check key when time > last key' );
+	
+	        result = channels[ 2 ];
+	        ok( mockup.checkNear( result.value, 2 ), 'Check value when time == 0.5' );
+	        ok( result.key === 0, 'Check key when time == 0.5' );
+	
+	        result = channels[ 3 ];
+	        ok( mockup.checkNear( result.value, 1.875 ), 'Check value when time == 1.5' );
+	        ok( result.key === 1, 'Check key when time == 1.5' );
+	
+	        result = channels[ 4 ];
+	        ok( mockup.checkNear( result.value, 3 ), 'Check value when time == 5.0' );
+	        ok( result.key === 0, 'Check key when time == 5.0' );
+	    } );
+	
+	    QUnit.test( 'Vec3CubicBezierChannel', function () {
+	
+	        var keys = mockup.createVec3CubicBezierKeyframes();
+	
+	        var timeArray = [ -1,
+	            3,
+	            0.5,
+	            1.5,
+	            5
+	        ];
+	
+	        var channels = [];
+	
+	        var i;
+	        for ( i = 0; i < timeArray.length; i++ ) {
+	            var c = Channel.createInstanceVec3CubicBezierChannel( keys );
+	            channels.push( c );
+	        }
+	
+	        for ( i = 0; i < timeArray.length; i++ )
+	            Interpolator.Vec3CubicBezierInterpolator( timeArray[ i ], channels[ i ] );
+	
+	        var result;
+	
+	        result = channels[ 0 ];
+	        ok( mockup.checkNear( result.value, [ 1, 1, 1 ] ), 'Check value when time < first key' );
+	        ok( result.key === 0, 'Check key when time < first key' );
+	
+	        result = channels[ 1 ];
+	        ok( mockup.checkNear( result.value, [ 6, 6, 6 ] ), 'Check value when time > last key' );
+	        ok( result.key === 0, 'Check key when time > last key' );
+	
+	        result = channels[ 2 ];
+	        ok( mockup.checkNear( result.value, [ 3.5, 3.5, 3.5 ] ), 'Check value when time == 0.5' );
+	        ok( result.key === 0, 'Check key when time == 0.5' );
+	
+	        result = channels[ 3 ];
+	        ok( mockup.checkNear( result.value, [ 7.875, 7.875, 7.875 ] ), 'Check value when time == 1.5' );
+	        ok( result.key === 1, 'Check key when time == 1.5' );
+	
+	        result = channels[ 4 ];
+	        ok( mockup.checkNear( result.value, [ 6, 6, 6 ] ), 'Check value when time == 5.0' );
+	        ok( result.key === 0, 'Check key when time == 5.0' );
+	    } );
+	
+	    QUnit.test( 'QuatLerpChannel', function () {
+	
+	        var keys = mockup.createQuatLerpKeyFrames();
+	
+	        var timeArray = [ -1,
+	            3,
+	            0.5,
+	            1.5,
+	            5
+	        ];
+	
+	        var channels = [];
+	
+	        var i;
+	        for ( i = 0; i < timeArray.length; i++ ) {
+	            var c = Channel.createInstanceQuatChannel( keys );
+	            channels.push( c );
+	        }
+	
+	        for ( i = 0; i < timeArray.length; i++ )
+	            Interpolator.QuatLerpInterpolator( timeArray[ i ], channels[ i ] );
+	
+	        var result;
+	
+	        result = channels[ 0 ];
+	        ok( mockup.checkNear( result.value, [ 1.22465e-16, 1.22465e-16, 1.22465e-16, -1 ] ), 'Check value when time < first key' );
+	        ok( result.key === 0, 'Check key when time < first key' );
+	
+	        result = channels[ 1 ];
+	        ok( mockup.checkNear( result.value, [ 0.126911, -0.0991929, 0.119115, -0.979727 ] ), 'Check value when time > last key' );
+	        ok( result.key === 0, 'Check key when time > last key' );
+	
+	        result = channels[ 2 ];
+	        ok( mockup.checkNear( result.value, [ 0.382683, 6.62774e-17, 1.60008e-16, -0.92388 ] ), 'Check value when time == 0.5' );
+	        ok( result.key === 2, 'Check key when time == 0.5' );
+	
+	        result = channels[ 3 ];
+	        ok( mockup.checkNear( result.value, [ 0.126911, -0.0991929, 0.119115, -0.979727 ] ), 'Check value when time == 1.5' );
+	        ok( result.key === 0, 'Check key when time == 1.5' );
+	
+	        result = channels[ 4 ];
+	        ok( mockup.checkNear( result.value, [ 0.126911, -0.0991929, 0.119115, -0.979727 ] ), 'Check value when time == 5.0' );
+	        ok( result.key === 0, 'Check key when time == 5.0' );
+	    } );
+	
+	    QUnit.test( 'KeysFinding', function () {
+	        var keys = [ 1, 0, 3 ];
+	        var times = [ 0, 2.06, 2.5 ];
+	        var chan = Channel.createFloatChannel( keys, times );
+	        var iChan = Channel.createInstanceFloatChannel( chan );
+	        var time;
+	
+	        //With 3 keys
+	        time = 0;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 2;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        time = 1;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 2;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        time = 2.1;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 1, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 1, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 2;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 1, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        time = 2.5;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 2;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        //with 2 key
+	        keys = [ 1, 0 ];
+	        times = [ 0, 2 ];
+	        chan = Channel.createFloatChannel( keys, times );
+	        iChan = Channel.createInstanceFloatChannel( chan );
+	
+	        time = 0;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        time = 1;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	
+	        time = 2;
+	        iChan.key = 0;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	        iChan.key = 1;
+	        Interpolator.FloatLerpInterpolator( time, iChan );
+	        ok( iChan.key === 0, 'Test at time = ' + time + ' and key = ' + iChan.key );
+	    } );
+	};
+
+
+/***/ }),
+/* 291 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Matrix = __webpack_require__( 28 );
+	var Quat = __webpack_require__( 30 );
+	var StackedRotateAxis = __webpack_require__( 118 );
+	var StackedTranslate = __webpack_require__( 120 );
+	var StackedScale = __webpack_require__( 119 );
+	var StackedMatrix = __webpack_require__( 116 );
+	var StackedQuaternion = __webpack_require__( 117 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgAnimation' );
+	
+	    QUnit.test( 'StackedRotateAxis', function () {
+	
+	        var st = new StackedRotateAxis( 'rotateX' );
+	        ok( st.getName() === 'rotateX', 'Check name' );
+	        ok( mockup.checkNear( st._axis, [ 0.0, 0.0, 1.0 ] ), 'Check default axis' );
+	        ok( st._target.value === 0.0, 'Check default angle' );
+	
+	        st.init( [ 1.0, 0.0, 0.0 ], 2.88 );
+	        ok( mockup.checkNear( st._axis, [ 1.0, 0.0, 0.0 ] ), 'Check axis after init' );
+	        ok( st._target.value === 2.88, 'Check angle after init' );
+	
+	    } );
+	
+	    QUnit.test( 'StackedTranslate', function () {
+	
+	        var st = new StackedTranslate( 'translate' );
+	        ok( st.getName() === 'translate', 'Ckeck Name' );
+	        ok( mockup.checkNear( st._target.value, [ 0.0, 0.0, 0.0 ] ), 'Ckeck default translate' );
+	
+	        st.init( [ 23, 78, 9.78 ] );
+	        ok( mockup.checkNear( st._target.value, [ 23, 78, 9.78 ] ), 'Check translate after init' );
+	
+	
+	    } );
+	    QUnit.test( 'StackedScale', function () {
+	
+	        var st = new StackedScale( 'scale' );
+	        ok( st.getName() === 'scale', 'Ckeck Name' );
+	        ok( mockup.checkNear( st._target.value, [ 1.0, 1.0, 1.0 ] ), 'Check scale default value' );
+	
+	        st.init( [ 1.0, 2.0, 3.0 ] );
+	        ok( mockup.checkNear( st._target.value, [ 1.0, 2.0, 3.0 ] ), 'Check scale value after init' );
+	
+	    } );
+	
+	    QUnit.test( 'StackedMatrix', function () {
+	
+	        var st = new StackedMatrix( 'matrix' );
+	        ok( st.getName() === 'matrix', 'Check Name' );
+	        ok( Matrix.isIdentity( st._target.value ), 'Check default matrix' );
+	
+	        var m = Matrix.makeTranslate( 4, 0, 0, Matrix.create() );
+	        st.init( m );
+	        ok( mockup.checkNear( m, st._target.value ), 'Check matrix value after init' );
+	
+	    } );
+	
+	    QUnit.test( 'StackedQuaternion', function () {
+	
+	        var st = new StackedQuaternion( 'quat' );
+	        var q = Quat.create();
+	        ok( st.getName() === 'quat', 'Check Name' );
+	        ok( mockup.checkNear( st._target.value, q ), 'Check default quat value' );
+	
+	        Quat.makeRotate( 0.45, 0, 0, 1, q );
+	        st.init( q );
+	        ok( mockup.checkNear( q, st._target.value ), 'Check quat value after init' );
+	
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Input = __webpack_require__( 293 );
+	var ReaderParser = __webpack_require__( 294 );
+	var DatabasePager = __webpack_require__( 295 );
+	
+	
+	module.exports = function () {
+	    Input();
+	    ReaderParser();
+	    DatabasePager();
+	};
+
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var P = __webpack_require__( 48 );
+	var Input = __webpack_require__( 47 );
+	var Notify = __webpack_require__( 10 );
+	var Image = __webpack_require__( 41 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgDB' );
+	
+	    var ImageTest = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+	
+	    QUnit.asyncTest( 'Input.readImageURL', function () {
+	
+	        var input = new Input();
+	        input.setPrefixURL( 'testXtest' );
+	        input.readImageURL( ImageTest ).then( function ( image ) {
+	            ok( image.getURL() === ImageTest, 'check image src' );
+	            start();
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readImageURL with readImageURL replacement', function () {
+	        var called = false;
+	        var input = new Input();
+	        var readImageURLReplacement = function ( url /*, options*/ ) {
+	            called = true;
+	            return input.readImageURL( url );
+	        };
+	        input.readImageURL( ImageTest, {
+	            readImageURL: readImageURLReplacement
+	        } ).then( function ( /*image*/) {
+	            equal( called, true, 'check image src' );
+	            start();
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'Input.readImageURL inline dataimage with crossOrigin', function () {
+	        var input = new Input();
+	        var url = 'error-404';
+	
+	        var image = input.readImageURL( url, {
+	            imageCrossOrigin: 'Anonymous'
+	        } );
+	        ok( image instanceof Image, 'no promise : returned an Image' );
+	        // ok(image.src.substr(-9) !== url, 'no promise : used fallback image');  // FIXME: make readImageURL return a proxy osgImage
+	
+	        input.readImageURL( 'error-404', {
+	            imageCrossOrigin: 'Anonymous',
+	            imageLoadingUsePromise: true
+	        } ).then( function ( image ) {
+	            ok( image instanceof Image, 'with promise : returned image' );
+	            ok( image.getImage().src.substr( -9 ) !== url, 'with promise : used fallback image' );
+	
+	            start();
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	
+	    test( 'Input.fetchImage', function () {
+	        var input = new Input();
+	        input.setPrefixURL( 'testXtest' );
+	
+	        ( function () {
+	            var img = new Image();
+	            input.fetchImage( img, ImageTest, {
+	                'imageCrossOrigin': 'anonymous'
+	            } );
+	            ok( img.getImage().crossOrigin !== 'anonymous', 'skip crossOrigin for inline image' );
+	        } )();
+	
+	        ( function () {
+	            var img = new Image();
+	            input.fetchImage( img, 'http://osgjs.org/image.png', {
+	                'imageCrossOrigin': 'anonymous'
+	            } );
+	            ok( img.getImage().crossOrigin === 'anonymous', 'check crossOrigin' );
+	        } )();
+	    } );
+	
+	
+	    QUnit.asyncTest( 'Input.readArrayBuffer-old', function () {
+	
+	        var ba = {
+	            'Elements': [ 0.01727, -0.00262, 3.0 ],
+	            'ItemSize': 3,
+	            'Type': 'ARRAY_BUFFER',
+	            'UniqueID': 10
+	        };
+	        var input = new Input( ba );
+	        input.readBufferArray().then( function ( /*value*/) {
+	            return input.setJSON( {
+	                'UniqueID': 10
+	            } ).readBufferArray();
+	        } ).then( function ( o2 ) {
+	            ok( o2.getElements()[ 2 ] === 3.0, 'readBufferArray check same unique id' );
+	            start();
+	        } );
+	
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readBinaryArrayURL with replacement option', function () {
+	        var calledBinaryArray = false;
+	        var readBinaryArrayURL = function ( /*url, options*/) {
+	            calledBinaryArray = true;
+	            return P.resolve();
+	        };
+	        var input = new Input();
+	        input.readBinaryArrayURL( 'toto', {
+	            readBinaryArrayURL: readBinaryArrayURL
+	        } ).then( function ( /*value*/) {
+	            ok( calledBinaryArray, true, 'readBinaryArray replacement has been called' );
+	            start();
+	        } );
+	
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readNodeURL with replacement option', function () {
+	        var calledNodeURL = false;
+	        var readNodeURL = function ( /*url, options*/) {
+	            calledNodeURL = true;
+	            return P.resolve();
+	        };
+	        var input = new Input();
+	        input.readNodeURL( 'toto', {
+	            readNodeURL: readNodeURL
+	        } ).then( function ( /*value*/) {
+	            ok( calledNodeURL, true, 'readNodeURL replacement has been called' );
+	            start();
+	        } );
+	
+	    } );
+	
+	    test( 'Input.getObjectWrapper', function () {
+	        ( function () {
+	            var input = new Input();
+	            var obj = input.getObjectWrapper( 'osg.Node' );
+	            ok( obj.getName() !== '', 'getObjectWrapper check osg.Node.getName' );
+	            ok( obj.addChild !== undefined, 'getObjectWrapper check osg.addChild' );
+	        } )();
+	
+	        ( function () {
+	            var ProxyNode = function () {
+	                this._proxy = true;
+	            };
+	            var input = new Input();
+	            input.registerObject( 'osg.Node', ProxyNode );
+	            var obj = input.getObjectWrapper( 'osg.Node' );
+	            ok( obj._proxy === true, 'getObjectWrapper with overridden' );
+	        } )();
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readObject - Material', function () {
+	        var obj = {
+	            'osg.Material': {
+	                'UniqueID': 10,
+	                'Name': 'FloorBorder1',
+	                'Ambient': [ 0.5, 0.5, 0.5, 1 ],
+	                'Diffuse': [ 0.1, 0.1, 0.1, 0.1 ],
+	                'Emission': [ 0, 0, 0, 0.5 ],
+	                'Shininess': 2.5,
+	                'Specular': [ 0.5, 0.7, 0.5, 1 ]
+	            }
+	        };
+	
+	        var input = new Input( obj );
+	        input.readObject().then( function () {
+	            return input.setJSON( {
+	                'osg.Material': {
+	                    'UniqueID': 10
+	                }
+	            } ).readObject();
+	        } ).then( function ( o2 ) {
+	            ok( o2.getName() === 'FloorBorder1', 'readObject check same unique id' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Input.computeURL use prefix', function () {
+	        var input = new Input();
+	        ok( input.computeURL( 'toto' ) === 'toto', 'check default computeURL' );
+	        input.setPrefixURL( undefined );
+	        ok( input.computeURL( 'toto' ) === 'toto', 'check from undefined computeURL' );
+	        input.setPrefixURL( '/blah/' );
+	        ok( input.computeURL( 'toto' ) === '/blah/toto', 'check computeURL' );
+	        start();
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readPrimitiveSet', function () {
+	
+	        var input = new Input( {
+	            'DrawArrays': {
+	                'UniqueID': 10,
+	                'count': 3540,
+	                'first': 10,
+	                'mode': 'TRIANGLES'
+	            }
+	        } );
+	        input.readPrimitiveSet().then( function ( /*value */) {
+	            return input.setJSON( {
+	                'DrawArrays': {
+	                    'UniqueID': 10
+	                }
+	            } ).readPrimitiveSet();
+	        } ).then( function ( o2 ) {
+	            ok( o2.getCount() === 3540, 'readPrimitiveSet check same unique id' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'Input.readBufferArray - inline', function () {
+	        var ba = {
+	            'Array': {
+	                'Uint16Array': {
+	                    'Elements': [ 0.01727, -0.00262, 3.0 ],
+	                    'Size': 3
+	                }
+	            },
+	            'ItemSize': 3,
+	            'Type': 'ARRAY_BUFFER',
+	            'UniqueID': 10
+	        };
+	        var input = new Input( ba );
+	        input.readBufferArray().then( function () {
+	            return input.setJSON( {
+	                'UniqueID': 10
+	            } ).readBufferArray();
+	        } ).then( function ( o2 ) {
+	            ok( o2.getElements()[ 2 ] === 3.0, 'readBufferArray with new array typed inlined' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Input.readBufferArray - external', function () {
+	        var ba = {
+	            'Array': {
+	                'Uint16Array': {
+	                    'File': 'mockup/stream.bin',
+	                    'Size': 3
+	                }
+	            },
+	            'ItemSize': 1,
+	            'Type': 'ARRAY_BUFFER',
+	            'UniqueID': 10
+	        };
+	        ( function () {
+	            var input = new Input( ba );
+	            input.readBufferArray().then( function ( buffer ) {
+	                ok( buffer.getElements()[ 2 ] === 10, 'readBufferArray with new array typed external file' );
+	                start();
+	            } );
+	        } )();
+	
+	        ( function () {
+	            var calledProgress = false;
+	            var progress = function () {
+	                calledProgress = true;
+	            };
+	            var input = new Input( ba );
+	            input.setProgressXHRCallback( progress );
+	            input.readBufferArray().then( function ( /*buffer*/) {
+	
+	                ok( calledProgress === true, 'readBufferArray check progress callback' );
+	                start();
+	            } );
+	        } )();
+	    } );
+	
+	
+	    QUnit.asyncTest( 'Input.readBufferArray - external offset', function () {
+	        var ba = {
+	            'TexCoord0': {
+	                'UniqueID': 202,
+	                'Array': {
+	                    'Float32Array': {
+	                        'File': 'mockup/multistream.bin',
+	                        'Offset': 0,
+	                        'Size': 3
+	                    }
+	                },
+	                'ItemSize': 2,
+	                'Type': 'ARRAY_BUFFER'
+	            },
+	            'Tangent': {
+	                'UniqueID': 204,
+	                'Array': {
+	                    'Float32Array': {
+	                        'File': 'mockup/multistream.bin',
+	                        'Offset': 24,
+	                        'Size': 3
+	                    }
+	                },
+	                'ItemSize': 3,
+	                'Type': 'ARRAY_BUFFER'
+	            }
+	        };
+	        ( function () {
+	            var input = new Input( ba );
+	            var arraysPromise = [];
+	            var buffers = {};
+	
+	            var createVertexAttribute = function ( name, jsonAttribute ) {
+	                var defer = P.defer();
+	                arraysPromise.push( defer.promise );
+	                var promise = input.setJSON( jsonAttribute ).readBufferArray();
+	                promise.then( function ( buffer ) {
+	                    if ( buffer !== undefined ) {
+	                        buffers[ name ] = buffer;
+	                    }
+	                    defer.resolve( buffer );
+	                } );
+	            };
+	
+	            createVertexAttribute( 'Tangent', ba.Tangent );
+	            createVertexAttribute( 'TexCoord0', ba.TexCoord0 );
+	
+	            P.all( arraysPromise ).then( function () {
+	                var tc = buffers.TexCoord0.getElements();
+	                var tcl = tc.length;
+	                equal( tc[ 2 ], 2, 'readBufferArray with new array typed external file with offset' );
+	                equal( tc[ 1 ], 1, 'readBufferArray with new array typed external file with offset' );
+	                equal( tcl, 6, 'readBufferArray with new array typed external file with offset' );
+	                var tg = buffers.Tangent.getElements();
+	                var tgl = tg.length;
+	                equal( tg[ 2 ], 8, 'readBufferArray with new array typed external file with offset' );
+	                equal( tg[ 1 ], 7, 'readBufferArray with new array typed external file with offset' );
+	                equal( tgl, 9, 'readBufferArray with new array typed external file with offset' );
+	                start();
+	            } );
+	        } )();
+	    } );
+	};
+
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var ReaderParser = __webpack_require__( 42 );
+	var Texture = __webpack_require__( 38 );
+	var Input = __webpack_require__( 47 );
+	var PrimitiveSet = __webpack_require__( 43 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgDB' );
+	
+	    QUnit.test( 'StateSet - MultiTextures', function () {
+	        var tree = {
+	
+	            'stateset': {
+	                'material': {
+	                    'ambient': [ 0.5, 0.5, 0.5, 1 ],
+	                    'diffuse': [ 0.1, 0.1, 0.1, 0.1 ],
+	                    'emission': [ 0, 0, 0, 0.5 ],
+	                    'name': 'FloorBorder1',
+	                    'shininess': 2.5,
+	                    'specular': [ 0.5, 0.7, 0.5, 1 ]
+	                },
+	                'textures': [ {
+	                    'file': 'textures/sol_2.png',
+	                    'mag_filter': 'LINEAR',
+	                    'min_filter': 'LINEAR_MIPMAP_LINEAR'
+	                }, {
+	                    'file': 'textures/floor_shadow.png',
+	                    'mag_filter': 'NEAREST',
+	                    'min_filter': 'NEAREST',
+	                    'wrap_s': 'REPEAT',
+	                    'wrap_t': 'MIRRORED_REPEAT'
+	                } ]
+	            }
+	        };
+	
+	        // TODO it uses the old sync parseSceneGraphDeprecated
+	        var result = ReaderParser.parseSceneGraph( tree );
+	
+	        ok( result.getStateSet() !== undefined, 'check old stateset' );
+	        var material = result.getStateSet().getAttribute( 'Material' );
+	        var materialCheck = ( material !== undefined &&
+	            mockup.checkNear( material.getAmbient(), [ 0.5, 0.5, 0.5, 1 ] ) &&
+	            mockup.checkNear( material.getDiffuse(), [ 0.1, 0.1, 0.1, 0.1 ] ) &&
+	            mockup.checkNear( material.getEmission(), [ 0.0, 0.0, 0.0, 0.5 ] ) &&
+	            mockup.checkNear( material.getSpecular(), [ 0.5, 0.7, 0.5, 1 ] ) &&
+	            mockup.checkNear( material.getShininess(), 2.5 ) &&
+	            material.getName() === 'FloorBorder1' );
+	
+	        ok( materialCheck, 'check old material' );
+	        var texture = result.getStateSet().getTextureAttribute( 1, 'Texture' );
+	        var textureCheck = ( texture !== undefined &&
+	            texture.getWrapS() === Texture.REPEAT &&
+	            texture.getWrapT() === Texture.MIRRORED_REPEAT &&
+	            texture.getMinFilter() === Texture.NEAREST &&
+	            texture.getMagFilter() === Texture.NEAREST );
+	        ok( textureCheck, 'check old texture' );
+	    } );
+	
+	    QUnit.asyncTest( 'StateSet - BlendFunc, Material', function () {
+	        var tree = {
+	            'osg.Node': {
+	                'StateSet': {
+	                    'osg.StateSet': {
+	                        'AttributeList': [ {
+	                            'osg.BlendFunc': {
+	                                'SourceRGB': 'SRC_ALPHA',
+	                                'DestinationRGB': 'ONE_MINUS_SRC_ALPHA',
+	                                'SourceAlpha': 'SRC_ALPHA',
+	                                'DestinationAlpha': 'ONE_MINUS_SRC_ALPHA'
+	                            }
+	                        }, {
+	                            'osg.Material': {
+	                                'Name': 'FloorBorder1',
+	                                'Ambient': [ 0.5, 0.5, 0.5, 1 ],
+	                                'Diffuse': [ 0.1, 0.1, 0.1, 0.1 ],
+	                                'Emission': [ 0, 0, 0, 0.5 ],
+	                                'Shininess': 2.5,
+	                                'Specular': [ 0.5, 0.7, 0.5, 1 ]
+	                            }
+	                        } ],
+	                        'TextureAttributeList': [
+	                            [ {
+	                                'osg.Texture': {
+	                                    'File': '/unknown.png',
+	                                    'MagFilter': 'LINEAR',
+	                                    'MinFilter': 'LINEAR_MIPMAP_LINEAR',
+	                                    'WrapS': 'REPEAT',
+	                                    'WrapT': 'CLAMP_TO_EDGE'
+	                                }
+	                            } ]
+	                        ]
+	                    }
+	                }
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	
+	            ok( result.getStateSet() !== undefined, 'check last StateSet' );
+	            ok( result.getStateSet().getAttribute( 'BlendFunc' ) !== undefined, 'check BlendFunc' );
+	            var material = result.getStateSet().getAttribute( 'Material' );
+	            var materialCheck = ( material !== undefined &&
+	                mockup.checkNear( material.getAmbient(), [ 0.5, 0.5, 0.5, 1 ] ) &&
+	                mockup.checkNear( material.getDiffuse(), [ 0.1, 0.1, 0.1, 0.1 ] ) &&
+	                mockup.checkNear( material.getEmission(), [ 0.0, 0.0, 0.0, 0.5 ] ) &&
+	                mockup.checkNear( material.getSpecular(), [ 0.5, 0.7, 0.5, 1 ] ) &&
+	                mockup.checkNear( material.getShininess(), 2.5 ) &&
+	                material.getName() === 'FloorBorder1' );
+	
+	            ok( materialCheck, 'check Material' );
+	            var texture = result.getStateSet().getTextureAttribute( 0, 'Texture' );
+	            ok( texture !== undefined, 'Check texture' );
+	            ok( texture.getWrapS() === Texture.REPEAT, 'Check wraps texture' );
+	            ok( texture.getWrapT() === Texture.CLAMP_TO_EDGE, 'Check wrapt texture' );
+	            ok( texture.getMinFilter() === Texture.LINEAR_MIPMAP_LINEAR, 'Check min filter texture' );
+	            ok( texture.getMagFilter() === Texture.LINEAR, 'Check mag filter texture' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'Geometry Cube UserData', function () {
+	        var tree = {
+	            'osg.Geometry': {
+	                'Name': 'Cube',
+	                'StateSet': {
+	                    'osg.StateSet': {
+	                        'Name': 'Material',
+	                        'AttributeList': [ {
+	                            'osg.Material': {
+	                                'Name': 'Material',
+	                                'Ambient': [ 0.8, 0.8, 0.8, 1 ],
+	                                'Diffuse': [ 0.64, 0.64, 0.64, 1 ],
+	                                'Emission': [ 0, 0, 0, 1 ],
+	                                'Shininess': 12.5,
+	                                'Specular': [ 0.5, 0.5, 0.5, 1 ]
+	                            }
+	                        } ],
+	                        'UserDataContainer': {
+	                            'UniqueID': 23,
+	                            'Values': [ {
+	                                'Name': 'source',
+	                                'Value': 'blender'
+	                            }, {
+	                                'Name': 'DiffuseIntensity',
+	                                'Value': '1.0'
+	                            }, {
+	                                'Name': 'DiffuseColor',
+	                                'Value': '[ 0, 0, 0 ]'
+	                            }, {
+	                                'Name': 'SpecularIntensity',
+	                                'Value': '0.0'
+	                            }, {
+	                                'Name': 'SpecularColor',
+	                                'Value': '[ 1, 1, 1 ]'
+	                            }, {
+	                                'Name': 'SpecularHardness',
+	                                'Value': '50'
+	                            }, {
+	                                'Name': 'Emit',
+	                                'Value': '0.0'
+	                            }, {
+	                                'Name': 'Ambient',
+	                                'Value': '1.0'
+	                            }, {
+	                                'Name': 'Translucency',
+	                                'Value': '0.0'
+	                            } ]
+	                        }
+	                    }
+	                },
+	                'VertexAttributeList': {
+	                    'Normal': {
+	                        'Elements': [ 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -0, 1, 0, -0, 1, 0, -0, 1, 0, -0, 1, 1, -0, 0, 1, -0, 0, 1, -0, 0, 1, -0, 0, -0, -1, -0, -0, -1, -0, -0, -1, -0, -0, -1, -0, -1, 0, -0, -1, 0, -0, -1, 0, -0, -1, 0, -0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
+	                        'ItemSize': 3,
+	                        'Type': 'ARRAY_BUFFER'
+	                    },
+	                    'Vertex': {
+	                        'Elements': [ 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1 ],
+	                        'ItemSize': 3,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                },
+	                'PrimitiveSetList': [ {
+	                    'DrawElementUShort': {
+	                        'Indices': {
+	                            'Elements': [ 0, 1, 3, 1, 2, 3, 4, 5, 7, 5, 6, 7, 8, 9, 11, 9, 10, 11, 12, 13, 15, 13, 14, 15, 16, 17, 19, 17, 18, 19, 20, 21, 23, 21, 22, 23 ],
+	                            'ItemSize': 1,
+	                            'Type': 'ELEMENT_ARRAY_BUFFER'
+	                        },
+	                        'Mode': 'TRIANGLES'
+	                    }
+	                } ]
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getStateSet() !== undefined, 'check geometry StateSet' );
+	            ok( result.getStateSet().getUserData() !== undefined, 'check StateSet userdata' );
+	            ok( result.getPrimitiveSetList().length === 1, 'check primitives' );
+	            ok( result.getPrimitiveSetList()[ 0 ].getMode() === PrimitiveSet.TRIANGLES, 'check triangles primitive' );
+	            ok( result.getPrimitiveSetList()[ 0 ].getFirst() === 0, 'check triangles first index' );
+	            ok( result.getPrimitiveSetList()[ 0 ].getIndices().getElements().length === 36, 'check triangles indices' );
+	            ok( result.getPrimitiveSetList()[ 0 ].getIndices().getElements().length === result.getPrimitiveSetList()[ 0 ].getCount(), 'check triangles count' );
+	            ok( window.Object.keys( result.getVertexAttributeList() ).length === 2, 'check vertex attributes' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'MatrixTransform', function () {
+	        var tree = {
+	            'osg.MatrixTransform': {
+	                'Name': 'Lamp',
+	                'Matrix': [ -0.2909, 0.9552, -0.0552, 0, -0.7711, -0.1999, 0.6045, 0, 0.5664, 0.2184, 0.7947, 0, 4.0762, 1.0055, 5.9039, 1 ],
+	                'Children': [ {
+	                    'osg.Node': {
+	                        'Name': 'Lamp'
+	                    }
+	                } ]
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getName() === 'Lamp', 'check matrix transform' );
+	            ok( result.getMatrix()[ 0 ] === -0.2909, 'check matrix transform content' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'BasicAnimationManager', function () {
+	        var tree = {
+	            'osg.Node': {
+	                'UniqueID': 0,
+	                'Name': 'brindherbetrs.FBX',
+	                'UpdateCallbacks': [ {
+	                    'osgAnimation.BasicAnimationManager': {
+	                        'Animations': [ {
+	                            'osgAnimation.Animation': {
+	                                'Name': 'Take 001',
+	                                'Channels': [ {
+	                                    'osgAnimation.FloatCubicBezierChannel': {
+	                                        'Name': 'rotateX',
+	                                        'TargetName': 'BetaHighResMeshes',
+	                                        'KeyFrames': {
+	                                            'ControlPointIn': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'ControlPointOut': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Position': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Time': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            }
+	                                        }
+	                                    }
+	                                }, {
+	                                    'osgAnimation.FloatCubicBezierChannel': {
+	                                        'Name': 'rotateY',
+	                                        'TargetName': 'BetaHighResMeshes',
+	                                        'KeyFrames': {
+	                                            'ControlPointIn': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'ControlPointOut': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ -0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Position': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ -0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Time': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            }
+	                                        }
+	                                    }
+	                                }, {
+	                                    'osgAnimation.FloatCubicBezierChannel': {
+	                                        'Name': 'rotateZ',
+	                                        'TargetName': 'BetaHighResMeshes',
+	                                        'KeyFrames': {
+	                                            'ControlPointIn': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'ControlPointOut': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Position': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Time': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            }
+	                                        }
+	                                    }
+	                                }, {
+	                                    'osgAnimation.FloatCubicBezierChannel': {
+	                                        'Name': 'rotateX',
+	                                        'TargetName': 'Box001',
+	                                        'KeyFrames': {
+	                                            'ControlPointIn': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'ControlPointOut': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Position': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 1.5708 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Time': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            }
+	                                        }
+	                                    }
+	                                }, {
+	                                    'osgAnimation.FloatCubicBezierChannel': {
+	                                        'Name': 'rotateY',
+	                                        'TargetName': 'Box001',
+	                                        'KeyFrames': {
+	                                            'ControlPointIn': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'ControlPointOut': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ -0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Position': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ -0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            },
+	                                            'Time': {
+	                                                'Array': {
+	                                                    'Float32Array': {
+	                                                        'Elements': [ 0 ],
+	                                                        'Size': 1
+	                                                    }
+	                                                },
+	                                                'ItemSize': 1,
+	                                                'Type': 'ARRAY_BUFFER'
+	                                            }
+	                                        }
+	                                    }
+	                                } ],
+	                                'StateSet': {
+	                                    'osg.StateSet': {
+	                                        'UniqueID': 1
+	                                    }
+	                                }
+	                            }
+	                        } ]
+	                    }
+	                } ]
+	            }
+	        };
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getUpdateCallbackList().length === 1, 'check update callback' );
+	            ok( result.getUpdateCallback().getAnimations()[ 'Take 001' ] !== undefined, 'check animation list' );
+	            var animation = result.getUpdateCallback().getAnimations()[ 'Take 001' ];
+	            ok( animation.channels.length === 5, 'check channels' );
+	            ok( animation.channels[ 1 ].channel.name === 'rotateY', 'check channel 1' );
+	            ok( animation.channels[ 1 ].channel.target === 'BetaHighResMeshes', 'check taget channel 1' );
+	            start();
+	        } );
+	
+	    } );
+	
+	
+	    QUnit.asyncTest( 'FloatLerpChannel', function () {
+	        var tree = {
+	            'osgAnimation.FloatLerpChannel': {
+	                'Name': 'euler_x',
+	                'TargetName': 'Cube',
+	                'KeyFrames': {
+	                    'Key': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159 ],
+	                                'Size': 28
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    },
+	                    'Time': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 0, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.866667, 0.9, 0.933333, 0.966667, 1, 1.76667, 1.8, 1.83333, 1.86667, 1.9, 1.93333, 1.96667, 2, 2.3, 2.33333, 2.36667, 2.4, 2.43333, 2.46667, 2.5 ],
+	                                'Size': 28
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                }
+	            }
+	        };
+	
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.keys.length === 28, 'Check keys FloatLerpChannel' );
+	            ok( result.times.length === 28, 'Check times FloatLerpChannel' );
+	            ok( result.target === 'Cube', 'Check TargetName FloatLerpChannel' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'QuatSlerpChannel', function () {
+	        var tree = {
+	            'osgAnimation.QuatSlerpChannel': {
+	                'Name': 'rotate_x',
+	                'TargetName': 'Cube',
+	                'KeyFrames': {
+	                    'Key': [ {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    } ],
+	                    'Time': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 0, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3 ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                }
+	            }
+	        };
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.keys.length === 28, 'Check keys QuatSlerpChannel' );
+	            ok( result.times.length === 7, 'Check times QuatSlerpChannel' );
+	            ok( result.target === 'Cube', 'Check TargetName QuatSlerpChannel' );
+	            start();
+	        } );
+	    } );
+	
+	
+	    QUnit.asyncTest( 'QuatLerpChannel', function () {
+	        var tree = {
+	            'osgAnimation.QuatLerpChannel': {
+	                'Name': 'rotate_x',
+	                'TargetName': 'Cube',
+	                'KeyFrames': {
+	                    'Key': [ {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    } ],
+	                    'Time': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 0, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3 ],
+	                                'Size': 7
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                }
+	            }
+	        };
+	
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.keys.length === 28, 'Check keys QuatSlerpChannel' );
+	            ok( result.times.length === 7, 'Check times QuatSlerpChannel' );
+	            ok( result.target === 'Cube', 'Check TargetName QuatSlerpChannel' );
+	            start();
+	        } );
+	
+	    } );
+	
+	
+	    QUnit.asyncTest( 'FloatCubicBezierChannel', function () {
+	
+	        var tree = {
+	            'osgAnimation.FloatCubicBezierChannel': {
+	                'Name': 'rotateX',
+	                'TargetName': 'Box001',
+	                'KeyFrames': {
+	                    'ControlPointIn': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1.5708 ],
+	                                'Size': 1
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    },
+	                    'ControlPointOut': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 2.5708 ],
+	                                'Size': 1
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    },
+	                    'Position': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 3.5708 ],
+	                                'Size': 1
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    },
+	                    'Time': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 0 ],
+	                                'Size': 1
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                }
+	            }
+	        };
+	
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.keys.length === 3, 'Check keys FloatCubicBezierChannel' );
+	            ok( result.times.length === 1, 'Check times FloatCubicBezierChannel' );
+	            ok( mockup.checkNear( result.keys[ 0 ], 3.5708 ), 'Ckeck Position' );
+	            ok( mockup.checkNear( result.keys[ 1 ], 1.5708 ), 'Check ControlIn' );
+	            ok( mockup.checkNear( result.keys[ 2 ], 2.5708 ), 'Check ControlOut' );
+	            ok( result.target === 'Box001', 'Check TargetName FloatCubicBezierChannel' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Vec3CubicBezierChannel', function () {
+	
+	        var tree = {
+	            'osgAnimation.Vec3CubicBezierChannel': {
+	                'Name': 'scale',
+	                'TargetName': 'Bone004',
+	                'KeyFrames': {
+	                    'ControlPointIn': [ {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    } ],
+	                    'ControlPointOut': [ {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 2.28678, 0.929234, 1 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 2.28678, 0.929234, 1 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 2.28678, 0.929234, 1 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    } ],
+	                    'Position': [ {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }, {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 1, 2.28678, 0.929234 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    } ],
+	                    'Time': {
+	                        'Array': {
+	                            'Float32Array': {
+	                                'Elements': [ 0, 0.866667, 1.76667 ],
+	                                'Size': 3
+	                            }
+	                        },
+	                        'ItemSize': 1,
+	                        'Type': 'ARRAY_BUFFER'
+	                    }
+	                }
+	            }
+	        };
+	
+	        var input = ReaderParser.registry().clone();
+	
+	        input.setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.keys.length === 27, 'Check keys Vec3CubicBezierChannel' );
+	            ok( result.times.length === 3, 'Check times Vec3CubicBezierChannel' );
+	            ok( mockup.checkNear( result.keys[ 15 ], 0.92923402 ), 'Check value' );
+	
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'StackedTransform', function () {
+	
+	        var tree = {
+	            'osg.MatrixTransform': {
+	                'Name': 'Cube',
+	                'Matrix': [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+	                'UpdateCallbacks': [ {
+	                    'osgAnimation.UpdateMatrixTransform': {
+	                        'Name': 'Cube',
+	                        'StackedTransforms': [ {
+	                            'osgAnimation.StackedTranslate': {
+	                                'Name': 'translate',
+	                                'Translate': [ 0, 0, 0 ]
+	                            }
+	                        }, {
+	                            'osgAnimation.StackedRotateAxis': {
+	                                'Name': 'euler_z',
+	                                'Angle': 0,
+	                                'Axis': [ 0, 0, 1 ]
+	                            }
+	                        }, {
+	                            'osgAnimation.StackedRotateAxis': {
+	                                'Name': 'euler_y',
+	                                'Angle': 0,
+	                                'Axis': [ 0, 1, 0 ]
+	                            }
+	                        }, {
+	                            'osgAnimation.StackedRotateAxis': {
+	                                'Name': 'euler_x',
+	                                'Angle': 0,
+	                                'Axis': [ 1, 0, 0 ]
+	                            }
+	                        }, {
+	                            'osgAnimation.StackedQuaternion': {
+	                                'Name': 'quaternion',
+	                                'Quaternion': [ 0, 0, 0, 1 ]
+	                            }
+	                        } ]
+	                    }
+	                } ]
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getUpdateCallbackList().length === 1, 'check osgAnimation.UpdateMatrixTransform callback' );
+	            ok( result.getUpdateCallback().getStackedTransforms().length === 5, 'check osgAnimation.UpdateMatrixTransform stacked transform' );
+	            start();
+	        } );
+	
+	    } );
+	
+	
+	    QUnit.asyncTest( 'DrawArray', function () {
+	        var tree = {
+	            'osg.Geometry': {
+	                'PrimitiveSetList': [ {
+	                    'DrawArray': {
+	                        'count': 3540,
+	                        'first': 10,
+	                        'mode': 'TRIANGLES'
+	                    }
+	                } ],
+	                'VertexAttributeList': {}
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            return result;
+	        } ).then( function ( geom ) {
+	            var result = geom.getPrimitiveSetList()[ 0 ];
+	            ok( result.getMode() === PrimitiveSet.TRIANGLES, 'check DrawArray triangles' );
+	            ok( result.getCount() === 3540, 'check triangles count' );
+	            ok( result.getFirst() === 10, 'check triangles first' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'DrawArrays', function () {
+	        var tree2 = {
+	            'osg.Geometry': {
+	                'PrimitiveSetList': [ {
+	                    'DrawArrays': {
+	                        'Count': 0,
+	                        'First': 0,
+	                        'Mode': 'TRIANGLES'
+	                    }
+	                } ],
+	                'VertexAttributeList': {}
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree2 ).readObject().then( function ( result ) {
+	            return result.getPrimitiveSetList()[ 0 ];
+	        } ).then( function ( result ) {
+	            ok( result.getMode() === PrimitiveSet.TRIANGLES, 'check DrawArray triangles' );
+	            ok( result.getCount() === 0, 'check triangles count' );
+	            ok( result.getFirst() === 0, 'check triangles first' );
+	            start();
+	        } );
+	    } );
+	
+	
+	
+	    QUnit.asyncTest( 'DrawArrayLengths', function () {
+	        var tree = {
+	            'osg.Geometry': {
+	                'PrimitiveSetList': [ {
+	                    'DrawArrayLengths': {
+	                        'First': 10,
+	                        'Mode': 'TRIANGLES',
+	                        'ArrayLengths': [ 3, 3, 3 ]
+	                    }
+	                } ],
+	                'VertexAttributeList': {}
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            return result.getPrimitiveSetList()[ 0 ];
+	        } ).then( function ( result ) {
+	            ok( result.getMode() === PrimitiveSet.TRIANGLES, 'check DrawArrayLengths triangles' );
+	            ok( result.getArrayLengths()[ 0 ] === 3, 'check array lenght' );
+	            ok( result.getFirst() === 10, 'check triangles first' );
+	            start();
+	        } );
+	
+	    } );
+	
+	
+	    QUnit.asyncTest( 'LightSource', function () {
+	        var tree = {
+	            'osg.LightSource': {
+	                'Name': 'Lamp.005',
+	                'Light': {
+	                    'osg.Light': {
+	                        'Ambient': [ 0, 0, 0, 1 ],
+	                        'ConstantAttenuation': 1,
+	                        'Diffuse': [ 0.88, 0.70901, 0.48297, 1 ],
+	                        'Direction': [ 0, 0, -1 ],
+	                        'LightNum': 1,
+	                        'LinearAttenuation': 0,
+	                        'Position': [ 0, 0, 1, 0 ],
+	                        'QuadraticAttenuation': 0,
+	                        'Specular': [ 0.88, 0.88, 0.88, 1 ],
+	                        'SpotCutoff': 180,
+	                        'SpotExponent': 0
+	                    }
+	                }
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getLight() !== undefined, 'check if LightSource has a light' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Text', function () {
+	        var tree = {
+	            'osgText.Text': {
+	                'UniqueID': 1,
+	                'Text': 'test',
+	                'AutoRotateToScreen': 1,
+	                'CharacterSize': 20,
+	                'Color': [ 1, 1, 0, 1 ],
+	                'Position': [ 50, 974, 0 ],
+	                'Layout': 'LEFT_TO_RIGHT',
+	                'Alignment': 'CENTER_BOTTOM'
+	            }
+	        };
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result.getText() === 'test', 'check text' );
+	            ok( result.getAutoRotateToScreen() === 1, 'check autoRotateToScreen' );
+	            ok( result.getCharacterSize() === 20, 'check characterSize' );
+	            ok( result.getPosition()[ 0 ] === 50, 'check Position' );
+	            ok( result.getColor()[ 0 ] === 1, 'check Color' );
+	            ok( result.getLayout() === 'ltr', 'check Layout' );
+	            ok( result.getAlignment() === 5, 'check Alignment' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'PagedLOD', function () {
+	        var tree = {
+	            'osg.PagedLOD': {
+	                'UniqueID': 1,
+	                'Name': 'PAGEDLOD',
+	                'CenterMode': 'USER_DEFINED_CENTER',
+	                'RangeDataList': {
+	                    'File 0': 'cow.osgjs',
+	                    'File 1': 'cessna.osgjs'
+	                },
+	                'RangeList': {
+	                    'Range 0': [ 0, 2000 ],
+	                    'Range 1': [ 2000, 3.40282e+38 ]
+	                },
+	                'RangeMode': 'PIXEL_SIZE_ON_SCREEN',
+	                'UserCenter': [ 1, 2, 3, 10 ]
+	            }
+	        };
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            ok( result._rangeMode === 1, 'check RangeMode' );
+	            ok( result._perRangeDataList.length === 2, 'check children number' );
+	            ok( result._perRangeDataList[ 0 ].filename === 'cow.osgjs', 'check child 0 filename' );
+	            ok( result._perRangeDataList[ 1 ].filename === 'cessna.osgjs', 'check child 1 filename' );
+	            ok( result._range.length === 2, 'check RangeList' );
+	            ok( result._radius === 10, 'check user defined radius' );
+	            start();
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'Node Children Ordering', function () {
+	        var tree = {
+	            'osg.Node': {
+	                'UniqueID': 2,
+	                'Children': [ {
+	                    'osg.Node': {
+	                        'UniqueID': 3,
+	                        'Name': 'cow',
+	                        'Children': [ {
+	                            'osg.Geometry': {
+	                                'PrimitiveSetList': [ {
+	                                    'DrawArrayLengths': {
+	                                        'First': 10,
+	                                        'Mode': 'TRIANGLES',
+	                                        'ArrayLengths': [ 3, 3, 3 ]
+	                                    }
+	                                } ],
+	                                'VertexAttributeList': {}
+	                            }
+	                        } ]
+	                    }
+	                }, {
+	                    'osg.Node': {
+	                        'UniqueID': 16,
+	                        'Name': 'cessna',
+	                        'Children': []
+	                    }
+	                } ]
+	            }
+	        };
+	
+	        ( new Input() ).setJSON( tree ).readObject().then( function ( result ) {
+	            console.log( result.getChildren()[ 0 ].getName() );
+	            ok( result.getChildren()[ 0 ].getName() === 'cow', 'the first node should be cow' );
+	            ok( result.getChildren()[ 1 ].getName() === 'cessna', 'the second node should be cessna' );
+	            start();
+	        } );
+	    } );
+	};
+
+
+/***/ }),
+/* 295 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var P = __webpack_require__( 48 );
+	var DatabasePager = __webpack_require__( 122 );
+	var PagedLOD = __webpack_require__( 66 );
+	var Node = __webpack_require__( 24 );
+	var FrameStamp = __webpack_require__( 84 );
+	var Notify = __webpack_require__( 10 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgDB' );
+	    var dbpager = new DatabasePager();
+	    // Modify the processRequest Method to add a defer variable to test it easily.
+	    dbpager.processRequest = function ( dbrequest ) {
+	        this._loading = true;
+	        var that = this;
+	        // This defer variable is here only to be able to do unitary testing
+	        var defer = P.defer();
+	        // Check if the request is valid;
+	        if ( dbrequest._groupExpired ) {
+	            //Notify.log( 'DatabasePager::processRequest() Request expired.' );
+	            that._downloadingRequestsNumber--;
+	            this._loading = false;
+	            return;
+	        }
+	
+	        // Load from function
+	        if ( dbrequest._function !== undefined ) {
+	            this.loadNodeFromFunction( dbrequest._function, dbrequest._group ).then( function ( child ) {
+	                that._downloadingRequestsNumber--;
+	                dbrequest._loadedModel = child;
+	                that._pendingNodes.push( dbrequest );
+	                that._loading = false;
+	                defer.resolve();
+	            } );
+	        } else if ( dbrequest._url !== '' ) { // Load from URL
+	            this.loadNodeFromURL( dbrequest._url ).then( function ( child ) {
+	                that._downloadingRequestsNumber--;
+	                dbrequest._loadedModel = child;
+	                that._pendingNodes.push( dbrequest );
+	                that._loading = false;
+	                defer.resolve();
+	            } );
+	        }
+	        return defer.promise;
+	    };
+	
+	    QUnit.asyncTest( 'DatabasePager.requestNodeFile', function () {
+	        dbpager.reset();
+	        var fn = function createNode( /*parent*/) {
+	            var n = new Node();
+	            return n;
+	        };
+	        var plod = new PagedLOD();
+	        plod.setFunction( 0, fn );
+	        plod.setRange( 0, 0, 200 );
+	        var request = dbpager.requestNodeFile( fn, '', plod, 1 );
+	        ok( dbpager._pendingRequests.length === 1, 'Node requested' );
+	        dbpager.processRequest( request ).then( function () {
+	            start();
+	            ok( dbpager._pendingNodes.length === 1, 'Request processed' );
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'DatabasePager.addLoadedDataToSceneGraph', function () {
+	        dbpager.reset();
+	        var fn = function createNode( /*parent*/) {
+	            var n = new PagedLOD();
+	            return n;
+	        };
+	        var plod = new PagedLOD();
+	        plod.setFunction( 0, fn );
+	        plod.setRange( 0, 0, 200 );
+	        var request = dbpager.requestNodeFile( fn, '', plod, 1 );
+	
+	        ok( dbpager._pendingRequests.length === 1, 'Node requested' );
+	        dbpager.processRequest( request ).then( function () {
+	            start();
+	            dbpager.addLoadedDataToSceneGraph( new FrameStamp(), 0.005 );
+	            ok( dbpager._activePagedLODList.size === 2, 'we should have two plods active' );
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	    QUnit.asyncTest( 'DatabasePager.removeExpiredChildren', function () {
+	        dbpager.reset();
+	        dbpager.setTargetMaximumNumberOfPageLOD( 1 );
+	        var fn = function createNode( /*parent*/) {
+	            var n = new PagedLOD();
+	            return n;
+	        };
+	        var plod = new PagedLOD();
+	        plod.setFunction( 0, fn );
+	        plod.setRange( 0, 0, 200 );
+	        var request = dbpager.requestNodeFile( fn, '', plod, 1 );
+	        var frameStamp = new FrameStamp();
+	        ok( dbpager._pendingRequests.length === 1, 'Node requested' );
+	        dbpager.processRequest( request ).then( function () {
+	            start();
+	            dbpager.addLoadedDataToSceneGraph( frameStamp );
+	            frameStamp.setSimulationTime( 10 );
+	            frameStamp.setFrameNumber( 10 );
+	            dbpager.removeExpiredSubgraphs( frameStamp );
+	            ok( dbpager._activePagedLODList.size === 1, 'we should have the root plod active' );
+	            ok( dbpager._childrenToRemoveList.size === 1, 'we should have the child plod marked to be deleted' );
+	        } ).catch( function ( error ) {
+	            Notify.error( error );
+	        } );
+	    } );
+	
+	
+	};
+
+
+/***/ }),
+/* 296 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var FirstPersonManipulator = __webpack_require__( 297 );
+	var OrbitManipulator = __webpack_require__( 298 );
+	
+	
+	module.exports = function () {
+	    FirstPersonManipulator();
+	    OrbitManipulator();
+	};
+
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var FirstPersonManipulator = __webpack_require__( 146 );
+	var Camera = __webpack_require__( 22 );
+	var Vec3 = __webpack_require__( 17 );
+	var Quat = __webpack_require__( 30 );
+	var Matrix = __webpack_require__( 28 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgGA' );
+	
+	    QUnit.test( 'FirstPersonManipulator', function () {
+	        var manipulator = new FirstPersonManipulator();
+	        var matrix = manipulator.getInverseMatrix();
+	        ok( matrix !== undefined, 'check getInverseMatrix method' );
+	    } );
+	
+	    QUnit.test( 'FirstPersonManipulator check controllers', function () {
+	        var manipulator = new FirstPersonManipulator();
+	        var list = manipulator.getControllerList();
+	        ok( list.StandardMouseKeyboard !== undefined, 'check mouse support' );
+	    } );
+	
+	
+	    QUnit.test( 'FirstPersonManipulator check computation', function () {
+	        var manipulator = new FirstPersonManipulator();
+	
+	        var fakeFS = {
+	            getFrameStamp: function () {
+	                return {
+	                    getDeltaTime: function () {
+	                        return 0.0;
+	                    }
+	                };
+	            }
+	        };
+	
+	        manipulator.setCamera( new Camera() );
+	
+	        var eye = Vec3.create();
+	        var target = Vec3.create();
+	        manipulator.getEyePosition( eye );
+	        manipulator.getTarget( target );
+	
+	        mockup.near( eye, [ 0, 25, 10 ], 1e-5, 'check default eye position' );
+	        mockup.near( target, [ 0, 26, 10 ], 1e-5, 'check default target' );
+	        mockup.near( manipulator.getDistance(), 1, 1e-5, 'check default distance' );
+	
+	        manipulator.update( fakeFS );
+	        mockup.near( manipulator.getInverseMatrix(), [ 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, -10, 25, 1 ], 1e-5, 'check matrix result' );
+	
+	
+	        manipulator.setTarget( [ 10, 10, 10 ] );
+	        manipulator.update( fakeFS );
+	        mockup.near( manipulator.getInverseMatrix(), [ -0.8320502943378436, 0, -0.5547001962252293, 0, -0.5547001962252293, 0, 0.8320502943378436, 0, 0, 1, 0, 0, 13.867504905630732, -10, -20.80125735844609, 1 ], 1e-5, 'check matrix result' );
+	
+	
+	        manipulator.computeRotation( 100.0, 0.4 );
+	        manipulator.update( fakeFS );
+	        mockup.near( manipulator.getInverseMatrix(), [ 0.017205427761774566, 0.003999397237610259, -0.9998439768670262, 0, -0.9998519756721663, 0.0000688215275227005, -0.017205290118536, 0, 4.41812385287843e-18, 0.9999920000106668, 0.003999989333342668, 0, 24.996299391804158, -10.001640538294735, 0.3901323596299733, 1 ], 1e-5, 'check matrix result' );
+	
+	    } );
+	
+	
+	};
+
+
+/***/ }),
+/* 298 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var OrbitManipulator = __webpack_require__( 131 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgGA' );
+	
+	    QUnit.test( 'OrbitManipulator', function () {
+	        var manipulator = new OrbitManipulator();
+	        var matrix = manipulator.getInverseMatrix();
+	        ok( matrix !== undefined, 'check getInverseMatrix method' );
+	    } );
+	
+	    QUnit.test( 'OrbitManipulator check controllers', function () {
+	        var manipulator = new OrbitManipulator();
+	        var list = manipulator.getControllerList();
+	        ok( list.StandardMouseKeyboard !== undefined, 'check mouse support' );
+	        ok( list.Hammer !== undefined, 'check hammer support' );
+	        ok( list.LeapMotion !== undefined, 'check leap motion support' );
+	        ok( list.GamePad !== undefined, 'check game pad support' );
+	    } );
+	};
+
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var LineSegmentIntersector = __webpack_require__( 300 );
+	var TriangleIntersector = __webpack_require__( 301 );
+	var PolytopeIntersector = __webpack_require__( 302 );
+	var IntersectionVisitor = __webpack_require__( 303 );
+	
+	
+	module.exports = function () {
+	    LineSegmentIntersector();
+	    TriangleIntersector();
+	    PolytopeIntersector();
+	    IntersectionVisitor();
+	};
+
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var IntersectionVisitor = __webpack_require__( 140 );
+	var LineSegmentIntersector = __webpack_require__( 141 );
+	var KdTreeBuilder = __webpack_require__( 92 );
+	var BoundingSphere = __webpack_require__( 19 );
+	var Camera = __webpack_require__( 22 );
+	var Viewport = __webpack_require__( 103 );
+	var Matrix = __webpack_require__( 28 );
+	var MatrixTransform = __webpack_require__( 36 );
+	var Shape = __webpack_require__( 98 );
+	var View = __webpack_require__( 200 );
+	var ReaderParser = __webpack_require__( 42 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgUtil' );
+	
+	    QUnit.test( 'LineSegmentIntersector simple test', function () {
+	        var lsi = new LineSegmentIntersector();
+	        var bs = new BoundingSphere();
+	        bs.set( [ 4.0, 2.0, 0.0 ], 2.0 );
+	
+	        // start right on the edge
+	        lsi.set( [ 2.0, 2.0, 0.0 ], [ -1.0, 2.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        // end right on edge
+	        lsi.set( [ 2.0, 0.0, 0.0 ], [ 4.0, 0.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        // line right on edge
+	        lsi.set( [ 2.0, 0.0, 0.0 ], [ 4.0, 0.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        lsi.set( [ 2.0, 0.0, 0.0 ], [ 3.0, 1.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        lsi.set( [ 0.0, 2.0, 0.0 ], [ 1.9, 2.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( !lsi.intersects( bs ), 'hit failed' );
+	
+	        lsi.set( [ 0.0, 2.0, 0.0 ], [ 2.1, 2.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        lsi.set( [ 5.0, 1.0, 0.0 ], [ 6.0, 0.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( lsi.intersects( bs ), 'hit success' );
+	
+	        lsi.set( [ 1.0, 1.0, 0.0 ], [ 2.0, 3.0, 0.0 ] );
+	        lsi.setCurrentTransformation( Matrix.create() );
+	        ok( !lsi.intersects( bs ), 'hit failed' );
+	    } );
+	
+	    QUnit.test( 'LineSegmentIntersector without 2 branches', function () {
+	
+	        // right branch should be picked
+	        // left branch shouldn't be picked
+	        //
+	        // MatrixTransform  (-10 -10 -10)
+	        //     /    \
+	        //    |     MatrixTransform (10 10 10)
+	        //     \   /
+	        //     Scene
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        var scene = Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	        var tr1 = new MatrixTransform();
+	        Matrix.makeTranslate( 10, 10, 10, tr1.getMatrix() );
+	        tr1.addChild( scene );
+	
+	        var mrot = new MatrixTransform();
+	        Matrix.makeTranslate( -10, -10, -10, mrot.getMatrix() );
+	        mrot.addChild( tr1 );
+	        mrot.addChild( scene );
+	
+	        camera.addChild( mrot );
+	
+	        var lsi = new LineSegmentIntersector();
+	        lsi.set( [ 400, 300, 0.0 ], [ 400, 300, 1.0 ] );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( lsi );
+	        camera.accept( iv );
+	        ok( lsi._intersections.length === 1, 'Hits should be 1 and result is ' + lsi._intersections.length );
+	        ok( lsi._intersections[ 0 ].nodepath.length === 4, 'NodePath should be 4 and result is ' + lsi._intersections[ 0 ].nodepath.length );
+	
+	    } );
+	
+	    QUnit.test( 'LineSegmentIntersector without kdtree', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        var scene = Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	        camera.addChild( scene );
+	        var lsi = new LineSegmentIntersector();
+	        lsi.set( [ 400, 300, 0.0 ], [ 400, 300, 1.0 ] );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( lsi );
+	        camera.accept( iv );
+	        ok( lsi._intersections.length === 1, 'Hits should be 1 and result is ' + lsi._intersections.length );
+	        ok( lsi._intersections[ 0 ].nodepath.length === 2, 'NodePath should be 2 and result is ' + lsi._intersections[ 0 ].nodepath.length );
+	
+	    } );
+	
+	    QUnit.test( 'LineSegmentIntersector without kdtree', function () {
+	
+	        var view = new View();
+	        view.getCamera().setViewport( new Viewport() );
+	        view.getCamera().setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ] ), [] );
+	        view.getCamera().setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        // TODO it uses the old sync parseSceneGraphDeprecated
+	        var quad = ReaderParser.parseSceneGraph( mockup.getScene() );
+	        view.setSceneData( quad );
+	
+	        var result = view.computeIntersections( 400, 300 );
+	        ok( result.length === 1, 'Hits should be 1 and result is ' + result.length );
+	    } );
+	
+	    QUnit.test( 'LineSegmentIntersector with kdtree', function () {
+	        // This test will never work with kdtree
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        var scene = Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	        camera.addChild( scene );
+	        var treeBuilder = new KdTreeBuilder( {
+	            _numVerticesProcessed: 0,
+	            _targetNumTrianglesPerLeaf: 1,
+	            _maxNumLevels: 20
+	        } );
+	        treeBuilder.apply( scene );
+	
+	        var lsi = new LineSegmentIntersector();
+	        lsi.set( [ 400, 300, 0.0 ], [ 400, 300, 1.0 ] );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( lsi );
+	        camera.accept( iv );
+	        ok( lsi._intersections.length === 1, 'Intersections should be 1 and result is ' + lsi._intersections.length );
+	        ok( lsi._intersections[ 0 ].nodepath.length === 2, 'NodePath should be 2 and result is ' + lsi._intersections[ 0 ].nodepath.length );
+	    } );
+	
+	    QUnit.test( 'LineSegmentIntersector with kdtree', function () {
+	
+	        var view = new View();
+	        view.getCamera().setViewport( new Viewport() );
+	        view.getCamera().setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ] ), [] );
+	        view.getCamera().setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        // TODO it uses the old sync parseSceneGraphDeprecated
+	        var root = ReaderParser.parseSceneGraph( mockup.getScene() );
+	        view.setSceneData( root );
+	
+	        var treeBuilder = new KdTreeBuilder( {
+	            _numVerticesProcessed: 0,
+	            _targetNumTrianglesPerLeaf: 50,
+	            _maxNumLevels: 20
+	        } );
+	        treeBuilder.apply( root );
+	
+	        var result = view.computeIntersections( 400, 300 );
+	        ok( result.length === 1, 'Hits should be 1 and result is ' + result.length );
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 301 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var TriangleIntersector = __webpack_require__( 89 );
+	var Vec3 = __webpack_require__( 17 );
+	var Shape = __webpack_require__( 98 );
+	var DrawElements = __webpack_require__( 45 );
+	var DrawArrays = __webpack_require__( 44 );
+	var PrimitiveSet = __webpack_require__( 43 );
+	var BufferArray = __webpack_require__( 20 );
+	var Geometry = __webpack_require__( 35 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgUtil' );
+	
+	    QUnit.test( 'TriangleIntersector', function () {
+	
+	        var checkPrimitive = function ( geom, msg ) {
+	            var ti = new TriangleIntersector();
+	            var start = [ 0.4, 0.2, -2.0 ];
+	            var end = [ 0.4, 0.2, 0.5 ];
+	            var dir = Vec3.sub( end, start, [] );
+	            ti.set( start, end );
+	
+	            ti.apply( geom );
+	            ok( ti._intersections.length === 1, msg + ' Intersections should be 1 and result is ' + ti._intersections.length );
+	            var result = [ 0.4, 0.2, 0 ];
+	            var found = Vec3.add( start,
+	                Vec3.mult( dir, ti._intersections[ 0 ].ratio, [] ), [] );
+	            mockup.near( found, result, 1e-4 );
+	
+	            var ti2 = new TriangleIntersector();
+	            ti2.set( [ 1.5, 0.2, -0.5 ], [ 1.5, 0.2, 0.5 ] );
+	            ti2.apply( geom );
+	            ok( ti2._intersections.length === 0, msg + ' Intersections should be 0 ' + ti2._intersections.length );
+	        };
+	
+	        ( function () {
+	            // triangles
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	            checkPrimitive( quad, 'Triangles indexed' );
+	        } )();
+	
+	        ( function () {
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	            var indexes = [];
+	            indexes[ 0 ] = 0;
+	            indexes[ 1 ] = 1;
+	            indexes[ 2 ] = 3;
+	            indexes[ 3 ] = 2;
+	
+	            var primitive = new DrawElements( PrimitiveSet.TRIANGLE_STRIP, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	            quad.getPrimitives()[ 0 ] = primitive;
+	            checkPrimitive( quad, 'TriangleStrip indexed' );
+	        } )();
+	
+	
+	        ( function () {
+	            var quad = Shape.createTexturedQuadGeometry( 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 );
+	
+	            var indexes = [];
+	            indexes[ 0 ] = 0;
+	            indexes[ 1 ] = 1;
+	            indexes[ 2 ] = 2;
+	            indexes[ 3 ] = 3;
+	
+	            var primitive = new DrawElements( PrimitiveSet.TRIANGLE_FAN, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	            quad.getPrimitives()[ 0 ] = primitive;
+	            checkPrimitive( quad, 'TriangleFan indexed' );
+	        } )();
+	
+	
+	        ( function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx + hx;
+	            vertexes[ 1 ] = cornery + hy;
+	            vertexes[ 2 ] = cornerz + hz;
+	
+	            vertexes[ 3 ] = cornerx;
+	            vertexes[ 4 ] = cornery;
+	            vertexes[ 5 ] = cornerz;
+	
+	            vertexes[ 6 ] = cornerx + wx;
+	            vertexes[ 7 ] = cornery + wy;
+	            vertexes[ 8 ] = cornerz + wz;
+	
+	            vertexes[ 9 ] = cornerx + hx;
+	            vertexes[ 10 ] = cornery + hy;
+	            vertexes[ 11 ] = cornerz + hz;
+	
+	            vertexes[ 12 ] = cornerx + wx;
+	            vertexes[ 13 ] = cornery + wy;
+	            vertexes[ 14 ] = cornerz + wz;
+	
+	            vertexes[ 15 ] = cornerx + wx + hx;
+	            vertexes[ 16 ] = cornery + wy + hy;
+	            vertexes[ 17 ] = cornerz + wz + hz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLES, 0, 6 );
+	            quad.getPrimitives().push( primitive );
+	            checkPrimitive( quad, 'Triangles not indexed' );
+	        } )();
+	
+	
+	        ( function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx + hx;
+	            vertexes[ 1 ] = cornery + hy;
+	            vertexes[ 2 ] = cornerz + hz;
+	
+	            vertexes[ 3 ] = cornerx;
+	            vertexes[ 4 ] = cornery;
+	            vertexes[ 5 ] = cornerz;
+	
+	            vertexes[ 6 ] = cornerx + wx + hx;
+	            vertexes[ 7 ] = cornery + wy + hy;
+	            vertexes[ 8 ] = cornerz + wz + hz;
+	
+	            vertexes[ 9 ] = cornerx + wx;
+	            vertexes[ 10 ] = cornery + wy;
+	            vertexes[ 11 ] = cornerz + wz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLE_STRIP, 0, 4 );
+	            quad.getPrimitives().push( primitive );
+	            checkPrimitive( quad, 'TriangleStrip not indexed' );
+	        } )();
+	
+	        ( function () {
+	            var cornerx = 0,
+	                cornery = 0,
+	                cornerz = 0;
+	            var wx = 1,
+	                wy = 0,
+	                wz = 0;
+	            var hx = 0,
+	                hy = 1,
+	                hz = 0;
+	            var quad = new Geometry();
+	
+	            var vertexes = [];
+	            vertexes[ 0 ] = cornerx + hx;
+	            vertexes[ 1 ] = cornery + hy;
+	            vertexes[ 2 ] = cornerz + hz;
+	
+	            vertexes[ 3 ] = cornerx;
+	            vertexes[ 4 ] = cornery;
+	            vertexes[ 5 ] = cornerz;
+	
+	            vertexes[ 6 ] = cornerx + wx;
+	            vertexes[ 7 ] = cornery + wy;
+	            vertexes[ 8 ] = cornerz + wz;
+	
+	            vertexes[ 9 ] = cornerx + wx + hx;
+	            vertexes[ 10 ] = cornery + wy + hy;
+	            vertexes[ 11 ] = cornerz + wz + hz;
+	
+	            quad.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	            var primitive = new DrawArrays( PrimitiveSet.TRIANGLE_FAN, 0, 4 );
+	            quad.getPrimitives().push( primitive );
+	            checkPrimitive( quad, 'TriangleFan not indexed' );
+	        } )();
+	
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 302 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var MACROUTILS = __webpack_require__( 6 );
+	var mockup = __webpack_require__( 241 );
+	var IntersectionVisitor = __webpack_require__( 140 );
+	var PolytopeIntersector = __webpack_require__( 142 );
+	var Camera = __webpack_require__( 22 );
+	var Viewport = __webpack_require__( 103 );
+	var Matrix = __webpack_require__( 28 );
+	var Geometry = __webpack_require__( 35 );
+	var BufferArray = __webpack_require__( 20 );
+	var DrawElements = __webpack_require__( 45 );
+	var DrawArrays = __webpack_require__( 44 );
+	var PrimitiveSet = __webpack_require__( 43 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgUtil' );
+	
+	    QUnit.test( 'PolytopeIntersector intersectPoints', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var scene = createPoints();
+	        camera.addChild( scene );
+	        var pi = new PolytopeIntersector();
+	
+	        // xMin, yMin, xMax, yMax
+	        pi.setPolytopeFromWindowCoordinates( 395, 295, 405, 305 );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( pi );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	        ok( pi._intersections[ 0 ].nodePath.length === 2, 'NodePath should be 2 and result is ' + pi._intersections[ 0 ].nodePath.length );
+	        ok( pi._intersections[ 0 ]._numPoints === 1, 'numPoints should be 1 and result is ' + pi._intersections[ 0 ]._numPoints );
+	        mockup.near( pi._intersections[ 0 ]._points[ 0 ], [ 0.0, 0.0, 0.0 ] );
+	        pi.reset();
+	        // Test also setPolytope method, we do a bigger polytope so all the points should be inside
+	        pi.setPolytope( [
+	            [ 1.0, 0.0, 0.0, -350 ],
+	            [ -1.0, 0.0, 0.0, 450 ],
+	            [ 0.0, 1.0, 0.0, -250 ],
+	            [ 0.0, -1.0, 0.0, 350 ],
+	            [ 0.0, 0.0, 1.0, 0.0 ]
+	        ] );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 3, 'Hits should be 3 and result is ' + pi._intersections.length );
+	        ok( pi._intersections[ 0 ].nodePath.length === 2, 'NodePath should be 2 and result is ' + pi._intersections[ 0 ].nodePath.length );
+	        mockup.near( pi._intersections[ 0 ]._points[ 0 ], [ -0.2, 0.2, 0 ] );
+	        mockup.near( pi._intersections[ 1 ]._points[ 0 ], [ 0.0, 0.0, 0 ] );
+	        mockup.near( pi._intersections[ 2 ]._points[ 0 ], [ 0.2, 0.2, 0 ] );
+	        pi.reset();
+	        // Test also setPolytope method, we do a bigger polytope so all the points should be inside
+	        pi.setPolytope( [
+	            [ 1.0, 0.0, 0.0, -350 ],
+	            [ -1.0, 0.0, 0.0, 450 ],
+	            [ 0.0, 1.0, 0.0, -250 ],
+	            [ 0.0, -1.0, 0.0, 350 ],
+	            [ 0.0, 0.0, 1.0, 0.0 ]
+	        ] );
+	        pi.setIntersectionLimit( PolytopeIntersector.LIMIT_ONE );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	        // Test dimension mask
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.DimOne );
+	        pi.setIntersectionLimit( PolytopeIntersector.LIMIT_ONE );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 0, 'Hits should be 0 and result is ' + pi._intersections.length );
+	
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.DimZero );
+	        pi.setIntersectionLimit( PolytopeIntersector.LIMIT_ONE );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	
+	    } );
+	
+	    QUnit.test( 'PolytopeIntersector intersectLines', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var scene = createLines( PrimitiveSet.LINES );
+	        camera.addChild( scene );
+	        var pi = new PolytopeIntersector();
+	
+	        pi.setPolytopeFromWindowCoordinates( 395, 295, 405, 305 );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( pi );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	        ok( pi._intersections[ 0 ].nodePath.length === 2, 'NodePath should be 2 and result is ' + pi._intersections[ 0 ].nodePath.length );
+	        ok( pi._intersections[ 0 ]._numPoints === 3, 'numPoints should be 3 and result is ' + pi._intersections[ 0 ]._numPoints );
+	        mockup.near( pi._intersections[ 0 ]._center, [ -0.06415, 0.06415, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 0 ], [ -0.096225, 0.096225, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 1 ], [ -0.096225, 0.096225, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 2 ], [ 0.0, 0.0, 0.0 ] );
+	        // Test dimension masks
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.DimZero );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 0, 'Hits should be 0 and result is ' + pi._intersections.length );
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.DimOne );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	    } );
+	
+	    QUnit.test( 'PolytopeIntersector intersectLineStrip', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var scene = createLines( PrimitiveSet.LINE_STRIP );
+	        camera.addChild( scene );
+	        var pi = new PolytopeIntersector();
+	
+	        pi.setPolytopeFromWindowCoordinates( 395, 295, 405, 305 );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( pi );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 2, 'Hits should be 2 and result is ' + pi._intersections.length );
+	        ok( pi._intersections[ 0 ].nodePath.length === 2, 'NodePath should be 2 and result is ' + pi._intersections[ 0 ].nodePath.length );
+	        mockup.near( pi._intersections[ 0 ]._center, [ -0.06415, 0.06415, 0 ] );
+	    } );
+	
+	    QUnit.test( 'PolytopeIntersector intersectTriangle', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var scene = createTriangle();
+	        camera.addChild( scene );
+	        var pi = new PolytopeIntersector();
+	
+	        pi.setPolytopeFromWindowCoordinates( 395, 295, 405, 305 );
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( pi );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	        ok( pi._intersections[ 0 ].nodePath.length === 2, 'NodePath should be 2 and result is ' + pi._intersections[ 0 ].nodePath.length );
+	        ok( pi._intersections[ 0 ]._numPoints === 4, 'numPoints should be 4 and result is ' + pi._intersections[ 0 ]._numPoints );
+	        mockup.near( pi._intersections[ 0 ]._points[ 0 ], [ 0.096225, 0.096225, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 1 ], [ -0.096225, 0.096225, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 2 ], [ -0.096225, 0.096225, 0 ] );
+	        mockup.near( pi._intersections[ 0 ]._points[ 3 ], [ 0.096225, 0.096225, 0 ] );
+	        // Test dimension mask
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.DimZero );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 0, 'Hits should be 0 and result is ' + pi._intersections.length );
+	        // Test polytope going trough the triangle without containing any point of it
+	        pi.reset();
+	        pi.setDimensionMask( PolytopeIntersector.AllDims );
+	        pi.setPolytopeFromWindowCoordinates( 415, 305, 416, 306 );
+	        camera.accept( iv );
+	        ok( pi._intersections.length === 1, 'Hits should be 1 and result is ' + pi._intersections.length );
+	    } );
+	
+	    var createPoints = function () {
+	
+	        var g = new Geometry();
+	
+	        var vertexes = new MACROUTILS.Float32Array( 9 );
+	        vertexes[ 0 ] = 0;
+	        vertexes[ 1 ] = 0;
+	        vertexes[ 2 ] = 0;
+	
+	        vertexes[ 3 ] = 0.2;
+	        vertexes[ 4 ] = 0.2;
+	        vertexes[ 5 ] = 0.0;
+	
+	        vertexes[ 6 ] = -0.2;
+	        vertexes[ 7 ] = 0.2;
+	        vertexes[ 8 ] = 0.0;
+	
+	        var normal = new MACROUTILS.Float32Array( 9 );
+	        normal[ 0 ] = 0;
+	        normal[ 1 ] = 0;
+	        normal[ 2 ] = 1;
+	
+	        normal[ 3 ] = 0;
+	        normal[ 4 ] = 0;
+	        normal[ 5 ] = 1;
+	
+	        normal[ 6 ] = 0;
+	        normal[ 7 ] = 0;
+	        normal[ 8 ] = 1;
+	
+	        var indexes = new MACROUTILS.Uint16Array( 3 );
+	        indexes[ 0 ] = 2;
+	        indexes[ 1 ] = 0;
+	        indexes[ 2 ] = 1;
+	
+	
+	        g.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	        g.getAttributes().Normal = new BufferArray( BufferArray.ARRAY_BUFFER, normal, 3 );
+	
+	        //var primitive = new DrawArrays( PrimitiveSet.POINTS , 0, vertexes.length/3 );
+	        var primitive = new DrawElements( PrimitiveSet.POINTS, new BufferArray( BufferArray.ELEMENT_ARRAY_BUFFER, indexes, 1 ) );
+	        g.getPrimitives().push( primitive );
+	        return g;
+	    };
+	
+	    var createLines = function ( lineType ) {
+	        var g = new Geometry();
+	        var vertexes = new MACROUTILS.Float32Array( 12 );
+	        vertexes[ 0 ] = -2.0;
+	        vertexes[ 1 ] = 2.0;
+	        vertexes[ 2 ] = 0.0;
+	
+	        vertexes[ 3 ] = 0.0;
+	        vertexes[ 4 ] = 0.0;
+	        vertexes[ 5 ] = 0.0;
+	
+	        vertexes[ 6 ] = 2.0;
+	        vertexes[ 7 ] = 2.0;
+	        vertexes[ 8 ] = 0.0;
+	
+	        vertexes[ 9 ] = 4.0;
+	        vertexes[ 10 ] = 0.0;
+	        vertexes[ 11 ] = 0.0;
+	
+	        var normal = new MACROUTILS.Float32Array( 12 );
+	        normal[ 0 ] = 0;
+	        normal[ 1 ] = 0;
+	        normal[ 2 ] = 1;
+	
+	        normal[ 3 ] = 0;
+	        normal[ 4 ] = 0;
+	        normal[ 5 ] = 1;
+	
+	        normal[ 6 ] = 0;
+	        normal[ 7 ] = 0;
+	        normal[ 8 ] = 1;
+	
+	        normal[ 9 ] = 0;
+	        normal[ 10 ] = 0;
+	        normal[ 11 ] = 1;
+	
+	        g.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	        g.getAttributes().Normal = new BufferArray( BufferArray.ARRAY_BUFFER, normal, 3 );
+	
+	        var primitive = new DrawArrays( lineType, 0, vertexes.length / 3 );
+	        g.getPrimitives().push( primitive );
+	        return g;
+	    };
+	
+	    var createTriangle = function () {
+	        var g = new Geometry();
+	        var vertexes = new MACROUTILS.Float32Array( 9 );
+	        vertexes[ 0 ] = -2.0;
+	        vertexes[ 1 ] = 2.0;
+	        vertexes[ 2 ] = 0.0;
+	
+	        vertexes[ 3 ] = 0.0;
+	        vertexes[ 4 ] = 0.0;
+	        vertexes[ 5 ] = 0.0;
+	
+	        vertexes[ 6 ] = 2.0;
+	        vertexes[ 7 ] = 2.0;
+	        vertexes[ 8 ] = 0.0;
+	
+	
+	        var normal = new MACROUTILS.Float32Array( 9 );
+	        normal[ 0 ] = 0;
+	        normal[ 1 ] = 0;
+	        normal[ 2 ] = 1;
+	
+	        normal[ 3 ] = 0;
+	        normal[ 4 ] = 0;
+	        normal[ 5 ] = 1;
+	
+	        normal[ 6 ] = 0;
+	        normal[ 7 ] = 0;
+	        normal[ 8 ] = 1;
+	
+	        g.getAttributes().Vertex = new BufferArray( BufferArray.ARRAY_BUFFER, vertexes, 3 );
+	        g.getAttributes().Normal = new BufferArray( BufferArray.ARRAY_BUFFER, normal, 3 );
+	
+	        var primitive = new DrawArrays( PrimitiveSet.TRIANGLES, 0, vertexes.length / 3 );
+	        g.getPrimitives().push( primitive );
+	        return g;
+	    };
+	
+	};
+
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var IntersectionVisitor = __webpack_require__( 140 );
+	var Camera = __webpack_require__( 22 );
+	var Viewport = __webpack_require__( 103 );
+	var Matrix = __webpack_require__( 28 );
+	var Shape = __webpack_require__( 98 );
+	var TransformEnums = __webpack_require__( 33 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgUtil' );
+	
+	    var DummyIntersector = function () {
+	        this.point = [ 0.5, 0.5, 0.5 ];
+	        this.stackTransforms = [];
+	    };
+	
+	    DummyIntersector.prototype = {
+	        enter: function () {
+	            return true;
+	        },
+	        setCurrentTransformation: function ( matrix ) {
+	            Matrix.inverse( matrix, matrix );
+	            this.stackTransforms.push( Matrix.transformVec3( matrix, this.point, [ 0.0, 0.0, 0.0 ] ) );
+	        },
+	        intersect: function () {
+	            return true;
+	        }
+	    };
+	
+	    QUnit.test( 'IntersectionVisitor with 1 camera', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        camera.addChild( Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 ) );
+	
+	        var di = new DummyIntersector();
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( di );
+	        camera.accept( iv );
+	
+	        ok( mockup[ 'checkNear' ]( di.stackTransforms[ 0 ], [ 0.1536, -0.1152, -9.8002 ], 0.001 ), 'check end transform point' );
+	    } );
+	
+	    QUnit.test( 'IntersectionVisitor with second relative camera', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var camera2 = new Camera();
+	        camera2.setViewport( new Viewport() );
+	        camera2.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera2.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        camera2.addChild( Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 ) );
+	
+	        camera.addChild( camera2 );
+	
+	        var di = new DummyIntersector();
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( di );
+	        camera.accept( iv );
+	
+	        ok( mockup[ 'checkNear' ]( di.stackTransforms[ 1 ], [ -0.0197, -0.0111, -0.1666 ], 0.001 ), 'check end transform point' );
+	    } );
+	
+	    QUnit.test( 'IntersectionVisitor with second absolute camera', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	
+	        var camera2 = new Camera();
+	        camera2.setReferenceFrame( TransformEnums.ABSOLUTE_RF );
+	        camera2.setViewport( new Viewport() );
+	        camera2.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera2.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        camera2.addChild( Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 ) );
+	
+	        camera.addChild( camera2 );
+	
+	        var di = new DummyIntersector();
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( di );
+	        camera.accept( iv );
+	
+	        ok( mockup[ 'checkNear' ]( di.stackTransforms[ 1 ], [ 0.1536, -0.1152, -9.8002 ], 0.001 ), 'check end transform point' );
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 304 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var View = __webpack_require__( 305 );
+	var Viewer = __webpack_require__( 306 );
+	
+	
+	module.exports = function () {
+	    View();
+	    Viewer();
+	};
+
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var View = __webpack_require__( 200 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgViewer' );
+	
+	    QUnit.test( 'View', function () {
+	        var gc = 2;
+	        var view = new View();
+	        view.setGraphicContext( gc );
+	        ok( view.getGraphicContext() === 2, 'Check graphic context' );
+	
+	        ok( view.getFrameStamp() !== undefined, 'Check FrameStamp' );
+	
+	        ok( view.getScene() !== undefined, 'Check scene' );
+	        ok( view.getSceneData() === undefined, 'Check scene data' );
+	    } );
+	};
+
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var Viewer = __webpack_require__( 210 );
+	var Shape = __webpack_require__( 98 );
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgViewer' );
+	
+	    QUnit.test( 'Viewer', function () {
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            ok( viewer.getCamera() !== undefined, 'Check camera creation' );
+	            ok( viewer.getCamera().getViewport() !== undefined, 'Check camera viewport' );
+	            ok( viewer.getCamera().getRenderer() !== undefined, 'Check camera Renderer' );
+	
+	            viewer.init();
+	            ok( viewer._updateVisitor !== undefined, 'Check update visitor' );
+	            ok( viewer.getState().getGraphicContext() !== undefined, 'Check state graphic context' );
+	            mockup.removeCanvas( canvas );
+	        } )();
+	
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            var createScene = function () {
+	                return Shape.createTexturedBoxGeometry( 0, 0, 0,
+	                    10, 10, 10 );
+	            };
+	            viewer.init();
+	            viewer.setupManipulator();
+	
+	            viewer.setSceneData( createScene() );
+	            viewer.getCamera().getRenderer().draw = function () {}; // do nothing
+	            viewer.frame();
+	
+	            var cullvisitor = viewer.getCamera().getRenderer().getCullVisitor();
+	            // with auto compute near far
+	            equal( cullvisitor._computedFar, 31.300367553350508, 'check far' );
+	            equal( cullvisitor._computedNear, 18.6996324466495, 'check near' );
+	
+	            cullvisitor.reset();
+	            equal( cullvisitor._computedNear, Number.POSITIVE_INFINITY, 'Check near after reset' );
+	            equal( cullvisitor._computedFar, Number.NEGATIVE_INFINITY, 'Check far after reset' );
+	
+	            mockup.removeCanvas( canvas );
+	
+	        } )();
+	
+	        // test device
+	        ( function () {
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	            var args = {
+	                'devices': {
+	                    'Mouse': {
+	                        'eventNode': canvas
+	                    }
+	                }
+	            };
+	            var list = viewer.initEventProxy( args );
+	
+	            QUnit.notEqual( list.LeapMotion, undefined, 'detected leapmotion' );
+	            QUnit.notEqual( list.StandardMouseKeyboard, undefined, 'detected mouse' );
+	
+	            viewer.updateEventProxy( list, undefined );
+	            //ok(true, 'detected mouse');
+	
+	            mockup.removeCanvas( canvas );
+	
+	        } )();
+	
+	
+	        // test context lost
+	        ( function () {
+	
+	            var canvas = mockup.createCanvas();
+	            var viewer = new Viewer( canvas );
+	
+	            viewer.setContextLostCallback( function () {
+	                ok( true, 'detected contextLost Lost' );
+	            } );
+	
+	            window.cancelAnimationFrame = function () {
+	                ok( true, 'context lost does cancel render loop' );
+	            };
+	
+	            viewer.init();
+	
+	            var createScene = function () {
+	                return Shape.createTexturedBoxGeometry( 0, 0, 0,
+	                    10, 10, 10 );
+	            };
+	            viewer.setupManipulator();
+	            viewer.setSceneData( createScene() );
+	            viewer.getCamera().getRenderer().draw = function () {}; // do nothing
+	
+	            var renderCount = 0;
+	
+	            viewer.beginFrame = function () {
+	                renderCount++;
+	            };
+	
+	            viewer.setDone( false );
+	            viewer.requestRedraw();
+	            viewer.frame();
+	
+	            viewer.contextLost();
+	
+	            viewer.frame();
+	            ok( renderCount === 1, 'no render after context Lost' );
+	
+	        } )();
+	
+	
+	
+	
+	    } );
+	
+	};
+
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Compiler = __webpack_require__( 308 );
+	var ShaderGenerator = __webpack_require__( 309 );
+	
+	
+	module.exports = function () {
+	    Compiler();
+	    ShaderGenerator();
+	};
+
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Light = __webpack_require__( 93 );
+	var Material = __webpack_require__( 52 );
+	var Compiler = __webpack_require__( 155 );
+	var nodeFactory = __webpack_require__( 156 );
+	var ShadowReceiveAttribute = __webpack_require__( 227 );
+	var ShadowTexture = __webpack_require__( 229 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgShader' );
+	
+	    QUnit.test( 'Compiler', function () {
+	
+	        ( function () {
+	
+	            var light = new Light( 1 );
+	            var shadowReceiveAttribute = new ShadowReceiveAttribute( light.getLightNumber() );
+	            var shadowTexture = new ShadowTexture();
+	            shadowTexture.setLightUnit( light.getLightNumber() );
+	
+	            var material = new Material();
+	            var compiler = new Compiler( [ light, material, shadowReceiveAttribute ], [
+	                [ shadowTexture ]
+	            ] );
+	
+	            var root = compiler.createFragmentShaderGraph();
+	
+	            var extensions = compiler.evaluateAndGatherField( root, 'getExtensions' );
+	            ok( extensions.length === 0, 'Compiler Evaluate And Gather Field: defines rightly so' );
+	            var defines = compiler.evaluateAndGatherField( root, 'getDefines' );
+	            ok( defines.length === 1, 'Compiler Evaluate And Gather Field: defines rightly so' );
+	
+	
+	            var globalDecl = compiler.evaluateGlobalVariableDeclaration( root );
+	            ok( globalDecl.length > 1, 'Compiler Evaluate Global Variables output smth' );
+	
+	            globalDecl = globalDecl.split( '\n' );
+	            var hasDoublons = false;
+	            globalDecl.sort().filter( function ( item, pos ) {
+	                if ( !hasDoublons && item === globalDecl[ pos - 1 ] ) hasDoublons = true;
+	                return !pos || item !== globalDecl[ pos - 1 ];
+	            } );
+	            ok( !hasDoublons, 'Compiler Evaluate Global Variables Declaration output no doublons' );
+	
+	
+	            globalDecl = compiler.evaluateGlobalFunctionDeclaration( root );
+	            ok( globalDecl.length > 1, 'Compiler Evaluate Global Functions Declaration output smth' );
+	
+	            /*
+	             // sadly doesn't work as is for functions decl.
+	             // needs glsl parsing...
+	             var hasDoublons = false;
+	             globalDecl.sort().filter( function ( item, pos ) {
+	                if ( !hasDoublons && item === globalDecl[ pos - 1 ] ) hasDoublons = true;
+	                return !pos || item !== globalDecl[ pos - 1 ];
+	            } );
+	
+	            var globalDecl = compiler.evaluateGlobalFunctionDeclaration( root );
+	            ok( !hasDoublons, 'Compiler Evaluate Global Functions Declaration output no doublons' );
+	             */
+	
+	            var nodes = nodeFactory._nodes;
+	            var abstractNodeList = [];
+	            var variableNodeList = [];
+	            var realNodeList = [];
+	            nodes.forEach( function ( value /*, key, map*/ ) {
+	                var instance = Object.create( value.prototype );
+	                value.apply( instance );
+	                var t = instance.getType();
+	
+	                if ( instance.getName() === 'Variable' || ( instance.isUnique && instance.isUnique() ) ) {
+	                    variableNodeList.push( instance );
+	                } else if ( t && t !== '' ) {
+	                    realNodeList.push( t );
+	                } else {
+	                    abstractNodeList.push( instance );
+	                }
+	            } );
+	
+	            ok( abstractNodeList.length === 2, 'Abstract Shader Node count OK. (error here means if you added an abstract node that you need to change the number here, or if you added a new node, you forgot to add a unique type for its class MANDATORY)' );
+	
+	            //
+	            var realNodeListUniq = realNodeList.sort().filter( function ( item, pos ) {
+	                return !pos || item !== realNodeList[ pos - 1 ];
+	            } );
+	            ok( realNodeListUniq.length === realNodeList.length, 'Shader Node Type string duplicate check (type must be unique, MANDATORY for compilation)' );
+	
+	        } )();
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	var State = __webpack_require__( 100 );
+	var StateSet = __webpack_require__( 25 );
+	var Material = __webpack_require__( 52 );
+	var Shader = __webpack_require__( 97 );
+	var Program = __webpack_require__( 96 );
+	var Texture = __webpack_require__( 38 );
+	var ShaderGeneratorProxy = __webpack_require__( 160 );
+	
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgShader' );
+	
+	    QUnit.test( 'ShaderGenerator', function () {
+	
+	
+	        ( function () {
+	            var state = new State( new ShaderGeneratorProxy() );
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            fakeRenderer.validateProgram = function () {
+	                return true;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	            fakeRenderer.isContextLost = function () {
+	                return false;
+	            };
+	            state.setGraphicContext( fakeRenderer );
+	
+	            var stateSet0 = new StateSet();
+	            stateSet0.setAttributeAndModes( new Material() );
+	
+	            var stateSet1 = new StateSet();
+	            stateSet1.setTextureAttributeAndModes( 0, new Texture( undefined ) );
+	
+	            state.pushStateSet( stateSet0 );
+	            state.pushStateSet( stateSet1 );
+	            state.apply();
+	            ok( true, 'check not exception on material generator use' );
+	
+	        } )();
+	
+	        ( function () {
+	            var state = new State( new ShaderGeneratorProxy() );
+	            var fakeRenderer = mockup.createFakeRenderer();
+	            fakeRenderer.validateProgram = function () {
+	                return true;
+	            };
+	            fakeRenderer.getProgramParameter = function () {
+	                return true;
+	            };
+	            fakeRenderer.isContextLost = function () {
+	                return false;
+	            };
+	            state.setGraphicContext( fakeRenderer );
+	
+	            var stateSet = new StateSet();
+	
+	            function getShader() {
+	                var vertexshader = [
+	                    '',
+	                    'attribute vec3 Vertex;',
+	                    'varying vec4 position;',
+	                    'void main(void) {',
+	                    '  gl_Position = vec4(Vertex,1.0);',
+	                    '}'
+	                ].join( '\n' );
+	
+	                var fragmentshader = [
+	                    '',
+	                    'precision highp float;',
+	                    'varying vec4 position;',
+	                    'void main(void) {',
+	                    '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);',
+	                    '}',
+	                    ''
+	                ].join( '\n' );
+	
+	                var program = new Program(
+	                    new Shader( 'VERTEX_SHADER', vertexshader ),
+	                    new Shader( 'FRAGMENT_SHADER', fragmentshader ) );
+	
+	                program.trackAttributes = {};
+	                program.trackAttributes.attributeKeys = [];
+	
+	                return program;
+	            }
+	            stateSet.setAttributeAndModes( getShader() );
+	
+	
+	            state.pushStateSet( stateSet );
+	            state.apply();
+	            ok( true, 'check not exception on stateset generator use' );
+	
+	        } )();
+	
+	    } );
+	};
+
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var ShadowMap = __webpack_require__( 311 );
+	var ShadowedScene = __webpack_require__( 312 );
+	
+	
+	module.exports = function () {
+	    ShadowMap();
+	    ShadowedScene();
+	};
+
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var BoundingBox = __webpack_require__( 16 );
+	var Light = __webpack_require__( 93 );
+	var ShadowMap = __webpack_require__( 226 );
+	var ShadowSettings = __webpack_require__( 230 );
+	
+	
+	module.exports = function () {
+	    QUnit.module( 'osgShadow' );
+	
+	    var matrixCompare = function ( matrix1, matrix2 ) {
+	        for ( var i = 0; i < 16; i++ ) {
+	            if ( matrix1[ i ] !== matrix2[ i ] ) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    };
+	
+	    QUnit.test( 'ShadowedMap', function () {
+	
+	        var shadowSettings = new ShadowSettings();
+	        shadowSettings.light = new Light();
+	
+	        var shadowMap = new ShadowMap( shadowSettings );
+	        var frustumBound = new BoundingBox();
+	        var resultView, resultProj, resultNearFar;
+	
+	
+	        /// TEST SPOT
+	
+	
+	        //SPOT INSIDE BOUNDINGBOX
+	        frustumBound.expandByVec3( [ 8.9969263076782231, 6.6672196388244632, 10.771773338317871 ] );
+	        frustumBound.expandByVec3( [ -7.3858900070190431, -9.332790374755862, -0.39151200652122503 ] );
+	
+	        shadowMap._viewMatrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+	        shadowMap._projectionMatrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+	
+	        shadowMap.makePerspectiveFromBoundingBox( frustumBound,
+	            36, // spot cutoff
+	            [ 0, 0, 0, 0 ], //lightpos
+	            [ 0.11092425336790919, -0.8030704746216726, -0.5854687206040078, 1 ], // worldlightDir
+	            shadowMap._viewMatrix,
+	            shadowMap._projectionMatrix );
+	
+	        resultView = [ -0.990595079757442, 0.08010741523179432, -0.11092425336790919, 0, -0.13682612309185416, -0.5799624339822145, 0.8030704746216726, 0, 0, 0.8106949964038919, 0.5854687206040078, 0, 0, 0, 0, 1 ];
+	        resultProj = [ 1.3763819204711736, 0, 0, 0, 0, 1.3763819204711736, 0, 0, 0, 0, -1, -1, 0, 0, -0.1461688261717007, 0 ];
+	        resultNearFar = [ 0.07308441308585036, 14.61688261717007 ];
+	
+	
+	        console.log( shadowMap._viewMatrix, shadowMap._projectionMatrix, shadowMap._depthRange );
+	
+	
+	        ok( matrixCompare( shadowMap._viewMatrix, resultView ), 'correct view shadow matrix for spot light  inside scene Bbox' );
+	        ok( matrixCompare( shadowMap._projectionMatrix, resultProj ), 'correct projection shadow matrix for spot light inside scene Bbox' );
+	        ok( shadowMap._depthRange[ 0 ] === resultNearFar[ 0 ], 'correct near shadow  for spot light  inside scene Bbox' );
+	        ok( shadowMap._depthRange[ 1 ] === resultNearFar[ 1 ], 'correct near/far shadow  for spot light inside scene Bbox' );
+	
+	        //SPOT OUTSIDE BOUNDINGBOX
+	
+	
+	        frustumBound.expandByVec3( [ 8.9969263076782231, 6.6672196388244632, 10.771773338317871 ] );
+	        frustumBound.expandByVec3( [ -7.3858900070190431, -9.332790374755862, -0.391512006521225 ] );
+	
+	        shadowMap._viewMatrix = [ -0.990595079757442, 0.08010741523179432, -0.11092425336790919, 0, -0.13682612309185416, -0.5799624339822145, 0.8030704746216726, 0, 0, 0.8106949964038919, 0.5854687206040078, 0, 2.482286486135774, -0.6856442836475978, -23.687648846577943, 1 ];
+	        shadowMap._projectionMatrix = [ 1.0071318580002284, 0, 0, 0, 0, 1.0071318580002284, 0, 0, 0, 0, -1, -1, 0, 0, -25.65748079205765, 0 ];
+	
+	        shadowMap.makePerspectiveFromBoundingBox( frustumBound, 52, [ 17, 15, 32, 0 ], //lightpos
+	            [ 0.11092425336790919, -0.8030704746216726, -0.5854687206040078, 1 ], // worldlightDir
+	            shadowMap._viewMatrix,
+	            shadowMap._projectionMatrix );
+	
+	        resultView = [ -0.990595079757442, 0.08010741523179432, -0.11092425336790919, 0, -0.13682612309185416, -0.5799624339822145, 0.8030704746216726, 0, 0, 0.8106949964038919, 0.5854687206040078, 0, 18.892508202254326, -18.604629434131823, -28.89534387139888, 1 ];
+	        resultProj = [ 1.4159666620679765, 0, 0, 0, 0, 1.4159666620679765, 0, 0, 0, 0, -1, -1, 0, 0, -36.07287084169951, 0 ];
+	        resultNearFar = [ 18.036435420849756, 43.51222648856895 ];
+	
+	
+	        ok( matrixCompare( shadowMap._viewMatrix, resultView ), 'correct view shadow matrix for spot light outside scene Bbox' );
+	        ok( matrixCompare( shadowMap._projectionMatrix, resultProj ), 'correct projection shadow matrix for spot light outside scene Bbox' );
+	        ok( shadowMap._depthRange[ 0 ] === resultNearFar[ 0 ], 'correct near shadow  for spot light outside scene Bbox' );
+	        ok( shadowMap._depthRange[ 1 ] === resultNearFar[ 1 ], 'correct near/far shadow  for spot light outside scene Bbox' );
+	
+	        ///////////////////////////////////////////////////////////
+	        /// TEST Directional
+	
+	
+	
+	
+	        // DIRECTIONAL LOOKING DOWN
+	        frustumBound.expandByVec3( [ 8.996926307678223, 6.667219638824462, 10.77177333831787 ] );
+	        frustumBound.expandByVec3( [ -7.385890007019043, -9.332790374755858, -0.3915120065212249 ] );
+	
+	        shadowMap._viewMatrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+	        shadowMap._projectionMatrix = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+	
+	        shadowMap.makeOrthoFromBoundingBox( frustumBound,
+	            36, // spot cutoff
+	            [ -0.10643338689534251, -0.5669665032376362, -0.816835918872618, 0 ], //lightdir
+	            shadowMap._viewMatrix,
+	            shadowMap._projectionMatrix );
+	
+	        resultView = [ 0.07850590369043473, 0, 0, 0, 0, 0.07850590369043473, 0, 0, 0, 0, -0.07850559553279862, 0, -0, -0, -1.9999960747202232, 1 ];
+	        resultProj = [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ];
+	        resultNearFar = [ 12.737895533859595, 38.21378660157878 ];
+	
+	
+	        ok( matrixCompare( shadowMap._viewMatrix, resultView ), 'correct view shadow matrix for directional light looking down' );
+	        ok( matrixCompare( shadowMap._projectionMatrix, resultProj ), 'correct projection shadow matrix for directional light case 1' );
+	        ok( shadowMap._depthRange[ 0 ] === resultNearFar[ 0 ], 'correct near shadow  for directional light case looking down' );
+	        ok( shadowMap._depthRange[ 1 ] === resultNearFar[ 1 ], 'correct near/far shadow  for directional light looking down' );
+	
+	        // DIRECTIONAL LOOKING UP
+	
+	
+	        frustumBound.expandByVec3( [ 8.9969263076782261, 6.6672196388244632, 10.771773338317875 ] );
+	        frustumBound.expandByVec3( [ -7.3858900070190481, -9.332790374755862, -0.39151200652122586 ] );
+	
+	        shadowMap._viewMatrix = [ 0.5812106861252584, 0.6021354245658719, 0.547382013603556, 0, 0.8137531187859167, -0.4300659932024471, -0.39095920907044307, 0, -0, 0.6726634908880293, -0.7399485306602954, 0, 0.6163824930149122, -4.549428088332258, -22.59735236799494, 1 ];
+	
+	        shadowMap._projectionMatrix = [ 0.07850590369043473, 0, 0, 0, 0, 0.07850590369043473, 0, 0, 0, 0, -0.07850559553279862, 0, -0, -0, -1.9999960747202232, 1 ];
+	
+	        shadowMap.makeOrthoFromBoundingBox( frustumBound, [ -0.10643338689534251, -0.5669665032376362, -0.816835918872618, 0 ], //lightdir
+	            shadowMap._viewMatrix,
+	            shadowMap._projectionMatrix );
+	
+	        resultView = [ -0.9828322343871124, -0.15070744242943934, 0.10643338689534251, 0, 0.1845014879333943, -0.802812671273225, 0.5669665032376362, 0, 0, 0.5768700734476752, 0.816835918872618, 0, 1.0375900870133319, -3.942610459663543, -29.045365584570664, 1 ];
+	        resultProj = [ 0.07850590369043471, 0, 0, 0, 0, 0.07850590369043471, 0, 0, 0, 0, -0.07850559553279861, 0, -0, -0, -1.9999960747202234, 1 ];
+	        resultNearFar = [ 12.737895533859596, 38.21378660157879 ];
+	
+	        ok( matrixCompare( shadowMap._viewMatrix, resultView ), 'correct view shadow matrix for directional light  looking up' );
+	        ok( matrixCompare( shadowMap._projectionMatrix, resultProj ), 'correct projection shadow matrix for directional light looking up' );
+	        ok( shadowMap._depthRange[ 0 ] === resultNearFar[ 0 ], 'correct near shadow  for directional light  looking up' );
+	        ok( shadowMap._depthRange[ 1 ] === resultNearFar[ 1 ], 'correct near/far shadow  for directional light looking up' );
+	
+	
+	
+	    } );
+	
+	
+	    return;
+	};
+
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Camera = __webpack_require__( 22 );
+	var Matrix = __webpack_require__( 28 );
+	var Node = __webpack_require__( 24 );
+	var Shape = __webpack_require__( 98 );
+	var Viewport = __webpack_require__( 103 );
+	var ShadowedScene = __webpack_require__( 231 );
+	var IntersectionVisitor = __webpack_require__( 140 );
+	var mockup = __webpack_require__( 241 );
+	
+	
+	module.exports = function () {
+	    QUnit.module( 'osgShadow' );
+	
+	    QUnit.test( 'ShadowedScene', function () {
+	
+	        var pShadow = new ShadowedScene();
+	        ok( pShadow.children.length === 0, 'number of children must be 0' );
+	        ok( pShadow.parents.length === 0, 'number of parents must be 0' );
+	        var n = new Node();
+	        pShadow.addChild( n, 0, 200 );
+	        ok( pShadow.children.length === 1, 'number of children must be 1' );
+	    } );
+	
+	    var DummyIntersector = function () {
+	        this.point = [ 0.5, 0.5, 0.5 ];
+	        this.stackTransforms = [];
+	    };
+	
+	    DummyIntersector.prototype = {
+	        enter: function () {
+	            return true;
+	        },
+	        setCurrentTransformation: function ( matrix ) {
+	            Matrix.inverse( matrix, matrix );
+	            this.stackTransforms.push( Matrix.transformVec3( matrix, this.point, [ 0.0, 0.0, 0.0 ] ) );
+	        },
+	        intersect: function () {
+	            return true;
+	        }
+	    };
+	
+	    QUnit.test( 'IntersectionVisitor with 1 camera', function () {
+	
+	        var camera = new Camera();
+	        camera.setViewport( new Viewport() );
+	        camera.setViewMatrix( Matrix.makeLookAt( [ 0, 0, -10 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [] ) );
+	        camera.setProjectionMatrix( Matrix.makePerspective( 60, 800 / 600, 0.1, 100.0, [] ) );
+	        camera.addChild( Shape.createTexturedQuadGeometry( -0.5, -0.5, 0, 1, 0, 0, 0, 1, 0, 1, 1 ) );
+	
+	        var pShadow = new ShadowedScene();
+	        var child = new Node();
+	        pShadow.addChild( child );
+	        pShadow.addChild( child );
+	        pShadow.addChild( child );
+	        var di = new DummyIntersector();
+	        var iv = new IntersectionVisitor();
+	        iv.setIntersector( di );
+	        camera.accept( iv );
+	
+	        ok( mockup.checkNear( di.stackTransforms[ 0 ], [ 0.1536, -0.1152, -9.8002 ], 0.001 ), 'check end transform point' );
+	    } );
+	};
+
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var Text = __webpack_require__( 314 );
+	
+	
+	module.exports = function () {
+	    Text();
+	};
+
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var Text = __webpack_require__( 126 );
+	
+	
+	module.exports = function () {
+	    QUnit.module( 'osgText' );
+	
+	    QUnit.test( 'Text._nextPowerOfTwo', function () {
+	        var text = new Text();
+	        var npot = text._nextPowerOfTwo( 25 );
+	        ok( npot === 32, 'next power of two must be 32' );
+	        npot = text._nextPowerOfTwo( 16 );
+	        ok( npot === 16, 'next power of two must be 16' );
+	        npot = text._nextPowerOfTwo( 129 );
+	        ok( npot === 256, 'next power of two must be 256' );
+	        npot = text._nextPowerOfTwo( 2031 );
+	        ok( npot === 2048, 'next power of two must be 256' );
+	    } );
+	
+	    QUnit.test( 'Text.setAlignment', function () {
+	        var text = new Text( 'test' );
+	        text.setAlignment( Text.LEFT_CENTER );
+	        // we need to call to draw text as the values are updated next frame, so we emulate it just to test.
+	        text.drawText();
+	        ok( text._context.textAlign === 'left', 'context align should be left' );
+	        ok( text._textX === 0, '_textX should be 0' );
+	        ok( text._context.textBaseline === 'middle', 'context baseline should be middle' );
+	        text.setAlignment( 'RIGHT_TOP' );
+	        text.drawText();
+	        ok( text._context.textAlign === 'right', 'context align should be right' );
+	        ok( text._textY === 0, '_textY should be 0' );
+	        ok( text._context.textBaseline === 'top', 'context baseline should be top' );
+	    } );
+	};
+
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var osgAnimation = __webpack_require__( 316 );
+	
+	module.exports = function () {
+	    osgAnimation();
+	};
+
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var QUnit = __webpack_require__( 240 );
+	var mockup = __webpack_require__( 241 );
+	
+	var MACROUTILS = __webpack_require__( 6 );
+	var Input = __webpack_require__( 47 );
+	var BasicAnimationManager = __webpack_require__( 111 );
+	var NodeVisitor = __webpack_require__( 27 );
+	
+	module.exports = function () {
+	
+	    QUnit.module( 'osgWrapper' );
+	
+	    var FindAnimationManagerVisitor = function () {
+	        NodeVisitor.call( this, NodeVisitor.TRAVERSE_ALL_CHILDREN );
+	        this._cb = undefined;
+	    };
+	    FindAnimationManagerVisitor.prototype = MACROUTILS.objectInherit( NodeVisitor.prototype, {
+	        getAnimationManager: function () {
+	            return this._cb;
+	        },
+	        apply: function ( node ) {
+	            var cbs = node.getUpdateCallbackList();
+	            for ( var i = 0, l = cbs.length; i < l; i++ ) {
+	                if ( cbs[ 0 ] instanceof BasicAnimationManager ) {
+	                    this._cb = cbs[ 0 ];
+	                    return;
+	                }
+	            }
+	            this.traverse( node );
+	        }
+	    } );
+	
+	    var getChannelsInfo = function ( animation ) {
+	
+	        var nbChannelSyncEnd = 0;
+	        var nbTimesEmptySlot = 0;
+	        var nbKeysEmptySlot = 0;
+	
+	        var channels = animation.channels;
+	        var nbChannels = channels.length;
+	        for ( var i = 0; i < nbChannels; ++i ) {
+	            var chan = channels[ i ].channel;
+	            if ( animation.duration === chan.end )
+	                nbChannelSyncEnd++;
+	
+	            if ( chan.times.buffer.byteLength - chan.times.byteLength === 4 )
+	                nbTimesEmptySlot++;
+	
+	            var sizeElt = BasicAnimationManager.TypeToSize[ chan.type ];
+	            if ( chan.keys.buffer.byteLength - chan.keys.byteLength === 4 * sizeElt )
+	                nbKeysEmptySlot++;
+	        }
+	
+	        return {
+	            nbChannelSyncEnd: nbChannelSyncEnd,
+	            nbTimesEmptySlot: nbTimesEmptySlot,
+	            nbKeysEmptySlot: nbKeysEmptySlot
+	        };
+	    };
+	
+	    QUnit.asyncTest( 'osgAnimation character', function () {
+	
+	        var input = new Input();
+	        input.readNodeURL( '../examples/media/models/animation/character.osgjs' ).then( function ( scene ) {
+	
+	            var findAnimationManager = new FindAnimationManagerVisitor();
+	            scene.accept( findAnimationManager );
+	            var manager = findAnimationManager.getAnimationManager();
+	
+	            ok( manager !== undefined, 'BasicAnimationManager found' );
+	
+	            var animations = manager.getAnimations();
+	            ok( Object.keys( animations ).length === 6, 'found 6 animations' );
+	
+	            var anim = animations[ 'Default Take' ];
+	            var nbChannels = anim.channels.length;
+	            ok( nbChannels === 144, 'check number of channels in Default Take' );
+	
+	            // the order of the channels is not important for this test so we simply take a random one 
+	            var info = getChannelsInfo( anim );
+	            ok( info.nbChannelSyncEnd === 48, 'nb sync end channels' );
+	            ok( info.nbTimesEmptySlot === nbChannels, 'nb times empty slot' );
+	            ok( info.nbKeysEmptySlot === nbChannels, 'nb times empty slot' );
+	
+	            mockup.near( anim.duration, 1.93333, 'check duration of animation' );
+	
+	            // test lerp-end start
+	            manager.setAnimationLerpEndStart( anim, 1.5 );
+	            mockup.near( anim.duration, 1.93333 + 1.5, 'check duration of animation after lerpStartEnd' );
+	
+	            manager.setAnimationLerpEndStart( anim, 1.5 );
+	            mockup.near( anim.duration, 1.93333 + 1.5, 'check duration of animation after 2 calls to lerpStartEnd' );
+	
+	            // test lerp end-start channel (additional slot should been used now)
+	            info = getChannelsInfo( anim );
+	            ok( info.nbChannelSyncEnd === 48, 'nb sync end channels' );
+	            ok( info.nbTimesEmptySlot === nbChannels - info.nbChannelSyncEnd, 'nb times empty slot' );
+	            ok( info.nbKeysEmptySlot === nbChannels - info.nbChannelSyncEnd, 'nb times empty slot' );
+	
+	            // remove lerp end-start
+	            manager.setAnimationLerpEndStart( anim, 0 );
+	            mockup.near( anim.duration, 1.93333, 'check duration of animation after 2 calls to lerpStartEnd' );
+	            info = getChannelsInfo( anim );
+	            ok( info.nbChannelSyncEnd === 48, 'nb sync end channels' );
+	            ok( info.nbTimesEmptySlot === nbChannels, 'nb times empty slot' );
+	            ok( info.nbKeysEmptySlot === nbChannels, 'nb times empty slot' );
+	
+	            start();
+	        } );
+	
+	    } );
+	
+	};
+
+
 /***/ })
 /******/ ])
 });
 ;
-//# sourceMappingURL=OSG.js.map
+//# sourceMappingURL=tests.js.map

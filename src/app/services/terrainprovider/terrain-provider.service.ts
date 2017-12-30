@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import PouchDB from 'pouchdb';
-console.log(PouchDB);
 
 import { DatasetsService } from '../../datasets/datasets.service';
 
 import { TerrainProvider } from '../../models/terrainProvider.model';
 
+import { ProgressCallback } from '../../util/progress';
+
 import * as fromRoot from '../../reducers';
 import { Dataset } from '../../models/dataset.model';
-import { AddTerrainProvider } from './actions/actions';
+import { AddTerrainProvider, LoadTerrain } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
@@ -25,14 +26,16 @@ const modelDB = new PouchDB('models');
 
 interface FetchModel {
   id: string; // concat of datasetid and modelname so 0_00.osgjs
+  dataset_id: string; // concat of dataset id and quality level so 0_100
   mesh: string; // name of model _00.osgjs
   texture: string; // name of texture odm_textured_model_material0000_map_Kd.png,
   meshURL: string; // url to get mesh from if not found.
   textureURL: string;
+  textureBlob?: Blob; // fetched blob
+  meshBlob?: Blob; // fetched blob
 }
 
 interface FetchedModel {
-  id: string;
   texture: Blob;
   mesh: OSGJSScene;
 }
@@ -52,79 +55,68 @@ export class TerrainProviderService {
     return this.store.select('terrainProvider');
   }
 
-  async fetchModel(toFetch: FetchModel): Promise<FetchedModel> {
-    let found;
-    try {
-      found = await modelDB.get(toFetch.id, {attachments: true});
-    } catch (e) {
-      const [textureBlob, model] = await Promise.all([
-        fetch(toFetch.textureURL).then(r => r.blob()),
-        fetch(toFetch.meshURL).then(r => r.blob())
-      ]);
-      await modelDB.put({
-        _id: toFetch.id,
-        _attachments: {
-          texture: {
-            content_type: 'image/png',
-            data: textureBlob,
-          },
-          mesh: {
-            content_type: 'text/plain',
-            data: model,
-          }
-        }
-      });
-      found = await modelDB.get(toFetch.id, {attachments: true});
-    }
-    // Check osgjs
-    const texture = b64toBlob(found._attachments.texture.data, 'image/png');
-    const mesh = JSON.parse(atob(found._attachments.mesh.data));
-    return {
-      id: toFetch.id,
-      texture,
-      mesh
-    };
+  public loadTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3) {
+    this.store.dispatch(new LoadTerrain({provider, smdjs, mtljs, smdjsURL, quality}));
   }
 
-  async loadTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string) {
-    //'Have to get all the textures and all the meshes';
-    const baseURL = smdjsURL.split('_smdjs')[0];
-
+  // Called by effect
+  async loadTerrainAsync(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3): 
+    Promise<{ rootNode: osg.Node, provider: TerrainProvider, quality: number }> {
+    // 'Have to get all the textures and all the meshes';
+    const baseURL = smdjsURL.split('100/_smdjs')[0];
+    // Get data for fetching
     const sceneImagePairs: FetchModel[] = smdjs.Meshes.map((mesh) => {
       const texture = mtljs[mesh.split('.osgjs')[0]].map_Kd;
       return {
         id: `${provider.dataset().id()}${mesh}`,
+        dataset_id: `${provider.dataset().id()}_100`, // assume quality level of 100 for now.
         mesh,
         texture,
-        meshURL: `${baseURL}${mesh}`,
-        textureURL: `${baseURL}${texture}`,
+        meshURL: `${baseURL}100/${mesh}`,
+        textureURL: `${baseURL}${quality}/${texture}`,
       };
     });
-    const models: FetchedModel[] = [];
-    let count = 0;
-    try {
-      for (const pair of sceneImagePairs) {
-        const fetched = await this.fetchModel(pair);
-        models.push(fetched);
-        console.log('got', ++count);
+
+    const models = await this.fetchModel(sceneImagePairs, (i, length) => {
+    });
+    if (!models) {
+      throw new Error('Cannot find models');
+    }
+    // Clear out the texture path so osgjs doesn't attempt to fetch them.
+    models.forEach((model) => {
+      const jdata = model.mesh;
+      // literally why is this the code
+      // tslint:disable-next-line:max-line-length
+      if (jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].TextureAttributeList !== undefined) {
+        // tslint:disable-next-line:max-line-length
+        const texture = model.texture;
+        const url = URL.createObjectURL(texture);
+        // tslint:disable-next-line:max-line-length
+        jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].TextureAttributeList[0][0]['osg.Texture'].File = url;
+        // delete jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].TextureAttributeList;
       }
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+
+      // tslint:disable-next-line:max-line-length
+      if (jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].RenderingHint !== undefined) {
+        delete jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].RenderingHint;
+      }
+    });
     let scenes;
-    try {
-      scenes = await Promise.all(models.map((model) => {
-        return osgDB.parseSceneGraph(model.mesh).then(
-          // convert from bluebird promise to native promise
-          (node) => Promise.resolve(node),
-          (err) => console.log(model.mesh)
-        );
-      }));
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+      try {
+        scenes = await Promise.all(models.map((model) => {
+          return osgDB.parseSceneGraph(model.mesh).then(
+            // convert from bluebird promise to native promise
+            (node) => {
+              // set the texture
+              return Promise.resolve(node);
+            },
+            (err) => console.log(model.mesh)
+          );
+        }));
+      } catch (e) {
+        console.warn('failed to parse output');
+        throw e;
+      }
     const root = new osg.MatrixTransform();
     osg.Matrix.makeRotate(1.5 * Math.PI, 1.0, 0.0, 0.0, root.getMatrix());
     const mtrans = new osg.MatrixTransform();
@@ -150,12 +142,94 @@ export class TerrainProviderService {
     const center = osg.Vec3.create();
     bbox.center(center);
     osg.Matrix.setTrans(mtrans.getMatrix(), -center[0], -center[1], -center[2]);
-
-    return root;
+    return {rootNode: root, provider, quality};
   }
 
   public makeProvidersForDatasets(datasets: Dataset[]) {
     const providers = datasets.map(d => new TerrainProvider({dataset: d}));
     providers.forEach(p => this.store.dispatch(new AddTerrainProvider(p)));
   }
+
+  private async fetchModel(modelsToFetch: FetchModel[], onProgress?: ProgressCallback): Promise<FetchedModel[]> {
+    // First check pouchdb to determine if model is already in memory
+    let found;
+    const first = modelsToFetch[0];
+    try {
+      found = await modelDB.get(first.dataset_id, {attachments: true});
+    } catch (e) {
+      // console.error(e);
+    }
+    // If not found go through the process of downloading all the images and models.
+    if (!found) {
+      // Using async for so that 100 request aren't sent at the same time.
+      const meshTexturePairs: FetchModel[] = [];
+      try {
+        for (let i = 0; i < modelsToFetch.length; i++) {
+          const toFetch = modelsToFetch[i];
+          const [textureBlob, meshBlob] = await Promise.all([
+            fetch(toFetch.textureURL).then(r => r.blob()),
+            fetch(toFetch.meshURL).then(r => r.blob())
+          ]);
+          meshTexturePairs.push({...toFetch, textureBlob, meshBlob});
+          if (onProgress) {
+            onProgress(i, modelsToFetch.length);
+          }
+        }
+      } catch (e) {
+        // console.error(e);
+        console.warn('Could not get all models, TODO implement retry');
+        return null;
+      }
+      // Store this stuff in pouchdb for reference.
+      // Gen attachments.
+      console.log('meshtexturepairs', meshTexturePairs);
+      const newAttatchments = meshTexturePairs.reduce((acc, extendedToFetch) => {
+        const nameBase = extendedToFetch.mesh.split('.osgjs')[0];
+        const textureName = `texture${nameBase}`;
+        const meshName = `mesh${extendedToFetch.mesh}`;
+        acc[textureName] = {
+          content_type: 'image/png',
+          data: extendedToFetch.textureBlob,
+        };
+        acc[meshName] = {
+          content_type: 'text/plain',
+          data: extendedToFetch.meshBlob,
+        };
+        return acc;
+      }, {});
+      // Store
+      try {
+        await modelDB.put({
+          _id: first.dataset_id,
+          _attachments: newAttatchments
+        });
+      } catch (e) {
+        console.warn('error in put', e);
+        return null;
+      }
+      try {
+        found = await modelDB.get(first.dataset_id, {attachments: true});
+      } catch (e) {
+        console.warn('error in get', e);
+        // Could not store results
+        return null;
+      }
+    }
+    // Return array of mesh/texture pairs.
+    const attachments = found._attachments;
+    const meshNames = Object.keys(attachments).filter(key => /\.osgjs/.test(key));
+    // Remove the mesh part of the name. Thats why I slice(5)
+    const textureNames = meshNames.map(key => `texture${key.slice(4).split('.osgjs')[0]}`);
+    const fetchedModels = meshNames.map((meshName, i) => {
+      const textureName = textureNames[i];
+      const texture = b64toBlob(attachments[textureName].data, 'image/png');
+      const mesh = JSON.parse(atob(attachments[meshName].data));
+      return {
+        texture,
+        mesh
+      };
+    });
+    return fetchedModels;
+  }
+
 }

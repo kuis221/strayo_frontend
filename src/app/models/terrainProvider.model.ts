@@ -1,9 +1,6 @@
 import * as ol from 'openlayers';
 import { Dataset } from './dataset.model';
 
-export interface TerrainModel {
-
-}
 
 export class TerrainProvider extends ol.Object {
     constructor(props?: {}) {
@@ -21,14 +18,14 @@ export class TerrainProvider extends ol.Object {
         return this.get('dataset');
     }
 
-    public model(): TerrainModel;
-    public model(model: TerrainModel): this;
-    public model(model?: TerrainModel): TerrainModel | this {
-        if (model !== undefined) {
-            this.set('model', model);
+    public quality(): number;
+    public quality(quality: number): this;
+    public quality(quality?: number): number | this {
+        if (quality !== undefined) {
+            this.set('quality', quality);
             return this;
         }
-        return this.get('model');
+        return this.get('quality');
     }
 
     public rootNode(): osg.Node;

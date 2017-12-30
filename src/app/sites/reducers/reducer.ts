@@ -12,6 +12,8 @@ export function reducer(state: SitesState = INITIAL_STATE, action: sites.SitesAc
             return state.getSitesSuccess(action.payload);
         case sites.SitesActionsType.GET_SITES_ERROR:
             return state.getSitesError(action.payload);
+        case sites.SitesActionsType.SET_MAIN_SITE:
+            return state.setMainSite(action.payload);
         case sites.SitesActionsType.SET_SITES:
             return state.setSites(action.payload);
         case sites.SitesActionsType.RESET:

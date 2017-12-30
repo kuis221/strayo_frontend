@@ -6,6 +6,7 @@ export enum SitesActionsType {
     GET_SITES = '[Site] Get',
     GET_SITES_SUCCESS = '[Site] Get Success',
     GET_SITES_ERROR = '[Site] Get Error',
+    SET_MAIN_SITE = '[Site] Set Main',
     SET_SITES = '[Site] Set',
     RESET = '[Site] Reset',
 }
@@ -25,6 +26,11 @@ export class GetSitesError implements Action {
     constructor(public payload: Error) {}
 }
 
+export class SetMainSite implements Action {
+    type = SitesActionsType.SET_MAIN_SITE;
+    constructor(public payload: Site) {}
+}
+
 export class SetSites implements Action {
     type = SitesActionsType.SET_SITES;
 
@@ -39,5 +45,6 @@ export class ResetState implements Action {
 export type SitesActions = GetSites
 | GetSitesSuccess
 | GetSitesError
+| SetMainSite
 | SetSites
 | ResetState;

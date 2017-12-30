@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { TerrainProvider, TerrainModel } from '../../../models/terrainProvider.model';
+import { TerrainProvider } from '../../../models/terrainProvider.model';
 import { TerrainProviderState } from '../state';
 
 import { Smdjs } from '../../../models/smdjs.model';
@@ -26,17 +26,17 @@ export class AddTerrainProvider implements Action {
 
 export class LoadTerrain implements Action {
     type = TerrainProviderActionsType.LOAD_TERRAIN;
-    constructor(public payload: {provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string}) {}
+    constructor(public payload: {provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality?: number}) {}
 }
 
 export class LoadTerrainSuccess implements Action {
     type = TerrainProviderActionsType.LOAD_TERRAIN_SUCCESS;
-    constructor(public payload: { provider: TerrainProvider, model: TerrainModel}) {}
+    constructor(public payload: { provider: TerrainProvider, rootNode: osg.Node, quality: number}) {}
 }
 
 export class LoadTerrainError implements Action {
     type = TerrainProviderActionsType.LOAD_TERRAIN_ERROR;
-    constructor(public payload: Error) {}
+    constructor(public payload: { provider: TerrainProvider, error: Error}) {}
 }
 
 export type TerrainProviderActions = ResetState

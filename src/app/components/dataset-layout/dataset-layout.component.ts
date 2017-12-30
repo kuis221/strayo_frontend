@@ -37,7 +37,8 @@ export class DatasetLayoutComponent implements OnInit {
     ).subscribe((site) => {
       this.site = site;
       if (!site) return;
-      console.log('SITE, site');
+      console.log('SITE', site);
+      this.sitesService.setMainSite(site);
       this.datasetsService.setDatasets(site.datasets());
     });
     // Setting main

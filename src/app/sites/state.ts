@@ -3,12 +3,14 @@ import { Site } from '../models/site.model';
 
 const siteRecord = Record({
     sites: List([]),
+    mainSite: null,
     pending: false,
     error: null,
 });
 
 export class SitesState extends siteRecord {
     sites: List<Site>;
+    mainSite: Site;
     pending: boolean;
     error: Error;
 
@@ -24,6 +26,9 @@ export class SitesState extends siteRecord {
         return this.set('error', null).set('pending', true).set('sites', List(sites)) as SitesState;
     }
 
+    public setMainSite(site: Site): SitesState {
+        return this.set('mainSite', Site) as SitesState;
+    }
 
     public setSites(sites: Site[]): SitesState {
         return this.set('sites', List(sites)) as SitesState;

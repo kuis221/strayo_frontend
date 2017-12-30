@@ -28,6 +28,7 @@ import { SitesEffects } from './sites/effects/sites.effects';
 import { SitesService } from './sites/sites.service';
 import { DatasetsService } from './datasets/datasets.service';
 import { TerrainProviderService } from './services/terrainprovider/terrain-provider.service';
+import { Map3dService } from './services/map-3d.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { TerrainProviderService } from './services/terrainprovider/terrain-provi
       maxAge: 10
     })
   ],
-  providers: [SitesService, DatasetsService, TerrainProviderService],
+  providers: [SitesService, DatasetsService, TerrainProviderService, Map3dService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
