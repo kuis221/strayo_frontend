@@ -1,13 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql/graphql.module';
 
-import { InMemoryDataService } from './mocks/inMemoryData.service';
+// import { InMemoryDataService } from './mocks/inMemoryData.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { StoreModule } from '@ngrx/store';
@@ -22,10 +23,15 @@ import { SitemapComponent } from './components/sitemap/sitemap.component';
 import { SiteLayoutComponent } from './components/sitelayout/sitelayout.component';
 import { DatasetDetailsComponent } from './components/dataset-details/dataset-details.component';
 import { DatasetLayoutComponent } from './components/dataset-layout/dataset-layout.component';
+import { LoginLayoutComponent } from './components/login-layout/login-layout.component';
+import { SignUpLayoutComponent } from './components/signup-layout/signup-layout.component';
 import { Map3dComponent } from './components/map-3d/map-3d.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 import { SitesEffects } from './sites/effects/sites.effects';
 import { SitesService } from './sites/sites.service';
+import { UsersService } from './users/users.service';
 import { DatasetsService } from './datasets/datasets.service';
 import { TerrainProviderService } from './services/terrainprovider/terrain-provider.service';
 import { Map3dService } from './services/map-3d.service';
@@ -39,23 +45,28 @@ import { Map3dService } from './services/map-3d.service';
     SiteLayoutComponent,
     DatasetDetailsComponent,
     DatasetLayoutComponent,
-    Map3dComponent
+    Map3dComponent,
+    HeaderComponent,
+    FooterComponent,
+    LoginLayoutComponent,
+    SignUpLayoutComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
+    FormsModule,
     GraphQLModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-      apiBase: 'api/'
-    }),
+    // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+    //   apiBase: 'api/'
+    // }),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(Effects),
     StoreDevtoolsModule.instrument({
       maxAge: 10
     })
   ],
-  providers: [SitesService, DatasetsService, TerrainProviderService, Map3dService],
+  providers: [SitesService, UsersService, DatasetsService, TerrainProviderService, Map3dService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

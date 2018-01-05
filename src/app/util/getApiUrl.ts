@@ -7,13 +7,8 @@ export const DATASET_URL = 'datasets';
 export const ANNOTATIONS_URL = 'annotations';
 export const RESOURCE_RUL = 'resources';
 
-export function getApiUrl() {
-    return API_URL;
-}
+export const getApiUrl = () => API_URL;
 
-
-export function getFullUrl(relativeURL) {
-    return `${API_URL}/${relativeURL}`.replace(/[^:](\/{2,})/, (match, p1) => {
-        return '/';
-    });
-}
+export const getFullUrl = (relativeURL) => `${API_URL}/${relativeURL}`.replace(/[^:](\/{2,})/, (match, p1) => {
+  return '/';
+});

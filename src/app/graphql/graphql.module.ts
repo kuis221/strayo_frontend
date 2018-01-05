@@ -10,7 +10,7 @@ import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { ApolloLink, from, Observable } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import { InMemoryDataService } from '../mocks/inMemoryData.service';
+// import { InMemoryDataService } from '../mocks/inMemoryData.service';
 
 import { makeExecutableSchema } from 'graphql-tools';
 
@@ -21,7 +21,7 @@ import { API_URL } from '../util/getApiUrl';
 @NgModule({
   imports: [
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
+    // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
   ],
   exports: [
     ApolloModule,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs/Observable';
 import { map, tap } from 'rxjs/operators';
@@ -23,13 +25,33 @@ import getItWorking from './util/getosgjsworking';
 export class AppComponent implements OnInit {
   title = 'app';
   sites$: Observable<List<Site>>;
-  constructor(private http: HttpClient, private sitesService: SitesService, private datasetsService: DatasetsService) {
-  }
+
+  constructor (
+    private http: HttpClient,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private sitesService: SitesService,
+    private datasetsService: DatasetsService,
+  ) {}
+
   ngOnInit() {
     getItWorking();
-    console.log('P', P, P.defer);
-    console.log('osg', OSG);
     OSG.globalify();
+
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .map(() => this.activatedRoute)
+      .map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      })
+      .filter(route => route.outlet === 'primary')
+      .mergeMap(route => route.data)
+      .subscribe((event) => this.titleService.setTitle(event['title']));
+
     this.sitesService.loadSites();
   }
 }

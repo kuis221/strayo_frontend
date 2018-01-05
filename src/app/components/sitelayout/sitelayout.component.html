@@ -1,12 +1,12 @@
 <div class="wrapper">
-  <div class="header">Header</div>
+  <app-header></app-header>
   <div class="sidebar">
     <div *ngFor="let dataset of datasets">
       <app-dataset-details [dataset]="dataset" [site]="site"></app-dataset-details>
     </div>
   </div>
   <div class="content">
-      hello {{ site | json }}
+    hello {{ site | json }}
   </div>
-  <div class="footer">Footer</div>
+  <app-footer></app-footer>
 </div>
