@@ -120,13 +120,8 @@ export class InMemoryDataService implements InMemoryDbService {
                 let resourceID;
                 switch (id % annotationsPerDataSet) {
                     default:
-                        type = 'phantom';
+                        type = 'mapdata';
                         is_phantom = true;
-                        meta = '{}';
-                        data = '{}';
-                        break;
-                    case 1:
-                        type = 'orthophoto';
                         meta = '{}';
                         data = '{}';
                         const mapdataResource: any = {
@@ -137,6 +132,12 @@ export class InMemoryDataService implements InMemoryDbService {
                         resourceID = resources.push(mapdataResource);
                         mapdataResource.id = resourceID - 1;
                         urls.push(getFullUrl(`/resources/${resourceID - 1}`));
+                        
+                        break;
+                    case 1:
+                        type = 'orthophoto';
+                        meta = '{}';
+                        data = '{}';
                         const tilesResource: any = {
                             type: 'tiles',
                             status: Status.COMPLETED,

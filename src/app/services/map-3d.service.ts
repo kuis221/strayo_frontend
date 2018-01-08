@@ -112,7 +112,7 @@ export class Map3dService {
       this.terrainProviderService.makeProvidersForDatasets([mainDataset]);
 
       const fetchAnnotationsForMainDataset = () => {
-        this.updateTerrainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
+        this.updateTer0rainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
       };
 
       if (mainDataset.annotations()) {
@@ -144,18 +144,18 @@ export class Map3dService {
 
     // Add Providers
 
-    // this.map2DViewer = new ol.Map({
-    //   target: map2D,
-    //   loadTilesWhileAnimating: true,
-    //   loadTilesWhileInteracting: true,
-    //   layers: [
-    //     this.osmLayer,
-    //     // this.sateliteLayer,
-    //     // this.emptyLayer
-    //   ],
-    //   view: new ol.View({ center: ol.proj.fromLonLat([0, 0]) }),
-    //   controls: ol.control.defaults({ attribution: false }),
-    // });
+    this.map2DViewer = new ol.Map({
+      target: map2D,
+      loadTilesWhileAnimating: true,
+      loadTilesWhileInteracting: true,
+      layers: [
+        this.osmLayer,
+        this.sateliteLayer,
+        this.emptyLayer
+      ],
+      view: new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 }),
+      controls: ol.control.defaults({ attribution: false }),
+    });
   }
 
   destroy() {
@@ -165,6 +165,7 @@ export class Map3dService {
   }
 
   async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
+    
     const stereoscopeAnno = annotations.find(anno => anno.type() === 'stereoscope');
     if (!stereoscopeAnno) {
       console.warn('No stereoscope annotation found');
