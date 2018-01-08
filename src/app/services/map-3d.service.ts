@@ -18,6 +18,7 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/filter';
 import { TerrainProvider } from '../models/terrainProvider.model';
 import { Annotation } from '../models/annotation.model';
+import { listenOn } from '../util/listenOn';
 
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
@@ -44,6 +45,9 @@ export class Map3dService {
   private _groupForDataset: (id: number) => ol.layer.Group;
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
+    
+    this.sceneRoot = new osg.Node();
+    
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
     this.sateliteLayer = new ol.layer.Tile({
@@ -91,28 +95,41 @@ export class Map3dService {
       this.providers = providers;
       if (!providers) return;
       this.providers.forEach((provider) => {
-        // Wait for the model to change
-        provider.once('change:root_node', (thing1, thing2, thing3) => {
+        this.sceneRoot.addChild(provider.rootNode());
+        const off = listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
           console.log('args', thing1, thing2, thing3);
           this.sceneRoot.addChild(provider.rootNode());
           (this.map3DViewer as any).getManipulator().computeHomePosition();
+          off();
         });
       });
     });
 
     // Get main Dataset
-    this.datasetsService.mainDataset.subscribe((mainDataset) => {
+    this.datasetsService.mainDataset.subscribe(async (mainDataset) => {
       this.mainDataset = mainDataset;
       if (!mainDataset) return;
       this.terrainProviderService.makeProvidersForDatasets([mainDataset]);
-      this.datasetsService.loadAnnotations(mainDataset);
-      this.datasetsService.annotations
-        .filter((annotations) => !!annotations.get(mainDataset.id()))
-        .first().subscribe((annotations) => {
-        const anno = annotations.get(mainDataset.id());
-        console.log('annotations', anno);
-        this.updateTerrainProviderFromAnnotations(mainDataset, anno.toJS());
-      });
+
+      const fetchAnnotationsForMainDataset = () => {
+        this.updateTerrainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
+      };
+
+      if (mainDataset.annotations()) {
+        fetchAnnotationsForMainDataset();
+      } else {
+        const progress = await this.datasetsService.loadAnnotations(mainDataset);
+        if (progress.isDone()) {
+          console.log('already done');
+        } else {
+          const off = listenOn(progress, 'change:progress', () => {
+            if (progress.isDone()) {
+              fetchAnnotationsForMainDataset();
+              off();
+            }
+          });
+        }
+      }
     });
   }
 
@@ -121,23 +138,30 @@ export class Map3dService {
     // Initialize 3D stuff
     this.map3DViewer = new osgViewer.Viewer(map3D);
     this.map3DViewer.init();
-    this.sceneRoot = new osg.Node();
     this.map3DViewer.setSceneData(this.sceneRoot);
     this.map3DViewer.setupManipulator();
     this.map3DViewer.run();
 
-    this.map2DViewer = new ol.Map({
-      target: map2D,
-      loadTilesWhileAnimating: true,
-      loadTilesWhileInteracting: true,
-      layers: [
-        this.osmLayer,
-        // this.sateliteLayer,
-        // this.emptyLayer
-      ],
-      view: new ol.View({ center: ol.proj.fromLonLat([0, 0]) }),
-      controls: ol.control.defaults({ attribution: false }),
-    });
+    // Add Providers
+
+    // this.map2DViewer = new ol.Map({
+    //   target: map2D,
+    //   loadTilesWhileAnimating: true,
+    //   loadTilesWhileInteracting: true,
+    //   layers: [
+    //     this.osmLayer,
+    //     // this.sateliteLayer,
+    //     // this.emptyLayer
+    //   ],
+    //   view: new ol.View({ center: ol.proj.fromLonLat([0, 0]) }),
+    //   controls: ol.control.defaults({ attribution: false }),
+    // });
+  }
+
+  destroy() {
+    this.sceneRoot.removeChildren();
+    this.map3DViewer.contextLost();
+    this.sceneRoot = new osg.Node();
   }
 
   async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
@@ -164,7 +188,10 @@ export class Map3dService {
     }
 
     const provider = this.providers.get(dataset.id());
-    this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
+    const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
+    progress.on('change:progress', () => {
+      console.log('ON PROGRESS', progress.getProperties());
+    });
   }
 
   private getGroupForDataset(dataset: Dataset | number): ol.layer.Group {

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { Site } from '../../models/site.model';
+import { Progress } from '../../util/progress';
 
 export enum SitesActionsType {
     GET_SITES = '[Site] Get',
@@ -13,7 +14,7 @@ export enum SitesActionsType {
 
 export class GetSites implements Action {
     type = SitesActionsType.GET_SITES;
-    constructor(public payload?) {}
+    constructor(public payload: Progress) {}
 }
 
 export class GetSitesSuccess implements Action {

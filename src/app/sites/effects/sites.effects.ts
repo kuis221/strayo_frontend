@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 
+import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { SitesActionsType, GetSitesSuccess, GetSitesError, GetSites } from '../actions/actions';
 import { SitesService } from '../sites.service';
@@ -13,9 +16,11 @@ export class SitesEffects {
 
     @Effect() getSites$ = this.actions$.ofType(SitesActionsType.GET_SITES)
         .map((action: GetSites) => action.payload)
-        .mergeMap(action => {
+        .mergeMap(progress => {
             return this.sitesService.getSites()
-                .map(sites => new GetSitesSuccess(sites))
-                // .catch((error) => new GetSitesError(sites))
+                .map(sites => {
+                    return new GetSitesSuccess(sites);
+                })
+                .catch((error) => Observable.of(new GetSitesError(error)));
         });
 }

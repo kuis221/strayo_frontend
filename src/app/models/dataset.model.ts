@@ -1,5 +1,6 @@
 import * as ol from 'openlayers';
 import * as moment from 'moment';
+import { Annotation } from './annotation.model';
 
 export interface IDataset {
     created_at: Date | string;
@@ -13,6 +14,16 @@ export interface IDataset {
 }
 
 export class Dataset extends ol.Object {
+    public annotations(): Annotation[];
+    public annotations(annotations: Annotation[]): this;
+    public annotations(annotations?: Annotation[]): Annotation[] | this {
+        if (annotations !== undefined) {
+            this.set('annotations', annotations);
+            return this;
+        }
+        return this.get('annotations');
+    }
+
     public createdAt(): Date;
     public createdAt(createdAt: Date | string): this;
     public createdAt(createdAt?: Date | string): Date | this {

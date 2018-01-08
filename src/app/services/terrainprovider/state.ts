@@ -1,17 +1,16 @@
 import { Record, Map } from 'immutable';
 
 import { TerrainProvider } from '../../models/terrainProvider.model';
+import { Progress } from '../../util/progress';
 
 const terrainProviderState = Record({
     providers: Map({}),
     pending: Map({}),
-    error: Map({}),
 });
 
 export class TerrainProviderState extends terrainProviderState {
-    error: Map<number, Error>;
     providers: Map<number, TerrainProvider>;
-    pending: Map<number, boolean>;
+    pending: Map<number, Progress>;
 
     addTerrainProvider(provider: TerrainProvider): TerrainProviderState {
         const check: TerrainProvider = this.getIn(['providers', provider.dataset().id()]);
@@ -23,29 +22,26 @@ export class TerrainProviderState extends terrainProviderState {
         return this.setIn(['providers', provider.dataset().id()], provider) as TerrainProviderState;
     }
 
-    loadTerrain(params: {provider: TerrainProvider}): TerrainProviderState {
-        const { provider } = params;
-        return this.setIn(['pending', provider.dataset().id()], true)
-            .setIn(['error', provider.dataset().id()], false) as TerrainProviderState;
+    getTerrain(params: {provider: TerrainProvider, progress: Progress}): TerrainProviderState {
+        const { provider, progress } = params;
+        return this.setIn(['pending', provider.dataset().id()], progress) as TerrainProviderState;
     }
 
-    loadTerrainSuccess(params: { provider: TerrainProvider, rootNode: osg.Node, quality: number}): TerrainProviderState {
-        const { provider, rootNode, quality } = params;
-        const exist = this.getIn(['providers', provider.dataset().id()]);
-        let newState: TerrainProviderState = this;
-        if (!exist) {
-            newState = this.addTerrainProvider(provider);
-        }
-        const found: TerrainProvider = newState.getIn(['providers', provider.dataset().id()]);
-        found.rootNode(rootNode);
-        found.quality(quality);
-        return newState.setIn(['pending', found.dataset().id()], false) as TerrainProviderState;
+    getTerrainSuccess(params: { provider: TerrainProvider, modelNode: osg.Node, quality: number}): TerrainProviderState {
+        const { provider, modelNode, quality } = params;
+        const progress = this.pending.get(provider.dataset().id());
+        provider.modelNode(modelNode);
+        provider.quality(quality);
+        progress.progress(1, 1);
+        return this;
     }
 
-    loadTerrainError(params: { provider: TerrainProvider, error: Error}): TerrainProviderState {
+    getTerrainError(params: { provider: TerrainProvider, error: Error}): TerrainProviderState {
         const { provider, error } = params;
-        return this.setIn(['pending', provider.dataset().id()], false)
-            .setIn(['error', provider.dataset().id()], error) as TerrainProviderState;
+        const progress = this.pending.get(provider.dataset().id());
+        console.error(error);
+        progress.error(error);
+        return this;
     }
 }
 

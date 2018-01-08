@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatasetsService } from '../../datasets/datasets.service';
 import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
@@ -15,7 +15,7 @@ import { Map3dService } from '../../services/map-3d.service';
   templateUrl: './map-3d.component.html',
   styleUrls: ['./map-3d.component.css']
 })
-export class Map3dComponent implements OnInit {
+export class Map3dComponent implements OnInit, OnDestroy {
   @ViewChild('openlayers', { read: ElementRef }) map2D: ElementRef;
   @ViewChild('osgjs', { read: ElementRef }) map3D: ElementRef;
   @Input() show = 'map2D';
@@ -24,5 +24,9 @@ export class Map3dComponent implements OnInit {
 
   ngOnInit() {
     this.map3DService.init(this.map2D.nativeElement, this.map3D.nativeElement);
+  }
+
+  ngOnDestroy() {
+    this.map3DService.destroy();
   }
 }

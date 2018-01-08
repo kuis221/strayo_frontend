@@ -1,29 +1,32 @@
-import { Record, List } from 'immutable';
+import { Map, Record, List } from 'immutable';
 import { Site } from '../models/site.model';
+import { Progress } from '../util/progress';
 
 const siteRecord = Record({
     sites: List([]),
     mainSite: null,
-    pending: false,
-    error: null,
+    pending: Map({}),
+    progress: null,
 });
 
 export class SitesState extends siteRecord {
     sites: List<Site>;
     mainSite: Site;
-    pending: boolean;
-    error: Error;
+    pending: Map<number, Progress>;
+    progress: Progress;
 
-    public getSites(): SitesState {
-        return this.set('error', null).set('pending', true) as SitesState;
+    public getSites(progress: Progress): SitesState {
+        return this.set('progress', progress) as SitesState;
     }
 
     public getSitesError(error: Error): SitesState {
-        return this.set('error', error).set('pending', false) as SitesState;
+        const progress = this.get('progress') as Progress;
+        progress.error(error);
+        return this;
     }
 
     public getSitesSuccess(sites: Site[]): SitesState {
-        return this.set('error', null).set('pending', true).set('sites', List(sites)) as SitesState;
+        return this.set('progress', null).set('sites', List(sites)) as SitesState;
     }
 
     public setMainSite(site: Site): SitesState {

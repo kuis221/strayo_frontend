@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 
 import * as d3 from 'd3';
 
-import { tap, map, first, share } from 'rxjs/operators';
+import { tap, map, first, share, take, debounceTime } from 'rxjs/operators';
 import { isNumeric } from 'rxjs/util/isNumeric';
 
 import { DatasetsState } from './state';
@@ -16,11 +16,12 @@ import { DatasetsState } from './state';
 import { Dataset } from '../models/dataset.model';
 
 import * as fromRoot from '../reducers';
-import { SetDatasets, SetMainDataset, GetAnnotations } from './actions/actions';
+import { SetDatasets, SetMainDataset, GetAnnotations, DatasetsActionsType } from './actions/actions';
 import { IAnnotation, Annotation } from '../models/annotation.model';
 import { List, Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { Resource } from '../models/resource.model';
+import { Progress } from '../util/progress';
 
 const allAnnotationsQuery = gql`
   query AnnotationsForDataset($datasetID: String!) {
@@ -53,12 +54,16 @@ export class DatasetsService {
   private annotationsSource = new BehaviorSubject<Map<number, List<Annotation>>>(Map());
   annotations = this.annotationsSource.asObservable().pipe(distinctUntilChanged());
 
+  private pendingSource = new BehaviorSubject<Map<number, List<Progress>>>(Map());
+  pending = this.pendingSource.asObservable().pipe(distinctUntilChanged());
+
   constructor(private store: Store<fromRoot.State>, private apollo: Apollo) {
     this.getState$().subscribe((state) => {
       if (!state) return;
       this.datasetsSource.next(state.datasets);
       this.mainDatasetSource.next(state.mainDataset);
       this.annotationsSource.next(state.annotations);
+      this.pendingSource.next(state.pending);
     });
   }
 
@@ -76,10 +81,26 @@ export class DatasetsService {
     this.store.dispatch(new SetMainDataset(dataset));
   }
 
-  public loadAnnotations(dataset: Dataset) {
-    this.store.dispatch(new GetAnnotations(dataset));
+  public async loadAnnotations(dataset: Dataset): Promise<Progress> {
+    const pending = await this.pending.pipe(debounceTime(0), take(1)).toPromise();
+    const createAndDispatch = () => {
+      const p = new Progress({
+        stage: DatasetsActionsType.GET_ANNOTATIONS,
+        details: `Getting all annotations for dataset: ${dataset.name() || dataset.id()}`,
+        index: 0,
+        length: 1,
+      });
+      this.store.dispatch(new GetAnnotations({ dataset, progress: p }));
+      return p;
+    };
+    const progresses = pending.get(dataset.id());
+    if (!progresses) return createAndDispatch();
+    const progress = progresses.find(p => p.stage() === DatasetsActionsType.GET_ANNOTATIONS && !p.isDone());
+    if (!progress) return createAndDispatch();
+    return progress;
   }
 
+  // Called by effect
   public getAnnotations(dataset: Dataset): Observable<Annotation[]> {
     return this.apollo.watchQuery<{
         dataset: {
@@ -91,7 +112,6 @@ export class DatasetsService {
     })
     .valueChanges
     .pipe(
-      tap(thing => console.log('got all annotations', thing)),
       map(({ data }) => {
         return data.dataset.annotations.map((datum) => {
           const anno = new Annotation(datum);

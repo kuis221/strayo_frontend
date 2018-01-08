@@ -20,7 +20,8 @@ import { Dataset } from '../../models/dataset.model';
 export class SiteLayoutComponent implements OnInit {
   site: Site;
   datasets: Dataset[];
-  constructor(private ref: ApplicationRef, private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
+  constructor(private ref: ApplicationRef,
+    private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.pipe(

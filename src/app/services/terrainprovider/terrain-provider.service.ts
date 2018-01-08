@@ -7,11 +7,11 @@ import { DatasetsService } from '../../datasets/datasets.service';
 
 import { TerrainProvider } from '../../models/terrainProvider.model';
 
-import { ProgressCallback } from '../../util/progress';
+import { ProgressCallback, Progress } from '../../util/progress';
 
 import * as fromRoot from '../../reducers';
 import { Dataset } from '../../models/dataset.model';
-import { AddTerrainProvider, LoadTerrain } from './actions/actions';
+import { AddTerrainProvider, GetTerrain } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
@@ -55,13 +55,21 @@ export class TerrainProviderService {
     return this.store.select('terrainProvider');
   }
 
-  public loadTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3) {
-    this.store.dispatch(new LoadTerrain({provider, smdjs, mtljs, smdjsURL, quality}));
+  public loadTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3): Progress {
+    const dataset = provider.dataset();
+    const progress = new Progress({
+      stage: `Getting Terrain`,
+      details: `Fetching for dataset: ${dataset.name() || dataset.id()}`,
+      index: 0,
+      length: 1,
+    });
+    this.store.dispatch(new GetTerrain({provider, smdjs, mtljs, smdjsURL, quality, progress}));
+    return progress;
   }
 
   // Called by effect
-  async loadTerrainAsync(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3): 
-    Promise<{ rootNode: osg.Node, provider: TerrainProvider, quality: number }> {
+  async getTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3, progress?: Progress): 
+    Promise<{ modelNode: osg.Node, provider: TerrainProvider, quality: number }> {
     // 'Have to get all the textures and all the meshes';
     const baseURL = smdjsURL.split('100/_smdjs')[0];
     // Get data for fetching
@@ -77,8 +85,7 @@ export class TerrainProviderService {
       };
     });
 
-    const models = await this.fetchModel(sceneImagePairs, (i, length) => {
-    });
+    const models = await this.fetchModel(sceneImagePairs, progress);
     if (!models) {
       throw new Error('Cannot find models');
     }
@@ -101,27 +108,26 @@ export class TerrainProviderService {
         delete jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].RenderingHint;
       }
     });
-    let scenes;
+    let scenes = [];
+    if (progress) {
+      progress.details('Assembling model');
+      progress.progress(0, models.length);
+    }
       try {
-        scenes = await Promise.all(models.map((model) => {
-          return osgDB.parseSceneGraph(model.mesh).then(
-            // convert from bluebird promise to native promise
-            (node) => {
-              // set the texture
-              return Promise.resolve(node);
-            },
-            (err) => console.log(model.mesh)
-          );
-        }));
+        for (let i = 0; i < models.length; i++) {
+          const model = models[i];
+          if (progress) progress.progress(i);
+          scenes.push(await osgDB.parseSceneGraph(model.mesh).then(node => Promise.resolve(node)));
+        }
       } catch (e) {
         console.warn('failed to parse output');
         throw e;
       }
-    const root = new osg.MatrixTransform();
-    osg.Matrix.makeRotate(1.5 * Math.PI, 1.0, 0.0, 0.0, root.getMatrix());
+    const modelNode = new osg.MatrixTransform();
+    osg.Matrix.makeRotate(1.5 * Math.PI, 1.0, 0.0, 0.0, modelNode.getMatrix());
     const mtrans = new osg.MatrixTransform();
     const mnode = new osg.Node();
-    root.addChild(mnode);
+    modelNode.addChild(mnode);
 
     // Add all minishes together
     scenes.forEach((scene) => {
@@ -136,13 +142,13 @@ export class TerrainProviderService {
       _targetNumTrianglesPerLeaf: 50,
       _maxNumLevels: 20,
     });
-    treeBuilder.apply(root);
+    treeBuilder.apply(modelNode);
 
     const bbox = mnode.getBoundingBox();
     const center = osg.Vec3.create();
     bbox.center(center);
     osg.Matrix.setTrans(mtrans.getMatrix(), -center[0], -center[1], -center[2]);
-    return {rootNode: root, provider, quality};
+    return { modelNode, provider, quality};
   }
 
   public makeProvidersForDatasets(datasets: Dataset[]) {
@@ -150,14 +156,25 @@ export class TerrainProviderService {
     providers.forEach(p => this.store.dispatch(new AddTerrainProvider(p)));
   }
 
-  private async fetchModel(modelsToFetch: FetchModel[], onProgress?: ProgressCallback): Promise<FetchedModel[]> {
+  private async fetchModel(modelsToFetch: FetchModel[], progress?: Progress): Promise<FetchedModel[]> {
     // First check pouchdb to determine if model is already in memory
     let found;
     const first = modelsToFetch[0];
+    if (progress) {
+      progress.details('Checking if model is available offline');
+      progress.progress(0, 1);
+    }
     try {
       found = await modelDB.get(first.dataset_id, {attachments: true});
+      if (progress) {
+        progress.details('Model found offline: Loading');
+        progress.progress(0, 1);
+      }
     } catch (e) {
-      // console.error(e);
+      if (progress) {
+        progress.details('Downloading model');
+        progress.progress(0, 1);
+      }
     }
     // If not found go through the process of downloading all the images and models.
     if (!found) {
@@ -171,8 +188,8 @@ export class TerrainProviderService {
             fetch(toFetch.meshURL).then(r => r.blob())
           ]);
           meshTexturePairs.push({...toFetch, textureBlob, meshBlob});
-          if (onProgress) {
-            onProgress(i, modelsToFetch.length);
+          if (progress) {
+            progress.progress(i, modelsToFetch.length);
           }
         }
       } catch (e) {

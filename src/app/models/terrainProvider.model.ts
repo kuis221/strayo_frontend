@@ -18,6 +18,21 @@ export class TerrainProvider extends ol.Object {
         return this.get('dataset');
     }
 
+    public modelNode(): osg.Node;
+    public modelNode(modelNode: osg.Node): this;
+    public modelNode(modelNode?: osg.Node): osg.Node | this {
+        if (modelNode !== undefined) {
+            const current = this.modelNode();
+            if (current) {
+                this.rootNode().removeChild(current);
+            }
+            this.rootNode().addChild(modelNode);
+            this.set('model_node', modelNode);
+            return this;
+        }
+        return this.get('model_node');
+    }
+
     public quality(): number;
     public quality(quality: number): this;
     public quality(quality?: number): number | this {

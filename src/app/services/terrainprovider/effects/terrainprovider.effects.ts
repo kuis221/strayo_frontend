@@ -10,18 +10,18 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { TerrainProviderService } from '../terrain-provider.service';
-import { TerrainProviderActionsType, LoadTerrain, LoadTerrainSuccess, LoadTerrainError } from '../actions/actions';
+import { TerrainProviderActionsType, GetTerrain, GetTerrainSuccess, GetTerrainError } from '../actions/actions';
 
 @Injectable()
 export class TerrainProviderEffects {
     constructor(private actions$: Actions, private terrainService: TerrainProviderService) {}
 
-    @Effect() loadTerrain$ = this.actions$.ofType(TerrainProviderActionsType.LOAD_TERRAIN)
-        .map((action: LoadTerrain) => action.payload)
+    @Effect() loadTerrain$ = this.actions$.ofType(TerrainProviderActionsType.GET_TERRAIN)
+        .map((action: GetTerrain) => action.payload)
         .mergeMap(payload => {
-            const { provider, smdjs, mtljs, smdjsURL, quality } = payload;
-            return Observable.fromPromise(this.terrainService.loadTerrainAsync(provider, smdjs, mtljs, smdjsURL, quality))
-                .map(result => new LoadTerrainSuccess(result))
-                .catch((error) => Observable.of(new LoadTerrainError({provider, error})))
+            const { provider, smdjs, mtljs, smdjsURL, quality, progress } = payload;
+            return Observable.fromPromise(this.terrainService.getTerrain(provider, smdjs, mtljs, smdjsURL, quality, progress))
+                .map(result => new GetTerrainSuccess(result))
+                .catch((error) => Observable.of(new GetTerrainError({provider, error})))
         });
 }

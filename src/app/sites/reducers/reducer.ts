@@ -7,7 +7,7 @@ const INITIAL_STATE = getInitialState();
 export function reducer(state: SitesState = INITIAL_STATE, action: sites.SitesActions) {
     switch (action.type) {
         case sites.SitesActionsType.GET_SITES:
-            return state.getSites();
+            return state.getSites(action.payload);
         case sites.SitesActionsType.GET_SITES_SUCCESS:
             return state.getSitesSuccess(action.payload);
         case sites.SitesActionsType.GET_SITES_ERROR:

@@ -176,6 +176,8 @@ declare module osg {
 
 	export class Node {
 		addChild(node: osg.Node);
+		removeChildren();
+		removeChild(node: osg.Node);
 
 		getBoundingBox(): BoundingBox;
 
@@ -302,6 +304,8 @@ declare module osgViewer {
 		constructor(canvas: HTMLElement);
 
 		init();
+		// Essentially stops the rendering
+		contextLost(): void;
 
 		setSceneData(node: osg.Node);
 

@@ -5,13 +5,14 @@ import { TerrainProviderState } from '../state';
 
 import { Smdjs } from '../../../models/smdjs.model';
 import { Mtljs } from '../../../models/mtljs.model';
+import { Progress } from '../../../util/progress';
 
 export enum TerrainProviderActionsType {
     RESET = '[TerrainProvider] Reset',
     ADD_TERRAIN_PROVIDER = '[TerrainProvider] Add',
-    LOAD_TERRAIN = '[TerrainProvider] Load Model',
-    LOAD_TERRAIN_SUCCESS = '[TerrainProvider] Load Model Success',
-    LOAD_TERRAIN_ERROR = '[TerrainProvider] Load Model Error',
+    GET_TERRAIN = '[TerrainProvider] Load Model',
+    GET_TERRAIN_SUCCESS = '[TerrainProvider] Load Model Success',
+    GET_TERRAIN_ERROR = '[TerrainProvider] Load Model Error',
 }
 
 export class ResetState implements Action {
@@ -24,23 +25,24 @@ export class AddTerrainProvider implements Action {
     constructor(public payload: TerrainProvider) {}
 }
 
-export class LoadTerrain implements Action {
-    type = TerrainProviderActionsType.LOAD_TERRAIN;
-    constructor(public payload: {provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality?: number}) {}
+export class GetTerrain implements Action {
+    type = TerrainProviderActionsType.GET_TERRAIN;
+    constructor(public payload: {provider: TerrainProvider, smdjs: Smdjs,
+        mtljs: Mtljs, smdjsURL: string, quality?: number, progress: Progress}) {}
 }
 
-export class LoadTerrainSuccess implements Action {
-    type = TerrainProviderActionsType.LOAD_TERRAIN_SUCCESS;
-    constructor(public payload: { provider: TerrainProvider, rootNode: osg.Node, quality: number}) {}
+export class GetTerrainSuccess implements Action {
+    type = TerrainProviderActionsType.GET_TERRAIN_SUCCESS;
+    constructor(public payload: { provider: TerrainProvider, modelNode: osg.Node, quality: number}) {}
 }
 
-export class LoadTerrainError implements Action {
-    type = TerrainProviderActionsType.LOAD_TERRAIN_ERROR;
+export class GetTerrainError implements Action {
+    type = TerrainProviderActionsType.GET_TERRAIN_ERROR;
     constructor(public payload: { provider: TerrainProvider, error: Error}) {}
 }
 
 export type TerrainProviderActions = ResetState
 | AddTerrainProvider
-| LoadTerrain
-| LoadTerrainSuccess
-| LoadTerrainError;
+| GetTerrain
+| GetTerrainSuccess
+| GetTerrainError;

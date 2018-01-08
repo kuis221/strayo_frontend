@@ -24,6 +24,7 @@ import { GetSites, SetMainSite } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { getSitesState } from '../reducers';
+import { Progress } from '../util/progress';
 
 const allSitesQuery = gql`{
   sites {
@@ -64,8 +65,14 @@ export class SitesService {
     return this.store.select<SitesState>(getSitesState);
   }
 
-  public loadSites() {
-    this.store.dispatch(new GetSites());
+  public loadSites(): Progress {
+    const progress = new Progress({
+      stage: 'Loading Sites',
+      index: 0,
+      length: 1,
+    });
+    this.store.dispatch(new GetSites(progress));
+    return progress;
   }
 
   public setMainSite(site: Site) {

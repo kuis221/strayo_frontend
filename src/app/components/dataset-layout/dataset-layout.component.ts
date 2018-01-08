@@ -7,6 +7,8 @@ import { DatasetsService } from '../../datasets/datasets.service';
 
 import { List } from 'immutable';
 
+import { listenOn } from '../../util/listenOn';
+
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 
@@ -65,11 +67,16 @@ export class DatasetLayoutComponent implements OnInit {
     });
 
     // Getting main
-    this.datasetsService.mainDataset.subscribe((dataset) => {
+    this.datasetsService.mainDataset.subscribe(async (dataset) => {
       this.mainDataset = dataset;
       if (!dataset) return;
-      // console.log('loading annotations for ', dataset);
-      this.datasetsService.loadAnnotations(dataset);
+      // console.log('loading annotations for ', dataset);\
+      const progress = await this.datasetsService.loadAnnotations(dataset);
+      const off = listenOn(progress, 'change:progress', () => {
+        console.log('LOADED ALL ANNOTATIONS');
+        off();
+      });
+
     });
   }
 

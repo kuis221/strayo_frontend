@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { Dataset } from '../../models/dataset.model';
 import { Annotation } from '../../models/annotation.model';
+import { Progress } from '../../util/progress';
 
 export enum DatasetsActionsType {
     GET_ANNOTATIONS = '[Dataset] Get Annotations',
@@ -15,7 +16,7 @@ export enum DatasetsActionsType {
 
 export class GetAnnotations implements Action {
     type = DatasetsActionsType.GET_ANNOTATIONS;
-    constructor(public payload: Dataset) {}
+    constructor(public payload: {dataset: Dataset, progress: Progress}) {}
 }
 
 export class GetAnnotationsSuccess implements Action {
@@ -25,7 +26,7 @@ export class GetAnnotationsSuccess implements Action {
 
 export class GetAnnotationsError implements Action {
     type = DatasetsActionsType.GET_ANNOTATIONS_ERROR;
-    constructor(public payload: Error) {}
+    constructor(public payload: { dataset: Dataset, error: Error}) {}
 }
 
 export class SetDatasets implements Action {
