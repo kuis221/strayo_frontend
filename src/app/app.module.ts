@@ -11,7 +11,8 @@ import { GraphQLModule } from './graphql/graphql.module';
 // import { InMemoryDataService } from './mocks/inMemoryData.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
-import { StoreModule } from '@ngrx/store';
+import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
+import { localStorageSync } from 'ngrx-store-localstorage';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './reducers/index';
@@ -23,18 +24,27 @@ import { SitemapComponent } from './components/sitemap/sitemap.component';
 import { SiteLayoutComponent } from './components/sitelayout/sitelayout.component';
 import { DatasetDetailsComponent } from './components/dataset-details/dataset-details.component';
 import { DatasetLayoutComponent } from './components/dataset-layout/dataset-layout.component';
-import { LoginLayoutComponent } from './components/login-layout/login-layout.component';
-import { SignUpLayoutComponent } from './components/signup-layout/signup-layout.component';
 import { Map3dComponent } from './components/map-3d/map-3d.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 
+import { LoginLayoutComponent } from './users/containers/login-layout/login-layout.component';
+import { SignUpLayoutComponent } from './users/containers/signup-layout/signup-layout.component';
+
+import { AuthGuard } from './users/auth-guard.service';
 import { SitesEffects } from './sites/effects/sites.effects';
 import { SitesService } from './sites/sites.service';
 import { UsersService } from './users/users.service';
 import { DatasetsService } from './datasets/datasets.service';
 import { TerrainProviderService } from './services/terrainprovider/terrain-provider.service';
 import { Map3dService } from './services/map-3d.service';
+
+export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
+  localStorageSync({
+    keys: [{ users: ['currentUser', 'loggedIn'] }],
+    rehydrate: true,
+  })(reducer);
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [
@@ -60,13 +70,13 @@ import { Map3dService } from './services/map-3d.service';
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
     //   apiBase: 'api/'
     // }),
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(Effects),
     StoreDevtoolsModule.instrument({
       maxAge: 10
     })
   ],
-  providers: [SitesService, UsersService, DatasetsService, TerrainProviderService, Map3dService],
+  providers: [AuthGuard, SitesService, UsersService, DatasetsService, TerrainProviderService, Map3dService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

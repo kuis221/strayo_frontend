@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../users.service';
 
 @Component({
   selector: 'app-login-layout',

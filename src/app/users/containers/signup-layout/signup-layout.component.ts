@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../users.service';
 
 @Component({
   selector: 'app-signup-layout',
@@ -22,6 +22,14 @@ export class SignUpLayoutComponent {
   ) {}
 
   onSubmit() {
-    this.usersService.makeSignUp(this.user);
+    this.usersService.makeSignUp({
+      first_name: this.user.firstName,
+      last_name: this.user.lastName,
+      email: this.user.email,
+      industry: this.user.industry,
+      password: this.user.password,
+      password_confirmation: this.user.password,
+      type: 'Customer',
+    });
   }
 }

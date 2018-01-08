@@ -12,12 +12,15 @@ export enum UsersActionsType {
   SIGN_IN = '[User] Sign In',
   SIGN_IN_SUCCESS = '[User] Sign In Success',
   SIGN_IN_ERROR = '[User] Sign In Error',
+  SIGN_IN_REDIRECT = '[Auth] Sign In Redirect',
   // Sign Up
   SIGN_UP = '[User] Sign Up',
   SIGN_UP_SUCCESS = '[User] Sign Up Success',
   SIGN_UP_ERROR = '[User] Sign Up Error',
   // Reset
   RESET = '[User] Reset',
+  // Logout
+  LOGOUT = '[User] Logout',
 }
 
 export class GetUsers implements Action {
@@ -57,12 +60,17 @@ export class SignIn implements Action {
 
 export class SignInSuccess implements Action {
   type = UsersActionsType.SIGN_IN_SUCCESS;
-  constructor(public payload: User[]) {}
+  constructor(public payload: Object) {}
 }
 
 export class SignInError implements Action {
   type = UsersActionsType.SIGN_IN_ERROR;
-  constructor(public payload: Error) {}
+  constructor(public payload) {}
+}
+
+export class SignInRedirect implements Action {
+  type = UsersActionsType.SIGN_IN_REDIRECT;
+  constructor(public payload) {}
 }
 
 export class SignUp implements Action {
@@ -72,12 +80,17 @@ export class SignUp implements Action {
 
 export class SignUpSuccess implements Action {
   type = UsersActionsType.SIGN_UP_SUCCESS;
-  constructor(public payload: User[]) {}
+  constructor(public payload: Object) {}
 }
 
 export class SignUpError implements Action {
   type = UsersActionsType.SIGN_UP_ERROR;
-  constructor(public payload: Error) {}
+  constructor(public payload) {}
+}
+
+export class Logout implements Action {
+  type = UsersActionsType.LOGOUT;
+  constructor(public payload) {}
 }
 
 export type UsersActions = GetUsers
@@ -89,6 +102,8 @@ export type UsersActions = GetUsers
 | SignIn
 | SignInSuccess
 | SignInError
+| SignInRedirect
 | SignUp
 | SignUpSuccess
-| SignUpError;
+| SignUpError
+| Logout;

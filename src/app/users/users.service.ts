@@ -4,14 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { tap, map } from 'rxjs/operators';
 
 import { List } from 'immutable';
 
 import * as moment from 'moment';
-
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 import * as fromRoot from '../reducers';
 
@@ -27,26 +25,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { getUsersState } from '../reducers';
 
-const allSitesQuery = gql`{
-  sites {
-    id,
-    name,
-    status,
-    created_at,
-    location,
-    datasets {
-      created_at,
-      id,
-      is_phantom,
-      lat,
-      long,
-      name,
-      status,
-      updated_at,
-    }
-  }
-}`;
-
 @Injectable()
 export class UsersService {
   private usersSource = new BehaviorSubject<List<User>>(List([]));
@@ -55,7 +33,7 @@ export class UsersService {
   private currentUserSource = new BehaviorSubject<User>(null);
   currentUser = this.currentUserSource.asObservable().pipe(distinctUntilChanged());
 
-  constructor (private store: Store<fromRoot.State>, private apollo: Apollo, private http: HttpClient) {
+  constructor (private store: Store<fromRoot.State>, private http: HttpClient) {
     this.getState$().subscribe((state) => {
       if (!state) {
         return;
@@ -79,18 +57,7 @@ export class UsersService {
   }
 
   public getUsers(): Observable<User[]> {
-    return this.apollo.watchQuery<{ users: User[] }>({
-      query: allSitesQuery,
-    })
-    .valueChanges
-    .pipe(
-      map(({ data }) => {
-        return data.users.map((datum) => {
-          const user = datum;
-          return user;
-        });
-      }),
-    );
+    return of([]);
   }
 
   public makeSignIn(credentials) {
@@ -98,10 +65,7 @@ export class UsersService {
   }
 
   public signIn(credentials) {
-    this.http.post(getFullUrl('v1/sessions'), credentials).subscribe(
-      res => console.log(res),
-      err => console.log('Error occured', err),
-    );
+    return this.http.post(getFullUrl('v1/sessions'), credentials);
   }
 
   public makeSignUp(userData) {
@@ -109,9 +73,6 @@ export class UsersService {
   }
 
   public signUp(userData) {
-    this.http.post(getFullUrl('v1/users'), userData).subscribe(
-      res => console.log(res),
-      err => console.log('Error occured', err),
-    );
+    return this.http.post(getFullUrl('v1/users'), { user: userData });
   }
 }
