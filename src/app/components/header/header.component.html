@@ -2,6 +2,10 @@
   <a [routerLink]="['/']">Strayos</a>
   <a [routerLink]="['/sign-in']" *ngIf="!(isAuthenticated$ | async)">Login</a>
   <a [routerLink]="['/sign-up']" *ngIf="!(isAuthenticated$ | async)">Sign Up</a>
-  <span *ngIf="isAuthenticated$ | async">Hi, {{(currentUser$ | async).name}}</span>
+  <span *ngIf="(isAuthenticated$ && currentUser$) | async; let currentUser else loading">
+    Hi {{ currentUser.name() }}!
+  </span>
   <a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a>
 </div>
+
+<ng-template #loading></ng-template>

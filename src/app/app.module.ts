@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -38,10 +40,17 @@ import { UsersService } from './users/users.service';
 import { DatasetsService } from './datasets/datasets.service';
 import { TerrainProviderService } from './services/terrainprovider/terrain-provider.service';
 import { Map3dService } from './services/map-3d.service';
+import { UsersState } from './users/state';
+import { User } from './models/user.model';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
-    keys: [{ users: ['currentUser', 'loggedIn'] }],
+    keys: [{ users: {
+      serialize: state => {
+        console.log('serialized state', state);
+        return {currentUser: state.currentUser && state.currentUser.getProperties(), loggedIn: state.loggedIn}
+      },
+      deserialize: (update) => new UsersState({currentUser: new User(update.currentUser) || null, loggedIn: update.loggedIn})} }],
     rehydrate: true,
   })(reducer);
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
@@ -67,6 +76,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     FormsModule,
     GraphQLModule,
     HttpClientModule,
+    NgbModule.forRoot()
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
     //   apiBase: 'api/'
     // }),

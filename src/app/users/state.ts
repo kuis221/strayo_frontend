@@ -16,6 +16,11 @@ export class UsersState extends userRecord {
   pending: boolean;
   error: Error;
 
+  constructor(props) {
+    super(props);
+    console.log('here in creation', this.toJS());
+  }
+
   public getUsers(): UsersState {
     return this.set('error', null).set('pending', true) as UsersState;
   }
