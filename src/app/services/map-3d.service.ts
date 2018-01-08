@@ -112,7 +112,7 @@ export class Map3dService {
       this.terrainProviderService.makeProvidersForDatasets([mainDataset]);
 
       const fetchAnnotationsForMainDataset = () => {
-        this.updateTer0rainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
+        this.updateTerrainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
       };
 
       if (mainDataset.annotations()) {
