@@ -53,9 +53,12 @@ export class SitesService {
 
   private mainSiteSource = new BehaviorSubject<Site>(null);
   mainSite = this.mainSiteSource.asObservable().pipe(distinctUntilChanged());
-  constructor(private store: Store<fromRoot.State>, private apollo: Apollo, private http: HttpClient) {
+
+  constructor (private store: Store<fromRoot.State>, private apollo: Apollo, private http: HttpClient) {
     this.getState$().subscribe((state) => {
-      if (!state) return;
+      if (!state) {
+        return;
+      }
       this.sitesSource.next(state.sites);
       this.mainSiteSource.next(state.mainSite);
     });

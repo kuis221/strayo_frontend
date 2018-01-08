@@ -1,12 +1,12 @@
 <div class="wrapper">
-  <div class="header">Header</div>
+  <app-header></app-header>
   <div class="sidebar">
     <div class="site-details-cont" *ngFor="let site of sites$ | async">
-      <app-sitedetails [site]="site"></app-sitedetails>      
+      <app-sitedetails [site]="site"></app-sitedetails>
     </div>
   </div>
   <div class="content">
     <app-sitemap></app-sitemap>
   </div>
-  <div class="footer">Footer</div>
+  <app-footer></app-footer>
 </div>

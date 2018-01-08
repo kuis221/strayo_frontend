@@ -45,5 +45,5 @@ type Query {
 `;
 
 export const schema = new GraphQLSchema({
-    query: QueryType,
+  query: QueryType,
 });

@@ -45,9 +45,9 @@ export class Map3dService {
   private _groupForDataset: (id: number) => ol.layer.Group;
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
-    
+
     this.sceneRoot = new osg.Node();
-    
+
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
     this.sateliteLayer = new ol.layer.Tile({
@@ -77,7 +77,7 @@ export class Map3dService {
 
     // Bind stuff.
     this.phantomGroup = this.getGroupForDataset(0);
-    
+
     // Get sites
     this.sitesService.mainSite.subscribe((mainSite) => {
       this.mainSite = mainSite;
@@ -165,7 +165,7 @@ export class Map3dService {
   }
 
   async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
-    
+
     const stereoscopeAnno = annotations.find(anno => anno.type() === 'stereoscope');
     if (!stereoscopeAnno) {
       console.warn('No stereoscope annotation found');

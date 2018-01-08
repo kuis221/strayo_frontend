@@ -1,0 +1,7 @@
+<div class="header">
+  <a [routerLink]="['/']">Strayos</a>
+  <a [routerLink]="['/sign-in']" *ngIf="!(isAuthenticated$ | async)">Login</a>
+  <a [routerLink]="['/sign-up']" *ngIf="!(isAuthenticated$ | async)">Sign Up</a>
+  <span *ngIf="isAuthenticated$ | async">Hi, {{(currentUser$ | async).name}}</span>
+  <a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a>
+</div>
