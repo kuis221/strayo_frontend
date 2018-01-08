@@ -1,8 +1,9 @@
 import * as ol from 'openlayers';
 import * as moment from 'moment';
-import { Annotation } from './annotation.model';
+import { Annotation, IAnnotation } from './annotation.model';
 
 export interface IDataset {
+    annotations: IAnnotation[];
     created_at: Date | string;
     id: number;
     is_phantom: boolean;

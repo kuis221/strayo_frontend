@@ -1,15 +1,32 @@
 import * as ol from 'openlayers';
+import * as moment from 'moment';
 
-import { Resource } from './resource.model';
+import { Resource, IResource } from './resource.model';
 
 export interface IAnnotation {
+    created_at: Date | string;
+    data: string;
     id: number;
     is_phantom: string;
-    meta: {};
+    meta: string;
+    resources: IResource[];
     type: string;
+    updated_at: Date | string;
 }
 
 export class Annotation extends ol.Object {
+    public createdAt(): Date;
+    public createdAt(createdAt: Date | string): this;
+    public createdAt(createdAt?: Date | string): Date | this {
+        if (createdAt !== undefined) {
+            if (typeof createdAt === 'string') {
+                createdAt = moment(createdAt).toDate();
+            }
+            this.set('created_at', createdAt);
+            return this;
+        }
+        return this.get('created_at');
+    }
 
     public data(): ol.Collection<ol.Feature> | ol.Feature;
     public data(data: ol.Collection<ol.Feature> | ol.Feature): this;
@@ -25,7 +42,7 @@ export class Annotation extends ol.Object {
     public id(id: number): this;
     public id(id?: number): number | this {
         if (id !== undefined) {
-            this.set('id', id);
+            this.set('id', +id);
             return this;
         }
         return this.get('id');
@@ -70,4 +87,19 @@ export class Annotation extends ol.Object {
         }
         return this.get('type');
     }
+
+    public updatedAt(): Date;
+    public updatedAt(updatedAt: Date | string): this;
+    public updatedAt(updatedAt?: Date | string): Date | this {
+        if (updatedAt !== undefined) {
+            if (typeof updatedAt === 'string') {
+                updatedAt = moment(updatedAt).toDate();
+            }
+            this.set('updated_at', updatedAt);
+            return this;
+        }
+        return this.get('updated_at');
+    }
+
+
 }

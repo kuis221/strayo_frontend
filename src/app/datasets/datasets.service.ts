@@ -115,8 +115,20 @@ export class DatasetsService {
       map(({ data }) => {
         return data.dataset.annotations.map((datum) => {
           const anno = new Annotation(datum);
+          // Update from string
+          anno.id(anno.id());
+          anno.createdAt(anno.createdAt());
+          anno.updatedAt(anno.updatedAt());
+          
           const resources: any[] = anno.resources() || [];
-          anno.resources(resources.map(r => new Resource(r)));
+          anno.resources(resources.map(r => {
+            const resource = new Resource(r);
+            // update from string
+            resource.id(resource.id());
+            resource.createdAt(resource.createdAt());
+            resource.updatedAt(resource.updatedAt());
+            return resource;
+          }));
           return anno;
         });
       })

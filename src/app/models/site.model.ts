@@ -9,6 +9,7 @@ export interface ISite {
     location: string;
     name: string;
     status: string;
+    updated_at: Date | string;
 }
 
 export class Site extends ol.Object {
@@ -74,6 +75,20 @@ export class Site extends ol.Object {
         }
         return this.get('status');
     }
+
+    public updatedAt(): Date;
+    public updatedAt(updatedAt: Date | string): this;
+    public updatedAt(updatedAt?: Date | string): Date | this {
+        if (updatedAt !== undefined) {
+            if (typeof updatedAt === 'string') {
+                updatedAt = moment(updatedAt).toDate();
+            }
+            this.set('updated_at', updatedAt);
+            return this;
+        }
+        return this.get('updated_at');
+    }
+
 
     // Actual Methods
     getPhantomDataset(): Dataset {

@@ -15,7 +15,7 @@ import * as fromRoot from '../reducers';
 
 import { getFullUrl } from '../util/getApiUrl';
 
-import { User } from '../models/user.model';
+import { IUser, User } from '../models/user.model';
 import { Dataset } from '../models/dataset.model';
 
 import { UsersState } from '../users/state';
@@ -65,7 +65,11 @@ export class UsersService {
   }
 
   public signIn(credentials) {
-    return this.http.post(getFullUrl('v1/sessions'), credentials);
+    return this.http.post<IUser>(getFullUrl('v1/sessions'), credentials).map(
+      (user) => {
+        return new User(user);
+      }
+    );
   }
 
   public makeSignUp(userData) {
@@ -73,6 +77,10 @@ export class UsersService {
   }
 
   public signUp(userData) {
-    return this.http.post(getFullUrl('v1/users'), { user: userData });
+    return this.http.post<IUser>(getFullUrl('v1/users'), { user: userData }).map(
+      (user) => {
+        return new User(user);
+      }
+    );
   }
 }

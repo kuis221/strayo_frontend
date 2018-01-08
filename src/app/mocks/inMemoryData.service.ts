@@ -121,7 +121,7 @@ export class InMemoryDataService implements InMemoryDbService {
                 switch (id % annotationsPerDataSet) {
                     default:
                         type = 'mapdata';
-                        is_phantom = true;
+                        is_phantom = false;
                         meta = '{}';
                         data = '{}';
                         const mapdataResource: any = {

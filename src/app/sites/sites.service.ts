@@ -43,6 +43,7 @@ const allSitesQuery = gql`{
       status,
       updated_at,
     }
+    updated_at
   }
 }`;
 
@@ -90,15 +91,19 @@ export class SitesService {
     .valueChanges
     .pipe(
       map(({ data }) => {
+        console.log('got data', data);
         return data.sites.map((datum) => {
           const site = new Site(datum);
           // Update fields from string
+          site.id(site.id());
           site.createdAt(site.createdAt());
+          site.updatedAt(site.updatedAt());
           // change datasets
           const datasets: any[] = site.datasets();
           site.datasets(datasets.map(dataset => {
             const d = new Dataset(dataset);
             // Update fields from string
+            d.id(d.id());
             d.createdAt(d.createdAt());
             d.updatedAt(d.updatedAt());
             return d;

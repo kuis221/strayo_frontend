@@ -1,12 +1,16 @@
 <div class="wrapper">
   <app-header></app-header>
   <div class="sidebar">
-    <div *ngFor="let dataset of datasets">
-      <app-dataset-details [dataset]="dataset" [site]="site"></app-dataset-details>
+    <div *ngIf="site$ | async; let site; else loading">
+      <div *ngFor="let dataset of site.datasets()">
+        <app-dataset-details [dataset]="dataset" [site]="site"></app-dataset-details>
+      </div>
     </div>
   </div>
   <div class="content">
-    hello {{ site | json }}
+    hello {{ site$ | async | json }}
   </div>
   <app-footer></app-footer>
 </div>
+
+<ng-template #loading>Loading Datasets...</ng-template>
