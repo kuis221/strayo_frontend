@@ -1,4 +1,5 @@
-;(function($){
+;
+function initStrayosJquery($){
 	function mobileNav(){
 		$(".btnMobileNav").on("click", function(){
 			var display = $(".topNav").css("display");
@@ -197,7 +198,8 @@
 		expandMap();
 	});
 
-})(jQuery);
+}
+initStrayosJquery(jQuery);
 
 
 

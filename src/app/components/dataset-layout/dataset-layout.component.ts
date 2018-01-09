@@ -28,6 +28,7 @@ export class DatasetLayoutComponent implements OnInit {
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    initStrayosJquery($);
     // Get the site
     this.route.params.pipe(
       switchMap((params) => {

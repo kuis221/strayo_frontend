@@ -1,4 +1,4 @@
-<div class="header">
+<!-- <div class="header">
   <a [routerLink]="['/']">Strayos</a>
   <a [routerLink]="['/sign-in']" *ngIf="!(isAuthenticated$ | async)">Login</a>
   <a [routerLink]="['/sign-up']" *ngIf="!(isAuthenticated$ | async)">Sign Up</a>
@@ -6,6 +6,20 @@
     Hi {{ currentUser.name() }}!
   </span>
   <a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a>
-</div>
+</div> -->
+
+<header class="header clearfix">
+  <ng-content></ng-content>
+  <div class="user" *ngIf="(isAuthenticated$ && currentUser$) | async; let currentUser else loading">
+    <span></span>{{ currentUser.name() }}
+    <div class="userAccount">
+      <ul>
+        <li><a href="#">My Account</a></li>
+        <li><a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
 
 <ng-template #loading></ng-template>

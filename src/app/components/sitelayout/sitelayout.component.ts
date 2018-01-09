@@ -23,12 +23,14 @@ export class SiteLayoutComponent implements OnInit {
     private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    initStrayosJquery($);
     this.site$ = this.route.params.pipe(
       switchMap((params) => {
         const id = +params.id;
         return this.sitesService.sites.pipe(
+          tap((site) => console.log('got site', site.toJS())),
           filter((sites) => !!sites.find(site => site.id() === id)),
-          map((sites) => sites.find(site => site.id() === id))
+          map((sites) => sites.find(site => site.id() === id)),
         );
       })
     );

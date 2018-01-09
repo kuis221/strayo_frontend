@@ -1,4 +1,52 @@
-<div class="wrapper">
+<app-header>
+  <a class="backBtn" href="index.html">
+    <img src="/assets/images/backArrowIcon.png" alt="">
+  </a>
+  <app-site-dropdown></app-site-dropdown>
+  <a href="javascript:void(0);" class="btnMobileNav"></a>
+</app-header>
+<app-sub-header>
+  <span sub-header-location>{{(site)?.location()}}</span>
+  <div sub-header-actions>
+    <span class="bttn btnDownload"></span>
+    <span class="bttn btnShare"></span>
+    <span class="bttn btnSetting"></span>
+  </div>
+</app-sub-header>
+<div class="mainContent innerPage clearfix">
+  <div class="annotationLeftPanel">
+    <ul class="leftNav clearfix">
+      <li>
+        <a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a>
+      </li>
+      <li>
+        <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
+        <ul>
+          <li>
+            <a href="#">Shotplan Editor</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
+        <ul>
+          <li>
+            <a href="#">Sub Analysis</a>
+          </li>
+          <li>
+            <a href="#">Sub Analysis2</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="dvReset clearfix">
+      <a href="#">Reset</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="wrapper">
   <app-header></app-header>
   <div class="sidebar"></div>
   <div class="content">
@@ -7,4 +55,4 @@
     </div>
   </div>
   <app-footer></app-footer>
-</div>
+</div> -->

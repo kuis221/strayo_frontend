@@ -22,6 +22,7 @@ export class SitesState extends siteRecord {
     public getSitesError(error: Error): SitesState {
         const progress = this.get('progress') as Progress;
         progress.error(error);
+        console.error(error);
         return this;
     }
 

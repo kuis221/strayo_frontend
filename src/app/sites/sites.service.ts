@@ -60,6 +60,7 @@ export class SitesService {
       if (!state) {
         return;
       }
+      console.log('sitesstate', state.toJS());
       this.sitesSource.next(state.sites);
       this.mainSiteSource.next(state.mainSite);
     });

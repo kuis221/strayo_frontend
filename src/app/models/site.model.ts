@@ -1,5 +1,6 @@
 import * as ol from 'openlayers';
 import * as moment from 'moment';
+import * as d3 from 'd3';
 import { IDataset, Dataset } from './dataset.model';
 
 export interface ISite {
@@ -13,6 +14,11 @@ export interface ISite {
 }
 
 export class Site extends ol.Object {
+    colorScale = d3.scaleOrdinal<number, string>(d3.schemeCategory20);
+    constructor(props) {
+        super(props);
+    }
+
     public createdAt(): Date;
     public createdAt(createdAt: Date | string): this;
     public createdAt(createdAt?: Date | string): Date | this {
@@ -31,6 +37,7 @@ export class Site extends ol.Object {
     public datasets(datasets?: Dataset[]): Dataset[] | this {
         if (datasets !== undefined) {
             this.set('datasets', datasets);
+            this.recalculateColors();
             return this;
         }
         return this.get('datasets');
@@ -93,5 +100,15 @@ export class Site extends ol.Object {
     // Actual Methods
     getPhantomDataset(): Dataset {
         return this.datasets().find(d => d.isPhantom());
+    }
+
+    recalculateColors() {
+        if (this.datasets()) {
+            this.datasets().forEach((dataset, i) => {
+                if (!dataset.color()) {
+                    dataset.color(this.colorScale(i % 20))
+                }
+            });
+        }
     }
 }

@@ -1,8 +1,13 @@
+/// <reference path="../node_modules/@types/jquery/index.d.ts" />
+
 /* SystemJS module definition */
 declare var module: NodeModule;
 interface NodeModule {
   id: string;
 }
+
+declare var jquery: any;
+declare var initStrayosJquery: any;
 
 declare module 'pouchdb' {
 	var PouchDB: any;

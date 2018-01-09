@@ -30,6 +30,7 @@
     "@types/gl-matrix": "^2.4.0",
     "@types/graphql": "^0.11.7",
     "@types/immutable": "^3.8.7",
+    "@types/jquery": "^3.2.17",
     "@types/lodash": "^4.14.91",
     "@types/moment": "^2.13.0",
     "@types/openlayers": "^4.3.12",
@@ -50,6 +51,7 @@
     "graphql-tag": "^2.6.1",
     "graphql-tools": "^2.14.1",
     "immutable": "^3.8.2",
+    "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "ngrx-store-localstorage": "^0.3.0",
@@ -57,6 +59,7 @@
     "pouchdb": "^6.4.1",
     "rxjs": "^5.5.6",
     "toastr": "^2.1.4",
+    "us": "^2.0.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

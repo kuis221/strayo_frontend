@@ -20,6 +20,7 @@ import { SetDatasets, SetMainDataset, GetAnnotations, DatasetsActionsType } from
 import { IAnnotation, Annotation } from '../models/annotation.model';
 import { List, Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { memoize } from 'lodash';
 import { Resource } from '../models/resource.model';
 import { Progress } from '../util/progress';
 
