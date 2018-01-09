@@ -76,7 +76,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     FormsModule,
     GraphQLModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
     //   apiBase: 'api/'
     // }),
