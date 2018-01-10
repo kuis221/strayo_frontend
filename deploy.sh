@@ -1,6 +1,6 @@
 npm install -g @angular/cli
 yarn install
-git submodule add -f https://$app_user:$app_pass@strayosweb.scm.azurewebsites.net/strayosweb.git dist
+git submodule add -f https://$site_user:$site_pass@strayossite.scm.azurewebsites.net/strayossite.git dist
 ng build
 cd dist
 git config --global user.email "sahil@strayos.com"
