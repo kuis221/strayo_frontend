@@ -8,4 +8,5 @@ cd build/
 git config --global user.email "sahil@strayos.com"
 git config --global user.name "Sahil Kataria"
 git add -A .
+git commit -a -m "Deployment"
 git push origin master
