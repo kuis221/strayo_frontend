@@ -14,35 +14,45 @@
   </div>
 </app-sub-header>
 <div class="mainContent innerPage clearfix">
-  <div class="annotationLeftPanel">
-    <ul class="leftNav clearfix">
-      <li>
-        <a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a>
-      </li>
-      <li>
-        <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
-        <ul>
+  <ng-sidebar-container>
+    <ng-sidebar opened=true mode="push">
+      <div class="annotationLeftPanel">
+        <ul class="leftNav clearfix">
           <li>
-            <a href="#">Shotplan Editor</a>
+            <a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a>
+          </li>
+          <li>
+            <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
+            <ul>
+              <li>
+                <a href="#">Shotplan Editor</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
+            <ul>
+              <li>
+                <a href="#">Sub Analysis</a>
+              </li>
+              <li>
+                <a href="#">Sub Analysis2</a>
+              </li>
+            </ul>
           </li>
         </ul>
-      </li>
-      <li>
-        <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
-        <ul>
-          <li>
-            <a href="#">Sub Analysis</a>
-          </li>
-          <li>
-            <a href="#">Sub Analysis2</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <div class="dvReset clearfix">
-      <a href="#">Reset</a>
+        <div class="dvReset clearfix">
+          <a href="#">Reset</a>
+        </div>
+      </div>
+    </ng-sidebar>
+    <div ng-sidebar-content class="fullHeight">
+      <div class="fullHeight">
+        <app-map-3d class="fullHeight"></app-map-3d>
+      </div>
     </div>
-  </div>
+
+  </ng-sidebar-container>
 </div>
 
 

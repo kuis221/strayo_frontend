@@ -1,6 +1,10 @@
 import * as ol from 'openlayers';
 import * as moment from 'moment';
+import proj4 from 'proj4';
 import { Annotation, IAnnotation } from './annotation.model';
+import { MapData } from './mapdata.model';
+import { LonLat, WebMercator } from '../util/projections/index';
+
 
 export interface IDataset {
     annotations: IAnnotation[];
@@ -122,5 +126,46 @@ export class Dataset extends ol.Object {
         return this.get('updated_at');
     }
 
+    public mapData(): MapData;
+    public mapData(mapData: MapData): this;
+    public mapData(mapData?: MapData): MapData | this {
+        if (mapData !== undefined) {
+            this.set('map_data', mapData);
+            const lonlatCenter = ol.proj.transform(mapData.Center, mapData.Projection, LonLat);
+            const projection = `Strayos Dataset ${this.id()}`;
+            const transformation =
+                `+proj=ortho +datum=WGS84 +lat_0=${lonlatCenter[1]} +lon_0=${lonlatCenter[0]} +x_0=0 +y_0=0 +units=m no_defs`;
+            proj4.defs(projection, transformation);
+            this.projection(projection);
+            return this;
+        }
+        return this.get('map_data');
+    }
+
+    public projection(): ol.ProjectionLike;
+    public projection(projection: ol.ProjectionLike): this;
+    public projection(projection?: ol.ProjectionLike): ol.ProjectionLike | this {
+        if (projection !== undefined) {
+            this.set('projection', projection);
+            return this;
+        }
+        return this.get('projection');
+    }
     // Actual methods
+
+    async updateFromAnnotations() {
+        // Check if you have mapdata
+        const mapdataAnno = this.annotations().find(anno => anno.type() === 'mapdata');
+        if (!mapdataAnno) {
+            console.warn('No mapddata annotation found');
+            return;
+        }
+        const mapdataResource = mapdataAnno.resources().find(r => r.type() === 'mapdata');
+        if (!mapdataResource) {
+            console.warn('No mapdata resource found');
+            return;
+        }
+        const mapdata = await fetch(mapdataResource.url()).then(r => r.json());
+        this.mapData(mapdata);
+    }
 }

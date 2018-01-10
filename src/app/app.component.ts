@@ -14,7 +14,8 @@ import { SitesService } from './sites/sites.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DatasetsService } from './datasets/datasets.service';
 
-import getItWorking from './util/getosgjsworking';
+import { initOSGJS } from './util/getosgjsworking';
+import { loadProjections } from './util/projections';
 
 @Component({
   selector: 'app-root',
@@ -36,8 +37,9 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    getItWorking();
+    initOSGJS();
     OSG.globalify();
+    loadProjections();
 
     this.router.events
       .filter(event => event instanceof NavigationEnd)

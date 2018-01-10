@@ -32,6 +32,7 @@ export class DatasetsState extends datasetRecord {
         const progresses = this.pending.get(dataset.id());
         const progress = progresses.find(p => p.stage() === DatasetsActionsType.GET_ANNOTATIONS && !p.isDone());
         dataset.annotations(annotations);
+        dataset.updateFromAnnotations();
         progress.stage(DatasetsActionsType.GET_ANNOTATIONS_SUCCESS);
         progress.progress(annotations.length, annotations.length);
         // TODO: only do in production
@@ -45,6 +46,7 @@ export class DatasetsState extends datasetRecord {
         const progress = progresses.find(p => p.stage() === DatasetsActionsType.GET_ANNOTATIONS && !p.isDone());
         progress.stage(DatasetsActionsType.GET_ANNOTATIONS_ERROR);
         progress.error(error);
+        console.error(error);
         return this;
     }
 

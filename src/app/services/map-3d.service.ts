@@ -20,6 +20,9 @@ import { TerrainProvider } from '../models/terrainProvider.model';
 import { Annotation } from '../models/annotation.model';
 import { listenOn } from '../util/listenOn';
 
+import { stopViewer } from '../util/getosgjsworking';
+import { LonLat } from '../util/projections/index';
+
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
 // memoize.Cache = (WeakMap as any);
@@ -89,19 +92,31 @@ export class Map3dService {
         const group = this.getGroupForDataset(dataset.id());
         group.set('title', dataset.name());
       });
+      this.setView();
     });
     // Get terrain providers
+    let unsubProviders = [];
     this.terrainProviderService.providers.subscribe((providers) => {
       this.providers = providers;
       if (!providers) return;
+      unsubProviders.forEach(off => off());
+      unsubProviders = [];
       this.providers.forEach((provider) => {
         this.sceneRoot.addChild(provider.rootNode());
-        const off = listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
-          console.log('args', thing1, thing2, thing3);
+        unsubProviders.push(listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
           this.sceneRoot.addChild(provider.rootNode());
-          (this.map3DViewer as any).getManipulator().computeHomePosition();
-          off();
-        });
+          const bb = provider.modelNode().getBoundingBox();
+          const center = ol.proj.transform(provider.dataset().mapData().Center, provider.dataset().mapData().Projection, LonLat);
+          const isZeroZero = ol.proj.transform(center, LonLat, provider.dataset().projection());
+          const centerPoint = provider.getWorldPoint(
+            provider.dataset().mapData().Center,
+            provider.dataset().mapData().Projection,
+          );
+          console.log('mapdata', provider.dataset().mapData());
+          console.log('isZero', center, isZeroZero);
+          console.log('bb', bb, centerPoint);
+          this.setView();
+        }));
       });
     });
 
@@ -133,9 +148,83 @@ export class Map3dService {
     });
   }
 
+  private _setView(coord?) {
+    if (!coord) {
+      if (this.map3DViewer) {
+        this.map3DViewer.getManipulator().computeHomePosition();
+      }
+      return;
+    }
+    if (this.map2DViewer) {
+      this.map2DViewer.getView().setCenter(coord);
+    }
+    if (this.map3DViewer) {
+      this.map3DViewer.getManipulator().computeHomePosition();
+    }
+  }
+
+  setView(coord?) {
+    if (coord) {
+      this._setView(coord);
+    } else {
+      if (this.datasets) {
+        const coords = this.datasets
+          .filter(d => !d.isPhantom())
+          .map(d => ol.proj.fromLonLat([d.long(), d.lat()]))
+          .toJS();
+        const bounds = ol.extent.boundingExtent(coords);
+        this._setView(ol.extent.getCenter(bounds));
+      } else {
+        this._setView();
+      }
+    }
+  }
+
+  destroyOpenlayers() {
+    if (this.map2DViewer) {
+      this.map2DViewer.setTarget(null);
+      this.map2DViewer = null;
+    }
+  }
+  initOpenlayers(container: HTMLElement) {
+    this.destroyOpenlayers();
+    this.map2DViewer = new ol.Map({
+      target: container,
+      loadTilesWhileAnimating: true,
+      loadTilesWhileInteracting: true,
+      layers: [
+        this.osmLayer
+      ],
+      view: new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4}),
+      controls: ol.control.defaults({ attribution: false })
+    });
+    this.setView();
+  }
+
+  destroyOsgjs() {
+    if (this.map3DViewer) {
+      stopViewer(this.map3DViewer);
+      this.map3DViewer = null;
+    }
+  }
+
+  initOsgjs(container: HTMLElement) {
+    this.destroyOsgjs();
+    container.addEventListener('webglcontextlost', (event) => {
+      console.log('context lost', event);
+    });
+    this.map3DViewer = new osgViewer.Viewer(container);
+    this.map3DViewer.init();
+    this.map3DViewer.setSceneData(this.sceneRoot);
+    this.map3DViewer.setupManipulator();
+    this.map3DViewer.run();
+    this.setView();
+  }
+
   // Called by components
   init(map2D: HTMLElement, map3D: HTMLElement) {
     // Initialize 3D stuff
+  
     this.map3DViewer = new osgViewer.Viewer(map3D);
     this.map3DViewer.init();
     this.map3DViewer.setSceneData(this.sceneRoot);
@@ -159,30 +248,33 @@ export class Map3dService {
   }
 
   destroy() {
-    this.sceneRoot.removeChildren();
-    this.map3DViewer.contextLost();
-    this.sceneRoot = new osg.Node();
+    this.destroyOpenlayers();
+    this.destroyOsgjs();
   }
 
   async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
-
     const stereoscopeAnno = annotations.find(anno => anno.type() === 'stereoscope');
     if (!stereoscopeAnno) {
       console.warn('No stereoscope annotation found');
       return;
     }
+    console.log('stereoscopeAnno', stereoscopeAnno.getProperties());
     const mtljsResource = stereoscopeAnno.resources().find(r => r.type() === 'mtljs');
     const smdjsResource = stereoscopeAnno.resources().find(r => r.type() === 'smdjs');
     if (!(mtljsResource && smdjsResource)) {
       console.warn('No mtljs/smdjs resources found');
       return;
     }
-
     let mtljs;
     let smdjs;
     try {
-      mtljs = await fetch(mtljsResource.url()).then(r => r.json());
-      smdjs = await fetch(smdjsResource.url()).then(r => r.json());
+      [
+        mtljs,
+        smdjs
+      ] = await Promise.all([
+        fetch(mtljsResource.url()).then(r => r.json()),
+        fetch(smdjsResource.url()).then(r => r.json()),
+      ]);
     } catch (e) {
       console.error(e);
       return;
@@ -190,9 +282,6 @@ export class Map3dService {
 
     const provider = this.providers.get(dataset.id());
     const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
-    progress.on('change:progress', () => {
-      console.log('ON PROGRESS', progress.getProperties());
-    });
   }
 
   private getGroupForDataset(dataset: Dataset | number): ol.layer.Group {

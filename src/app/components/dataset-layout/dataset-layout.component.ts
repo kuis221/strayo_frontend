@@ -54,16 +54,13 @@ export class DatasetLayoutComponent implements OnInit {
       })
     ).subscribe((dataset) => {
       if (!dataset) {
-        // console.log('RACE CONDITION couldnt get datasets');
         return;
       }
-      // console.log('SETTING MAIN DATASETS', dataset);
       this.datasetsService.setMainDataset(dataset);
     });
 
     // Getting datasets
     this.datasetsService.datasets.subscribe((datasets) => {
-      // console.log('DATASETS', datasets);
       this.datasets = datasets;
     });
 
@@ -71,13 +68,11 @@ export class DatasetLayoutComponent implements OnInit {
     this.datasetsService.mainDataset.subscribe(async (dataset) => {
       this.mainDataset = dataset;
       if (!dataset) return;
-      // console.log('loading annotations for ', dataset);\
       const progress = await this.datasetsService.loadAnnotations(dataset);
       const off = listenOn(progress, 'change:progress', () => {
-        console.log('LOADED ALL ANNOTATIONS');
         off();
       });
-
+      
     });
   }
 

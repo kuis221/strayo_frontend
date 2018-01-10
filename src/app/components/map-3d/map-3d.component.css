@@ -1,8 +1,3 @@
-.viewer {
-  width: 100%;
-  height: 100%;
-}
-
 .main {
   position: relative;
   top: 0px;
@@ -11,7 +6,14 @@
   height: 100%;
 }
 
-.map {
+.viewer {
   height: 100%;
-  width: 100%;
+}
+
+.active {
+  background: #3AC0BC !important;
+}
+
+.inactive {
+  background: #000 !important;
 }

@@ -19,14 +19,31 @@ export class Map3dComponent implements OnInit, OnDestroy {
   @ViewChild('openlayers', { read: ElementRef }) map2D: ElementRef;
   @ViewChild('osgjs', { read: ElementRef }) map3D: ElementRef;
   @Input() show = 'map2D';
+  viewer: string;
 
   constructor(private http: HttpClient, private map3DService: Map3dService) { }
 
   ngOnInit() {
-    this.map3DService.init(this.map2D.nativeElement, this.map3D.nativeElement);
+    this.changeView('osgjs');
+  }
+
+  changeView(viewer: string) {
+    if (this.viewer === viewer) return;
+    this.viewer = viewer;
+    this.map3DService.destroy();
+    setTimeout(() => {
+      switch (this.viewer) {
+        case 'openlayers':
+          this.map3DService.initOpenlayers(this.map2D.nativeElement);
+          break;
+        case 'osgjs':
+          this.map3DService.initOsgjs(this.map3D.nativeElement);
+      }
+    }, 100);
   }
 
   ngOnDestroy() {
-    this.map3DService.destroy();
+    this.map3DService.destroyOpenlayers();
+    this.map3DService.destroyOsgjs();
   }
 }

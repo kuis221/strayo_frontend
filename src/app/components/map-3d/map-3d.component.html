@@ -1,11 +1,41 @@
 <div class="main">
-  <div class="viewer">
-    <div #openlayers class="map">
+  <div class="main" [ngSwitch]="viewer">
+    <div #openlayers class="viewer" *ngSwitchCase="'openlayers'">
+    </div>
+    <canvas class="viewer" #osgjs>
 
+    </canvas>
+    <div class="loading" *ngSwitchDefault>
+      Loading...
     </div>
   </div>
-  <hr />
-  <canvas #osgjs class="viewer">
-  
-  </canvas>
+
+  <div class="mapView">
+    <div class="mapviewBtn">
+      <ul>
+        <li>
+          <a href="javascript:void(0)" [class.active]="viewer === 'openlayers'" [class.inactive]="viewer === 'osgjs'" (click)="changeView('openlayers')">2D Map</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" [class.inactive]="viewer === 'openlayers'" [class.active]="viewer === 'osgjs'" (click)="changeView('osgjs')">3D Map</a>
+        </li>
+      </ul>
+    </div>
+    <a class="mapOptions" href="#">
+      <img src="/assets/images/moreIcon2.png" alt="">
+    </a>
+  </div>
+
 </div>
+
+<!-- <div class="main">
+  <div [ngSwitch]="viewer">
+    <div class="viewer" *ngSwitchCase="openlayers">
+      osgjs
+      <div class="map">
+
+      </div>
+    </div>
+    <canvas class="viewer" *ngSwitchCase="osgjs"></canvas>
+    <div *ngSwitchDefault>Loading...</div>
+  </div> -->

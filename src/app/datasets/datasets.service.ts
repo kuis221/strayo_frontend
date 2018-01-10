@@ -25,7 +25,7 @@ import { Resource } from '../models/resource.model';
 import { Progress } from '../util/progress';
 
 const allAnnotationsQuery = gql`
-  query AnnotationsForDataset($datasetID: String!) {
+  query AnnotationsForDataset($datasetID: ID!) {
     dataset(id: $datasetID) {
       annotations {
         id,

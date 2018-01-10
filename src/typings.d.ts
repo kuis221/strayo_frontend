@@ -179,6 +179,7 @@ declare module osg {
 	export class Utils {
 	}
 
+
 	export class Node {
 		addChild(node: osg.Node);
 		removeChildren();
@@ -191,6 +192,12 @@ declare module osg {
         addUpdateCallback(cb) : boolean;
 
 		dirtyBound();
+
+		accept(NodeVisitor)
+	}
+	export type NodePath = Node[];
+	export class NodeVisitor {
+
 	}
 
 	export class Transform extends Node {
@@ -264,6 +271,11 @@ declare module osg {
 		constructor(options: KdTreeBuilderOptions);
 		apply(Node);
 	}
+
+	export class MatrixMemoryPool {
+		reset(): void;
+	}
+	export function computeLocalToWorld(local: NodePath, bool: boolean, pool: MatrixMemoryPool): osg.Matrix;
 }
 
 declare module osgAnimation {
@@ -275,7 +287,9 @@ declare module osgDB {
 }
 
 declare module osgGA {
-
+	export class Manipulator {
+		computeHomePosition();
+	}
 }
 
 declare module osgShader {
@@ -291,7 +305,18 @@ declare module osgText {
 }
 
 declare module osgUtil {
+	interface Hit {
+		nodepath: osg.NodePath;
+		point: osg.Vec3;
+	}
+	export class LineSegmentIntersector {
+		set(top: osg.Vec2, bottom: osg.Vec3): void;
+		getIntersections(): Hit[];
+	}
 
+	export class IntersectionVisitor extends osg.NodeVisitor {
+		setIntersector(lsi: LineSegmentIntersector): void;
+	}
 }
 
 declare module osgViewer {
@@ -315,6 +340,8 @@ declare module osgViewer {
 		setSceneData(node: osg.Node);
 
 		setupManipulator();
+
+		getManipulator();
 
 		getGraphicContext();
 
