@@ -112,9 +112,7 @@ export class Map3dService {
             provider.dataset().mapData().Center,
             provider.dataset().mapData().Projection,
           );
-          console.log('mapdata', provider.dataset().mapData());
-          console.log('isZero', center, isZeroZero);
-          console.log('bb', bb, centerPoint);
+          console.log('center', centerPoint);
           this.setView();
         }));
       });

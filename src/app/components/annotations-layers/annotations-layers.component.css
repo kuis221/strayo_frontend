@@ -1,0 +1,12 @@
+.dvLeft {
+    height: 100%;
+    width: 280px;
+    max-width: 280px;
+    overflow-y: auto;
+}
+.dvAnnotation {
+    height: 100%;
+}
+.tabContent {
+    width: 100%;
+}

@@ -1,0 +1,120 @@
+<div class="dvLeft">
+  <tabset #staticTabs [justified]='true'>
+    <tab heading="Annotations" customClass="my-nav-link" (select)="onTabSwitch()">
+      <div class="tabContent clearfix">
+        <div class="clearfix">
+          <span class="txtSaved">Saved Annotation</span>
+          <label class="switch fRight">
+            <input data-target=".bxSavedAnnotation" class="switchBtn" type="checkbox" checked>
+            <span class="switchSlider round"></span>
+          </label>
+        </div>
+        <div class="bxSavedAnnotation clearfix">
+          <div class="savedRow clearfix">
+            <div class="savedCol1">
+              <div class="checkbox checkbox-info">
+                <input type="checkbox" name="" id="">
+                <label></label>
+              </div>
+            </div>
+            <div class="savedCol2 polygon">Sample test 01</div>
+            <div class="savedCol3">
+              <a href="#">
+                <img src="images/editIcon.png" alt="">
+              </a>
+            </div>
+            <div class="savedCol4">
+              <a href="#">
+                <img src="images/delIcon.png" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="savedRow clearfix">
+            <div class="savedCol1">
+              <div class="checkbox checkbox-info">
+                <input type="checkbox" name="" id="">
+                <label></label>
+              </div>
+            </div>
+            <div class="savedCol2 horizontalLength">Sample test 01</div>
+            <div class="savedCol3">
+              <a href="#">
+                <img src="images/editIcon.png" alt="">
+              </a>
+            </div>
+            <div class="savedCol4">
+              <a href="#">
+                <img src="images/delIcon.png" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="savedRow clearfix">
+            <div class="savedCol1">
+              <div class="checkbox checkbox-info">
+                <input type="checkbox" name="" id="">
+                <label></label>
+              </div>
+            </div>
+            <div class="savedCol2 selection">Sample test 01</div>
+            <div class="savedCol3">
+              <a href="#">
+                <img src="images/editIcon.png" alt="">
+              </a>
+            </div>
+            <div class="savedCol4">
+              <a href="#">
+                <img src="images/delIcon.png" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="savedRow clearfix">
+            <div class="savedCol1">
+              <div class="checkbox checkbox-info">
+                <input type="checkbox" name="" id="">
+                <label></label>
+              </div>
+            </div>
+            <div class="savedCol2 relativeHeight">Sample test 01</div>
+            <div class="savedCol3">
+              <a href="#">
+                <img src="images/editIcon.png" alt="">
+              </a>
+            </div>
+            <div class="savedCol4">
+              <a href="#">
+                <img src="images/delIcon.png" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="savedRow clearfix">
+            <div class="savedCol1">
+              <div class="checkbox checkbox-info">
+                <input type="checkbox" name="" id="">
+                <label></label>
+              </div>
+            </div>
+            <div class="savedCol2 polygon">Sample test 01</div>
+            <div class="savedCol3">
+              <a href="#">
+                <img src="images/editIcon.png" alt="">
+              </a>
+            </div>
+            <div class="savedCol4">
+              <a href="#">
+                <img src="images/delIcon.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </tab>
+    <tab heading="Layers" (select)="onTabSwitch()">
+      <div class="dvAnnotation clearfix">
+        <app-layers-module class="tabContent clearfix">
+          
+        </app-layers-module>
+      </div>
+    </tab>
+  </tabset>
+</div>

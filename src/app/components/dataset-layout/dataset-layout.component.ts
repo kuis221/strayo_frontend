@@ -12,6 +12,8 @@ import { listenOn } from '../../util/listenOn';
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 
+type Panels = 'annotations' | '';
+
 @Component({
   selector: 'app-dataset-layout',
   templateUrl: './dataset-layout.component.html',
@@ -25,6 +27,8 @@ export class DatasetLayoutComponent implements OnInit {
   site$: Observable<Site>;
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
+
+  sidepanel: string;
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -72,8 +76,12 @@ export class DatasetLayoutComponent implements OnInit {
       const off = listenOn(progress, 'change:progress', () => {
         off();
       });
-      
     });
+  }
+
+  switchPanel(panel: Panels) {
+    this.sidepanel = panel;
+    initStrayosJquery($);
   }
 
 }

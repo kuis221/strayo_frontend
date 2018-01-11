@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 
 import { SidebarModule } from 'ng-sidebar';
 
+//Botstrap
+import { TabsModule } from 'ngx-bootstrap';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -44,6 +47,9 @@ import { UsersState } from './users/state';
 import { User } from './models/user.model';
 import { SiteDropdownComponent } from './components/site-dropdown/site-dropdown.component';
 import { SubHeaderComponent } from './components/sub-header/sub-header.component';
+import { AnnotationsLayersComponent } from './components/annotations-layers/annotations-layers.component';
+import { LayersModuleComponent } from './components/layers-module/layers-module.component';
+import { LayersControllerComponent } from './controllers/layers-controller/layers-controller.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -72,12 +78,17 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SignUpLayoutComponent,
     SiteDropdownComponent,
     SubHeaderComponent,
+    AnnotationsLayersComponent,
+    LayersModuleComponent,
+    LayersControllerComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     FormsModule,
     SidebarModule.forRoot(),
+    //Bootstrap
+    TabsModule.forRoot(),
     GraphQLModule,
     HttpClientModule,
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {

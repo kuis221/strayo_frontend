@@ -15,17 +15,19 @@
 </app-sub-header>
 <div class="mainContent innerPage clearfix">
   <ng-sidebar-container>
-    <ng-sidebar opened=true mode="push">
-      <div class="annotationLeftPanel">
+    <ng-sidebar opened=true mode="push" [ngSwitch]="sidepanel">
+      <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
+      
+      <div class="annotationLeftPanel" *ngSwitchDefault>
         <ul class="leftNav clearfix">
           <li>
-            <a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a>
+            <a class="annotationLayers" href="javascript:void(0)" (click)="switchPanel('annotations')">Annotation &amp; Layers</a>
           </li>
           <li>
             <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
             <ul>
               <li>
-                <a href="#">Shotplan Editor</a>
+                <a href="javascript:void(0)" (click)="switchPanel('annotations')">Shotplan Editor</a>
               </li>
             </ul>
           </li>

@@ -76,15 +76,14 @@ export class TerrainProvider extends ol.Object {
         const max = bounds.getMax();
         const top = max[2];
         const bottom = min[2];
-        console.log('xy', xy, proj, this.dataset().projection(), bounds);
-        const v1 = osg.Vec3.createAndSet(0, 0, top * 2);
-        const v2 = osg.Vec3.createAndSet(0, 0, bottom * 2);
+        const v1 = osg.Vec3.createAndSet(...xy, top);
+        const v2 = osg.Vec3.createAndSet(...xy, bottom);
 
         const lsi = new osgUtil.LineSegmentIntersector();
         const iv = new osgUtil.IntersectionVisitor();
         lsi.set(v1, v2);
         iv.setIntersector(lsi);
-        this.rootNode().accept(iv);
+        this.modelNode().accept(iv);
 
         const hits = lsi.getIntersections();
         if (hits.length === 0) return null;
