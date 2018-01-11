@@ -28,7 +28,7 @@ export class DatasetLayoutComponent implements OnInit {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel: string;
+  sidepanel = 'annotations';
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
   ngOnInit() {

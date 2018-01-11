@@ -6,8 +6,45 @@
   <a href="javascript:void(0);" class="btnMobileNav"></a>
 </app-header>
 <app-sub-header>
-  <span sub-header-location>{{(site)?.location()}}</span>
-  <div sub-header-actions>
+  <div class="location">
+    <span sub-header-location>{{(site)?.location()}}</span>
+  </div>
+  <div class="dvMeasurement">
+    <a href="javascript:void(0);" class="txtMeasurement">Measurement</a>
+    <a class="exportMeasurement" href="#">Export Measurement</a>
+    <div class="dvExportMeasurement">
+      <a class="btnCloseExport" href="#">
+        <img src="images/closeMeasurement.png" alt="">
+      </a>
+      <h4>Export Measurement</h4>
+      <p>Here is a link to your exported measurements</p>
+      <p>
+        <input type="text" placeholder="https://app.strayos.com/#/app/viewer?mode…">
+      </p>
+      <a class="btnCopyLink" href="#">Copy Link</a>
+    </div>
+  </div>
+  <ul class="measurementSetting">
+    <li>
+      <app-annotation-tool [tool]="'polygon'"></app-annotation-tool>
+    </li>
+    <li>
+      <a class="tooltips horizontalLength" href="horizontal-length.html">
+        <span class="txtTooltip">Horizontal Lenght, Surface length, Vertex elevation</span>
+      </a>
+    </li>
+    <li>
+      <a class="tooltips selection" href="javascript:void(0);">
+        <span class="txtTooltip">Selection</span>
+      </a>
+    </li>
+    <li>
+      <a class="tooltips relativeHeight" href="javascript:void(0);">
+        <span class="txtTooltip">Relative Height</span>
+      </a>
+    </li>
+  </ul>
+  <div class="projectSettings">
     <span class="bttn btnDownload"></span>
     <span class="bttn btnShare"></span>
     <span class="bttn btnSetting"></span>
@@ -17,7 +54,7 @@
   <ng-sidebar-container>
     <ng-sidebar opened=true mode="push" [ngSwitch]="sidepanel">
       <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
-      
+
       <div class="annotationLeftPanel" *ngSwitchDefault>
         <ul class="leftNav clearfix">
           <li>

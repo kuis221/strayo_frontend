@@ -1,8 +1,10 @@
 import { Record, List, Map } from 'immutable';
+import { uniqBy } from 'lodash';
 import { Dataset } from '../models/dataset.model';
 import { Annotation } from '../models/annotation.model';
 import { Progress } from '../util/progress';
 import { DatasetsActionsType } from './actions/actions';
+
 
 const datasetRecord = Record({
     datasets: List([]),
@@ -55,7 +57,10 @@ export class DatasetsState extends datasetRecord {
     }
 
     public setMainDataset(dataset: Dataset): DatasetsState {
-        return this.set('mainDataset', dataset) as DatasetsState;
+        const selected = uniqBy(this.selectedDatasets.push(dataset).toArray(), (d) => d.id());
+        return this
+            .setSelected(uniqBy(selected, (d) => d.id()))
+            .set('mainDataset', dataset) as DatasetsState;
     }
 
     public setSelected(datasets: Dataset[]): DatasetsState {

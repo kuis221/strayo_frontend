@@ -153,6 +153,14 @@ export class Dataset extends ol.Object {
     }
     // Actual methods
 
+    calcExtent(): [number, number, number, number] {
+        const mapData = this.mapData();
+        const bb = mapData.BoundingBox;
+        const extmin = ol.proj.fromLonLat([bb[1], bb[0]]);
+        const extmax = ol.proj.fromLonLat([bb[3], bb[2]]);
+        return [extmin[0], extmin[1], extmax[0], extmax[1]];
+    }
+
     async updateFromAnnotations() {
         // Check if you have mapdata
         const mapdataAnno = this.annotations().find(anno => anno.type() === 'mapdata');

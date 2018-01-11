@@ -49,6 +49,9 @@ export class DatasetsService {
   private datasetsSource = new BehaviorSubject<List<Dataset>>(List([]));
   datasets = this.datasetsSource.asObservable().pipe(distinctUntilChanged());
 
+  private selectedDatasetsSource = new BehaviorSubject<List<Dataset>>(List([]));
+  selectedDatasets = this.selectedDatasetsSource.asObservable().pipe(distinctUntilChanged());
+
   private mainDatasetSource = new BehaviorSubject<Dataset>(null);
   mainDataset = this.mainDatasetSource.asObservable().pipe(distinctUntilChanged());
 
@@ -65,6 +68,7 @@ export class DatasetsService {
       this.mainDatasetSource.next(state.mainDataset);
       this.annotationsSource.next(state.annotations);
       this.pendingSource.next(state.pending);
+      this.selectedDatasetsSource.next(state.selectedDatasets);
     });
   }
 
@@ -117,9 +121,7 @@ export class DatasetsService {
         return data.dataset.annotations.map((datum) => {
           const anno = new Annotation(datum);
           // Update from string
-          anno.id(anno.id());
-          anno.createdAt(anno.createdAt());
-          anno.updatedAt(anno.updatedAt());
+          anno.updateFromInterface();
           
           const resources: any[] = anno.resources() || [];
           anno.resources(resources.map(r => {

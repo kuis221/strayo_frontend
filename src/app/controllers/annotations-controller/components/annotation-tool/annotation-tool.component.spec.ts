@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayersModuleComponent } from './layers-module.component';
+import { AnnotationToolComponent } from './annotation-tool.component';
 
-describe('LayersModuleComponent', () => {
-  let component: LayersModuleComponent;
-  let fixture: ComponentFixture<LayersModuleComponent>;
+describe('AnnotationToolComponent', () => {
+  let component: AnnotationToolComponent;
+  let fixture: ComponentFixture<AnnotationToolComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LayersModuleComponent ]
+      declarations: [ AnnotationToolComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayersModuleComponent);
+    fixture = TestBed.createComponent(AnnotationToolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

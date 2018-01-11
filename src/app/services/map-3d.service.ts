@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 
 import * as ol from 'openlayers';
 
 import { DatasetsService } from '../datasets/datasets.service';
 import { TerrainProviderService } from './terrainprovider/terrain-provider.service';
-import { memoize } from 'lodash';
+import { memoize, uniqBy } from 'lodash';
 
 import { environment } from '../../environments/environment';
 import { Dataset } from '../models/dataset.model';
@@ -38,14 +38,20 @@ export class Map3dService {
   sateliteLayer: ol.layer.Tile;
   osmLayer: ol.layer.Tile;
   emptyLayer: ol.layer.Tile;
-  phantomGroup: ol.layer.Group;
+  baseLayers: ol.layer.Group;
 
   mainSite: Site;
   mainDataset: Dataset;
   datasets: List<Dataset>;
   providers: Map<number, TerrainProvider>;
 
+  toolTip: ElementRef;
+
+  private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4});
+  private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
+  private allInteractions = new ol.Collection<ol.interaction.Interaction>();
   private _groupForDataset: (id: number) => ol.layer.Group;
+
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
 
@@ -61,7 +67,7 @@ export class Map3dService {
     });
 
     this.sateliteLayer.set('title', 'Satelite View');
-    this.sateliteLayer.set('type', 'base');
+    this.sateliteLayer.set('group', 'base');
 
     this.osmLayer = new ol.layer.Tile({
       visible: true,
@@ -69,30 +75,37 @@ export class Map3dService {
     });
 
     this.osmLayer.set('title', 'Street View');
-    this.osmLayer.set('type', 'base');
+    this.osmLayer.set('group', 'base');
 
     this.emptyLayer = new ol.layer.Tile({
       source: null,
     });
 
     this.emptyLayer.set('title', 'No Base Map');
-    this.emptyLayer.set('type', 'base');
+    this.emptyLayer.set('group', 'base');
 
-    // Bind stuff.
-    this.phantomGroup = this.getGroupForDataset(0);
+    this.baseLayers = new ol.layer.Group({
+      layers: [
+        this.osmLayer,
+      ]}
+    );
+    this.baseLayers.set('title', 'Base Layers');
+
+    this.addLayer(this.baseLayers);
 
     // Get sites
     this.sitesService.mainSite.subscribe((mainSite) => {
       this.mainSite = mainSite;
     });
     // Get datasets
-    this.datasetsService.datasets.subscribe((datasets) => {
+    this.datasetsService.selectedDatasets.subscribe((datasets) => {
       this.datasets = datasets;
       this.datasets.forEach((dataset) => {
         const group = this.getGroupForDataset(dataset.id());
         group.set('title', dataset.name());
+        this.addLayer(group);
       });
-      this.setView();
+      // this.setView();
     });
     // Get terrain providers
     let unsubProviders = [];
@@ -112,8 +125,6 @@ export class Map3dService {
             provider.dataset().mapData().Center,
             provider.dataset().mapData().Projection,
           );
-          console.log('center', centerPoint);
-          this.setView();
         }));
       });
     });
@@ -146,6 +157,102 @@ export class Map3dService {
     });
   }
 
+  addInteraction(interaction: ol.interaction.Interaction) {
+    const exist = this.allInteractions.getArray().includes(interaction);
+    if (exist) {
+      console.warn('attempting to add the same interaction twice');
+      return;
+    }
+    this.allInteractions.push(interaction);
+  }
+
+  addLayer(layer: ol.layer.Group | ol.layer.Layer) {
+    const title = layer.get('title');
+    if (!title) {
+      console.warn('warning layer has no title');
+    }
+    const layers = uniqBy([...this.allLayers.getArray(), layer], (l) => l.get('title'));
+    this.allLayers.clear();
+    this.allLayers.extend(layers);
+  }
+
+  destroy() {
+    this.destroyOpenlayers();
+    this.destroyOsgjs();
+  }
+
+  destroyOpenlayers() {
+    if (this.map2DViewer) {
+      this.map2DViewer.setTarget(null);
+      this.map2DViewer = null;
+    }
+  }
+  
+  destroyOsgjs() {
+    if (this.map3DViewer) {
+      stopViewer(this.map3DViewer);
+      this.map3DViewer = null;
+    }
+  }
+
+  private getGroupForDataset(dataset: Dataset | number): ol.layer.Group {
+    if (!this._groupForDataset) {
+      this._groupForDataset = memoize((id: number) => {
+        return new ol.layer.Group({
+          layers: new ol.Collection([]),
+        });
+      });
+    }
+    if (isNumeric(dataset)) {
+      return this._groupForDataset(dataset);
+    }
+    return this._groupForDataset(dataset.id());
+  }
+
+  initOpenlayers(container: HTMLElement) {
+    this.destroyOpenlayers();
+    this.map2DViewer = new ol.Map({
+      target: container,
+      interactions: this.allInteractions,
+      loadTilesWhileAnimating: true,
+      loadTilesWhileInteracting: true,
+      layers: this.allLayers,
+      view: this.view,
+      controls: ol.control.defaults({ attribution: false })
+    });
+  }
+
+  initOsgjs(container: HTMLElement) {
+    this.destroyOsgjs();
+    container.addEventListener('webglcontextlost', (event) => {
+      console.log('context lost', event);
+    });
+    this.map3DViewer = new osgViewer.Viewer(container);
+    this.map3DViewer.init();
+    this.map3DViewer.setSceneData(this.sceneRoot);
+    this.map3DViewer.setupManipulator();
+    this.map3DViewer.run();
+    this.map3DViewer.getManipulator().computeHomePosition();
+  }
+
+  registerLayer(layer: ol.layer.Layer, dataset: Dataset) {
+    const title = layer.get('title');
+    if (!title) {
+      console.warn('warning layer has no title');
+    }
+    const group = this.getGroupForDataset(dataset.id());
+    const exist = group.getLayers().getArray().includes(layer);
+    if (exist) {
+      console.warn('attempting to add a layer twice');
+      return;
+    }
+    group.getLayers().push(layer);
+  }
+
+  removeInteraction(interaction: ol.interaction.Interaction) {
+    this.allInteractions.remove(interaction);
+  }
+
   private _setView(coord?) {
     if (!coord) {
       if (this.map3DViewer) {
@@ -154,7 +261,7 @@ export class Map3dService {
       return;
     }
     if (this.map2DViewer) {
-      this.map2DViewer.getView().setCenter(coord);
+      this.view.setCenter(coord);
     }
     if (this.map3DViewer) {
       this.map3DViewer.getManipulator().computeHomePosition();
@@ -171,83 +278,23 @@ export class Map3dService {
           .map(d => ol.proj.fromLonLat([d.long(), d.lat()]))
           .toJS();
         const bounds = ol.extent.boundingExtent(coords);
-        this._setView(ol.extent.getCenter(bounds));
+        console.log('bounds', bounds);
+        if (!bounds.some(n => !isFinite(n))) {
+          this.setExtent(bounds);
+        }
       } else {
         this._setView();
       }
     }
   }
 
-  destroyOpenlayers() {
+  setExtent(extent: ol.Extent) {
     if (this.map2DViewer) {
-      this.map2DViewer.setTarget(null);
-      this.map2DViewer = null;
+      this.view.fit(extent);
     }
-  }
-  initOpenlayers(container: HTMLElement) {
-    this.destroyOpenlayers();
-    this.map2DViewer = new ol.Map({
-      target: container,
-      loadTilesWhileAnimating: true,
-      loadTilesWhileInteracting: true,
-      layers: [
-        this.osmLayer
-      ],
-      view: new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4}),
-      controls: ol.control.defaults({ attribution: false })
-    });
-    this.setView();
-  }
-
-  destroyOsgjs() {
     if (this.map3DViewer) {
-      stopViewer(this.map3DViewer);
-      this.map3DViewer = null;
+      this.map3DViewer.getManipulator().computeHomePosition();
     }
-  }
-
-  initOsgjs(container: HTMLElement) {
-    this.destroyOsgjs();
-    container.addEventListener('webglcontextlost', (event) => {
-      console.log('context lost', event);
-    });
-    this.map3DViewer = new osgViewer.Viewer(container);
-    this.map3DViewer.init();
-    this.map3DViewer.setSceneData(this.sceneRoot);
-    this.map3DViewer.setupManipulator();
-    this.map3DViewer.run();
-    this.setView();
-  }
-
-  // Called by components
-  init(map2D: HTMLElement, map3D: HTMLElement) {
-    // Initialize 3D stuff
-  
-    this.map3DViewer = new osgViewer.Viewer(map3D);
-    this.map3DViewer.init();
-    this.map3DViewer.setSceneData(this.sceneRoot);
-    this.map3DViewer.setupManipulator();
-    this.map3DViewer.run();
-
-    // Add Providers
-
-    this.map2DViewer = new ol.Map({
-      target: map2D,
-      loadTilesWhileAnimating: true,
-      loadTilesWhileInteracting: true,
-      layers: [
-        this.osmLayer,
-        this.sateliteLayer,
-        this.emptyLayer
-      ],
-      view: new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 }),
-      controls: ol.control.defaults({ attribution: false }),
-    });
-  }
-
-  destroy() {
-    this.destroyOpenlayers();
-    this.destroyOsgjs();
   }
 
   async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
@@ -280,19 +327,5 @@ export class Map3dService {
 
     const provider = this.providers.get(dataset.id());
     const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
-  }
-
-  private getGroupForDataset(dataset: Dataset | number): ol.layer.Group {
-    if (!this._groupForDataset) {
-      this._groupForDataset = memoize((id: number) => {
-        return new ol.layer.Group({
-          layers: new ol.Collection([]),
-        });
-      });
-    }
-    if (isNumeric(dataset)) {
-      return this._groupForDataset(dataset);
-    }
-    return this._groupForDataset(dataset.id());
   }
 }

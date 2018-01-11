@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, NgZone, OnDestroy, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatasetsService } from '../../datasets/datasets.service';
 import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
@@ -18,13 +18,31 @@ import { Map3dService } from '../../services/map-3d.service';
 export class Map3dComponent implements OnInit, OnDestroy {
   @ViewChild('openlayers', { read: ElementRef }) map2D: ElementRef;
   @ViewChild('osgjs', { read: ElementRef }) map3D: ElementRef;
+  @ViewChild('tooltip', { read: ElementRef }) tooltip: ElementRef;
   @Input() show = 'map2D';
   viewer: string;
 
   constructor(private http: HttpClient, private map3DService: Map3dService) { }
 
   ngOnInit() {
-    this.changeView('osgjs');
+    this.changeView('openlayers');
+    this.map3DService.toolTip = this.tooltip;
+  }
+
+  @HostListener('mousemove', ['$event']) onmousemove(event) {
+    const tooltip = this.map3DService.toolTip;
+    if (!tooltip) return;
+    // console.log('mousemove', event);
+    // tooltip.nativeElement.style.position = 'absolute';
+    // tooltip.nativeElement.style.zIndex = '9999';
+    $(tooltip.nativeElement).offset({
+      // position: 'absolute',
+      // zIndex: '9999',
+      left: event.clientX + 15,
+      top: event.clientY + 15
+    });
+    // tooltip.nativeElement.style.top = `${event.clientY} px`;
+    // tooltip.nativeElement.style.left = `${event.clientX} px`;
   }
 
   changeView(viewer: string) {

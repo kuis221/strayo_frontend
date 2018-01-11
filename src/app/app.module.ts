@@ -7,6 +7,7 @@ import { SidebarModule } from 'ng-sidebar';
 
 //Botstrap
 import { TabsModule } from 'ngx-bootstrap';
+import { RatingModule } from 'ngx-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -48,8 +49,10 @@ import { User } from './models/user.model';
 import { SiteDropdownComponent } from './components/site-dropdown/site-dropdown.component';
 import { SubHeaderComponent } from './components/sub-header/sub-header.component';
 import { AnnotationsLayersComponent } from './components/annotations-layers/annotations-layers.component';
-import { LayersModuleComponent } from './components/layers-module/layers-module.component';
 import { LayersControllerComponent } from './controllers/layers-controller/layers-controller.component';
+import { DatasetLayerComponent } from './controllers/layers-controller/components/dataset-layer/dataset-layer.component';
+import { AnnotationsControllerComponent } from './controllers/annotations-controller/annotations-controller.component';
+import { AnnotationToolComponent } from './controllers/annotations-controller/components/annotation-tool/annotation-tool.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -79,8 +82,10 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SiteDropdownComponent,
     SubHeaderComponent,
     AnnotationsLayersComponent,
-    LayersModuleComponent,
     LayersControllerComponent,
+    DatasetLayerComponent,
+    AnnotationsControllerComponent,
+    AnnotationToolComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -89,6 +94,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SidebarModule.forRoot(),
     //Bootstrap
     TabsModule.forRoot(),
+    RatingModule.forRoot(),
     GraphQLModule,
     HttpClientModule,
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { List } from 'immutable';
+import { Dataset } from '../../models/dataset.model';
+import { DatasetsService } from '../../datasets/datasets.service';
 
 @Component({
   selector: 'app-layers-controller',
@@ -6,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./layers-controller.component.css']
 })
 export class LayersControllerComponent implements OnInit {
-
-  constructor() { }
+  datasets$: Observable<List<Dataset>>;
+  mainDataset$: Observable<Dataset>;
+  constructor(private datasetsService: DatasetsService) { }
 
   ngOnInit() {
+    this.mainDataset$ = this.datasetsService.mainDataset;
+    this.datasets$ = this.datasetsService.selectedDatasets;
+    // this.datasetsService.mainDataset.subscribe((main) => {
+    //   console.log('main', main);
+    // });
+    // this.datasetsService.selectedDatasets.subscribe((selected) => {
+    //   console.log('selected', selected);
+    // });
   }
 
 }
