@@ -21,7 +21,9 @@ import { Annotation } from '../models/annotation.model';
 import { listenOn } from '../util/listenOn';
 
 import { stopViewer } from '../util/getosgjsworking';
-import { LonLat } from '../util/projections/index';
+import { LonLat, WebMercator } from '../util/projections/index';
+import { withStyles } from '../util/layerStyles';
+import { featureToNode } from '../util/osgjsUtil/index';
 
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
@@ -56,6 +58,7 @@ export class Map3dService {
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
 
     this.sceneRoot = new osg.Node();
+    this.sceneRoot.getOrCreateStateSet().setAttributeAndModes( new osg.CullFace(0));
 
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
@@ -233,9 +236,30 @@ export class Map3dService {
     this.map3DViewer.setupManipulator();
     this.map3DViewer.run();
     this.map3DViewer.getManipulator().computeHomePosition();
+
+    this.datasets.forEach((dataset) => {
+      const group = this.getGroupForDataset(dataset.id());
+      group.getLayers().forEach((layer) => {
+        if (layer instanceof ol.layer.Vector) {
+          const terrainProvider = this.providers.get(dataset.id());
+          const features = layer.getSource().getFeatures();
+          const projection = layer.getSource().getProjection() || WebMercator;
+          const bb = {...this.sceneRoot.getBoundingBox()};
+          console.log('old bb', bb);
+          features.forEach((feature) => {
+            const node = featureToNode(feature, terrainProvider.getWorldPoint.bind(terrainProvider), projection);
+            if (node) {
+              console.log('node bb', node.getBoundingBox());
+              this.sceneRoot.addChild(node);
+            }
+          });
+          
+        }
+      })
+    })
   }
 
-  registerLayer(layer: ol.layer.Layer, dataset: Dataset) {
+  registerLayer(layer: (ol.layer.Tile | ol.layer.Vector), dataset: Dataset) {
     const title = layer.get('title');
     if (!title) {
       console.warn('warning layer has no title');

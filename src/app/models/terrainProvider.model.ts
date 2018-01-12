@@ -68,9 +68,8 @@ export class TerrainProvider extends ol.Object {
      * @returns {ol.Coordinate} 
      * @memberof TerrainProvider
      */
-    public getWorldPoint(point: ol.Coordinate, proj?: ol.ProjectionLike): ol.Coordinate {
-        proj = proj || WebMercator;
-        const xy = ol.proj.transform(point, proj || WebMercator, this.dataset().projection());
+    public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): [number, number, number] {
+        const xy = ol.proj.transform(point, proj, this.dataset().projection());
         const bounds = this.rootNode().getBoundingBox();
         const min = bounds.getMin();
         const max = bounds.getMax();

@@ -17,12 +17,6 @@ export class LayersControllerComponent implements OnInit {
   ngOnInit() {
     this.mainDataset$ = this.datasetsService.mainDataset;
     this.datasets$ = this.datasetsService.selectedDatasets;
-    // this.datasetsService.mainDataset.subscribe((main) => {
-    //   console.log('main', main);
-    // });
-    // this.datasetsService.selectedDatasets.subscribe((selected) => {
-    //   console.log('selected', selected);
-    // });
   }
 
 }

@@ -1,11 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as ol from 'openlayers';
+import generateName from 'sillyname';
 import { Map3dService } from '../../../../services/map-3d.service';
 import { makeAnnotationInteraction } from '../../../../util/interactions';
 import { listenOn } from '../../../../util/listenOn';
 import { Dataset } from '../../../../models/dataset.model';
 import { DatasetsService } from '../../../../datasets/datasets.service';
 import { IAnnotation, Annotation } from '../../../../models/annotation.model';
+import { IAnnotationToolMeta } from '../../../../models/annotationToolMeta';
+import { AnnotationToolType } from '../../../../models/annotationToolType';
 @Component({
   selector: 'app-annotation-tool',
   templateUrl: './annotation-tool.component.html',
@@ -22,7 +25,7 @@ export class AnnotationToolComponent implements OnInit {
     });
   }
 
-  startTool(tool: string) {
+  startTool(tool: AnnotationToolType) {
     const draw = makeAnnotationInteraction({
       type: 'LineString',
     });
@@ -42,21 +45,27 @@ export class AnnotationToolComponent implements OnInit {
     draw.on('drawend', (event) => {
       if (off) off();
       const sketch = event.feature;
-      console.log('sketch', sketch);
+      const annotations = (this.mainDataset.annotations() || []).filter(a => a.type() === 'annotation');
+      const name = `${this.mainDataset.name()}: Sample Annotation ${annotations.length + 1}`;
+      
+      const meta: IAnnotationToolMeta = {
+        tool,
+        name,
+      };
       const newIAnnotation: IAnnotation = {
         created_at: new Date(),
         updated_at: new Date(),
         id: 0,
-        meta: '',
+        meta,
         data: new ol.Collection([sketch]),
         resources: null,
         type: 'annotation'
       };
       const tooltip = $(this.map3DService.toolTip.nativeElement);
       tooltip.html('');
-
+    
       const newAnnotation = new Annotation(newIAnnotation);
-      this.mainDataset.annotations().push(newAnnotation);
+      this.mainDataset.annotations([...(this.mainDataset.annotations() || []), newAnnotation]);
       this.map3DService.removeInteraction(draw);
     });
     this.map3DService.addInteraction(draw);

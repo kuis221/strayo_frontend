@@ -53,6 +53,8 @@ import { LayersControllerComponent } from './controllers/layers-controller/layer
 import { DatasetLayerComponent } from './controllers/layers-controller/components/dataset-layer/dataset-layer.component';
 import { AnnotationsControllerComponent } from './controllers/annotations-controller/annotations-controller.component';
 import { AnnotationToolComponent } from './controllers/annotations-controller/components/annotation-tool/annotation-tool.component';
+import { DatasetAnnotationsComponent } from './controllers/annotations-controller/components/dataset-annotations/dataset-annotations.component';
+import { DatasetAnnotationComponent } from './controllers/annotations-controller/components/dataset-annotation/dataset-annotation.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -86,6 +88,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     DatasetLayerComponent,
     AnnotationsControllerComponent,
     AnnotationToolComponent,
+    DatasetAnnotationsComponent,
+    DatasetAnnotationComponent,
   ],
   imports: [
     AppRoutingModule,

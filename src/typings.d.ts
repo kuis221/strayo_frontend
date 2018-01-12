@@ -192,7 +192,6 @@ declare module osg {
         addUpdateCallback(cb) : boolean;
 
 		dirtyBound();
-
 		accept(NodeVisitor)
 	}
 	export type NodePath = Node[];
@@ -229,6 +228,7 @@ declare module osg {
 
 	export class MatrixTransform extends Transform {
 		getMatrix(): osg.Matrix;
+		setMatrix(mat: osg.Matrix);
 	}
 
 	export class Texture {
@@ -253,6 +253,9 @@ declare module osg {
 		getAttributes();
 		getPrimitives();
 		dirty();
+		setVertexAttribArray(attribute: string, array: BufferArray);
+		getPrimitiveSetList(): DrawArrays[];
+		getVertexAttributeList();
 	}
 
 	// shapes
@@ -260,7 +263,7 @@ declare module osg {
 	export function createTexturedQuadGeometry(cornerx, cornery, cornerz, wx, wy, wz, hx, hy, hz, l?: number, b?: number, r?: number, t?: number): osg.Geometry;
 	export function createGridGeometry(cx, cy, cz, wx, wy, wz, hx, hy, hz, res1, res2): osg.Geometry;
 	export function createTexturedSphereGeometry(radius, widthSegments?: number, heightSegments?: number, phiStart?: number, phiLength?: number, thetaStart?: number, thetaLength?: number): osg.Geometry;
-	
+	export function createTexturedSphere(radius, widthSegments?: number, heightSegments?: number, phiStart?: number, phiLength?: number, thetaStart?: number, thetaLength?: number);
 	//KdTree
 	export interface KdTreeBuilderOptions {
 		_numVerticesProcessed: number;

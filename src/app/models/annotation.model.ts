@@ -5,7 +5,7 @@ import { Resource, IResource } from './resource.model';
 
 export interface IAnnotation {
     created_at: Date | string;
-    data: string | ol.Feature | ol.Collection<ol.Feature>;
+    data: string | ol.Collection<ol.Feature>;
     id: number;
     meta: string | {};
     resources: IResource[];
@@ -30,9 +30,9 @@ export class Annotation extends ol.Object {
         return this.get('created_at');
     }
 
-    public data(): ol.Collection<ol.Feature> | ol.Feature;
-    public data(data: string| ol.Collection<ol.Feature> | ol.Feature): this;
-    public data(data?: string | ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | ol.Feature | this {
+    public data(): ol.Collection<ol.Feature>;
+    public data(data: string| ol.Collection<ol.Feature>): this;
+    public data(data?: string | ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | this {
         if (data !== undefined) {
             if (data === 'string') {
                 data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));

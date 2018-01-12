@@ -41,7 +41,7 @@ export class Dataset extends ol.Object {
         }
         return this.get('created_at');
     }
-    
+
     public color(): string;
     public color(color: string): this;
     public color(color?: string): string | this {
@@ -161,6 +161,32 @@ export class Dataset extends ol.Object {
         return [extmin[0], extmin[1], extmax[0], extmax[1]];
     }
 
+    overwriteStyle(): ol.StyleFunction {
+        return (feature: ol.Feature, resolution: number) => {
+            const geom = feature.getGeometry();
+            const color = this.color() || 'aquamarine';
+            switch (geom.getType()) {
+                case 'LineString':
+                    return new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color,
+                            width: 3
+                        })
+                    });
+                default:
+                    return new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'white',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color
+                        })
+                    });
+            }
+        }
+    }
+
     async updateFromAnnotations() {
         // Check if you have mapdata
         const mapdataAnno = this.annotations().find(anno => anno.type() === 'mapdata');
@@ -176,4 +202,5 @@ export class Dataset extends ol.Object {
         const mapdata = await fetch(mapdataResource.url()).then(r => r.json());
         this.mapData(mapdata);
     }
+
 }

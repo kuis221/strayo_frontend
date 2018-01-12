@@ -57,10 +57,12 @@ export class DatasetsState extends datasetRecord {
     }
 
     public setMainDataset(dataset: Dataset): DatasetsState {
-        const selected = uniqBy(this.selectedDatasets.push(dataset).toArray(), (d) => d.id());
-        return this
-            .setSelected(uniqBy(selected, (d) => d.id()))
-            .set('mainDataset', dataset) as DatasetsState;
+        const exist = this.selectedDatasets.find(d => dataset === d);
+        let state: DatasetsState = this;
+        if (!exist) {
+            state = state.setSelected(this.selectedDatasets.push(dataset).toArray());
+        }
+        return state.set('mainDataset', dataset) as DatasetsState;
     }
 
     public setSelected(datasets: Dataset[]): DatasetsState {
