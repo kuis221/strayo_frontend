@@ -68,7 +68,7 @@ export class TerrainProvider extends ol.Object {
      * @returns {ol.Coordinate} 
      * @memberof TerrainProvider
      */
-    public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): [number, number, number] {
+    public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): osg.Vec3 {
         const xy = ol.proj.transform(point, proj, this.dataset().projection());
         const bounds = this.rootNode().getBoundingBox();
         const min = bounds.getMin();
@@ -82,7 +82,7 @@ export class TerrainProvider extends ol.Object {
         const iv = new osgUtil.IntersectionVisitor();
         lsi.set(v1, v2);
         iv.setIntersector(lsi);
-        this.modelNode().accept(iv);
+        this.rootNode().accept(iv);
 
         const hits = lsi.getIntersections();
         if (hits.length === 0) return null;
@@ -94,6 +94,6 @@ export class TerrainProvider extends ol.Object {
         }
         this.reserveMatrixStack.reset();
         transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
-        return worldPoint;
+        return hit.point;
     }
 }

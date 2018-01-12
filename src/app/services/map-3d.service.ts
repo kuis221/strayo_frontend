@@ -23,7 +23,7 @@ import { listenOn } from '../util/listenOn';
 import { stopViewer } from '../util/getosgjsworking';
 import { LonLat, WebMercator } from '../util/projections/index';
 import { withStyles } from '../util/layerStyles';
-import { featureToNode } from '../util/osgjsUtil/index';
+import { featureToNode, transformMat4 } from '../util/osgjsUtil';
 
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
@@ -34,7 +34,8 @@ import { featureToNode } from '../util/osgjsUtil/index';
 export class Map3dService {
 
   map3DViewer: osgViewer.Viewer;
-  sceneRoot: osg.Node;
+  sceneRoot = new osg.Node();
+  measurementRoot = new osg.MatrixTransform();
   map2DViewer: ol.Map;
 
   sateliteLayer: ol.layer.Tile;
@@ -49,16 +50,18 @@ export class Map3dService {
 
   toolTip: ElementRef;
 
-  private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4});
+  private _groupForDataset: (id: number) => ol.layer.Group;
   private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
   private allInteractions = new ol.Collection<ol.interaction.Interaction>();
-  private _groupForDataset: (id: number) => ol.layer.Group;
+  private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 });
+  private reserveMatrixStack;
 
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
 
-    this.sceneRoot = new osg.Node();
-    this.sceneRoot.getOrCreateStateSet().setAttributeAndModes( new osg.CullFace(0));
+    this.sceneRoot.getOrCreateStateSet().setAttributeAndModes(new osg.CullFace(0));
+    this.sceneRoot.addChild(this.measurementRoot);
+
 
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
@@ -90,7 +93,8 @@ export class Map3dService {
     this.baseLayers = new ol.layer.Group({
       layers: [
         this.osmLayer,
-      ]}
+      ]
+    }
     );
     this.baseLayers.set('title', 'Base Layers');
 
@@ -121,13 +125,6 @@ export class Map3dService {
         this.sceneRoot.addChild(provider.rootNode());
         unsubProviders.push(listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
           this.sceneRoot.addChild(provider.rootNode());
-          const bb = provider.modelNode().getBoundingBox();
-          const center = ol.proj.transform(provider.dataset().mapData().Center, provider.dataset().mapData().Projection, LonLat);
-          const isZeroZero = ol.proj.transform(center, LonLat, provider.dataset().projection());
-          const centerPoint = provider.getWorldPoint(
-            provider.dataset().mapData().Center,
-            provider.dataset().mapData().Projection,
-          );
         }));
       });
     });
@@ -190,7 +187,7 @@ export class Map3dService {
       this.map2DViewer = null;
     }
   }
-  
+
   destroyOsgjs() {
     if (this.map3DViewer) {
       stopViewer(this.map3DViewer);
@@ -237,27 +234,64 @@ export class Map3dService {
     this.map3DViewer.run();
     this.map3DViewer.getManipulator().computeHomePosition();
 
-    this.datasets.forEach((dataset) => {
-      const group = this.getGroupForDataset(dataset.id());
-      group.getLayers().forEach((layer) => {
-        if (layer instanceof ol.layer.Vector) {
-          const terrainProvider = this.providers.get(dataset.id());
-          const features = layer.getSource().getFeatures();
-          const projection = layer.getSource().getProjection() || WebMercator;
-          const bb = {...this.sceneRoot.getBoundingBox()};
-          console.log('old bb', bb);
-          features.forEach((feature) => {
-            const node = featureToNode(feature, terrainProvider.getWorldPoint.bind(terrainProvider), projection);
-            if (node) {
-              console.log('node bb', node.getBoundingBox());
-              this.sceneRoot.addChild(node);
-            }
-          });
-          
-        }
-      })
-    })
+    // const measurementRoot = new osg.MatrixTransform();
+    // this.sceneRoot.addChild(measurementRoot);
+
+    // this.datasets.forEach((dataset) => {
+    //   const group = this.getGroupForDataset(dataset.id());
+    //   group.getLayers().forEach((layer) => {
+    //     if (layer instanceof ol.layer.Vector) {
+    //       const terrainProvider = this.providers.get(dataset.id());
+    //       const features = layer.getSource().getFeatures();
+    //       const projection = layer.getSource().getProjection() || WebMercator;
+    //       const bb = { ...this.sceneRoot.getBoundingBox() };
+    //       console.log('old bb', bb);
+    //       const node = new osg.MatrixTransform();
+    //       features.forEach((feature) => {
+    //         const featureNode = featureToNode(feature, this.getWorldPoint.bind(this), projection);
+    //         if (featureNode) {
+    //           console.log('node bb', node.getBoundingBox());
+    //           node.addChild(featureNode);
+    //         }
+    //       });
+    //       measurementRoot.addChild(node);
+    //     }
+    //   });
+    // });
+
+    this.map3DViewer.getManipulator().computeHomePosition();
   }
+
+  public getWorldPoint(point: ol.Coordinate): osg.Vec3 {
+    const xy = [0, 0];
+    const bounds = this.sceneRoot.getBoundingBox();
+    console.log('bounds', bounds);
+    const min = bounds.getMin();
+    const max = bounds.getMax();
+    const top = max[2];
+    const bottom = min[2];
+    const v1 = osg.Vec3.createAndSet(...xy, top);
+    const v2 = osg.Vec3.createAndSet(...xy, bottom);
+
+    const lsi = new osgUtil.LineSegmentIntersector();
+    const iv = new osgUtil.IntersectionVisitor();
+    lsi.set(v1, v2);
+    iv.setIntersector(lsi);
+    this.sceneRoot.accept(iv);
+
+    const hits = lsi.getIntersections();
+    if (hits.length === 0) return null;
+
+    const hit = hits[0];
+    const worldPoint = osg.Vec3.create();
+    if (!this.reserveMatrixStack) {
+        this.reserveMatrixStack = new osg.MatrixMemoryPool();
+    }
+    this.reserveMatrixStack.reset();
+    transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
+    return hit.point;
+}
+
 
   registerLayer(layer: (ol.layer.Tile | ol.layer.Vector), dataset: Dataset) {
     const title = layer.get('title');

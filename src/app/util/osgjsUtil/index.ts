@@ -28,21 +28,15 @@ export function featureToNode(feature: ol.Feature, getPoint: GetWorldPoint, proj
     const type = feature.getGeometry().getType();
     console.log('making geo', feature.getGeometry().getType());
     if (type === 'Circle') {
-        const segment = 50;
         const geometry = (feature.getGeometry() as ol.geom.Circle);
-        const geom = osg.createTexturedSphereGeometry(0.2, segment, segment);
-        const n = geom.getVertexAttributeList().Vertex.getElements().length / 3;
-        const colors = createColorsArray(n);
-
-        geom.setVertexAttribArray('Color', new osg.BufferArray(osg.BufferArray.ARRAY_BUFFER, colors, 3));
-        geom.getPrimitiveSetList().length = 0;
-        geom.getPrimitiveSetList().push(new osg.DrawArrays(osg.PrimitiveSet.POINTS, 0, segment * segment * 4));
-        // const mt = new osg.MatrixTransform();
-        // mt.addChild(geom);
-        const node = new osg.MatrixTransform();
-        osg.Matrix.setTrans(node.getMatrix(), getPoint(geometry.getCenter(), proj));
-        node.addChild(geom);
-        return node;
+        const point = getPoint(geometry.getCenter(), proj);
+        const root = new osg.MatrixTransform();
+        const subroot = new osg.MatrixTransform();
+        const sphere = osg.createTexturedSphere(0.2, 10, 10);
+        osg.Matrix.setTrans(subroot.getMatrix(), ...point);
+        subroot.addChild(sphere);
+        root.addChild(subroot);
+        return root;
     } else if (type === 'LineString') {
         const geometry = (feature.getGeometry() as ol.geom.LineString);
         const points = geometry.getCoordinates().map(coord => getPoint(coord, proj));
