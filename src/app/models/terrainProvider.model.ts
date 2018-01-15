@@ -96,4 +96,11 @@ export class TerrainProvider extends ol.Object {
         transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
         return hit.point;
     }
+
+    public reset() {
+        const rootNode = new osg.Node();
+        const modelNode = this.modelNode();
+        rootNode.addChild(modelNode);
+        this.rootNode(rootNode);
+    }
 }

@@ -22,11 +22,9 @@
         "styles.css"
       ],
       "scripts": [
-        "lib/OSG/vendors/bluebird-2.10.2.js",
-        "lib/OSG/vendors/hammer-2.0.4.js",
-        "lib/OSG/vendors/leap.js",
-        "lib/OSG/vendors/gunzip.min.js",
-        "lib/OSG/vendors/jquery-2.1.1.js",
+        "lib/OSG/vendors/bluebird.js",
+        "lib/bluebird-zone.js",
+        "lib/OSG/vendors/hammer.js",
         "lib/OSG/OSG.js"
       ],
       "environmentSource": "environments/environment.ts",

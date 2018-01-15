@@ -34,8 +34,7 @@ import { featureToNode, transformMat4 } from '../util/osgjsUtil';
 export class Map3dService {
 
   map3DViewer: osgViewer.Viewer;
-  sceneRoot = new osg.Node();
-  measurementRoot = new osg.MatrixTransform();
+  sceneRoot: osg.Node;
   map2DViewer: ol.Map;
 
   sateliteLayer: ol.layer.Tile;
@@ -54,15 +53,10 @@ export class Map3dService {
   private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
   private allInteractions = new ol.Collection<ol.interaction.Interaction>();
   private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 });
-  private reserveMatrixStack;
 
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
-
-    this.sceneRoot.getOrCreateStateSet().setAttributeAndModes(new osg.CullFace(0));
-    this.sceneRoot.addChild(this.measurementRoot);
-
-
+    this.sceneRoot = new osg.Node();
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
     this.sateliteLayer = new ol.layer.Tile({
@@ -112,7 +106,7 @@ export class Map3dService {
         group.set('title', dataset.name());
         this.addLayer(group);
       });
-      // this.setView();
+      this.setView();
     });
     // Get terrain providers
     let unsubProviders = [];
@@ -123,8 +117,10 @@ export class Map3dService {
       unsubProviders = [];
       this.providers.forEach((provider) => {
         this.sceneRoot.addChild(provider.rootNode());
+        this.setView();
         unsubProviders.push(listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
           this.sceneRoot.addChild(provider.rootNode());
+          this.setView();
         }));
       });
     });
@@ -227,71 +223,19 @@ export class Map3dService {
     container.addEventListener('webglcontextlost', (event) => {
       console.log('context lost', event);
     });
+    this.sceneRoot = new osg.Node();
+    this.providers.forEach((provider) => {
+      provider.reset();
+      this.sceneRoot.addChild(provider.rootNode());
+    });
     this.map3DViewer = new osgViewer.Viewer(container);
     this.map3DViewer.init();
     this.map3DViewer.setSceneData(this.sceneRoot);
     this.map3DViewer.setupManipulator();
     this.map3DViewer.run();
     this.map3DViewer.getManipulator().computeHomePosition();
-
-    // const measurementRoot = new osg.MatrixTransform();
-    // this.sceneRoot.addChild(measurementRoot);
-
-    // this.datasets.forEach((dataset) => {
-    //   const group = this.getGroupForDataset(dataset.id());
-    //   group.getLayers().forEach((layer) => {
-    //     if (layer instanceof ol.layer.Vector) {
-    //       const terrainProvider = this.providers.get(dataset.id());
-    //       const features = layer.getSource().getFeatures();
-    //       const projection = layer.getSource().getProjection() || WebMercator;
-    //       const bb = { ...this.sceneRoot.getBoundingBox() };
-    //       console.log('old bb', bb);
-    //       const node = new osg.MatrixTransform();
-    //       features.forEach((feature) => {
-    //         const featureNode = featureToNode(feature, this.getWorldPoint.bind(this), projection);
-    //         if (featureNode) {
-    //           console.log('node bb', node.getBoundingBox());
-    //           node.addChild(featureNode);
-    //         }
-    //       });
-    //       measurementRoot.addChild(node);
-    //     }
-    //   });
-    // });
-
     this.map3DViewer.getManipulator().computeHomePosition();
   }
-
-  public getWorldPoint(point: ol.Coordinate): osg.Vec3 {
-    const xy = [0, 0];
-    const bounds = this.sceneRoot.getBoundingBox();
-    console.log('bounds', bounds);
-    const min = bounds.getMin();
-    const max = bounds.getMax();
-    const top = max[2];
-    const bottom = min[2];
-    const v1 = osg.Vec3.createAndSet(...xy, top);
-    const v2 = osg.Vec3.createAndSet(...xy, bottom);
-
-    const lsi = new osgUtil.LineSegmentIntersector();
-    const iv = new osgUtil.IntersectionVisitor();
-    lsi.set(v1, v2);
-    iv.setIntersector(lsi);
-    this.sceneRoot.accept(iv);
-
-    const hits = lsi.getIntersections();
-    if (hits.length === 0) return null;
-
-    const hit = hits[0];
-    const worldPoint = osg.Vec3.create();
-    if (!this.reserveMatrixStack) {
-        this.reserveMatrixStack = new osg.MatrixMemoryPool();
-    }
-    this.reserveMatrixStack.reset();
-    transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
-    return hit.point;
-}
-
 
   registerLayer(layer: (ol.layer.Tile | ol.layer.Vector), dataset: Dataset) {
     const title = layer.get('title');
