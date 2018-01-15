@@ -223,11 +223,6 @@ export class Map3dService {
     container.addEventListener('webglcontextlost', (event) => {
       console.log('context lost', event);
     });
-    this.sceneRoot = new osg.Node();
-    this.providers.forEach((provider) => {
-      provider.reset();
-      this.sceneRoot.addChild(provider.rootNode());
-    });
     this.map3DViewer = new osgViewer.Viewer(container);
     this.map3DViewer.init();
     this.map3DViewer.setSceneData(this.sceneRoot);

@@ -1,8 +1,8 @@
 <div class="main">
-  <div class="main" [ngSwitch]="viewer">
-    <div #openlayers class="viewer" *ngSwitchCase="'openlayers'">
+  <div class="main">
+    <div #openlayers class="viewer" [hidden]="viewer != 'openlayers'">
     </div>
-    <div class="viewer" *ngSwitchCase="'osgjs'">
+    <div class="viewer" [hidden]="viewer != 'osgjs'">
       <canvas #osgjs >
   
       </canvas>
