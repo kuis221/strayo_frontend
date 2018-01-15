@@ -26,7 +26,7 @@ export class Map3dComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient, private map3DService: Map3dService) { }
 
   ngOnInit() {
-    this.changeView('osgjs');
+    this.changeView('openlayers');
     this.map3DService.toolTip = this.tooltip;
   }
 

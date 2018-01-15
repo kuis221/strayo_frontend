@@ -106,7 +106,6 @@ export class Map3dService {
         group.set('title', dataset.name());
         this.addLayer(group);
       });
-      this.setView();
     });
     // Get terrain providers
     let unsubProviders = [];
@@ -117,10 +116,8 @@ export class Map3dService {
       unsubProviders = [];
       this.providers.forEach((provider) => {
         this.sceneRoot.addChild(provider.rootNode());
-        this.setView();
         unsubProviders.push(listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
           this.sceneRoot.addChild(provider.rootNode());
-          this.setView();
         }));
       });
     });
@@ -229,13 +226,16 @@ export class Map3dService {
     this.map3DViewer.setupManipulator();
     this.map3DViewer.run();
     this.map3DViewer.getManipulator().computeHomePosition();
-    this.map3DViewer.getManipulator().computeHomePosition();
   }
 
   registerLayer(layer: (ol.layer.Tile | ol.layer.Vector), dataset: Dataset) {
     const title = layer.get('title');
     if (!title) {
       console.warn('warning layer has no title');
+    }
+    if (layer instanceof ol.layer.Vector) {
+      const style = layer.getStyle();
+      layer.setStyle(withStyles(style, dataset.overwriteStyle()));
     }
     const group = this.getGroupForDataset(dataset.id());
     const exist = group.getLayers().getArray().includes(layer);
