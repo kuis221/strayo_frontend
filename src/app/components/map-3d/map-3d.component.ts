@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, NgZone, OnDestroy, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+const THREE = require('three');
+console.log('THREE', THREE)
 import { DatasetsService } from '../../datasets/datasets.service';
 import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
 import { Dataset } from '../../models/dataset.model';
@@ -18,6 +20,7 @@ import { Map3dService } from '../../services/map-3d.service';
 export class Map3dComponent implements OnInit, OnDestroy {
   @ViewChild('openlayers', { read: ElementRef }) map2D: ElementRef;
   @ViewChild('osgjs', { read: ElementRef }) map3D: ElementRef;
+  @ViewChild('three', { read: ElementRef }) three: ElementRef;
   @ViewChild('tooltip', { read: ElementRef }) tooltip: ElementRef;
   @Input() show = 'map2D';
   viewer: string;
@@ -25,7 +28,40 @@ export class Map3dComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient, private map3DService: Map3dService) { }
 
   ngOnInit() {
-    this.changeView('openlayers');
+    // this.changeView('openlayers');
+    const camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
+    camera.position.z = 4;
+
+    const scene = new THREE.Scene();
+    const ambient = new THREE.AmbientLight( 0x444444 );
+    scene.add(ambient);
+
+    const directionalLight = new THREE.DirectionalLight(0xffeedd);
+    directionalLight.position.set(0, 0, 1).normalize();
+    scene.add(directionalLight);
+
+    const objectLoader = new THREE.ObjectLoader();
+    objectLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/json/teapot-claraio.json', (obj) => {
+      scene.add(obj);
+    });
+
+    const renderer = new THREE.WebGLRenderer();
+    setTimeout(() => {
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      this.three.nativeElement.appendChild(renderer.domElement);
+      setInterval(() => {
+        const three = $(this.three.nativeElement);
+        const width = three.width();
+        const height = three.height();
+        console.log('width', width, height);
+        camera.aspect = width/height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+      }, 200)
+    }, 500);
     this.map3DService.toolTip = this.tooltip;
   }
 
