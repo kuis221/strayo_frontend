@@ -8,7 +8,7 @@ import { Map3dService } from '../../../../services/map-3d.service';
 import { IAnnotationToolMeta } from '../../../../models/annotationToolMeta';
 import { annotationStyle } from '../../../../util/layerStyles';
 import { listenOn } from '../../../../util/listenOn';
-
+import { createPrismSlice } from '../../../../util/osgjsUtil';
 @Component({
   selector: 'app-dataset-annotation',
   templateUrl: './dataset-annotation.component.html',
@@ -20,6 +20,7 @@ export class DatasetAnnotationComponent implements OnInit {
   @Input() annotation: Annotation;
   meta: IAnnotationToolMeta;
   editMode: boolean;
+  points: ol.Coordinate[];
   endPoints: ol.Feature[];
   annotationLayer: ol.layer.Vector;
   interactionDone: Function;
@@ -28,15 +29,23 @@ export class DatasetAnnotationComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private map3DService: Map3dService) { }
 
   ngOnInit() {
-    const geometry = (this.annotation.data().item(0).getGeometry() as ol.geom.LineString);
+    const geometry = this.annotation.data().item(0).getGeometry();
     const type = geometry.getType();
     this.meta = (this.annotation.meta() as IAnnotationToolMeta);
-    this.endPoints = geometry.getCoordinates().map((coord) => {
+    switch (type) {
+      case 'LineString':
+      this.points = (geometry as ol.geom.LineString).getCoordinates();
+      break;
+      case 'Polygon':
+      this.points = (geometry as ol.geom.Polygon).getLinearRing(0).getCoordinates();
+      break;
+    }
+    this.endPoints = this.points.map((coord) => {
       return new ol.Feature({
         geometry: new ol.geom.Circle(coord, 3)
       });
     });
-
+    
     const features = new ol.Collection([this.annotation.data().item(0), ...this.endPoints]);
     this.annotationLayer = new ol.layer.Vector({
       source: new ol.source.Vector({

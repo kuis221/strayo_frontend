@@ -208,10 +208,6 @@
   version "2.0.45"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.45.tgz#0cfe971d7ed5542695740338e0455c91078a0e83"
 
-"@types/chart.js@^2.7.3":
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.7.3.tgz#251767f9a465ce06782fc07a9a5f15480939eee8"
-
 "@types/d3-array@*":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-1.2.1.tgz#e489605208d46a1c9d980d2e5772fa9c75d9ec65"

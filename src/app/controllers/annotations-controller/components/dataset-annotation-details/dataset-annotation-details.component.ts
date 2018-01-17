@@ -9,6 +9,8 @@ import { listenOn } from '../../../../util/listenOn';
 import { TerrainProvider } from '../../../../models/terrainProvider.model';
 import { sampleHeightsAlong } from '../../../../util/osgjsUtil/index';
 import { AnnotationToolType } from '../../../../models/annotationToolType';
+import { Map3dService } from '../../../../services/map-3d.service';
+import { createPrismSlice } from '../../../../util/osgjsUtil';
 
 @Component({
   selector: 'app-dataset-annotation-details',
@@ -34,7 +36,7 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   samples: osg.Vec3[];
   heightGraphChart: any;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef, private map3dService: Map3dService) {}
 
   ngOnInit() {
     this.name = (this.annotation.meta() as IAnnotationToolMeta).name;
@@ -50,6 +52,18 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
       this.recalculate();
     });
     this.cd.markForCheck();
+
+    const model = this.provider.modelNode();
+    const bounds = model.getBoundingBox();
+    console.log('bounds', bounds);
+    const min = bounds.getMin();
+    const max = bounds.getMax();
+
+    const top =  max[2];
+    const bottom = min[2] - 10;
+    const points = this.getCoordinates().map(coord => this.provider.getWorldPoint(coord));
+    const node = createPrismSlice(points, top, bottom);
+    this.map3dService.registerNode(node, this.dataset);
   }
 
   createHeightGraph() {
@@ -99,18 +113,40 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
 
   getGeometry() {
     const feature = this.annotation.data().item(0);
-    const geometry = feature.getGeometry() as ol.geom.LineString;
+    const geometry = feature.getGeometry();
     return geometry;
   }
 
+  getCoordinates() {
+    const geom = this.getGeometry();
+    switch (geom.getType()) {
+      case 'LineString':
+        return (geom as ol.geom.LineString).getCoordinates();
+      case 'Polygon':
+        return (geom as ol.geom.Polygon).getLinearRing(0).getCoordinates();
+    }
+  }
+
+
   getPlanarLength(): number {
     const geometry = this.getGeometry();
-    return geometry.getLength();
+    switch (geometry.getType()) {
+      case 'LineString':
+        return (geometry as ol.geom.LineString).getLength();
+      case 'Polygon':
+        const line = new ol.geom.LineString((geometry as ol.geom.Polygon).getLinearRing(0).getCoordinates());
+        return line.getLength();
+    }
   }
 
   getSphericalLength(): number {
     const geometry = this.getGeometry();
-    return ol.Sphere.getLength(geometry);
+    switch (geometry.getType()) {
+      case 'LineString':
+        return ol.Sphere.getLength(geometry as ol.geom.LineString);
+      case 'Polygon':
+        return ol.Sphere.getLength(new ol.geom.LineString((geometry as ol.geom.Polygon).getLinearRing(0).getCoordinates()));
+    }
   }
 
   formatLength(length: number) {
@@ -122,7 +158,7 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
 
   samplePoints() {
     const geometry = this.getGeometry();
-    const samples = sampleHeightsAlong(geometry.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
+    const samples = sampleHeightsAlong(this.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
     samples.forEach((point) => {
       point[1] = Math.abs(point[1]);
     });

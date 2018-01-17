@@ -13,6 +13,52 @@ export function createColorsArray(size: number): Float32Array {
     }
     return array;
 }
+/**
+ * Creates a prism geometry from the points (shooting strait up)
+ * 
+ * Assumes points are in xyz where y represense the height rather
+ * than osgjs usual z.
+ * 
+ * @export
+ * @param {ol.Coordinate[]} points 
+ * @param {number} top 
+ * @param {number} bottom 
+ * @returns {osg.MatrixTransform} 
+ */
+export function createPrismSlice(points: ol.Coordinate[], top: number, bottom: number): osg.MatrixTransform {
+    const root = new osg.MatrixTransform();
+    // console.log('points', points[0]);
+    for (let i = 0; i < points.length; i++) {
+        const point = points[i];
+        const nextPoint = points[(i + 1) % points.length];
+        // Create a rectangular face for every side
+        const bottomLeft = [point[0], point[2], bottom];
+        const widthVec = [nextPoint[0] - point[0], nextPoint[2] - point[2], 0];
+        const heightVec = [0, 0, (top - bottom)];
+        const args = [
+            // point[0], bottom, point[1],
+            // 0, bottom, 0,
+            // nextPoint[0] - point[0], 0, nextPoint[1] - point[1]
+            ...bottomLeft,
+            ...widthVec,
+            ...heightVec,
+        ];
+        const quad = (osg as any).createTexturedQuadGeometry(...args);
+        root.addChild(quad);
+        console.log('args', args);
+    }
+    const material = new osg.Material();
+    material.setDiffuse([0.0, 0.0, 1.0, 0.5]);
+    material.setAmbient([1.0, 1.0, 1.0, 1.0]);
+    material.setSpecular([1.0, 1.0, 1.0, 0.0]);
+    material.setEmission([0.0, 0.0, 0.0, 0.5]);
+
+    root.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
+    root.getOrCreateStateSet().setAttributeAndModes(new osg.BlendFunc('SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA'));
+    root.getOrCreateStateSet().setAttributeAndModes(new osg.CullFace('DISABLE'));
+    root.getOrCreateStateSet().setAttributeAndModes(material);
+    return root;
+}
 
 export function createNormalArray(size: number, x: number, y: number, z: number): Float32Array {
     const array = new Float32Array(size * 3);
@@ -89,7 +135,7 @@ export function transformMat4(out: osg.Vec3, a: osg.Vec3, m: osg.Matrix) {
 
 export function sampleHeightsAlong(coords: ol.Coordinate[], resolution: number, getPoint: GetWorldPoint,
     projection?: ol.ProjectionLike) {
-    
+
     const points = coords.map((c) => getPoint(c, projection));
     const samples = [];
     for (let i = 0; i < points.length - 1; i += 1) {

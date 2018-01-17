@@ -137,8 +137,10 @@ declare module osg {
 	export class StateAttribute {
 	}
 
+	export type RenderingHint = 'TRANSPARENT_BIN';
 	export class StateSet {
 		setAttributeAndModes(attribute: StateAttribute, mode?);
+		setRenderingHint(hint: RenderingHint)
 	}
 
 	export class CullFace extends StateAttribute {
@@ -148,6 +150,34 @@ declare module osg {
 		static FRONT_AND_BACK: number;
 
 		constructor( mode );
+	}
+
+	export type BlendFuncType = 
+		'DISABLE' |
+		'ZERO' | 
+		'ONE' |
+		'SRC_COLOR' |
+		'ONE_MINUS_SRC_COLOR' |
+		'SRC_ALPHA' |
+		'ONE_MINUS_SRC_ALPHA' |
+		'DST_ALPHA' |
+		'ONE_MINUS_DST_ALPHA' |
+		'SRC_ALPHA_SATURATE';
+
+	export class BlendFunc extends StateAttribute {
+		constructor(sourceRBG?: BlendFuncType, destinationRGB?: BlendFuncType, sourceAlpha?: BlendFuncType, destinationAlpha?: BlendFuncType)
+		static DISABLE: number;
+		static ZERO: number;
+		static ONE: number;
+		static SRC_COLOR: number;
+		static ONE_MINUS_SRC_COLOR: number;
+		static SRC_ALPHA: number;
+		static ONE_MINUS_SRC_ALPHA: number;
+		static DST_ALPHA: number;
+		static ONE_MINUS_DST_ALPHA: number;
+		static DST_COLOR: number;
+		static ONE_MINUS_DST_COLOR: number;
+		static SRC_ALPHA_SATURATE: number;
 	}
 
 	export class PrimitiveSet {
@@ -209,6 +239,13 @@ declare module osg {
 	}
 
 	export class CullSettings {
+	}
+
+	export class Material {
+		setDiffuse(color: [number, number, number, number]);
+		setAmbient(color: [number, number, number, number]);
+		setSpecular(color: [number, number, number, number]);
+		setEmission(color: [number, number, number, number]);
 	}
 
 	export class Camera extends osg.Transform {		// typescript does not allow multiple class; missing osg.CullSettings

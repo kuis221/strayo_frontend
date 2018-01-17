@@ -69,7 +69,7 @@ export class TerrainProvider extends ol.Object {
      * @returns {ol.Coordinate} 
      * @memberof TerrainProvider
      */
-    public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): osg.Vec3 {
+    public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): ol.Coordinate {
         const xy = (proj !== null) ? ol.proj.transform(point, proj, this.dataset().projection()) : point;
         const bounds = this.rootNode().getBoundingBox();
         const min = bounds.getMin();
@@ -95,6 +95,6 @@ export class TerrainProvider extends ol.Object {
         }
         this.reserveMatrixStack.reset();
         transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
-        return hit.point;
+        return (hit.point as any);
     }
 }
