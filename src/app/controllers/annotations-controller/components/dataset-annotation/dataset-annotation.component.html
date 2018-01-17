@@ -1,11 +1,8 @@
 <div class="savedRow clearfix" [ngClass]="editMode ? 'editMode' : ''">
   <div class="savedCol1">
-    <div class="checkbox checkbox-info">
-      <input type="checkbox" name="" id="">
-      <label></label>
-    </div>
+   <ng-content></ng-content>
   </div>
-  <div class="savedCol2" [ngClass]="meta.tool"><input type="text" [(ngModel)]="meta.name" /></div>
+  <div class="savedCol2" [ngClass]="toolToThumbnail[meta.tool]"><input type="text" [(ngModel)]="meta.name" /></div>
   <div class="savedCol3">
     <a href="javascript:void()" (click)="toggleEditMode()">
       <img src="/assets/images/editIcon.png" alt="">

@@ -62,6 +62,7 @@ export class TerrainProvider extends ol.Object {
     /**
      * Converts a coordinate to model position.
      * Assumes WebMercator (openlayer defaults to it) if no projection given
+     * If null is given, assumes coordinates are in local coordinates
      * 
      * @param {ol.Coordinate} point 
      * @param {ol.ProjectionLike} [proj] 
@@ -69,7 +70,7 @@ export class TerrainProvider extends ol.Object {
      * @memberof TerrainProvider
      */
     public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): osg.Vec3 {
-        const xy = ol.proj.transform(point, proj, this.dataset().projection());
+        const xy = (proj !== null) ? ol.proj.transform(point, proj, this.dataset().projection()) : point;
         const bounds = this.rootNode().getBoundingBox();
         const min = bounds.getMin();
         const max = bounds.getMax();

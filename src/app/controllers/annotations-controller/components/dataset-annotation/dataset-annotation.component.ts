@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as ol from 'openlayers';
 import { Dataset } from '../../../../models/dataset.model';
 import { Annotation } from '../../../../models/annotation.model';
-import { AnnotationToolType } from '../../../../models/annotationToolType';
+import { AnnotationToolType, ToolToThumbnail } from '../../../../models/annotationToolType';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Map3dService } from '../../../../services/map-3d.service';
 import { IAnnotationToolMeta } from '../../../../models/annotationToolMeta';
@@ -24,7 +24,7 @@ export class DatasetAnnotationComponent implements OnInit {
   annotationLayer: ol.layer.Vector;
   interactionDone: Function;
   interaction: ol.interaction.Modify;
-
+  toolToThumbnail = ToolToThumbnail;
   constructor(private sanitizer: DomSanitizer, private map3DService: Map3dService) { }
 
   ngOnInit() {

@@ -86,3 +86,24 @@ export function transformMat4(out: osg.Vec3, a: osg.Vec3, m: osg.Matrix) {
     out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
     return out;
 }
+
+export function sampleHeightsAlong(coords: ol.Coordinate[], resolution: number, getPoint: GetWorldPoint,
+    projection?: ol.ProjectionLike) {
+    
+    const points = coords.map((c) => getPoint(c, projection));
+    const samples = [];
+    for (let i = 0; i < points.length - 1; i += 1) {
+        const start = [points[i][0], points[i][2]];
+        const end = [points[i + 1][0], points[i + 1][2]];
+        const slope = osg.Vec2.sub(end, start, []);
+        const distance = osg.Vec2.length(slope);
+        let incr = 0;
+        samples.push(points[i]);
+        while (incr < distance) {
+            const point = getPoint(osg.Vec2.add(start, osg.Vec2.mult(slope, incr / distance, []), []), null);
+            samples.push(point);
+            incr += resolution;
+        }
+    }
+    return samples;
+}

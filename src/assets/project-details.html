@@ -12,7 +12,7 @@
 </head>
 <body>
 	<header class="header clearfix">
-		<a class="backBtn" href="index.html"><img src="/assets/images/backArrowIcon.png" alt=""></a>
+		<a class="backBtn" href="index.html"><img src="images/backArrowIcon.png" alt=""></a>
 		<div class="dropDown next">
 			<span class="txtBig">Site:</span> 
 			<a href="#" class="siteDropdown">Buckley Central Stone Wall 01</a>
@@ -61,6 +61,9 @@
 				</ul>
 			</div>
 		</div>
+		<div class="dvBtnUpload">
+			<a class="btnUploadProject" href="#">Upload new project</a>
+		</div>
 	</header>
 	<div class="subHeader clearfix">
 		<div class="location">Troy Missouri</div>
@@ -75,16 +78,28 @@
 			<ul class="leftNav clearfix">
 				<li><a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a></li>
 				<li>
-					<a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
+					<a class="shotPlan subMenu btnNavigate" href="javascript:void(0);">Shot Plan</a>
 					<ul>
-						<li><a href="#">Shotplan Editor</a></li>
+						<li><a href="shot-planning.html">Shotplan Editor</a></li>
 					</ul>
 				</li>
 				<li>
-					<a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
+					<a class="burdenAnalysis subMenu btnNavigate" href="javascript:void(0);">Burden Analysis</a>
 					<ul>
-						<li><a href="#">Sub Analysis</a></li>
-						<li><a href="#">Sub Analysis2</a></li>
+						<li><a href="javascript:void(0);" data-open="#Boretrak" class="openPop2">Select Boretrak file</a></li>
+						<li class="supList">
+							<a class="supMenu btnNavigate" href="javascript:void(0);">Boretrak Options</a>
+							<ul>
+								<li><a href="javascript:void(0);">Draw A-B Line</a></li>
+								<li><a href="javascript:void(0);" data-open="#ViewAzimuth" class="openPop2">View Azimuth</a></li>
+								<li><a href="javascript:void(0);">Reset A-B Line</a></li>
+								<li><a href="javascript:void(0);">Flip Shot</a></li>
+							</ul>
+						</li>
+						<li><a href="javascript:void(0);" data-open="#ChangeBoretrakType" class="openPop2">Change Boretrak type</a></li>
+						<li><a href="javascript:void(0);">Boretraking</a></li>
+						<li><a href="javascriptvoid(0);" data-open="#Boretrak2" class="openPop2">Boretrak every 2 unit</a></li>
+						<li><a href="javascript:void(0);" data-open="#BoretrakList" class="openPop2">Show Boretrak list</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -93,7 +108,7 @@
 			</div>
 		</div>
 		<div class="contentRight">
-			<a href="javascript:void(0);" data-panel="annotationLeftPanel" data-panelClass="shrink" class="btnCollapse"><img src="/assets/images/btnCollapse.png" alt=""></a>
+			<a href="javascript:void(0);" data-panel="annotationLeftPanel" data-panelClass="shrink" class="btnCollapse"><img src="images/btnCollapse.png" alt=""></a>
 			<div class="mapView">
 				<div class="mapviewBtn">
 					<ul>
@@ -101,7 +116,7 @@
 						<li><a href="#">3D Map</a></li>
 					</ul>
 				</div>
-				<a class="mapOptions" href="#"><img src="/assets/images/moreIcon2.png" alt=""></a>
+				<a class="mapOptions" href="#"><img src="images/moreIcon2.png" alt=""></a>
 			</div>
 			<!-- Timeline -->
 			<div class="btnTimelineOuter">
@@ -129,7 +144,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date">15 July 2017</p>
@@ -160,7 +175,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date active">15 July 2017</p>
@@ -193,7 +208,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date">15 July 2017</p>
@@ -226,7 +241,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date">15 July 2017</p>
@@ -259,7 +274,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date">15 July 2017</p>
@@ -292,7 +307,7 @@
 									</div>
 								</div>
 								<div class="timelineImgCont">
-									<img src="/assets/images/timelineImg.jpg" alt="">
+									<img src="images/timelineImg.jpg" alt="">
 								</div>
 							</div>
 							<p class="date">15 July 2017</p>
@@ -326,7 +341,7 @@
 	<!-- Download Files -->
 	<div class="downloadProjectFiles">
 		<div class="DownloadWrap">
-			<a class="closeDownload" href="#"><img src="/assets/images/btnCloseProject.png" alt=""></a>
+			<a class="closeDownload" href="#"><img src="images/btnCloseProject.png" alt=""></a>
 			<h3>Download Project Files</h3>
 			<h4>Available Formats:</h4>
 			<div class="formatsRow clearfix">
@@ -408,6 +423,89 @@
 		</div>
 		<div class="downloadBtnOuter">
 			<a href="#" class="downloadBtn">Download</a>
+		</div>
+	</div>
+	<!--Boretrak Popup-->
+	<div id="Boretrak" class="selectModelPop" style="display: none;">
+		<a href="javascript:void(0);" data-target=".selectModelPop" class="closePop btnCloseSelectModel"><img src="images/btncloseGraph.png" alt=""></a>
+		<h5>Boretrak</h5>
+		<h6>Select Boretraking method</h6>
+		<div class="addHoleRow clearfix">
+			<div class="addHoleCol fLeft">
+				<a class="btnBlock" href="#">Cabled</a>
+			</div>
+			<div class="addHoleCol fRight">
+				<a class="btnBlock" href="#">Rodded</a>
+			</div>
+		</div>
+	</div>
+	<!--Boretrak 2 Popup-->
+	<div id="Boretrak2" class="selectModelPop" style="display: none;">
+		<a href="javascript:void(0);" data-target=".selectModelPop" class="closePop btnCloseSelectModel"><img src="images/btncloseGraph.png" alt=""></a>
+		<h5>Boretrak every 2 unit</h5>
+		<h6>Keep Original BorePoints ?</h6>
+		<div class="addHoleRow clearfix">
+			<div class="addHoleCol fLeft">
+				<a class="btnBlock" href="#">Modify</a>
+			</div>
+			<div class="addHoleCol fRight">
+				<a class="btnBlock" href="#">Keep Original</a>
+			</div>
+		</div>
+	</div>
+	<!--Boretrak List Popup-->
+	<div id="BoretrakList" class="selectModelPop" style="display: none;">
+		<a href="javascript:void(0);" data-target=".selectModelPop" class="closePop btnCloseSelectModel"><img src="images/btncloseGraph.png" alt=""></a>
+		<h5>Boretrak List</h5>
+		<div class="dvBoretrak clearfix">
+			<div class="boretrakRow clearfix">
+				<div class="boretrakLeft">Boretrak 01</div>
+				<div class="boretrakRight"><a href="#"><img src="images/delIcon.png" alt=""></a></div>
+			</div>
+			<div class="boretrakRow clearfix">
+				<div class="boretrakLeft">Boretrak 02</div>
+				<div class="boretrakRight"><a href="#"><img src="images/delIcon.png" alt=""></a></div>
+			</div>
+			<div class="boretrakRow clearfix">
+				<div class="boretrakLeft">Boretrak 03</div>
+				<div class="boretrakRight"><a href="#"><img src="images/delIcon.png" alt=""></a></div>
+			</div>
+			<div class="boretrakRow clearfix">
+				<div class="boretrakLeft">Boretrak 04</div>
+				<div class="boretrakRight"><a href="#"><img src="images/delIcon.png" alt=""></a></div>
+			</div>
+			<div class="boretrakRow clearfix">
+				<div class="boretrakLeft">Boretrak 05</div>
+				<div class="boretrakRight"><a href="#"><img src="images/delIcon.png" alt=""></a></div>
+			</div>
+		</div>
+	</div>
+	<!--Change Boretrak Type Popup-->
+	<div id="ChangeBoretrakType" class="selectModelPop" style="display: none;">
+		<a href="javascript:void(0);" data-target=".selectModelPop" class="closePop btnCloseSelectModel"><img src="images/btncloseGraph.png" alt=""></a>
+		<h5>Change Boretrak type</h5>
+		<h6>Select Boretraking method</h6>
+		<div class="addHoleRow clearfix">
+			<div class="addHoleCol fLeft">
+				<a class="btnBlock" href="#">Cabled</a>
+			</div>
+			<div class="addHoleCol fRight">
+				<a class="btnBlock" href="#">Rodded</a>
+			</div>
+		</div>
+	</div>
+	<!--View Azimuth Popup-->
+	<div id="ViewAzimuth" class="selectModelPop" style="display: none;">
+		<a href="javascript:void(0);" data-target=".selectModelPop" class="closePop btnCloseSelectModel"><img src="images/btncloseGraph.png" alt=""></a>
+		<h5>View Azimuth</h5>
+		<h6>Azimuth for Boretrak: 240.37°</h6>
+		<div class="addHoleRow clearfix">
+			<div class="addHoleCol fLeft">
+				<a class="btnBlock" href="#">Ok</a>
+			</div>
+			<div class="addHoleCol fRight">
+				<a class="btnBlock" href="#">Reset Line</a>
+			</div>
 		</div>
 	</div>
 	<script src="js/jquery.min.js"></script>

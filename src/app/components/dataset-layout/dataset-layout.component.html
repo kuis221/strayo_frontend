@@ -26,23 +26,14 @@
   </div>
   <ul class="measurementSetting">
     <li>
-      <app-annotation-tool [tool]="'polygon'"></app-annotation-tool>
+      <app-annotation-tool [tool]="'Polygon'"></app-annotation-tool>
     </li>
     <li>
-      <a class="tooltips horizontalLength" href="horizontal-length.html">
-        <span class="txtTooltip">Horizontal Lenght, Surface length, Vertex elevation</span>
-      </a>
+      <app-annotation-tool [tool]="'LineString'"></app-annotation-tool>
     </li>
-    <li>
-      <a class="tooltips selection" href="javascript:void(0);">
-        <span class="txtTooltip">Selection</span>
-      </a>
-    </li>
-    <li>
-      <a class="tooltips relativeHeight" href="javascript:void(0);">
-        <span class="txtTooltip">Relative Height</span>
-      </a>
-    </li>
+    <!-- <li>
+          <app-annotation-tool [tool]="'Selection'"></app-annotation-tool>
+        </li> -->
   </ul>
   <div class="projectSettings">
     <span class="bttn btnDownload"></span>
@@ -52,7 +43,12 @@
 </app-sub-header>
 <div class="mainContent innerPage clearfix">
   <ng-sidebar-container>
-    <ng-sidebar opened=true mode="push" [ngSwitch]="sidepanel">
+    <div ng-sidebar-content class="fullHeight">
+      <div class="fullHeight">
+        <app-map-3d class="fullHeight"></app-map-3d>
+      </div>
+    </div>
+    <ng-sidebar sidebarClass="sidebar" opened=true mode="push" [ngSwitch]="sidepanel">
       <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
 
       <div class="annotationLeftPanel" *ngSwitchDefault>
@@ -85,12 +81,6 @@
         </div>
       </div>
     </ng-sidebar>
-    <div ng-sidebar-content class="fullHeight">
-      <div class="fullHeight">
-        <app-map-3d class="fullHeight"></app-map-3d>
-      </div>
-    </div>
-
   </ng-sidebar-container>
 </div>
 

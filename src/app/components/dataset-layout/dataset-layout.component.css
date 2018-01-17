@@ -5,3 +5,7 @@
 .fullHeight {
     height: 100%;
 }
+
+::ng-deep aside {
+    z-index: 0;
+}
