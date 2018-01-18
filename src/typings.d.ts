@@ -137,8 +137,10 @@ declare module osg {
 	export class StateAttribute {
 	}
 
+	export type RenderingHint = 'TRANSPARENT_BIN';
 	export class StateSet {
 		setAttributeAndModes(attribute: StateAttribute, mode?);
+		setRenderingHint(hint: RenderingHint)
 	}
 
 	export class CullFace extends StateAttribute {
@@ -150,25 +152,59 @@ declare module osg {
 		constructor( mode );
 	}
 
-	export class PrimitiveSet {
-		static POINTS: number;
-		static LINES: number;
-		static LINE_LOOP: number;
-		static LINE_STRIP: number;
-		static TRIANGLES: number;
-		static TRIANGLE_STRIP: number;
-		static TRIANGLE_FAN: number;
+	export type BlendFuncType = 
+		'DISABLE' |
+		'ZERO' | 
+		'ONE' |
+		'SRC_COLOR' |
+		'ONE_MINUS_SRC_COLOR' |
+		'SRC_ALPHA' |
+		'ONE_MINUS_SRC_ALPHA' |
+		'DST_ALPHA' |
+		'ONE_MINUS_DST_ALPHA' |
+		'SRC_ALPHA_SATURATE';
+
+	export class BlendFunc extends StateAttribute {
+		constructor(sourceRBG?: BlendFuncType, destinationRGB?: BlendFuncType, sourceAlpha?: BlendFuncType, destinationAlpha?: BlendFuncType)
+		static DISABLE: number;
+		static ZERO: number;
+		static ONE: number;
+		static SRC_COLOR: number;
+		static ONE_MINUS_SRC_COLOR: number;
+		static SRC_ALPHA: number;
+		static ONE_MINUS_SRC_ALPHA: number;
+		static DST_ALPHA: number;
+		static ONE_MINUS_DST_ALPHA: number;
+		static DST_COLOR: number;
+		static ONE_MINUS_DST_COLOR: number;
+		static SRC_ALPHA_SATURATE: number;
+	}
+
+	export enum PrimitiveSet {
+		POINTS = 0,
+		LINES = 1,
+		LINE_LOOP = 2,
+		LINE_STRIP = 3,
+		TRIANGLES = 4,
+		TRIANGLE_STRIP = 5,
+		TRIANGLE_FAN = 6,
 	}
 
 	export class DrawElements {
-		constructor(mode, indices);
+		constructor(mode: PrimitiveSet, indices: number[]);
+		mode: PrimitiveSet;
+		count: number;
+		offset: number;
+		indices: BufferArray;
 	}
 
 	export class DrawArrays {
 		constructor(mode, first, count);
 	}
 
-	export class BufferArray{
+	export class BufferArray extends Array<number>{
+
+		_elements: number[];
 
 		static ELEMENT_ARRAY_BUFFER: number;
 		static ARRAY_BUFFER:number;
@@ -180,8 +216,11 @@ declare module osg {
 	}
 
 
-	export class Node {
+	export class Node extends PrototypeObject {
+		children: osg.Node[];
 		addChild(node: osg.Node);
+
+		getChildren(): osg.Node[];
 		removeChildren();
 		removeChild(node: osg.Node);
 
@@ -209,6 +248,21 @@ declare module osg {
 	}
 
 	export class CullSettings {
+	}
+
+	export class Material {
+		setDiffuse(color: [number, number, number, number]);
+		setAmbient(color: [number, number, number, number]);
+		setSpecular(color: [number, number, number, number]);
+		setEmission(color: [number, number, number, number]);
+	}
+
+	class PrototypeObject {
+		getInstanceID();
+		setName(name: string);
+		getName(): string;
+		setUserData(data: any);
+		getUserData(): any;
 	}
 
 	export class Camera extends osg.Transform {		// typescript does not allow multiple class; missing osg.CullSettings
@@ -249,13 +303,21 @@ declare module osg {
 		static DEPTH_COMPONENT16;
 	}
 
+	export interface AttributeSet {
+		Vertex: BufferArray;
+		Normal: BufferArray;
+		[k: string]: BufferArray;
+	}
+
 	export class Geometry extends osg.Node {
-		getAttributes();
+		getAttributes(): AttributeSet;
 		getPrimitives();
 		dirty();
 		setVertexAttribArray(attribute: string, array: BufferArray);
 		getPrimitiveSetList(): DrawArrays[];
 		getVertexAttributeList();
+
+		primitives: DrawElements[];
 	}
 
 	// shapes

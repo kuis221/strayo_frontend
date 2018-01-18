@@ -33,6 +33,26 @@ export const countryStyle = new ol.style.Style({
     })
 });
 
+export const annotationInteractionStyle = new ol.style.Style({
+    fill: new ol.style.Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+    }),
+    stroke: new ol.style.Stroke({
+        color: 'rgba(0, 0, 0, 0.5)',
+        lineDash: [10, 10],
+        width: 2
+    }),
+    image: new ol.style.Circle({
+        radius: 5,
+        stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 0, 0.7)'
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+        })
+    })
+});
+
 export function annotationStyle(feature: ol.Feature, resolution: number) {
     const geom = feature.getGeometry();
     switch (geom.getType()) {
@@ -89,6 +109,7 @@ export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | 
                 color: c.getColor() || p.getColor(),
                 width: c.getWidth() || p.getWidth(),
                 lineCap: c.getLineCap() || p.getLineCap(),
+                lineDash: c.getLineDash() || p.getLineDash(),
                 lineJoin: c.getLineJoin() || p.getLineJoin(),
                 miterLimit: c.getMiterLimit() || p.getMiterLimit(),
             }));

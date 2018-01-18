@@ -25,7 +25,7 @@ export interface OSGJSVertexAttributeList {
 }
 
 export interface OSGJSAttributeList {
-    UniqueID: number,
+    UniqueID: number;
     Array: {
         Float32Array: {
             Elements: number[]
