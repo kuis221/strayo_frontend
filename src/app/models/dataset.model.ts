@@ -4,6 +4,7 @@ import proj4 from 'proj4';
 import { Annotation, IAnnotation } from './annotation.model';
 import { MapData } from './mapdata.model';
 import { LonLat, WebMercator } from '../util/projections/index';
+import { listenOn } from '../util/listenOn';
 
 
 export interface IDataset {
@@ -201,6 +202,39 @@ export class Dataset extends ol.Object {
         }
         const mapdata = await fetch(mapdataResource.url()).then(r => r.json());
         this.mapData(mapdata);
+    }
+
+    async waitForAnnotations(type?: string): Promise<Annotation[]> {
+        if (this.annotations()) {
+            return waitAndFind.bind(this)(type);
+        } else {
+            return new Promise<Annotation[]>((resolve) => {
+                this.once('change:annotations', () => {
+                    resolve(waitAndFind.bind(this)(type));
+                });
+            });
+        }
+
+        async function waitAndFind(type2?: string): Promise<Annotation[]> {
+            if (type2) {
+                let found = this.annotations().find(a => a.type() === type2);
+                if (found) {
+                    return [found];
+                }
+                found = await new Promise<Annotation>((resolve) => {
+                    const off = listenOn(this, 'change:annotations', () => {
+                        const f = this.annotations().find(a => a.type() === type2);
+                        if (f) {
+                            off();
+                            resolve(f);
+                        }
+                    });
+                });
+                return [found];
+            } else {
+                return this.annotations();
+            }
+        }
     }
 
 }

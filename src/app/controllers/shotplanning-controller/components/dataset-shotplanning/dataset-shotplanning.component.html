@@ -1,3 +1,9 @@
-<p>
-  dataset-shotplanning works!
-</p>
+<div class="main contentWrapper clearfix">
+  <div *ngIf="shotplan else loading">
+    Got Shotplan!
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-shotplanning-tool [dataset]="dataset"></app-shotplanning-tool>
+</ng-template>

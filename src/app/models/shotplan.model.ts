@@ -9,14 +9,12 @@ import { vectorProjection, scalarProjection, vectorRejection } from '../util/osg
 
 export class ShotplanRowFeature extends ol.Feature {
     static SHOTPLAN_TYPE = 'shotplan_row_feature';
-    public rowUpdate: Observable<ShotplanRow>;
     private holesUpdateSource = new BehaviorSubject<ShotplanHole[]>(null);
-    public holesUpdate = this.holesUpdateSource.asObservable();
+    public holesUpdate$ = this.holesUpdateSource.asObservable();
 
     constructor(props) {
         super(props);
         this.setId(this.getId() || uuid());
-        this.rowUpdate = this.getRow().update;
         listenOn(this.getGeometry(), 'change:geometries', () => {
             console.log('geometries changed');
             const geometries: Array<ShotplanHole | ShotplanRow> = (this.getGeometry() as ol.geom.GeometryCollection).getGeometries() as any;
@@ -28,6 +26,10 @@ export class ShotplanRowFeature extends ol.Feature {
             });
             this.holesUpdateSource.next(holeGeometries);
         });
+    }
+
+    public rowUpdate$(): Observable<ShotplanRow> {
+        return this.getRow().update$;
     }
 
     public addHole(hole: ol.Coordinate, toe?: ol.Coordinate) {
@@ -49,6 +51,7 @@ export class ShotplanRowFeature extends ol.Feature {
     public getRow(): ShotplanRow {
         const col = this.getGeometry() as ol.geom.GeometryCollection;
         return col.getGeometries().find((g: ShotplanRow | ShotplanHole) => {
+            console.log('g', g.getProperties());
             return g.shotplanType() === ShotplanRow.SHOTPLAN_TYPE;
         }) as ShotplanRow;
     }
@@ -67,7 +70,7 @@ export class ShotplanRowFeature extends ol.Feature {
 export class ShotplanRow extends ol.geom.LineString {
     static SHOTPLAN_TYPE = 'shotplan_row';
     private updateSource = new BehaviorSubject<ShotplanRow>(null);
-    public update = this.updateSource.asObservable();
+    public update$ = this.updateSource.asObservable();
     constructor(coordinates: [ol.Coordinate, ol.Coordinate], layout: ol.geom.GeometryLayout = 'XYZ') {
         super(coordinates, layout);
         this.shotplanType(ShotplanRow.SHOTPLAN_TYPE);

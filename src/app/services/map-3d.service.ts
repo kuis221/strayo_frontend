@@ -30,6 +30,9 @@ import { featureToNode, transformMat4 } from '../util/osgjsUtil';
 // memoize.Cache = (WeakMap as any);
 
 // Map3d Service handles syncing of 2D and 3D views
+
+let GlobalDraw: ol.interaction.Draw;
+
 @Injectable()
 export class Map3dService {
 
@@ -238,6 +241,14 @@ export class Map3dService {
       return this._groupForDataset(dataset);
     }
     return this._groupForDataset(dataset.id());
+  }
+
+  public setGlobalDraw(draw: ol.interaction.Draw): ol.interaction.Draw {
+    if (GlobalDraw) {
+      this.removeInteraction(GlobalDraw);
+    }
+    GlobalDraw = draw;
+    return GlobalDraw;
   }
 
   initOpenlayers(container: HTMLElement) {

@@ -61,6 +61,7 @@ import { DatasetAnnotationDetailsComponent } from './controllers/annotations-con
 import { ShotplanningComponent } from './components/shotplanning/shotplanning.component';
 import { ShotplanningControllerComponent } from './controllers/shotplanning-controller/shotplanning-controller.component';
 import { DatasetShotplanningComponent } from './controllers/shotplanning-controller/components/dataset-shotplanning/dataset-shotplanning.component';
+import { ShotplanningToolComponent } from './controllers/shotplanning-controller/components/shotplanning-tool/shotplanning-tool.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -101,6 +102,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     DatasetShotplanningComponent,
     NewAnnotationFormComponent,
     DatasetAnnotationDetailsComponent,
+    ShotplanningToolComponent,
   ],
   entryComponents: [
     NewAnnotationFormComponent

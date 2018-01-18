@@ -15,8 +15,6 @@ import { AnnotationToolType, ToolToThumbnail, ToolToType } from '../../../../mod
 import { NewAnnotationFormComponent } from '../new-annotation-form/new-annotation-form.component';
 import { annotationInteractionStyle, withStyles } from '../../../../util/layerStyles';
 
-let draw: ol.interaction.Draw;
-
 @Component({
   selector: 'app-annotation-tool',
   templateUrl: './annotation-tool.component.html',
@@ -37,18 +35,15 @@ export class AnnotationToolComponent implements OnInit {
   }
 
   getInteraction(tool) {
-    if (draw) {
-      this.map3DService.removeInteraction(draw);
-    }
-    draw = new ol.interaction.Draw({
+    const draw = this.map3DService.setGlobalDraw(new ol.interaction.Draw({
       type: ToolToType[tool],
       style: annotationInteractionStyle,
-    });
+    }));
     return draw;
   }
 
   startTool(tool: AnnotationToolType) {
-    draw = this.getInteraction(tool);
+    const draw = this.getInteraction(tool);
     let off;
     draw.on('drawstart', (evt) => {
       const sketch = evt.feature;
