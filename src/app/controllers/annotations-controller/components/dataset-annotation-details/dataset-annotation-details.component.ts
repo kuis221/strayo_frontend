@@ -53,38 +53,38 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
     });
     this.cd.markForCheck();
 
-    const model = this.provider.modelNode();
-    const bounds = model.getBoundingBox();
-    const min = bounds.getMin();
-    const max = bounds.getMax();
+    // const model = this.provider.modelNode();
+    // const bounds = model.getBoundingBox();
+    // const min = bounds.getMin();
+    // const max = bounds.getMax();
 
-    const top =  max[2];
-    const bottom = min[2] - 10;
-    const points = this.getCoordinates().map(coord => this.provider.getWorldPoint(coord));
-    const center = getCenter(points);
-    const filtered = filterVertices(points, this.provider.getGeometries());
-    if (filtered.points.length === 0) {
-      console.warn('No vertices in range')
-    }
-    console.log(points, points);
-    console.log('bounds', model.getBoundingBox());
-    // filtered.edges.forEach((e) => e.forEach(p => p[2] = Math.abs(p[2])))
-    // filtered.points.forEach((e) => e.forEach(p => p[2] = Math.abs(p[2])))
-    console.log('filtered', filtered);
-    const { cut, fill } = cutMesh(filtered, null);
-    let cutModel;
-    let fillModel;
-    if (cut && cut.points.length) {
-      cutModel = makeVolumeSurface(cut, center, false, null);
-    }
-    if (fill && fill.points.length) {
-      fillModel = makeVolumeSurface(fill, center, false, null);
-    }
+    // const top =  max[2];
+    // const bottom = min[2] - 10;
+    // const points = this.getCoordinates().map(coord => this.provider.getWorldPoint(coord));
+    // const center = getCenter(points);
+    // const filtered = filterVertices(points, this.provider.getGeometries());
+    // if (filtered.points.length === 0) {
+    //   console.warn('No vertices in range')
+    // }
+    // console.log(points, points);
+    // console.log('bounds', model.getBoundingBox());
+    // // filtered.edges.forEach((e) => e.forEach(p => p[2] = Math.abs(p[2])))
+    // // filtered.points.forEach((e) => e.forEach(p => p[2] = Math.abs(p[2])))
+    // console.log('filtered', filtered);
+    // const { cut, fill } = cutMesh(filtered, null);
+    // let cutModel;
+    // let fillModel;
+    // if (cut && cut.points.length) {
+    //   cutModel = makeVolumeSurface(cut, center, false, null);
+    // }
+    // if (fill && fill.points.length) {
+    //   fillModel = makeVolumeSurface(fill, center, false, null);
+    // }
 
-    // const node = makePrismSlice(points, top, bottom);
-    // this.map3dService.registerNode(node, this.dataset);
-    if (cutModel) this.map3dService.registerNode(cutModel, this.dataset);
-    if (fillModel) this.map3dService.registerNode(fillModel, this.dataset);
+    // // const node = makePrismSlice(points, top, bottom);
+    // // this.map3dService.registerNode(node, this.dataset);
+    // if (cutModel) this.map3dService.registerNode(cutModel, this.dataset);
+    // if (fillModel) this.map3dService.registerNode(fillModel, this.dataset);
   }
 
   createHeightGraph() {

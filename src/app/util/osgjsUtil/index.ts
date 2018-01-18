@@ -788,17 +788,17 @@ export function truncateToShape(points: Triangle, shape: Point[]): FacesAndEdges
         retval.points = clockwise([points]);
         // console.warn('NO EDGES');
     } else if (info.pts2d.inside.length === 2) {
-        let v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
-        let v2 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[1], []);
+        v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+        v2 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[1], []);
 
-        let w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
-        let w2 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[1], []);
+        const w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+        const w2 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[1], []);
 
-        let t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
-        let t2 = truncateToEdge(info.pts2d.inside[1], v2, shape);
+        const t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+        const t2 = truncateToEdge(info.pts2d.inside[1], v2, shape);
 
-        let v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
-        let v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[1], []);
+        v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+        v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[1], []);
 
         retval.points = clockwise([
             [info.pts3d.inside[0], info.pts3d.inside[1], v2],
@@ -807,17 +807,17 @@ export function truncateToShape(points: Triangle, shape: Point[]): FacesAndEdges
         retval.edges = [[v1.slice(), v2.slice()]];
 
     } else if (info.pts2d.inside.length === 1) {
-        let v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
-        let v2 = osg.Vec2.sub(info.pts2d.outside[1], info.pts2d.inside[0], []);
+        v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+        v2 = osg.Vec2.sub(info.pts2d.outside[1], info.pts2d.inside[0], []);
 
-        let w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
-        let w2 = osg.Vec3.sub(info.pts3d.outside[1], info.pts3d.inside[0], []);
+        const w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+        const w2 = osg.Vec3.sub(info.pts3d.outside[1], info.pts3d.inside[0], []);
 
-        let t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
-        let t2 = truncateToEdge(info.pts2d.inside[0], v2, shape);
+        const t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+        const t2 = truncateToEdge(info.pts2d.inside[0], v2, shape);
 
-        let v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
-        const v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[0], []);
+        v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+        v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[0], []);
         retval.points = clockwise([[info.pts3d.inside[0], v1, v2]]);
         retval.edges = [[v1.slice(), v2.slice()]];
 
