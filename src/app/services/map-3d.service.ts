@@ -226,7 +226,7 @@ export class Map3dService {
     }
   }
 
-  private getGroupForDataset(dataset: Dataset | number): ol.layer.Group {
+  public getGroupForDataset(dataset: Dataset | number): ol.layer.Group {
     if (!this._groupForDataset) {
       this._groupForDataset = memoize((id: number) => {
         return new ol.layer.Group({

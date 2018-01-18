@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import * as ol from 'openlayers';
 import { Dataset } from '../../../../models/dataset.model';
 import { WebMercator } from '../../../../util/projections/index';
@@ -17,16 +17,23 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
   orthophotoVisible = true;
   setOrthophotoVisible: (visible: boolean) => void;
 
-  unsubscribe: Function[] = [];
-  constructor(private map3DService: Map3dService) {
+  unsubscribe: Function;
+  constructor(private map3DService: Map3dService, private cd: ChangeDetectorRef) {
   }
 
   async ngOnInit() {
-    
+    const group = this.map3DService.getGroupForDataset(this.dataset);
+    this.orthophotoLayer = group.getLayers().getArray().find(l => l.get('title') === 'Orthophoto') as ol.layer.Tile;
+    this.orthophotoLayer.setVisible(this.orthophotoVisible);
+    this.unsubscribe = listenOn(this.orthophotoLayer, 'change:visible', () => {
+      this.orthophotoVisible = this.orthophotoLayer.getVisible();
+      this.cd.markForCheck();
+    });
+    this.setOrthophotoVisible = this.orthophotoLayer.setVisible.bind(this.orthophotoLayer);
   }
 
   ngOnDestroy() {
-    this.unsubscribe.forEach(off => off());
+    this.unsubscribe();
   }
 
 }
