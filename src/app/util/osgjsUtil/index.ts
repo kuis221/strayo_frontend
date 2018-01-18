@@ -3,7 +3,7 @@ import { WebMercator } from '../projections/index';
 
 
 export type GetWorldPoint = (point: ol.Coordinate, proj?: ol.ProjectionLike) => [number, number, number];
-export type Point = ol.Coordinate | osg.Vec3;
+export type Point = ol.Coordinate;
 export type Triangle = [Point, Point, Point];
 export type Edge = [Point, Point];
 export interface FacesAndEdges {
@@ -217,14 +217,19 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
     model.getBoundingBox().center(center);
 
     const extent = ol.extent.boundingExtent(points as any);
+    const maxZ = Math.max(...points.map(p => p[2]));
+    const minZ = Math.min(...points.map(p => p[2]));
     const bounds = new osg.BoundingBox();
-    bounds._min = osg.Vec3.fromValues(extent[0], extent[1], NaN);
-    bounds._max = osg.Vec3.fromValues(extent[2], extent[3], NaN);
+    bounds._min = osg.Vec3.createAndSet(extent[0], extent[1], minZ);
+    bounds._max = osg.Vec3.createAndSet(extent[2], extent[3], maxZ);
 
     const bounded = { points: [], edges: [] };
     // collects bounded points and edges.
-    model.children.forEach((node) => {
-        const geometry = node as osg.Geometry;
+    console.log('model', model, model.getChildren());
+    model.getChildren().forEach((node, i) => {
+        console.log('node', node, i);
+        const geometry = node.getChildren()[0] as osg.Geometry;
+        console.log('geometry', geometry);
         const attributes = geometry.getAttributes();
         const vertex = attributes.Vertex;
         const normal = attributes.Normal;
@@ -236,53 +241,54 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
 
         primitives.forEach((primitive) => {
             if (checkBoundsForPrimitive[primitive.mode]) {
-                const result = checkBoundsForPrimitive[primitive.mode](primitive, geometry, bounds, points);
+                const result = checkBoundsForPrimitive[primitive.mode](primitive, geometry, bounds, points, true);
                 if (result) {
+                    console.log('got bounds', result, bounded)
                     bounded.points = bounded.points.concat(result.points);
                     bounded.edges = bounded.edges.concat(result.edges);
                 }
             }
         })
     });
-
-    // Find the point with the lowest y then x
-    const backup = [...bounded.edges];
-    let edgeI = 0;
-    let pointI = 0;
-    let selected = bounded.edges[edgeI][pointI];
-    for (let i = 0; i < bounded.edges.length; i++) {
-        for (let j = 0; j < bounded.edges[i].length; j++) {
-            const current = bounded.edges[i][j];
-            if (
-                (selected[1] < current[1]) ||
-                (selected[1] === selected[1] && selected[0] < current[0])
-            ) {
-                edgeI = i;
-                pointI = j;
+    bounded.edges = bounded.edges.filter(e => e && e.length && e[0] && e[0].length === 3);
+    console.log('BOUNDED', bounded.edges.map(e => e[0]));
+    const backup = bounded.edges.slice();
+    let edge = 0;
+    let point = 0;
+    let selected = bounded.edges[edge][point];
+    console.log('before selected', selected);
+    for (var x = 0; x < bounded.edges.length; x++) {
+        for (var y = 0; y < bounded.edges[x].length; y++) {
+            var current = bounded.edges[x][y];
+            if ((selected[2] < current[2]) || (selected[2] == current[2] && selected[0] < current[0])) {
+                edge = x;
+                point = y;
                 selected = current;
             }
         }
     }
-    const neighbor = bounded.edges[edgeI][(pointI + 1) % 2];
-    // TODO: Jesus Christ someone optimize and/or simplify this mess.
-    const sorted = [[...selected], [...neighbor]];
-    delete bounded.edges[edgeI][pointI];
-    delete bounded.edges[edgeI][(pointI + 1) % 2];
+    console.log('after selected', selected);
+    const neighbor = bounded.edges[edge][(point + 1) % 2];
+
+    const sorted = [selected.slice(0), neighbor.slice(0)];
+    delete bounded.edges[edge][point];
+    delete bounded.edges[edge][(point + 1) % 2];
     let found = false;
-    for (let i = 1; sorted.length < (bounded.edges.length * 2); i += 2) {
+    console.log('before sorted', sorted);
+    for (let z = 1; sorted.length < (bounded.edges.length * 2); z += 2) {
         found = false;
-        const last = sorted[i];
-        for (let j = 0; j < bounded.edges.length && !found; j += 1) {
-            for (let k = 0; k < bounded.edges[j].length && !found; k++) {
-                const current = bounded.edges[j][k];
+        const last = sorted[z];
+        for (var x = 0; x < bounded.edges.length && !found; x++) {
+            for (var y = 0; y < bounded.edges[x].length && !found; y++) {
+                var current = bounded.edges[x][y];
                 if (current === undefined) continue;
 
-                if (last[0] === current[0] && last[1] === current[1]) {
-                    sorted.push([...current]);
-                    sorted.push([...bounded.edges[j][(k + 1) % 2]]);
+                if (last[0] == current[0] && last[2] == current[2]) {
+                    sorted.push(bounded.edges[x][y].slice(0));
+                    sorted.push(bounded.edges[x][(y + 1) % 2].slice(0));
 
-                    delete bounded.edges[j][k];
-                    delete bounded.edges[j][(k + 1) % 2];
+                    delete bounded.edges[x][y];
+                    delete bounded.edges[x][(y + 1) % 2];
 
                     found = true;
                 }
@@ -290,19 +296,22 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
         }
 
         if (!found) {
-            console.warn('Could not string edges together!');
+            console.warn("ERROR: Couldn't string edges together");
             bounded.edges = backup;
             break;
         }
     }
 
-    if (sorted.length === (bounded.edges.length * 2)) {
+    console.log('after sorted', sorted)
+
+    if (sorted.length == (bounded.edges.length * 2)) {
         bounded.edges = [];
-        for (let i = 0; i < sorted.length; i += 2) {
-            bounded.edges.push([sorted[i], sorted[i + 1]]);
+        for (var x = 0; x < sorted.length; x += 2) {
+            bounded.edges.push([sorted[x], sorted[x + 1]]);
         }
     }
 
+    // console.log(bounded);
     return bounded;
 }
 
@@ -314,8 +323,8 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
  * @param {osg.BoundingBox} bounds 
  * @returns {{ bounded: Triangle[], unbounded: Traingle[] }} 
  */
-export function getBoundedVertices(faces: Triangle[], bounds: osg.BoundingBox): { bounded: Triangle[], unbounded: Traingle[] } {
-    const vertices = [].concat(faces);
+export function getBoundedVertices(faces: Triangle[], bounds: osg.BoundingBox): { bounded: Point[], unbounded: Point[] } {
+    const vertices: Point[] = [].concat(...faces);
     const bounded = vertices.filter((v) => isBounded(v, bounds));
     const unbounded = vertices.filter((v) => !isBounded(v, bounds));
     return {
@@ -323,22 +332,25 @@ export function getBoundedVertices(faces: Triangle[], bounds: osg.BoundingBox): 
     };
 }
 
+export function getCenter(points: Point[]): Point {
+    let center = points.reduce((c, point) => {
+        return osg.Vec2.add(c, point, []);
+    }, [0, 0]);
+    center = osg.Vec2.mult(center, 1 / points.length, []);
+    return center;
+}
+
 export function getCrossingNumber(point: Point, shape: Point[]): number {
     let cn = 0;
 
     const P = { x: point[0], y: point[1] };
     const V = [];
-    shape.forEach((edge) => V.push({ x: edge[0], y: edge[1] }));
+    shape.forEach((edge) => { V.push({ x: edge[0], y: edge[1] }); });
 
-    for (let i = 0; i < shape.length - 1; i += 1) {
-        if (
-            ((V[i].y <= P.y) && (V[i + 1].y > P.y)) ||
-            ((V[i].y > P.y) && (V[i + 1].y <= P.y))
-        ) {
+    for (let i = 0; i < shape.length - 1; i++) {
+        if (((V[i].y <= P.y) && (V[i + 1].y > P.y)) || ((V[i].y > P.y) && (V[i + 1].y <= P.y))) {
             const vt = (P.y - V[i].y) / (V[i + 1].y - V[i].y);
-            if (P.x < V[i].x + vt * (V[i + 1].x - V[i].x)) {
-                cn += 1;
-            }
+            if (P.x < V[i].x + vt * (V[i + 1].x - V[i].x))++cn;
         }
     }
     return (cn % 2);
@@ -356,28 +368,44 @@ export const checkBoundsForPrimitive = [
     null, 						//osg.PrimitiveSet.TRIANGLE_FAN
 ];
 
-export type BoundsChecker = (primitive: osg.DrawElements, geometry: osg.Geometry, bounds: osg.BoundingBox, shape: Point[]) => FacesAndEdges;
+export type BoundsChecker = (primitive: osg.DrawElements, geometry: osg.Geometry, bounds: osg.BoundingBox, shape: Point[], isXZY?: boolean) => FacesAndEdges;
 
 export function checkBoundsForTriVariant(start: number, increment: number): BoundsChecker {
-    return (primitive, geometry: osg.Geometry, bounds: osg.BoundingBox, shape: Point[]) => {
+    return (primitive, geometry: osg.Geometry, bounds: osg.BoundingBox, shape: Point[], isXZY?: boolean) => {
+        console.log('SHAPE', shape);
         const toReturn = {
             points: [],
             edges: [],
         };
-
         const indices = primitive.indices._elements;
         const vertices = geometry.getAttributes().Vertex._elements;
+        const max = Math.max(...indices)
+        const min = Math.min(...indices);
+        console.log('boundsCheck', bounds.getMax(), bounds.getMin(), shape, max, min)
 
         for (let i = start; i < indices.length; i += increment) {
             const faceIndices = [indices[i], indices[i - 1], indices[i - 2]];
-            const face: Triangle = faceIndices.map((j) => [vertices[j], vertices[j + 1], vertices[j + 2]]) as any;
+            const face: Triangle = faceIndices.map((j) => {
+                const toReturn = [
+                    vertices[(j * 3) + 0],
+                    vertices[(j * 3) + 1],
+                    vertices[(j * 3) + 2]
+                ];
+                if (isXZY) {
+                    const swap = toReturn[2];
+                    toReturn[2] = toReturn[1];
+                    toReturn[1] = swap;
+                }
+                return toReturn;
+            }) as Triangle;
             const { bounded, unbounded } = getBoundedVertices([face], bounds)
-
+            if (i % 10000 === 2) console.log('face', face);
             if (bounded.length > 0) {
                 const truncated = truncateToShape(face, shape);
                 if (truncated) {
                     toReturn.points = toReturn.points.concat(truncated.points);
                     toReturn.edges = toReturn.edges.concat(truncated.edges);
+                    // console.log('\t Bounded, Unbounded', bounded, unbounded, truncated, toReturn);
                 }
             }
         }
@@ -486,6 +514,7 @@ export function makePrismSlice(points: ol.Coordinate[], top: number, bottom: num
             ...widthVec,
             ...heightVec,
         ];
+        console.log('args', args);
         const quad = (osg as any).createTexturedQuadGeometry(...args);
         root.addChild(quad);
     }
@@ -596,13 +625,18 @@ export function makeTri(p1: Point, p2: Point, p3: Point) {
 export function isBounded(point: Point, bounds: osg.BoundingBox, checkZ?: boolean): boolean {
     const min = bounds.getMin();
     const max = bounds.getMax();
-    if ((Math.max(min[0], Math.min(max[0], point[0])) == point[0])
-        && Math.max(min[1], Math.min(max[1], point[1])) == point[1])) {
+
+    if (
+        (point[0] >= min[0] && point[0] <= max[0]) &&
+        (point[1] >= min[1] && point[1] <= max[1])
+    ) {
+
         if (checkZ) {
-            if (Math.max(min[2], Math.min(max[2], point[2])) == point[2]) {
+            if (point[2] >= min[2] && point[2] <= max[2]) {
                 return true;
+            } else {
+                return false;
             }
-            return false;
         }
         return true;
     }
@@ -691,14 +725,14 @@ export function truncateToEdge(start: Point, heading: Point, shape: Point[]): nu
     const p = start;
     const r = heading;
 
-    for (let i = 1; i < shape.length; i++) {
-        const q = shape[i - 1];
-        const s = osg.Vec2.sub(shape[i], shape[i - 1], []);
+    for (let x = 1; x < shape.length; x++) {
+        const q = shape[x - 1];
+        const s = osg.Vec2.sub(shape[x], shape[x - 1], []);
 
-        const tNum = v2Cross(osg.Vec2.sub(q, p, p[]), s);
+        const tNum = v2Cross(osg.Vec2.sub(q, p, []), s);
         const tDen = v2Cross(r, s);
 
-        if (tDen !== 0 && tNum !== 0) {
+        if (tDen != 0 && tNum != 0) {
             const t = tNum / tDen;
             if (t >= 0 && t <= 1) return t;
         }
@@ -707,70 +741,75 @@ export function truncateToEdge(start: Point, heading: Point, shape: Point[]): nu
     return 1;
 }
 
-export function truncateToShape(face: Triangle, shape: Point[]): FacesAndEdges {
-    const winding = [];
-    const crossing = [];
-    const sum = [];
+export function truncateToShape(points: Triangle, shape: Point[]): FacesAndEdges {
+    const info = {
+        pts2d: { inside: [], outside: [] },
+        pts3d: { inside: [], outside: [] },
+    };
 
-    const inside: Point[] = [];
-    const outside: Point[] = [];
+    const retval = { points: [], edges: [] };
 
-    // will be returned
-    let points;
-    let edges;
-
-    const v1 = osg.Vec3.sub(face[0], face[1], []);
-    const v2 = osg.Vec3.sub(face[2], face[1], []);
+    var v1 = osg.Vec3.sub(points[0], points[1], []);
+    var v2 = osg.Vec3.sub(points[2], points[1], []);
     const cross = osg.Vec3.cross(v1, v2, []);
-    if (osg.Vec3.length2(cross) <= 0) return null;
-
-    face.forEach((point) => {
-        switch (getCrossingNumber(point, shape)) {
+    if (osg.Vec3.length2(cross) <= 0) return;
+    points.forEach((point) => {
+        const pt2d = [point[0], point[1]];
+        switch (getCrossingNumber(pt2d as any, shape)) {
             case 1:
-                inside.push(point);
+                info.pts2d.inside.push(pt2d);
+                info.pts3d.inside.push(point);
                 break;
             case 0:
-                outside.push(point);
+                info.pts2d.outside.push(pt2d);
+                info.pts3d.outside.push(point);
+                break;
         }
     });
+    switch (info.pts2d.inside.length) {
+        case 3:
+            retval.points = clockwise([points]);
+            // console.warn('NO EDGES');
+            break;
 
-    if (inside.length === 3) {
-        points = clockwise([face]);
-        break;
-    } else if (inside.length === 2) {
-        const w1 = osg.Vec3.sub(outside[0], inside[0], []);
-        const w2 = osg.Vec3.sub(outside[0], inside[1], []);
+        case 2:
+            var v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+            var v2 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[1], []);
 
-        const t1 = truncateToEdge(inside[0], w1, shape);
-        const t2 = truncateToEdge(inside[1], w2, shape);
+            var w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+            var w2 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[1], []);
 
-        const v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), inside[0], []);
-        const v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), inside[1], []);
+            var t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+            var t2 = truncateToEdge(info.pts2d.inside[1], v2, shape);
 
-        points = clockwise([
-            [inside[0], inside[1], v2],
-            [inside[0], v1, v2],
-        ]);
-        edges = [[...v1], [...v2]];
-    } else if (inside.length === 3) {
-        const w1 = osg.Vec3.sub(outside[0], inside[0], []);
-        const w2 = osg.Vec3.sub(outside[1], inside[1], []);
+            var v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+            var v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[1], []);
 
-        const t1 = truncateToEdge(inside[0], w1, shape);
-        const t2 = truncateToEdge(inside[0], w2, shape);
+            retval.points = clockwise([
+                [info.pts3d.inside[0], info.pts3d.inside[1], v2],
+                [info.pts3d.inside[0], v1, v2],
+            ]);
+            retval.edges = [[v1.slice(), v2.slice()]];
+            break;
 
-        const v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), inside[0], []);
-        const v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), inside[0], []);
+        case 1:
+            var v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+            var v2 = osg.Vec2.sub(info.pts2d.outside[1], info.pts2d.inside[0], []);
 
-        points = clockwise([
-            [inside[0], v1, v2]
-        ]);
-        edges = [[...v1], [...v2]];
+            var w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+            var w2 = osg.Vec3.sub(info.pts3d.outside[1], info.pts3d.inside[0], []);
+
+            var t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+            var t2 = truncateToEdge(info.pts2d.inside[0], v2, shape);
+
+            var v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+            var v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[0], []);
+            retval.points = clockwise([[info.pts3d.inside[0], v1, v2]]);
+            retval.edges = [[v1.slice(), v2.slice()]];
+            break;
     }
-    return {
-        points,
-        edges
-    };
+
+    return retval;
 }
 
 export function v2Cross(v1: Point, v2: Point) {

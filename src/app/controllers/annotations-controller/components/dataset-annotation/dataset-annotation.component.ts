@@ -8,7 +8,6 @@ import { Map3dService } from '../../../../services/map-3d.service';
 import { IAnnotationToolMeta } from '../../../../models/annotationToolMeta';
 import { annotationStyle } from '../../../../util/layerStyles';
 import { listenOn } from '../../../../util/listenOn';
-import { createPrismSlice } from '../../../../util/osgjsUtil';
 @Component({
   selector: 'app-dataset-annotation',
   templateUrl: './dataset-annotation.component.html',

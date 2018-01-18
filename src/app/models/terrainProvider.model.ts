@@ -99,7 +99,20 @@ export class TerrainProvider extends ol.Object {
         return [hit.point[0], hit.point[2], hit.point[1]];
     }
 
-    public getGeometry() {
+    /**
+     * Returns the node that contains all child nodes that make up provider
+     * EX.
+     * Node
+     *  -> _0
+     *      -> geometry
+     *  -> _1
+     *      -> geometry
+     *  ...
+     * 
+     * @returns 
+     * @memberof TerrainProvider
+     */
+    public getGeometries(): osg.Node {
         // Technically cheating but who cares?
         return this.modelNode().children[0].children[0].children[0];
     }

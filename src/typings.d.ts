@@ -219,6 +219,8 @@ declare module osg {
 	export class Node extends PrototypeObject {
 		children: osg.Node[];
 		addChild(node: osg.Node);
+
+		getChildren(): osg.Node[];
 		removeChildren();
 		removeChild(node: osg.Node);
 
