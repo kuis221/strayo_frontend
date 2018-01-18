@@ -3,6 +3,16 @@ import { Dataset } from '../../../../models/dataset.model';
 import { listenOn } from '../../../../util/listenOn';
 import { Annotation } from '../../../../models/annotation.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TerrainProvider } from '../../../../models/terrainProvider.model';
+import { TerrainProviderService } from '../../../../services/terrainprovider/terrain-provider.service';
+import { Map } from 'immutable';
+import { Map3dService } from '../../../../services/map-3d.service';
+
+interface IAnnotationOption {
+  annotation: Annotation;
+  provider?: TerrainProvider;
+  checked: boolean;
+}
 
 @Component({
   selector: 'app-dataset-annotations',
@@ -11,20 +21,35 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DatasetAnnotationsComponent implements OnInit, OnDestroy {
   @Input() dataset: Dataset;
-  private annotationsSource = new BehaviorSubject<Annotation[]>([]);
-  annotations$ = this.annotationsSource.asObservable();
+  providers: Map<number, TerrainProvider>;
+  private optionsSource = new BehaviorSubject<IAnnotationOption[]>([]);
+  options$ = this.optionsSource.asObservable();
   off: Function;
   @ViewChild('annotationList', { read: ElementRef }) annotationList: ElementRef;
-  constructor() { }
+  constructor(private map3DService: Map3dService, private terrainProviderService: TerrainProviderService) { }
 
   ngOnInit() {
-    this.off = listenOn(this.dataset, 'change:annotations', () => {
-      this.annotationsSource.next(this.dataset.annotations().filter(a => a.type() === 'annotation'));
+    this.terrainProviderService.providers.subscribe((providers) => {
+      if (this.off) this.off();
+      this.providers = providers;
+      this.off = listenOn(this.dataset, 'change:annotations', () => {
+        this.optionsSource.next(this.dataset.annotations()
+          .filter(a => a.type() === 'annotation')
+          .map((annotation) => ({ annotation, checked: false, provider: providers.get(this.dataset.id()) })));
+      });
     });
   }
 
   ngOnDestroy() {
     if (this.off) this.off();
+  }
+
+  onChecked(option: IAnnotationOption) {
+    console.log('checked', option);
+    const provider = this.providers.get(this.dataset.id());
+    if (!provider) { // retrevie provider
+      this.map3DService.updateTerrainProviderFromAnnotations(this.dataset, this.dataset.annotations());
+    }
   }
 
   toggle(show) {

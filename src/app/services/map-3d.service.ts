@@ -101,6 +101,7 @@ export class Map3dService {
     // Get datasets
     this.datasetsService.selectedDatasets.subscribe((datasets) => {
       this.datasets = datasets;
+      this.terrainProviderService.makeProvidersForDatasets(datasets.toJS());      
       this.datasets.forEach((dataset) => {
         const group = this.getGroupForDataset(dataset.id());
         group.set('title', dataset.name());
@@ -126,7 +127,6 @@ export class Map3dService {
     this.datasetsService.mainDataset.subscribe(async (mainDataset) => {
       this.mainDataset = mainDataset;
       if (!mainDataset) return;
-      this.terrainProviderService.makeProvidersForDatasets([mainDataset]);
 
       const fetchAnnotationsForMainDataset = () => {
         this.updateTerrainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
@@ -203,8 +203,8 @@ export class Map3dService {
   }
 
   initOpenlayers(container: HTMLElement) {
-    this.destroyOpenlayers();
-    this.map2DViewer = new ol.Map({
+    // this.destroyOpenlayers();
+    this.map2DViewer = this.map2DViewer || new ol.Map({
       target: container,
       interactions: this.allInteractions,
       loadTilesWhileAnimating: true,
@@ -216,7 +216,8 @@ export class Map3dService {
   }
 
   initOsgjs(container: HTMLElement) {
-    this.destroyOsgjs();
+    // this.destroyOsgjs();
+    if (this.map3DViewer) return;
     container.addEventListener('webglcontextlost', (event) => {
       console.log('context lost', event);
     });
@@ -244,6 +245,12 @@ export class Map3dService {
       return;
     }
     group.getLayers().push(layer);
+  }
+
+  registerNode(node: osg.Node | osg.MatrixTransform, dataset: Dataset) {
+    const provider = this.providers.get(dataset.id());
+    provider.rootNode().addChild(node);
+    if (this.map3DViewer) this.map3DViewer.getManipulator().computeHomePosition();    
   }
 
   removeInteraction(interaction: ol.interaction.Interaction) {
