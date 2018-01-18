@@ -216,7 +216,7 @@ declare module osg {
 	}
 
 
-	export class Node {
+	export class Node extends PrototypeObject {
 		children: osg.Node[];
 		addChild(node: osg.Node);
 		removeChildren();
@@ -253,6 +253,14 @@ declare module osg {
 		setAmbient(color: [number, number, number, number]);
 		setSpecular(color: [number, number, number, number]);
 		setEmission(color: [number, number, number, number]);
+	}
+
+	class PrototypeObject {
+		getInstanceID();
+		setName(name: string);
+		getName(): string;
+		setUserData(data: any);
+		getUserData(): any;
 	}
 
 	export class Camera extends osg.Transform {		// typescript does not allow multiple class; missing osg.CullSettings

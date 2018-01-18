@@ -12,7 +12,7 @@ export interface FacesAndEdges {
 }
 export interface CutMesh {
     cut: FacesAndEdges;
-    fill: any;
+    fill: FacesAndEdges;
 }
 
 export function calcNormal(face): Point {
@@ -64,7 +64,9 @@ export function cutMesh(mesh: FacesAndEdges, elevation?: number) {
         let belowCount = 0;
 
         for (let j = 0; j < tri.length; j++) {
-            if (Math.abs(tri[j][2]) >= elevation) {
+            // Have to negate because most of our models are upside down
+            // TODO: longterm fix this.
+            if (-(tri[j][2]) >= elevation) {
                 aboveCount += 1;
             } else {
                 belowCount += 1;
@@ -84,9 +86,105 @@ export function cutMesh(mesh: FacesAndEdges, elevation?: number) {
 
             // We also need to ensure the new triangles have the same normal vector as the source triangle
 
+            const vecA = osg.Vec3.sub(tri[1], tri[0], []);
+            const vecB = osg.Vec3.sub(tri[2], tri[0], []);
+            const norm = osg.Vec3.normalize(osg.Vec3.cross(vecA, vecB, []), []);
 
+            const a = tri.filter(p => -(p[2]) >= elevation);
+            const b = tri.filter(p => -(p[2]) < elevation);
+
+            let v1, v2, v3;
+            if (a.length == 1) {
+                v1 = a[0];
+                v2 = b[0];
+                v3 = b[1];
+            } else {
+                v1 = b[0];
+                v2 = a[0];
+                v3 = a[1];
+            }
+
+            const v1diff = -v1[2] - elevation;
+            const v1v2 = osg.Vec3.normalize(osg.Vec3.sub(v2, v1, []), []);
+            const v1v3 = osg.Vec3.normalize(osg.Vec3.sub(v3, v1, []), []);
+            const v12s = v1diff / v1v2[2];
+            const v13s = v1diff / v1v3[1];
+
+            const v1a = osg.Vec3.add(v1, osg.Vec3.mult(v1v2, v12s, []), []);
+            const v1b = osg.Vec3.add(v1, osg.Vec3.mult(v1v3, v13s, []), []);
+            const v23mid = osg.Vec3.mult(osg.Vec3.add(v2, v3, []), 0.5, []);
+
+            const tempAbove = [];
+            const tempBelow = [];
+            if (-v1[2] > elevation) {
+                tempAbove.push([v1, v1a, v1b]);
+
+                tempBelow.push([v1a, v2, v23mid]);
+                tempBelow.push([v1b, v23mid, v3]);
+                tempBelow.push([v1a, v23mid, v1b]);
+            } else {
+                tempBelow.push([v1, v1a, v1b]);
+
+                tempAbove.push([v1a, v2, v23mid]);
+                tempAbove.push([v1b, v23mid, v3]);
+                tempAbove.push([v1a, v23mid, v1b]);
+            }
+
+            for (let j = 0; j < tempAbove.length; j++) {
+                const vec = tempAbove[j];
+                const u = osg.Vec3.sub(vec[1], vec[0], []);
+                const v = osg.Vec3.sub(vec[2], vec[0], []);
+                const n = osg.Vec3.normalize(osg.Vec3.cross(u, v, []), []);
+
+                if (osg.Vec3.dot(norm, n) < 0.9) tempAbove[j].reverse();
+            }
+
+            for (let j = 0; j < tempBelow.length; j++) {
+                const vec = tempBelow[j];
+                const u = osg.Vec3.sub(vec[1], vec[0], []);
+                const v = osg.Vec3.sub(vec[2], vec[0], []);
+                const n = osg.Vec3.normalize(osg.Vec3.cross(u, v, []), []);
+
+                if (osg.Vec3.dot(norm, n) < 0.9) tempBelow[j].reverse();
+            }
+
+            above.points.push(...tempAbove);
+            below.points.push(...tempBelow);
         }
     })
+
+    below.points.forEach(p => p.reverse());
+
+    const edges = mesh.edges;
+    edges.forEach((edge, i) => {
+        let counter = 0;
+
+        for (let j = 0; j < edge.length; j++) {
+            if (edge[j] && -edge[j][2] >= elevation) counter++;
+            else counter--;
+        }
+
+        if (counter === edge.length) above.edges.push(edge);
+        else if (counter === -edge.length) below.edges.push(edge);
+        else {
+            // As above, so below. Intersecting edges need to be divided just as intersecting triangles did.
+            // Fortunately, line-line intersection is much easier.
+
+            const a = edge.filter(p => -p[2] >= elevation)[0];
+            const b = edge.filter(p => -p[2] < elevation)[0];
+
+            const diff = -a[2] - elevation;
+            const abnorm = osg.Vec3.normalize(osg.Vec3.sub(b, a, []), []);
+            const scalar = diff / abnorm[2];
+
+            const intersect = osg.Vec3.add(a, osg.Vec3.mult(abnorm, scalar, []), []);
+
+            above.edges.push([a, intersect]);
+            below.edges.push([intersect, b]);
+        }
+    })
+
+    return { cut: above, fill: below };
 }
 
 export function featureToNode(feature: ol.Feature, getPoint: GetWorldPoint, proj?: ol.ProjectionLike) {
@@ -310,6 +408,56 @@ export function lineFromPoints(points, fill?): osg.Geometry {
     return geom;
 }
 
+export function makeEdges(edges: Edge[], drop: number, center): Point[] {
+    let center2 = [0, 0, 0];
+    const tris = [];
+    edges.forEach((edge, i) => {
+        if (!edge || edge.length < 2 || !edge[0] || !edge[1]) {
+            return;
+        }
+
+        center2 = osg.Vec3.add(center2, edge[0], []);
+        center2 = osg.Vec3.add(center2, edge[1], []);
+
+        const p1 = edge[0];
+        const p2 = edge[1];
+
+        const p3 = [p1[0], p1[1], drop];
+        const p4 = [p2[0], p2[1], drop];
+
+        tris.push([p1, p2, p4]);
+        tris.push([p4, p3, p1]);
+    });
+    center2 = osg.Vec3.mult(center2, 1 / tris.length, []);
+    center[1] = center[2];
+    center[2] = 0;
+
+    let away = 0;
+    tris.forEach((tri, i) => {
+        const lineCenter = [
+            (tri[0][0] + tri[1][0]) / 2,
+            (tri[0][1] + tri[1][1]) / 2,
+            (tri[0][2] + tri[1][2]) / 2,
+        ];
+
+        let n = calcNormal(tri);
+        let v = osg.Vec3.sub(center, lineCenter, []);
+
+        n = osg.Vec3.normalize(n, []);
+        v = osg.Vec3.normalize(v, []);
+
+        const proj = osg.Vec3.dot(v, n, []);
+        away += Math.sign(proj);
+    });
+
+    for (let i = 0; i < tris.length && away < 0; i++) {
+        tris[i].reverse();
+    }
+
+    return [].concat(...tris);
+
+}
+
 /**
  * Creates a prism geometry from the points (shooting strait up)
  * 
@@ -354,6 +502,14 @@ export function makePrismSlice(points: ol.Coordinate[], top: number, bottom: num
     return root;
 }
 
+/**
+ * Takes a list of faces (2D or 1D) and creates a geometry after them.
+ * If more than 2 ** 16 - 1 vertices are passed, creates several geometries.
+ * 
+ * @export
+ * @param {(Point[] | number[])} points 
+ * @returns 
+ */
 export function makeSurface(points: Point[] | number[]) {
     const root = new osg.MatrixTransform();
     let vertices: number[] = (points as number[]);
@@ -390,6 +546,36 @@ export function makeSurface(points: Point[] | number[]) {
         root.addChild(node);
     }
     return root;
+}
+
+export interface VolumeData {
+    elevations: [number, number];
+}
+
+export function makeVolumeSurface(model: FacesAndEdges, center: Point, close: boolean, elevation: number) {
+    const subRoot = new osg.MatrixTransform();
+    const modelRoot = new osg.MatrixTransform();
+    const wireRoot = new osg.MatrixTransform();
+
+    const flattened = [].concat(...model.points);
+
+    const topdown = topDown(model.points, true, elevation);
+
+    if (elevation === null || elevation === undefined) elevation = -topdown.heights[1];
+    const edges = makeEdges(model.edges, -elevation, center);
+
+    modelRoot.addChild(makeSurface(flattened));
+    if (close) {
+        modelRoot.addChild(makeSurface(topdown.points));
+        modelRoot.addChild(makeSurface(edges));
+    }
+
+    subRoot.addChild(modelRoot);
+    subRoot.addChild(wireRoot);
+    subRoot.setUserData({
+        elevations: topdown.heights,
+    });
+    return subRoot;
 }
 
 export function makeTri(p1: Point, p2: Point, p3: Point) {
@@ -450,6 +636,30 @@ export function sampleHeightsAlong(coords: ol.Coordinate[], resolution: number, 
         }
     }
     return samples;
+}
+
+export function topDown(points: Triangle[], flip: boolean, elevation: number) {
+    const data = {
+        heights: [points[0][0][2], points[0][0][2]],
+        points: [],
+    }
+
+    for (let i = 0; i < points.length; i++) {
+        for (let j = 0; j < points[i].length; j++) {
+            data.points.push([...(points[i][j] as any)]);
+            data.heights = [
+                Math.min(data.heights[0], points[i][j][2]),
+                Math.max(data.heights[1], points[i][j][2]),
+            ]
+        }
+    }
+
+    if (elevation === null || elevation === undefined) elevation = -data.heights[1];
+
+    for (let i = 0; i < data.points.length; i++) { data.points[i][2] = -elevation }
+    if (flip) data.points.reverse();
+
+    return data;
 }
 
 
