@@ -1,7 +1,7 @@
 import * as ol from 'openlayers';
 import { WebMercator } from '../projections/index';
 
-
+export type Point = ol.Coordinate;
 export type GetWorldPoint = (point: ol.Coordinate, proj?: ol.ProjectionLike) => [number, number, number];
 
 export function createColorsArray(size: number): Float32Array {
@@ -47,6 +47,26 @@ export function featureToNode(feature: ol.Feature, getPoint: GetWorldPoint, proj
     } else {
         throw new Error(`Geometry Type ${feature.getGeometry().getType()} is not supported please do`);
     }
+}
+
+export function scalarProjection(a: Point, b: Point): number {
+    return osg.Vec2.dot(a, b) / osg.Vec2.length(b);
+}
+
+export function vectorProjection(a: Point, b: Point): Point {
+    return osg.Vec2.mult(
+        b,
+        (osg.Vec2.dot(a, b) / (osg.Vec2.length(b) ** 2)),
+        []
+    );
+}
+
+export function vectorRejection(a: Point, b: Point): Point {
+    return osg.Vec2.sub(
+        vectorProjection(a, b),
+        a,
+        []
+    );
 }
 
 export function lineFromPoints(points, fill?): osg.Geometry {

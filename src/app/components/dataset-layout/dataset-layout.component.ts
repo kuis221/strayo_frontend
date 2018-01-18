@@ -12,7 +12,7 @@ import { listenOn } from '../../util/listenOn';
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 
-type Panels = 'annotations' | '';
+type Panels = 'annotations' | 'shotplanning';
 
 @Component({
   selector: 'app-dataset-layout',
@@ -28,7 +28,7 @@ export class DatasetLayoutComponent implements OnInit {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel = 'annotations';
+  sidepanel = 'shotplanning';
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
   ngOnInit() {

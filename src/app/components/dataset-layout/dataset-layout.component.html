@@ -54,7 +54,12 @@
   <ng-sidebar-container>
     <ng-sidebar opened=true mode="push" [ngSwitch]="sidepanel">
       <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
-
+      <app-shotplanning *ngSwitchCase="'shotplanning'">
+        <div class="btnBack clearfix">
+          <a (click)="switchPanel('')"></a>
+          <span>Shot Planning</span>
+        </div>
+      </app-shotplanning>
       <div class="annotationLeftPanel" *ngSwitchDefault>
         <ul class="leftNav clearfix">
           <li>

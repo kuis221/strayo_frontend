@@ -55,6 +55,9 @@ import { AnnotationsControllerComponent } from './controllers/annotations-contro
 import { AnnotationToolComponent } from './controllers/annotations-controller/components/annotation-tool/annotation-tool.component';
 import { DatasetAnnotationsComponent } from './controllers/annotations-controller/components/dataset-annotations/dataset-annotations.component';
 import { DatasetAnnotationComponent } from './controllers/annotations-controller/components/dataset-annotation/dataset-annotation.component';
+import { ShotplanningComponent } from './components/shotplanning/shotplanning.component';
+import { ShotplanningControllerComponent } from './controllers/shotplanning-controller/shotplanning-controller.component';
+import { DatasetShotplanningComponent } from './controllers/shotplanning-controller/components/dataset-shotplanning/dataset-shotplanning.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -90,6 +93,9 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AnnotationToolComponent,
     DatasetAnnotationsComponent,
     DatasetAnnotationComponent,
+    ShotplanningComponent,
+    ShotplanningControllerComponent,
+    DatasetShotplanningComponent,
   ],
   imports: [
     AppRoutingModule,

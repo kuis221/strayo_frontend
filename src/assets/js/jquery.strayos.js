@@ -1,4 +1,4 @@
-;(function($){
+function initStrayosJquery($){
 	function mobileNav(){
 		$(".btnMobileNav").on("click", function(){
 			var display = $(".topNav").css("display");
@@ -264,7 +264,8 @@
 		detectBrowser();
 	});
 
-})(jQuery);
+}
+initStrayosJquery(jQuery);
 
 
 
