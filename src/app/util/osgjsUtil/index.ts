@@ -49,7 +49,7 @@ export function createNormalArray(size: number, x: number, y: number, z: number)
 
 export function cutMesh(mesh: FacesAndEdges, elevation?: number) {
     if (elevation === null || elevation === undefined) {
-        return { cut: mesh, fill: null }
+        return { cut: mesh, fill: null };
     }
 
     const above: FacesAndEdges = { points: [], edges: [] };
@@ -150,7 +150,7 @@ export function cutMesh(mesh: FacesAndEdges, elevation?: number) {
             above.points.push(...tempAbove);
             below.points.push(...tempBelow);
         }
-    })
+    });
 
     below.points.forEach(p => p.reverse());
 
@@ -181,7 +181,7 @@ export function cutMesh(mesh: FacesAndEdges, elevation?: number) {
             above.edges.push([a, intersect]);
             below.edges.push([intersect, b]);
         }
-    })
+    });
 
     return { cut: above, fill: below };
 }
@@ -266,7 +266,7 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
                     bounded.edges = bounded.edges.concat(result.edges);
                 }
             }
-        })
+        });
     });
     bounded.edges = bounded.edges.filter(e => e && e.length && e[0] && e[0].length === 3);
     console.log('BOUNDED', bounded.edges.map(e => e[0]));
@@ -298,7 +298,7 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
         const last = sorted[z];
         for (var x = 0; x < bounded.edges.length && !found; x++) {
             for (var y = 0; y < bounded.edges[x].length && !found; y++) {
-                var current = bounded.edges[x][y];
+                let current = bounded.edges[x][y];
                 if (current === undefined) continue;
 
                 if (last[0] == current[0] && last[2] == current[2]) {
@@ -320,7 +320,7 @@ export function filterVertices(points: Point[], model: osg.Node): FacesAndEdges 
         }
     }
 
-    console.log('after sorted', sorted)
+    console.log('after sorted', sorted);
 
     if (sorted.length == (bounded.edges.length * 2)) {
         bounded.edges = [];
@@ -383,7 +383,7 @@ export const checkBoundsForPrimitive = [
     null, 						// osg.PrimitiveSet.LINE_STRIP
     checkBoundsForTriangle,	// osg.PrimitiveSet.TRIANGLES
     checkBoundsForTriStrips,	// osg.PrimitiveSet.TRIANGLE_STRIP
-    null, 						//osg.PrimitiveSet.TRIANGLE_FAN
+    null, 						// osg.PrimitiveSet.TRIANGLE_FAN
 ];
 
 export type BoundsChecker = (primitive: osg.DrawElements, geometry: osg.Geometry, bounds: osg.BoundingBox, shape: Point[], isXZY?: boolean) => FacesAndEdges;
@@ -428,7 +428,7 @@ export function checkBoundsForTriVariant(start: number, increment: number): Boun
             }
         }
         return toReturn;
-    }
+    };
 }
 
 export function lineFromPoints(points, fill?): osg.Geometry {
@@ -506,17 +506,17 @@ export function makeEdges(edges: Edge[], drop: number, center): Point[] {
 
 /**
  * Creates a prism geometry from the points (shooting strait up)
- * 
+ *
  * Assumes points are in xyz where y represense the height rather
  * than osgjs usual z.
- * 
+ *
  * Previously named Create selection model
- * 
+ *
  * @export
- * @param {ol.Coordinate[]} points 
- * @param {number} top 
- * @param {number} bottom 
- * @returns {osg.MatrixTransform} 
+ * @param {ol.Coordinate[]} points
+ * @param {number} top
+ * @param {number} bottom
+ * @returns {osg.MatrixTransform}
  */
 export function makePrismSlice(points: ol.Coordinate[], top: number, bottom: number): osg.MatrixTransform {
     const root = new osg.MatrixTransform();
@@ -552,10 +552,10 @@ export function makePrismSlice(points: ol.Coordinate[], top: number, bottom: num
 /**
  * Takes a list of faces (2D or 1D) and creates a geometry after them.
  * If more than 2 ** 16 - 1 vertices are passed, creates several geometries.
- * 
+ *
  * @export
- * @param {(Point[] | number[])} points 
- * @returns 
+ * @param {(Point[] | number[])} points
+ * @returns
  */
 export function makeSurface(points: Point[] | number[]) {
     const root = new osg.MatrixTransform();
@@ -634,11 +634,11 @@ export function makeTri(p1: Point, p2: Point, p3: Point) {
 
 /**
  * Checks if point is withing xy bounds. Does not check z.
- * 
+ *
  * @export
- * @param {Point} point 
- * @param {osg.BoundingBox} bounds 
- * @returns {boolean} 
+ * @param {Point} point
+ * @param {osg.BoundingBox} bounds
+ * @returns {boolean}
  */
 export function isBounded(point: Point, bounds: osg.BoundingBox, checkZ?: boolean): boolean {
     const min = bounds.getMin();
@@ -694,7 +694,7 @@ export function topDown(points: Triangle[], flip: boolean, elevation: number) {
     const data = {
         heights: [points[0][0][2], points[0][0][2]],
         points: [],
-    }
+    };
 
     for (let i = 0; i < points.length; i++) {
         for (let j = 0; j < points[i].length; j++) {
@@ -702,13 +702,13 @@ export function topDown(points: Triangle[], flip: boolean, elevation: number) {
             data.heights = [
                 Math.min(data.heights[0], points[i][j][2]),
                 Math.max(data.heights[1], points[i][j][2]),
-            ]
+            ];
         }
     }
 
     if (elevation === null || elevation === undefined) elevation = -data.heights[1];
 
-    for (let i = 0; i < data.points.length; i++) { data.points[i][2] = -elevation }
+    for (let i = 0; i < data.points.length; i++) { data.points[i][2] = -elevation; }
     if (flip) data.points.reverse();
 
     return data;
@@ -732,12 +732,12 @@ export function transformMat4(out: osg.Vec3, a: osg.Vec3, m: osg.Matrix) {
 /**
  * Return scalar multiplier that will keep a vector from start going to heading
  * on the shape. 2 DIMENSIONAL TRUNCATION
- * 
+ *
  * @export
- * @param {Point} start 
- * @param {Point} heading 
- * @param {any} shape 
- * @returns {number} 
+ * @param {Point} start
+ * @param {Point} heading
+ * @param {any} shape
+ * @returns {number}
  */
 export function truncateToEdge(start: Point, heading: Point, shape: Point[]): number {
     const p = start;
@@ -767,8 +767,8 @@ export function truncateToShape(points: Triangle, shape: Point[]): FacesAndEdges
 
     const retval = { points: [], edges: [] };
 
-    var v1 = osg.Vec3.sub(points[0], points[1], []);
-    var v2 = osg.Vec3.sub(points[2], points[1], []);
+    let v1 = osg.Vec3.sub(points[0], points[1], []);
+    let v2 = osg.Vec3.sub(points[2], points[1], []);
     const cross = osg.Vec3.cross(v1, v2, []);
     if (osg.Vec3.length2(cross) <= 0) return;
     points.forEach((point) => {
@@ -784,47 +784,43 @@ export function truncateToShape(points: Triangle, shape: Point[]): FacesAndEdges
                 break;
         }
     });
-    switch (info.pts2d.inside.length) {
-        case 3:
-            retval.points = clockwise([points]);
-            // console.warn('NO EDGES');
-            break;
+    if (info.pts2d.inside.length === 3) {
+        retval.points = clockwise([points]);
+        // console.warn('NO EDGES');
+    } else if (info.pts2d.inside.length === 2) {
+        let v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+        let v2 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[1], []);
 
-        case 2:
-            var v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
-            var v2 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[1], []);
+        let w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+        let w2 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[1], []);
 
-            var w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
-            var w2 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[1], []);
+        let t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+        let t2 = truncateToEdge(info.pts2d.inside[1], v2, shape);
 
-            var t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
-            var t2 = truncateToEdge(info.pts2d.inside[1], v2, shape);
+        let v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+        let v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[1], []);
 
-            var v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
-            var v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[1], []);
+        retval.points = clockwise([
+            [info.pts3d.inside[0], info.pts3d.inside[1], v2],
+            [info.pts3d.inside[0], v1, v2],
+        ]);
+        retval.edges = [[v1.slice(), v2.slice()]];
 
-            retval.points = clockwise([
-                [info.pts3d.inside[0], info.pts3d.inside[1], v2],
-                [info.pts3d.inside[0], v1, v2],
-            ]);
-            retval.edges = [[v1.slice(), v2.slice()]];
-            break;
+    } else if (info.pts2d.inside.length === 1) {
+        let v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
+        let v2 = osg.Vec2.sub(info.pts2d.outside[1], info.pts2d.inside[0], []);
 
-        case 1:
-            var v1 = osg.Vec2.sub(info.pts2d.outside[0], info.pts2d.inside[0], []);
-            var v2 = osg.Vec2.sub(info.pts2d.outside[1], info.pts2d.inside[0], []);
+        let w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
+        let w2 = osg.Vec3.sub(info.pts3d.outside[1], info.pts3d.inside[0], []);
 
-            var w1 = osg.Vec3.sub(info.pts3d.outside[0], info.pts3d.inside[0], []);
-            var w2 = osg.Vec3.sub(info.pts3d.outside[1], info.pts3d.inside[0], []);
+        let t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
+        let t2 = truncateToEdge(info.pts2d.inside[0], v2, shape);
 
-            var t1 = truncateToEdge(info.pts2d.inside[0], v1, shape);
-            var t2 = truncateToEdge(info.pts2d.inside[0], v2, shape);
+        let v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
+        const v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[0], []);
+        retval.points = clockwise([[info.pts3d.inside[0], v1, v2]]);
+        retval.edges = [[v1.slice(), v2.slice()]];
 
-            var v1 = osg.Vec3.add(osg.Vec3.mult(w1, t1, []), info.pts3d.inside[0], []);
-            var v2 = osg.Vec3.add(osg.Vec3.mult(w2, t2, []), info.pts3d.inside[0], []);
-            retval.points = clockwise([[info.pts3d.inside[0], v1, v2]]);
-            retval.edges = [[v1.slice(), v2.slice()]];
-            break;
     }
 
     return retval;

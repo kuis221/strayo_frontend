@@ -101,7 +101,7 @@ export class Map3dService {
     // Get datasets
     this.datasetsService.selectedDatasets.subscribe((datasets) => {
       this.datasets = datasets;
-      this.terrainProviderService.makeProvidersForDatasets(datasets.toJS());      
+      this.terrainProviderService.makeProvidersForDatasets(datasets.toJS());
       this.datasets.forEach((dataset) => {
         const group = this.getGroupForDataset(dataset.id());
         group.set('title', dataset.name());
@@ -147,6 +147,44 @@ export class Map3dService {
           });
         }
       }
+      // Set view
+      const extent = await new Promise<ol.Extent>((resolve) => {
+        if (mainDataset.mapData()) {
+          return resolve(mainDataset.calcExtent());
+        }
+        mainDataset.once('change:map_data', () => {
+          resolve(mainDataset.calcExtent());
+        });
+      });
+      this.setExtent(extent);
+      // set Orthophoto
+      const orthophotoAnnotation = await new Promise<Annotation>((resolve) => {
+        if (mainDataset.annotations()) {
+          return resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
+        }
+        mainDataset.once('change:annotations', () => {
+          resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
+        });
+      });
+      if (!orthophotoAnnotation) {
+        console.warn('No Orthophoto Annotation Found');
+        return;
+      }
+      const orthophotoResource = orthophotoAnnotation.resources().find(r => r.type() === 'tiles');
+      if (!orthophotoResource) {
+        console.warn('No Tiles Resource Found');
+        return;
+      }
+      const orthophotoLayer = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          projection: WebMercator,
+          url: orthophotoResource.url()
+        })
+      });
+      orthophotoLayer.set('title', 'Orthophoto');
+      orthophotoLayer.set('group', 'visualization');
+      orthophotoLayer.setVisible(true);
+      this.registerLayer(orthophotoLayer, mainDataset);
     });
   }
 
@@ -250,7 +288,7 @@ export class Map3dService {
   registerNode(node: osg.Node | osg.MatrixTransform, dataset: Dataset) {
     const provider = this.providers.get(dataset.id());
     provider.rootNode().addChild(node);
-    if (this.map3DViewer) this.map3DViewer.getManipulator().computeHomePosition();    
+    if (this.map3DViewer) this.map3DViewer.getManipulator().computeHomePosition();
   }
 
   removeInteraction(interaction: ol.interaction.Interaction) {
