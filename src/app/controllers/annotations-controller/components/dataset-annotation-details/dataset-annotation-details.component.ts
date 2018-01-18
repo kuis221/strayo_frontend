@@ -10,7 +10,7 @@ import { TerrainProvider } from '../../../../models/terrainProvider.model';
 import { sampleHeightsAlong } from '../../../../util/osgjsUtil/index';
 import { AnnotationToolType } from '../../../../models/annotationToolType';
 import { Map3dService } from '../../../../services/map-3d.service';
-import { createPrismSlice } from '../../../../util/osgjsUtil';
+import { makePrismSlice } from '../../../../util/osgjsUtil';
 
 @Component({
   selector: 'app-dataset-annotation-details',
@@ -55,14 +55,13 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
 
     const model = this.provider.modelNode();
     const bounds = model.getBoundingBox();
-    console.log('bounds', bounds);
     const min = bounds.getMin();
     const max = bounds.getMax();
 
     const top =  max[2];
     const bottom = min[2] - 10;
     const points = this.getCoordinates().map(coord => this.provider.getWorldPoint(coord));
-    const node = createPrismSlice(points, top, bottom);
+    const node = makePrismSlice(points, top, bottom);
     this.map3dService.registerNode(node, this.dataset);
   }
 
@@ -160,7 +159,7 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
     const geometry = this.getGeometry();
     const samples = sampleHeightsAlong(this.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
     samples.forEach((point) => {
-      point[1] = Math.abs(point[1]);
+      point[2] = Math.abs(point[2]);
     });
     this.samples = samples;
     return samples;

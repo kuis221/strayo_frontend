@@ -180,25 +180,31 @@ declare module osg {
 		static SRC_ALPHA_SATURATE: number;
 	}
 
-	export class PrimitiveSet {
-		static POINTS: number;
-		static LINES: number;
-		static LINE_LOOP: number;
-		static LINE_STRIP: number;
-		static TRIANGLES: number;
-		static TRIANGLE_STRIP: number;
-		static TRIANGLE_FAN: number;
+	export enum PrimitiveSet {
+		POINTS = 0,
+		LINES = 1,
+		LINE_LOOP = 2,
+		LINE_STRIP = 3,
+		TRIANGLES = 4,
+		TRIANGLE_STRIP = 5,
+		TRIANGLE_FAN = 6,
 	}
 
 	export class DrawElements {
-		constructor(mode, indices);
+		constructor(mode: PrimitiveSet, indices: number[]);
+		mode: PrimitiveSet;
+		count: number;
+		offset: number;
+		indices: BufferArray;
 	}
 
 	export class DrawArrays {
 		constructor(mode, first, count);
 	}
 
-	export class BufferArray{
+	export class BufferArray extends Array<number>{
+
+		_elements: number[];
 
 		static ELEMENT_ARRAY_BUFFER: number;
 		static ARRAY_BUFFER:number;
@@ -211,6 +217,7 @@ declare module osg {
 
 
 	export class Node {
+		children: osg.Node[];
 		addChild(node: osg.Node);
 		removeChildren();
 		removeChild(node: osg.Node);
@@ -286,13 +293,21 @@ declare module osg {
 		static DEPTH_COMPONENT16;
 	}
 
+	export interface AttributeSet {
+		Vertex: BufferArray;
+		Normal: BufferArray;
+		[k: string]: BufferArray;
+	}
+
 	export class Geometry extends osg.Node {
-		getAttributes();
+		getAttributes(): AttributeSet;
 		getPrimitives();
 		dirty();
 		setVertexAttribArray(attribute: string, array: BufferArray);
 		getPrimitiveSetList(): DrawArrays[];
 		getVertexAttributeList();
+
+		primitives: DrawElements[];
 	}
 
 	// shapes

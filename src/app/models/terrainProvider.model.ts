@@ -95,6 +95,12 @@ export class TerrainProvider extends ol.Object {
         }
         this.reserveMatrixStack.reset();
         transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
-        return (hit.point as any);
+        // For OSGJS only. Switch y and z positions.
+        return [hit.point[0], hit.point[2], hit.point[1]];
+    }
+
+    public getGeometry() {
+        // Technically cheating but who cares?
+        return this.modelNode().children[0].children[0].children[0];
     }
 }
