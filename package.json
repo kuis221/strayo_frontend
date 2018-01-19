@@ -60,6 +60,7 @@
     "ng-sidebar": "^6.0.5",
     "ngrx-store-localstorage": "^0.3.0",
     "ngx-bootstrap": "^2.0.0-rc.0",
+    "ngx-text-equality-validator": "^1.0.1",
     "openlayers": "^4.6.4",
     "pouchdb": "^6.4.1",
     "proj4": "^2.4.4",

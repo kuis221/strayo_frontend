@@ -13,7 +13,7 @@
 	.formCont .column{ margin-bottom: 20px; }
 	.btnRequestDrone{ margin: 10px 0 0 0; }
 
-	.dvUploadProcess{ padding: 10px; margin: 60px 0 0 0; position: relative; top: auto; left: auto; bottom: auto; right: auto;}
+	.dvUploadProcess{ /*padding: 10px; margin: 60px 0 0 0;*/ position: relative; top: auto; left: auto; bottom: auto; right: auto;}
 	.processBox{ padding: 10px; position: relative; top: auto; left: auto; bottom: auto; right: auto; width: 100%; height: auto; overflow: visible;}
 	.processBox h3{ font-size: 22px; margin: 0 0 20px 0; }
 	.processTab ul li{ font-size: 14px; }
@@ -59,6 +59,93 @@
 	.successful p{ font-size: 14px; }
 	.btnPageClose{ top: 14px; width: 14px; }
 
+
+	.mainHeader{
+		position: fixed;
+		padding: 0;
+		height: 54px; 
+		background: rgb(105,221,168);
+		background: -moz-linear-gradient(left, rgba(105,221,168,1) 0%, rgba(42,154,202,1) 100%);
+		background: -webkit-linear-gradient(left, rgba(105,221,168,1) 0%,rgba(42,154,202,1) 100%);
+		background: linear-gradient(to right, rgba(105,221,168,1) 0%,rgba(42,154,202,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69dda8', endColorstr='#2a9aca',GradientType=1 );
+	}
+	a.menu-button{ display: block; }
+	.mainLogo{ width: 110px; margin: 5px 0 0 10px; }
+	.navigation{ 
+		width: 100%; 
+		height: 100%; 
+		position: fixed; 
+		left: 0; 
+		top: 0;
+		background: rgb(105,221,168);
+		background: -moz-linear-gradient(left, rgba(105,221,168,1) 0%, rgba(42,154,202,1) 100%);
+		background: -webkit-linear-gradient(left, rgba(105,221,168,1) 0%,rgba(42,154,202,1) 100%);
+		background: linear-gradient(to right, rgba(105,221,168,1) 0%,rgba(42,154,202,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69dda8', endColorstr='#2a9aca',GradientType=1 );
+		transform: translateY(-100%);
+		-moz-transform: translateY(-100%);
+		-webkit-transform: translateY(-100%);
+		transition: all 0.2s linear;
+		-moz-transition: all 0.2s linear;
+		-webkit-transition: all 0.2s linear;
+		opacity: 0;
+	}
+	.navigation.navOpen{ 
+		transform: translateY(0);
+		-moz-transform: translateY(0);
+		-webkit-transform: translateY(0);
+		opacity: 1;
+	}
+	.topNavi{ display: block; width: 100%; margin: 50px 0 0 0;}
+	.topNavi li{ display: block; margin: 0 0 15px 0; float: none; text-align: center;}
+	.log{ display: block; }
+	.log li{ display: block; text-align: center; margin: 0 0 15px 0;}
+	.log li a{ display: inline-block; }
+
+
+	.formContOuter{ padding: 80px 15px 30px 15px; }
+	.formCont{ padding: 25px 15px;}
+	.formCont h3{ font-size: 24px; margin: 0 0 30px 0; }
+	.frmRow{ padding: 0 0 20px 0; }
+	.submitBtnCont{ padding: 25px 0 0 0; }
+	.submitBtnCont p{ padding: 25px 0 0 0; }
+
+	.footer{ padding: 15px; }
+	.footNav{ padding: 0; margin:0 0 15px 0; border-bottom: 1px #E4E4E4 solid; }
+	.footNavInner{ -ms-flex-wrap: wrap; flex-wrap: wrap; }
+	.footNavCol{ width: 100%; margin:0 0 10px 0;}
+	.footNavCol h5{ font-size: 14px; margin:0 0 6px 0;}
+	.footNavCol ul li{ font-size: 14px; }
+
+	.copyright{ -ms-flex-wrap: wrap; flex-wrap: wrap;}
+	.copyrightCol{ width: 100%; -webkit-box-flex: 1; -ms-flex: auto; flex: auto; text-align: center !important; margin:0 0 10px 0;}
+	.copyrightCol p{ font-size: 12px;}
+
+
+	.uploadContainer{ padding: 15px; }
+	.heading{ font-size: 20px; margin:0;}
+	.btnPageClose{ top: 10px; right: 10px; }
+	p.subHeading{ font-size: 15px; }
+	.dvCreateNew{ margin-top: 30px; }
+	.dvCreateCol:first-child{ border-right:1px #ddd solid; }
+	.processTab{ margin:20px 0 0 0; }
+	.processTab ul li{ font-size: 14px; }
+	.processTab ul li a span.txtNum{ margin:0; }
+	.processTab ul li a span.txtTab{ display: block; }
+	.tblDataGrid th{ padding: 10px; font-size: 12px; white-space: nowrap; }
+	.tblDataGrid td{ padding: 10px; font-size: 12px; white-space: nowrap; }
+	.processBox h2{ font-size: 22px; margin: 0 0 10px 0; }
+	.processBox h4{ font-size: 16px;}
+	.dvCreateCol{ padding: 20px 10px;}
+	.dvCreateCol .txtImgName{ font-size: 16px; }
+	.dvCreateCol h6{ font-size: 12px; min-height: 56px;}
+	.btnGetStarted{ font-size: 14px; height: 40px; line-height: 40px; width: 120px; }
+	.iconCont{ min-height: 80px;}
+	.iconCont span{ margin: 0;}
+	.iconCont span.jpeg{ width: 60px; height: 61px; background-size: 100%; }
+	.iconCont span.tiff{ width: 68px; height: 55px; background-size: 100%; }
+
 }
 
 
@@ -81,5 +168,24 @@
 	.processContent{ padding: 40px 20px; }
 	.requestDetailsCol{ padding: 0 10px; }
 	.dvDrilPlanViewWrap{ padding: 0 20px; }
+
+	.mainHeader{ padding: 20px 10px; }
+	.mainLogo{ width: 120px; }
+	.topNav li{ margin: 0 10px 0 0;}
+	.log li a{ width: 88px; font-size: 12px; }
+
+
+	.uploadContainer{ padding: 30px; }
+	.processContent{ padding: 40px 20px; }
+	.requestDetailsCol{ padding: 0 10px; }
+	.processContent h4{ font-size: 16px; }
+	.processContent h5{ font-size: 14px; }
+	.txtLink{ font-size: 14px; }
+	.frmLabel{ font-size: 18px; }
+	.dragDropCont p{ font-size: 20px; }
+	.dragDropCont2 p{ font-size: 20px; }
+	.requestDetailsCol h6{ font-size: 14px; }
+	.requestDetailsCol p{ font-size: 14px; }
+	.submitedLeft{ font-size: 16px; }
 
 }	

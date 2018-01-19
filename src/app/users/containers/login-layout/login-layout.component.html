@@ -1,26 +1,64 @@
-<div class="wrapper">
-
-  <form (ngSubmit)="onSubmit()">
-    <p>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="john@gmail.com"
-        [(ngModel)]="user.email"
-      />
-    </p>
-    <p>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        placeholder="********"
-        [(ngModel)]="user.password"
-      />
-    </p>
-    <button>LOGIN</button>
-  </form>
-
-  <app-footer></app-footer>
+<app-header>
+<div class="header clearfix">
+    <h1 class="strayosLogo">
+        <a [routerLink]="['/']"><img src="assets/images/strayos_logo.png" alt=""></a>
+      </h1>
+      <a href="javascript:void(0);" class="btnMobileNav"></a>
+      
+      <div class="headerRight">
+        <ul class="topNav">
+          <li><a href="https://www.strayos.com/solutions.html">How it works</a></li>
+          <li>
+            <a href="javascript:void(0);">Solutions</a>
+            <ul>
+              <li><a href="https://www.strayos.com/industries.html">Quarry &amp; Blasting</a></li>
+              <li><a href="https://www.strayos.com/construction.html">Civil Engineering</a></li>
+              <li><a href="https://www.strayos.com/mining.html">Mining</a></li>
+            </ul>
+          </li>
+          <li><a href="https://www.strayos.com/about.html">About</a></li>
+          <li><a href="https://www.strayos.com/contact.html">Contact</a></li>
+          <li><a href="https://blog.strayos.com/">Blog</a></li>
+        </ul>
+        
+        <span class="spn"><a class="btnLogin" ui-sref="login">Log In</a></span>
+        <span class="spn"><a class="btnLogin" ui-sref="register">Sign Up</a></span>
+      </div>
+   
 </div>
+</app-header>
+
+<div class="page-wrap">
+  <div class="loginHeader clearfix">
+    <h2 class="text-center page-title text-black">Login to access the Dashboard</h2>
+  </div>
+  <div class="signupWrapper clearfix">
+    <form class="signupCont" novalidate="novalidate" ng-submit="loginUser()">
+      <div class="col-md-12 errors" ng-if='errors.length > 0'>
+        <ul>
+          <li ng-repeat='error in errors'>{{ error }}</li>
+        </ul>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': loginForm.email.$touched && loginForm.email.$invalid }">
+          <label for="email-address" class="u-case form-label">EMAIL ADDRESS</label>
+          <input type="email" class="form-control form-field" [(ngModel)]="user.email" id="email" placeholder="john@gmail.com">
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': loginForm.password.$touched && loginForm.password.$invalid }">
+          <label class="u-case form-label" for="password">PASSWORD</label>
+          <input type="password" class="form-control form-field pass" [(ngModel)]="user.password" id="password" placeholder="********">
+      </div>
+      <br/>
+      <div class="text-center submitRow">
+        <button type="submit" class="btnFrmSubmit" ng-disabled='loginForm.$invalid' (ngSubmit)="onSubmit()">Login</button>
+      </div>
+      <br/>
+      <!-- <p class="text-center no-margin" ng-if="loginUserType !== 'Customer'">New User? <a ng-click='gotoRegister()'>Sign Up</a></p> -->
+      <!-- <p class="text-center no-margin" ng-if="loginUserType === 'Customer'">New User? <a ui-sref='registerCustomer'>Sign Up</a></p> -->
+      <p class="text-center no-margin">New User? <a ui-sref='register'>Sign Up</a></p>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>
