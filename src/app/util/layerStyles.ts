@@ -142,50 +142,50 @@ export function shotplanStyle(feature: ol.Feature, resolution: number) {
 }
 
 export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | ol.StyleFunction>): ol.StyleFunction {
-    return (feature: ol.Feature, resolution: number) => {
+    return (feature: ol.Feature, resolution: number): ol.style.Style => {
         const toReturn = [];
         styles.forEach((style) => {
             if ((typeof style !== 'function')) {
                 if (!Array.isArray(style)) {
-                    toReturn.push(style);
+                    return toReturn.push(style);
                 } else {
-                    toReturn.push(...style);
+                    return toReturn.push(...style);
                 }
-                return;
             }
             const newStyle = style(feature, resolution);
             if (!Array.isArray(style)) {
-                toReturn.push(newStyle);
+                return toReturn.push(newStyle);
             } else {
-                toReturn.push(...style);
+                return toReturn.push(...style);
             }
         });
         console.log('toReturn', toReturn);
-        return toReturn;
+        return toReturn.reduce(styleReducer, new ol.style.Style);
         // return toReturn.reduce(styleReducer, new ol.style.Style({}));
     };
     // Please fill in as you go along
-    // function styleReducer(acc: ol.style.Style, current: ol.style.Style) {
-    //     console.log('reducing', acc, current)
-    //     if (current.getFill()) {
-    //         const p = acc.getFill() || nullFill;
-    //         const c = current.getFill();
-    //         acc.setFill(new ol.style.Fill({
-    //             color: c.getColor() || p.getColor(),
-    //         }))
-    //     }
-    //     if (current.getStroke()) {
-    //         const p = acc.getStroke() || nullStroke;
-    //         const c = current.getStroke();
-    //         acc.setStroke(new ol.style.Stroke({
-    //             color: c.getColor() || p.getColor(),
-    //             width: c.getWidth() || p.getWidth(),
-    //             lineCap: c.getLineCap() || p.getLineCap(),
-    //             lineDash: c.getLineDash() || p.getLineDash(),
-    //             lineJoin: c.getLineJoin() || p.getLineJoin(),
-    //             miterLimit: c.getMiterLimit() || p.getMiterLimit(),
-    //         }))
-    //     }
-    //     return acc;
-    // }
+}
+
+export function styleReducer(acc: ol.style.Style, current: ol.style.Style) {
+    console.log('reducing', acc, current);
+    if (current.getFill()) {
+        const p = acc.getFill() || nullFill;
+        const c = current.getFill();
+        acc.setFill(new ol.style.Fill({
+            color: c.getColor() || p.getColor(),
+        }));
+    }
+    if (current.getStroke()) {
+        const p = acc.getStroke() || nullStroke;
+        const c = current.getStroke();
+        acc.setStroke(new ol.style.Stroke({
+            color: c.getColor() || p.getColor(),
+            width: c.getWidth() || p.getWidth(),
+            lineCap: c.getLineCap() || p.getLineCap(),
+            lineDash: c.getLineDash() || p.getLineDash(),
+            lineJoin: c.getLineJoin() || p.getLineJoin(),
+            miterLimit: c.getMiterLimit() || p.getMiterLimit(),
+        }));
+    }
+    return acc;
 }

@@ -162,30 +162,18 @@ export class Dataset extends ol.Object {
         return [extmin[0], extmin[1], extmax[0], extmax[1]];
     }
 
-    overwriteStyle(): ol.StyleFunction {
-        return (feature: ol.Feature, resolution: number) => {
-            const geom = feature.getGeometry();
-            const color = this.color() || 'aquamarine';
-            switch (geom.getType()) {
-                case 'LineString':
-                    return new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color,
-                            width: 3
-                        })
-                    });
-                default:
-                    return new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'white',
-                            width: 3
-                        }),
-                        fill: new ol.style.Fill({
-                            color
-                        })
-                    });
+    overwriteStyle(): ol.style.Style[] {
+        const lineStringStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: this.color(),
+            }),
+            geometry: function(feature) {
+                return (feature.getGeometry().getType() === 'LineString') ? feature.getGeometry() : new ol.geom.LineString([]);
             }
-        }
+        });
+        return [
+            lineStringStyle
+        ];
     }
 
     async updateFromAnnotations() {
