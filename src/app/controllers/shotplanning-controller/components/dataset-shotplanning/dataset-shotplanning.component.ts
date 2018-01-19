@@ -24,8 +24,8 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   shotplanLayer: ol.layer.Vector;
   off: Function[] = [];
 
-  selectedRow: number;
-  selectedHole: number;
+  selectedRow = -1;
+  selectedHole = -1;
   constructor(private map3dService: Map3dService, private terrainProviderService: TerrainProviderService) {}
 
   ngOnInit() {

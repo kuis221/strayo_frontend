@@ -12,7 +12,8 @@
         <div class="rows clearfix">
           <div class="rowsLeft">Row</div>
           <div class="rowsRight">
-            <a id="toggleRow" class="btnToggle" href="javascript:void(0);">
+            <a id="toggleRow" class="btnToggle" [ngClass]="{ up: selectedRow >= 0 }" (click)="selectRow(selectedRow >= 0 ? selectedRow : 0)"
+              href="javascript:void(0);">
               <img src="/assets/images/BtnRoundArrow.png" alt="">
             </a>
           </div>
@@ -29,6 +30,62 @@
           </div>
         </div>
       </div>
+      <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
+        <div class="holeTabs clearfix">
+          <a class="tabLink activeTab" href="#Offset">Offset</a>
+          <a class="tabLink" href="#Endpoints">Endpoints</a>
+        </div>
+        <div class="tabOuterCont clearfix">
+          <div id="Offset" class="tabCont clearfix" style="display: block;">
+            <p id="txtEndpoints" class="txtSmall">Use
+              <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
+              <span>{{((row.rowUpdate$() | async).azimuth$ | async)}}</span>
+            </p>
+            <div class="clearfix" id="dvRowEdit" style="display: none;">
+              <div class="rowHeading clearfix">
+                <div class="rowHeadingLeft">Distance from
+                  <span>Row 1</span>
+                </div>
+                <div class="rowHeadingRight">1m</div>
+              </div>
+              <div class="addHoleRow clearfix">
+                <div class="addHoleCol fLeft">
+                  <label class="lblHole">Along shotline</label>
+                  <p class="m">
+                    <input type="text" class="txtInput2" name="">
+                  </p>
+                </div>
+                <div class="addHoleCol fRight">
+                  <label class="lblHole">Away from shotline</label>
+                  <input class="txtInput2" type="text" name="">
+                </div>
+              </div>
+              <div class="rowHeading clearfix">
+                <div class="rowHeadingLeft">Distance from
+                  <span>Row 2</span>
+                </div>
+                <div class="rowHeadingRight">1m</div>
+              </div>
+              <div class="addHoleRow clearfix">
+                <div class="addHoleCol fLeft">
+                  <label class="lblHole">Along shotline</label>
+                  <p class="m">
+                    <input type="text" class="txtInput2" name="">
+                  </p>
+                </div>
+                <div class="addHoleCol fRight">
+                  <label class="lblHole">Away from shotline</label>
+                  <input class="txtInput2" type="text" name="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="Endpoints" class="tabCont clearfix">
+            <a href="#" class="btnBlock">Move End Points</a>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row; else nothing" class="contentBox noPadding clearfix">
       <div class="clearfix p10">

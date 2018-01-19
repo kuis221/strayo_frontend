@@ -1,11 +1,13 @@
 import * as ol from 'openlayers';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import uuid from 'uuid/v4';
+import calculateAzimuth from 'azimuth';
 import { TerrainProvider } from './terrainProvider.model';
 import { Annotation, IAnnotation } from './annotation.model';
 import { listenOn } from '../util/listenOn';
-import uuid from 'uuid/v4';
 import { vectorProjection, scalarProjection, vectorRejection } from '../util/osgjsUtil/index';
+import { WebMercator, LonLat } from '../util/projections/index';
 
 export class ShotplanRowFeature extends ol.Feature {
     static SHOTPLAN_TYPE = 'shotplan_row_feature';
@@ -76,15 +78,22 @@ export class ShotplanRowFeature extends ol.Feature {
 
 export class ShotplanRow extends ol.geom.LineString {
     static SHOTPLAN_TYPE = 'shotplan_row';
-    private updateSource = new BehaviorSubject<ShotplanRow>(null);
+    private updateSource = new BehaviorSubject<ShotplanRow>(this);
     public update$ = this.updateSource.asObservable();
+
+    private azimuthSource = new BehaviorSubject<number>(0);
+    public azimuth$ = this.azimuthSource.asObservable();
+
     constructor(coordinates: [ol.Coordinate, ol.Coordinate], layout: ol.geom.GeometryLayout = 'XYZ') {
         super(coordinates, layout);
         this.shotplanType(ShotplanRow.SHOTPLAN_TYPE);
         this.id(this.id() || uuid());
+        console.log('coords', this.getCoordinates());
+        this.recalculate();
         listenOn(this, 'change', () => {
             console.log('changing row', this.id());
             this.updateSource.next(this);
+            this.recalculate();
         });
         this.updateSource.next(this);
     }
@@ -130,6 +139,29 @@ export class ShotplanRow extends ol.geom.LineString {
             .id(this.id())
             .terrainProvider(this.terrainProvider());
         return clone;
+    }
+
+    public recalculate() {
+        // Calculate azimuth;
+        const points = this.getCoordinates().map((c) => {
+            const longLat = ol.proj.transform(c, WebMercator, LonLat);
+            const toReturn = [longLat[0], longLat[1], c[2]];
+            console.log('toReturn', toReturn);
+            return toReturn;
+        });
+        const newAzimuth = calculateAzimuth.azimuth(
+            {
+                long: points[0][0],
+                lat: points[0][1],
+                elv: points[0][2],
+            },
+            {
+                long: points[0][0],
+                lat: points[0][1],
+                elv: points[0][2],
+            }
+        );
+        this.azimuthSource.next(newAzimuth.azimuth);
     }
 }
 
@@ -272,21 +304,29 @@ export class Shotplan extends Annotation {
 
     private init() {
         // Convert geojson to shotplan specific versions
+        const terrainProvider = this.terrainProvider();
         const rowFeatures = this.data().getArray().map((feature) => {
             const geometries = feature.getGeometry() as ol.geom.GeometryCollection;
-            const transformedGeometries: Array<ShotplanHole | ShotplanRow> = geometries.getGeometries().map((geom) => {
-                if (geom.getType() === 'LineString') {
-                    const g = geom as ol.geom.LineString;
-                    return new ShotplanRow([g.getFirstCoordinate(), g.getLastCoordinate()])
-                        .terrainProvider(this.terrainProvider());
-                } else if (geom.getType() === 'MultiPoint') {
-                    const g = geom as ol.geom.MultiPoint;
-                    return new ShotplanHole([g.getFirstCoordinate(), g.getLastCoordinate()])
-                        .terrainProvider(this.terrainProvider());
-                } else {
-                    console.warn('Unexpected geometry in shotplan', geom.getProperties());
-                }
-            });
+            const transformedGeometries: Array<ShotplanHole | ShotplanRow> =
+                geometries.getGeometries().map((geom: ShotplanHole | ShotplanRow) => {
+                    const [p1, p2] = geom.getCoordinates().map((p) => {
+                        if (!p[2]) {
+                            const worldPoint = terrainProvider.getWorldPoint(p);
+                            if (!worldPoint[2]) console.warn('point has NaN elevation');
+                            p[2] = worldPoint[2];
+                        }
+                        return p;
+                    });
+                    if (geom.getType() === 'LineString') {
+                        return new ShotplanRow([p1, p2])
+                            .terrainProvider(this.terrainProvider());
+                    } else if (geom.getType() === 'MultiPoint') {
+                        return new ShotplanHole([p1, p2])
+                            .terrainProvider(this.terrainProvider());
+                    } else {
+                        console.warn('Unexpected geometry in shotplan', geom.getProperties());
+                    }
+                });
 
             const rowFeature = new ShotplanRowFeature({
                 ...feature.getProperties(),
@@ -317,6 +357,7 @@ export class Shotplan extends Annotation {
                 p[2] = worldPoint[2];
             }
         });
+        console.log('points', points);
         const rowGeom = new ShotplanRow(points);
         const rowFeature = new ShotplanRowFeature({
             geometry: new ol.geom.GeometryCollection([
