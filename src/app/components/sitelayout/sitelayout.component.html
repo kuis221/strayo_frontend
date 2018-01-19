@@ -8,8 +8,10 @@
 
 </app-header>
 <app-sub-header>
-  <span sub-header-location>{{(site$ | async)?.location()}}</span>
-  <div sub-header-actions>
+  <div class="location">
+    <span>{{(site$ | async)?.location()}}</span>
+  </div>
+  <div class="projectSettings">
     <span class="bttn btnShare"></span>
     <span class="bttn btnSetting"></span>
   </div>

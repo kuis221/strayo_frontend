@@ -16,6 +16,21 @@ export interface OSGJSGeometry {
     StateSet: {
         'osg.StateSet': OSGJSStateSet
     };
+    VertextAttributeList: OSGJSVertexAttributeList;
+}
+
+export interface OSGJSVertexAttributeList {
+    Normal: OSGJSAttributeList;
+    TexCoord0: OSGJSAttributeList;
+}
+
+export interface OSGJSAttributeList {
+    UniqueID: number;
+    Array: {
+        Float32Array: {
+            Elements: number[]
+        }
+    }
 }
 
 export interface OSGJSStateSet {

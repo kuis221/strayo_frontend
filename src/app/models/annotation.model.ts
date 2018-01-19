@@ -5,16 +5,18 @@ import { Resource, IResource } from './resource.model';
 
 export interface IAnnotation {
     created_at: Date | string;
-    data: string;
+    data: string | ol.Collection<ol.Feature>;
     id: number;
-    is_phantom: string;
-    meta: string;
+    meta: string | {};
     resources: IResource[];
     type: string;
     updated_at: Date | string;
 }
 
 export class Annotation extends ol.Object {
+    constructor (props: IAnnotation) {
+        super(props);
+    }
     public createdAt(): Date;
     public createdAt(createdAt: Date | string): this;
     public createdAt(createdAt?: Date | string): Date | this {
@@ -28,10 +30,13 @@ export class Annotation extends ol.Object {
         return this.get('created_at');
     }
 
-    public data(): ol.Collection<ol.Feature> | ol.Feature;
-    public data(data: ol.Collection<ol.Feature> | ol.Feature): this;
-    public data(data?: ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | ol.Feature | this {
+    public data(): ol.Collection<ol.Feature>;
+    public data(data: string| ol.Collection<ol.Feature>): this;
+    public data(data?: string | ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | this {
         if (data !== undefined) {
+            if (data === 'string') {
+                data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));
+            }
             this.set('data', data);
             return this;
         }
@@ -48,20 +53,13 @@ export class Annotation extends ol.Object {
         return this.get('id');
     }
 
-    public isPhantom(): boolean;
-    public isPhantom(isPhantom: boolean): this;
-    public isPhantom(isPhantom?: boolean): boolean | this {
-        if (isPhantom !== undefined) {
-            this.set('is_phantom', isPhantom);
-            return this;
-        }
-        return this.get('is_phantom');
-    }
-
     public meta(): {};
-    public meta(meta: {}): this;
-    public meta(meta?: {}): {} | this {
+    public meta(meta: string | {}): this;
+    public meta(meta?: string | {}): {} | this {
         if (meta !== undefined) {
+            if (typeof meta === 'string') {
+                meta = JSON.parse(meta);
+            }
             this.set('meta', meta);
             return this;
         }
@@ -101,5 +99,11 @@ export class Annotation extends ol.Object {
         return this.get('updated_at');
     }
 
-
+    updateFromInterface() {
+        this.id(this.id());
+        this.createdAt(this.createdAt());
+        this.updatedAt(this.updatedAt());
+        this.data(this.data());
+        this.meta(this.meta());
+    }
 }

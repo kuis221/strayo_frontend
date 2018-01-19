@@ -1,5 +1,5 @@
 // Pollyfill promises
-export default function () {
+export function initOSGJS () {
     P.defer = function() {
         var resolve, reject;
         var promise = new Promise(function() {
@@ -12,4 +12,11 @@ export default function () {
           promise: promise
         };
       }
+}
+
+export function stopViewer(viewer) {
+  console.log('trying to delete');
+  viewer.setSceneData(new osg.Node());
+  window.cancelAnimationFrame(viewer._requestID);
+  viewer.contextLost();
 }

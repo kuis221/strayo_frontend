@@ -3,6 +3,13 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+import { SidebarModule } from 'ng-sidebar';
+
+//Botstrap
+import { TabsModule } from 'ngx-bootstrap';
+import { RatingModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -42,6 +49,18 @@ import { UsersState } from './users/state';
 import { User } from './models/user.model';
 import { SiteDropdownComponent } from './components/site-dropdown/site-dropdown.component';
 import { SubHeaderComponent } from './components/sub-header/sub-header.component';
+import { AnnotationsLayersComponent } from './components/annotations-layers/annotations-layers.component';
+import { LayersControllerComponent } from './controllers/layers-controller/layers-controller.component';
+import { DatasetLayerComponent } from './controllers/layers-controller/components/dataset-layer/dataset-layer.component';
+import { AnnotationsControllerComponent } from './controllers/annotations-controller/annotations-controller.component';
+import { AnnotationToolComponent } from './controllers/annotations-controller/components/annotation-tool/annotation-tool.component';
+import { DatasetAnnotationsComponent } from './controllers/annotations-controller/components/dataset-annotations/dataset-annotations.component';
+import { DatasetAnnotationComponent } from './controllers/annotations-controller/components/dataset-annotation/dataset-annotation.component';
+import { NewAnnotationFormComponent } from './controllers/annotations-controller/components/new-annotation-form/new-annotation-form.component';
+import { DatasetAnnotationDetailsComponent } from './controllers/annotations-controller/components/dataset-annotation-details/dataset-annotation-details.component';
+import { ShotplanningComponent } from './components/shotplanning/shotplanning.component';
+import { ShotplanningControllerComponent } from './controllers/shotplanning-controller/shotplanning-controller.component';
+import { DatasetShotplanningComponent } from './controllers/shotplanning-controller/components/dataset-shotplanning/dataset-shotplanning.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -70,11 +89,32 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SignUpLayoutComponent,
     SiteDropdownComponent,
     SubHeaderComponent,
+    AnnotationsLayersComponent,
+    LayersControllerComponent,
+    DatasetLayerComponent,
+    AnnotationsControllerComponent,
+    AnnotationToolComponent,
+    DatasetAnnotationsComponent,
+    DatasetAnnotationComponent,
+    ShotplanningComponent,
+    ShotplanningControllerComponent,
+    DatasetShotplanningComponent,
+    NewAnnotationFormComponent,
+    DatasetAnnotationDetailsComponent,
+  ],
+  entryComponents: [
+    NewAnnotationFormComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     FormsModule,
+    SidebarModule.forRoot(),
+    //Bootstrap
+    TabsModule.forRoot(),
+    RatingModule.forRoot(),
+    ModalModule.forRoot(),
+
     GraphQLModule,
     HttpClientModule,
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {

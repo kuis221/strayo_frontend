@@ -6,43 +6,87 @@
   <a href="javascript:void(0);" class="btnMobileNav"></a>
 </app-header>
 <app-sub-header>
-  <span sub-header-location>{{(site)?.location()}}</span>
-  <div sub-header-actions>
+  <div class="location">
+    <span sub-header-location>{{(site)?.location()}}</span>
+  </div>
+  <div class="dvMeasurement">
+    <a href="javascript:void(0);" class="txtMeasurement">Measurement</a>
+    <a class="exportMeasurement" href="#">Export Measurement</a>
+    <div class="dvExportMeasurement">
+      <a class="btnCloseExport" href="#">
+        <img src="/assets/images/closeMeasurement.png" alt="">
+      </a>
+      <h4>Export Measurement</h4>
+      <p>Here is a link to your exported measurements</p>
+      <p>
+        <input type="text" placeholder="https://app.strayos.com/#/app/viewer?mode…">
+      </p>
+      <a class="btnCopyLink" href="#">Copy Link</a>
+    </div>
+  </div>
+  <ul class="measurementSetting">
+    <li>
+      <app-annotation-tool [tool]="'Polygon'"></app-annotation-tool>
+    </li>
+    <li>
+      <app-annotation-tool [tool]="'LineString'"></app-annotation-tool>
+    </li>
+    <!-- <li>
+          <app-annotation-tool [tool]="'Selection'"></app-annotation-tool>
+        </li> -->
+  </ul>
+  <div class="projectSettings">
     <span class="bttn btnDownload"></span>
     <span class="bttn btnShare"></span>
     <span class="bttn btnSetting"></span>
   </div>
 </app-sub-header>
 <div class="mainContent innerPage clearfix">
-  <div class="annotationLeftPanel">
-    <ul class="leftNav clearfix">
-      <li>
-        <a class="annotationLayers" href="annotation.html">Annotation &amp; Layers</a>
-      </li>
-      <li>
-        <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
-        <ul>
-          <li>
-            <a href="#">Shotplan Editor</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
-        <ul>
-          <li>
-            <a href="#">Sub Analysis</a>
-          </li>
-          <li>
-            <a href="#">Sub Analysis2</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <div class="dvReset clearfix">
-      <a href="#">Reset</a>
+  <ng-sidebar-container>
+    <div ng-sidebar-content class="fullHeight">
+      <div class="fullHeight">
+        <app-map-3d class="fullHeight"></app-map-3d>
+      </div>
     </div>
-  </div>
+    <ng-sidebar sidebarClass="sidebar" opened=true mode="push" [ngSwitch]="sidepanel">
+      <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
+      <app-shotplanning *ngSwitchCase="'shotplanning'">
+        <div class="btnBack clearfix">
+          <a (click)="switchPanel('')"></a>
+          <span>Shot Planning</span>
+        </div>
+      </app-shotplanning>
+      <div class="annotationLeftPanel" *ngSwitchDefault>
+        <ul class="leftNav clearfix">
+          <li>
+            <a class="annotationLayers" href="javascript:void(0)" (click)="switchPanel('annotations')">Annotation &amp; Layers</a>
+          </li>
+          <li>
+            <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
+            <ul>
+              <li>
+                <a href="javascript:void(0)" (click)="switchPanel('annotations')">Shotplan Editor</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
+            <ul>
+              <li>
+                <a href="#">Sub Analysis</a>
+              </li>
+              <li>
+                <a href="#">Sub Analysis2</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="dvReset clearfix">
+          <a href="#">Reset</a>
+        </div>
+      </div>
+    </ng-sidebar>
+  </ng-sidebar-container>
 </div>
 
 

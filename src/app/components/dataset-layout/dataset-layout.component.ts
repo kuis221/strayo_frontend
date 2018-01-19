@@ -12,6 +12,8 @@ import { listenOn } from '../../util/listenOn';
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 
+type Panels = 'annotations' | 'shotplanning';
+
 @Component({
   selector: 'app-dataset-layout',
   templateUrl: './dataset-layout.component.html',
@@ -25,6 +27,8 @@ export class DatasetLayoutComponent implements OnInit {
   site$: Observable<Site>;
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
+
+  sidepanel = 'shotplanning';
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -54,16 +58,13 @@ export class DatasetLayoutComponent implements OnInit {
       })
     ).subscribe((dataset) => {
       if (!dataset) {
-        // console.log('RACE CONDITION couldnt get datasets');
         return;
       }
-      // console.log('SETTING MAIN DATASETS', dataset);
       this.datasetsService.setMainDataset(dataset);
     });
 
     // Getting datasets
     this.datasetsService.datasets.subscribe((datasets) => {
-      // console.log('DATASETS', datasets);
       this.datasets = datasets;
     });
 
@@ -71,14 +72,16 @@ export class DatasetLayoutComponent implements OnInit {
     this.datasetsService.mainDataset.subscribe(async (dataset) => {
       this.mainDataset = dataset;
       if (!dataset) return;
-      // console.log('loading annotations for ', dataset);\
       const progress = await this.datasetsService.loadAnnotations(dataset);
       const off = listenOn(progress, 'change:progress', () => {
-        console.log('LOADED ALL ANNOTATIONS');
         off();
       });
-
     });
+  }
+
+  switchPanel(panel: Panels) {
+    this.sidepanel = panel;
+    initStrayosJquery($);
   }
 
 }
