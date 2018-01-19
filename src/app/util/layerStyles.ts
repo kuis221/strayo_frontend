@@ -1,4 +1,5 @@
 import * as ol from 'openlayers';
+import { StyleFunction } from 'openlayers';
 
 
 const nullFill = new ol.style.Fill();
@@ -83,10 +84,12 @@ export function annotationStyle(feature: ol.Feature, resolution: number) {
 
 export function shotplanStyle(feature: ol.Feature, resolution: number) {
     const geometry = feature.getGeometry();
+    const color = feature.get('color') || 'aquamarine';
+    console.log('style color', color);
     return [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'aquamarine',
+                color,
             }),
             geometry: function (feature) {
                 return (geometry as ol.geom.GeometryCollection).getGeometries().find(g => g.getType() === 'LineString');
@@ -99,10 +102,10 @@ export function shotplanStyle(feature: ol.Feature, resolution: number) {
                     color: 'white',
                 }),
                 stroke: new ol.style.Stroke({
-                    color: 'aquamarine'
+                    color,
                 })
             }),
-            geometry: function(feature) {
+            geometry: function (feature) {
                 const coordinates = [
                     ...(geometry as ol.geom.GeometryCollection).getGeometries()
                         .filter(g => g.getType() === 'MultiPoint')
@@ -111,7 +114,7 @@ export function shotplanStyle(feature: ol.Feature, resolution: number) {
                 return new ol.geom.MultiPoint(coordinates);
             }
         })]
-    
+
     // if (geometry.getType() === 'GeometryCollection') {
     //     console.log('here in geometry collection');
     //     return withStyles(...(geometry as ol.geom.GeometryCollection).getGeometries().map((geom) => shotplanStyle(new ol.Feature({ geometry: geom }), resolution)))(feature, resolution);
@@ -142,25 +145,26 @@ export function shotplanStyle(feature: ol.Feature, resolution: number) {
 }
 
 export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | ol.StyleFunction>): ol.StyleFunction {
-    return (feature: ol.Feature, resolution: number): ol.style.Style => {
-        const toReturn = [];
+    return (feature: ol.Feature, resolution: number): ol.style.Style[] => {
+        const toReturn: ol.style.Style[] = [];
+        const push = (s) => {
+            if (!Array.isArray(s)) {
+                toReturn.push(s);
+            } else {
+                s.forEach(push);
+            }
+        };
         styles.forEach((style) => {
             if ((typeof style !== 'function')) {
-                if (!Array.isArray(style)) {
-                    return toReturn.push(style);
-                } else {
-                    return toReturn.push(...style);
-                }
+                push(style);
+                return;
             }
-            const newStyle = style(feature, resolution);
-            if (!Array.isArray(style)) {
-                return toReturn.push(newStyle);
-            } else {
-                return toReturn.push(...style);
-            }
+            const newStyle = (style as StyleFunction)(feature, resolution);
+            push(newStyle);
         });
         console.log('toReturn', toReturn);
-        return toReturn.reduce(styleReducer, new ol.style.Style);
+        return toReturn;
+        // return toReturn.reduce(styleReducer, new ol.style.Style);
         // return toReturn.reduce(styleReducer, new ol.style.Style({}));
     };
     // Please fill in as you go along
@@ -168,6 +172,7 @@ export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | 
 
 export function styleReducer(acc: ol.style.Style, current: ol.style.Style) {
     console.log('reducing', acc, current);
+    acc.setGeometry(current.getGeometryFunction() || current.getGeometry() || acc.getGeometry() || acc.getGeometryFunction());
     if (current.getFill()) {
         const p = acc.getFill() || nullFill;
         const c = current.getFill();

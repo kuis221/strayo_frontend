@@ -65,6 +65,9 @@ export class ShotplanRowFeature extends ol.Feature {
     public terrainProvider(terrainProvider?: TerrainProvider): TerrainProvider | this {
         if (terrainProvider !== undefined) {
             this.set('terrain_provider', terrainProvider);
+            const dataset = terrainProvider.dataset();
+            this.set('color', dataset.color());
+            console.log('set color', this.get('color'));
             return this;
         }
         return this.get('terrain_provider');
@@ -288,7 +291,7 @@ export class Shotplan extends Annotation {
             const rowFeature = new ShotplanRowFeature({
                 ...feature.getProperties(),
                 geometry: new ol.geom.GeometryCollection([])
-            });
+            }).terrainProvider(this.terrainProvider());
             // Do this here to invoke event listenr
             console.log('transformed', transformedGeometries);
             (rowFeature.getGeometry() as ol.geom.GeometryCollection).setGeometries(transformedGeometries);

@@ -167,9 +167,6 @@ export class Dataset extends ol.Object {
             stroke: new ol.style.Stroke({
                 color: this.color(),
             }),
-            geometry: function(feature) {
-                return (feature.getGeometry().getType() === 'LineString') ? feature.getGeometry() : new ol.geom.LineString([]);
-            }
         });
         return [
             lineStringStyle
