@@ -210,6 +210,11 @@ export class Map3dService {
     this.allLayers.extend(layers);
   }
 
+  deregisterLayer(layer: ol.layer.Tile | ol.layer.Vector, dataset: Dataset) {
+    const group = this.getGroupForDataset(dataset.id());
+    group.getLayers().remove(layer);
+  }
+
   destroy() {
     this.destroyOpenlayers();
     this.destroyOsgjs();
@@ -284,8 +289,12 @@ export class Map3dService {
       console.warn('warning layer has no title');
     }
     if (layer instanceof ol.layer.Vector) {
-      const style = layer.getStyle();
-      layer.setStyle(withStyles(style, dataset.overwriteStyle()));
+      // const style = layer.getStyle();
+      // if (style) {
+      //   layer.setStyle(withStyles(style, dataset.overwriteStyle()));
+      // } else {
+      //   layer.setStyle(dataset.overwriteStyle());
+      // }
     }
     const group = this.getGroupForDataset(dataset.id());
     const exist = group.getLayers().getArray().includes(layer);

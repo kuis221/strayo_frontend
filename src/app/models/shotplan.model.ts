@@ -9,22 +9,26 @@ import { vectorProjection, scalarProjection, vectorRejection } from '../util/osg
 
 export class ShotplanRowFeature extends ol.Feature {
     static SHOTPLAN_TYPE = 'shotplan_row_feature';
-    private holesUpdateSource = new BehaviorSubject<ShotplanHole[]>(null);
-    public holesUpdate$ = this.holesUpdateSource.asObservable();
+    private holesSource = new BehaviorSubject<ShotplanHole[]>(null);
+    public holes$ = this.holesSource.asObservable();
 
     constructor(props) {
         super(props);
         this.setId(this.getId() || uuid());
-        listenOn(this.getGeometry(), 'change:geometries', () => {
-            console.log('geometries changed');
+        listenOn(this.getGeometry(), 'change', (evt) => {
             const geometries: Array<ShotplanHole | ShotplanRow> = (this.getGeometry() as ol.geom.GeometryCollection).getGeometries() as any;
+            console.log('geometries changed', evt, geometries);
+            if (!geometries) {
+                console.warn('no geometries');
+                return;
+            }
             const holeGeometries: ShotplanHole[] = geometries.filter((g) => g.shotplanType() === ShotplanHole.SHOTPLAN_TYPE) as any;
             holeGeometries.sort((a, b) => {
                 const [aAlong, aAway] = a.alongAway(this.getRow());
                 const [bAlong, bAway] = b.alongAway(this.getRow());
                 return aAlong - bAlong;
             });
-            this.holesUpdateSource.next(holeGeometries);
+            this.holesSource.next(holeGeometries);
         });
     }
 
@@ -111,6 +115,19 @@ export class ShotplanRow extends ol.geom.LineString {
         }
         return this.get('terrain_provider');
     }
+    /**
+     * Required by openlayers https://github.com/openlayers/openlayers/blob/v4.6.4/src/ol/geom/multipoint.js
+     * 
+     * @returns {ShotplanRow} 
+     * @memberof ShotplanRow
+     */
+    public clone(): ShotplanRow {
+        const layout = this.getLayout();
+        const clone = new ShotplanRow([this.getFirstCoordinate(), this.getLastCoordinate()], layout)
+            .id(this.id())
+            .terrainProvider(this.terrainProvider());
+        return clone;
+    }
 }
 
 export class ShotplanHole extends ol.geom.MultiPoint {
@@ -179,6 +196,13 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         return [alongGeom.getLength(), awayGeom.getLength()];
     }
 
+    public clone() {
+        const clone = new ShotplanHole([this.getHoleCoord(), this.getToeCoord()], this.getLayout())
+            .id(this.id())
+            .terrainProvider(this.terrainProvider());
+        return clone;
+    }
+
     public getHoleCoord(): ol.Coordinate {
         return this.getFirstCoordinate();
     }
@@ -194,9 +218,10 @@ export interface IShotplan extends IAnnotation {
 
 export class Shotplan extends Annotation {
     static ANNOTATION_TYPE = 'shotplan';
-    private rowsSource = new BehaviorSubject<ol.Collection<ShotplanRowFeature>>(null);
-    public rows = this.rowsSource.asObservable();
+    private rowsSource = new BehaviorSubject<ShotplanRowFeature[]>(null);
+    public rows$ = this.rowsSource.asObservable();
 
+    private offData: Function;
     static fromABLine(terrainProvider: TerrainProvider, points: [ol.Coordinate, ol.Coordinate]): Shotplan {
         const shotplan = new Shotplan({
             created_at: new Date(),
@@ -243,6 +268,7 @@ export class Shotplan extends Annotation {
     }
 
     private init() {
+        // Convert geojson to shotplan specific versions
         const rowFeatures = this.data().getArray().map((feature) => {
             const geometries = feature.getGeometry() as ol.geom.GeometryCollection;
             const transformedGeometries: Array<ShotplanHole | ShotplanRow> = geometries.getGeometries().map((geom) => {
@@ -261,13 +287,22 @@ export class Shotplan extends Annotation {
 
             const rowFeature = new ShotplanRowFeature({
                 ...feature.getProperties(),
-                geometry: new ol.geom.GeometryCollection(transformedGeometries)
+                geometry: new ol.geom.GeometryCollection([])
             });
+            // Do this here to invoke event listenr
+            console.log('transformed', transformedGeometries);
+            (rowFeature.getGeometry() as ol.geom.GeometryCollection).setGeometries(transformedGeometries);
             return rowFeature;
         });
 
         this.set('data', new ol.Collection<ShotplanRowFeature>(rowFeatures));
-        this.rowsSource.next(this.data());
+        console.log('Setting rows', rowFeatures);
+        this.rowsSource.next(this.data().getArray());
+        // Listen for the rest
+        if (this.offData) this.offData();
+        this.offData = listenOn(this.data(), 'change:length', () => {
+            this.rowsSource.next(this.data().getArray());
+        });
     }
 
     public addRow(points: [ol.Coordinate, ol.Coordinate]): ShotplanRowFeature {
