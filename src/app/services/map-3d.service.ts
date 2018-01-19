@@ -289,12 +289,12 @@ export class Map3dService {
       console.warn('warning layer has no title');
     }
     if (layer instanceof ol.layer.Vector) {
-      // const style = layer.getStyle();
-      // if (style) {
-      //   layer.setStyle(withStyles(style, dataset.overwriteStyle()));
-      // } else {
-      //   layer.setStyle(dataset.overwriteStyle());
-      // }
+      const style = layer.getStyle();
+      if (style) {
+        layer.setStyle(withStyles(style, dataset.overwriteStyle()));
+      } else {
+        layer.setStyle(dataset.overwriteStyle());
+      }
     }
     const group = this.getGroupForDataset(dataset.id());
     const exist = group.getLayers().getArray().includes(layer);
