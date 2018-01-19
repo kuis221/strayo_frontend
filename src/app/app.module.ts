@@ -1,14 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SidebarModule } from 'ng-sidebar';
 
-//Botstrap
+// Botstrap
 import { TabsModule } from 'ngx-bootstrap';
 import { RatingModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -61,6 +62,7 @@ import { DatasetAnnotationDetailsComponent } from './controllers/annotations-con
 import { ShotplanningComponent } from './components/shotplanning/shotplanning.component';
 import { ShotplanningControllerComponent } from './controllers/shotplanning-controller/shotplanning-controller.component';
 import { DatasetShotplanningComponent } from './controllers/shotplanning-controller/components/dataset-shotplanning/dataset-shotplanning.component';
+import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -101,6 +103,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     DatasetShotplanningComponent,
     NewAnnotationFormComponent,
     DatasetAnnotationDetailsComponent,
+    SigninSignupLayoutComponent,
   ],
   entryComponents: [
     NewAnnotationFormComponent
@@ -109,14 +112,16 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AppRoutingModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     SidebarModule.forRoot(),
-    //Bootstrap
+    // Bootstrap
     TabsModule.forRoot(),
     RatingModule.forRoot(),
     ModalModule.forRoot(),
-
+    BsDropdownModule.forRoot(),
     GraphQLModule,
     HttpClientModule,
+
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
     //   apiBase: 'api/'
     // }),

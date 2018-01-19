@@ -17,11 +17,11 @@ import { UsersService } from '../users.service';
 
 @Injectable()
 export class UsersEffects {
-  constructor (
+  constructor(
     private actions$: Actions,
     private usersService: UsersService,
     private router: Router,
-  ) {}
+  ) { }
 
   @Effect()
   getUsers$ = this.actions$
@@ -56,4 +56,10 @@ export class UsersEffects {
       .map(user => new SignUpSuccess(user))
       .catch(err => of(new SignUpError(err)))
     );
+
+  @Effect({ dispatch: false })
+  signUpSuccess$ = this.actions$
+    .ofType(UsersActionsType.SIGN_UP_SUCCESS)
+    .map(() => this.router.navigate(['/']));
+
 }

@@ -10,12 +10,15 @@
 
 <header class="header clearfix">
   <ng-content></ng-content>
-  <div class="user" *ngIf="(isAuthenticated$ && currentUser$) | async; let currentUser else loading">
-    <span></span>{{ currentUser.name() }}
-    <div class="userAccount">
+  <div dropdown>
+    <a dropdownToggle class="user" *ngIf="(isAuthenticated$ && currentUser$) | async; let currentUser else loading">
+      <span></span>{{ currentUser.name() }}
+    </a>
+    <div *dropdownMenu class="dropdown-menu userAccount" role="menu"> 
       <ul>
-        <li><a href="#">My Account</a></li>
-        <li><a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a></li>
+        <li>
+          <a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -23,5 +26,3 @@
 
 
 <ng-template #loading></ng-template>
-
-  
