@@ -61,25 +61,11 @@ export const annotationInteractionStyle = new ol.style.Style({
 
 export function annotationStyle(feature: ol.Feature, resolution: number) {
     const geom = feature.getGeometry();
-    switch (geom.getType()) {
-        case 'LineString':
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'aquamarine',
-                    width: 3
-                })
-            });
-        default:
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'white',
-                    width: 3
-                }),
-                fill: new ol.style.Fill({
-                    color: 'aquamarine'
-                })
-            });
-    }
+    return new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'white'
+        })
+    });
 }
 
 export function shotplanStyle(feature: ol.Feature, resolution: number) {

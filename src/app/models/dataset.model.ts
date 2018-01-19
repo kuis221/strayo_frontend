@@ -166,6 +166,7 @@ export class Dataset extends ol.Object {
         const lineStringStyle = new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: this.color(),
+                width: 2,
             }),
         });
         return [
