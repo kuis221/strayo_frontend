@@ -72,7 +72,7 @@ export class UsersService {
     );
   }
 
-  public makeSignUp(userData) {
+  public makeSignUp(userData: IUser) {
     this.store.dispatch(new SignUp(userData));
   }
 

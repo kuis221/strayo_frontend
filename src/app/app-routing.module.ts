@@ -10,8 +10,7 @@ import { SiteslayoutComponent } from './components/siteslayout/siteslayout.compo
 import { SiteLayoutComponent } from './components/sitelayout/sitelayout.component';
 import { DatasetLayoutComponent } from './components/dataset-layout/dataset-layout.component';
 
-import { LoginLayoutComponent } from './users/containers/login-layout/login-layout.component';
-import { SignUpLayoutComponent } from './users/containers/signup-layout/signup-layout.component';
+import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
 
 export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
   localStorageSync({
@@ -46,12 +45,12 @@ const routes: Routes = [
   },
   {
     path: 'sign-in',
-    component: LoginLayoutComponent,
+    component: SigninSignupLayoutComponent,
     data: { title: 'Login' },
   },
   {
     path: 'sign-up',
-    component: SignUpLayoutComponent,
+    component: SigninSignupLayoutComponent,
     data: { title: 'Sign Up' },
   },
 ];

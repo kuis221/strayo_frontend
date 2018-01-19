@@ -1,20 +1,16 @@
 import * as ol from 'openlayers';
 
 export interface IUser {
-  address: string;
-  authentication_token: string;
-  company_address: string;
-  company_name: string;
+  authentication_token?: string;
   email: string;
-  firstName: string;
-  id: number;
+  first_name: string;
+  id?: number;
   industry: string;
-  lastName: string;
-  measurement_unit: string;
-  name: string;
-  phone: string;
-  type: string;
-  website: string;
+  last_name: string;
+  measurement_unit?: string;
+  password?: string;
+  password_confirmation?: string;
+  type?: string;
 }
 
 export class User extends ol.Object {

@@ -1,4 +1,11 @@
 function initStrayosJquery($){
+	function mobileMenu(){
+		$(".menu-button").on("click", function(){
+			$(this).toggleClass("menuClose");
+			$(".navigation").toggleClass("navOpen");
+			$("html, body").toggleClass("hiddenView");
+		});
+	}
 	function mobileNav(){
 		$(".btnMobileNav").on("click", function(){
 			var display = $(".topNav").css("display");
@@ -244,6 +251,7 @@ function initStrayosJquery($){
 	}
 
 	$(function(){
+		mobileMenu();
 		mobileNav();
 		leftNav();
 		siteInfo();
