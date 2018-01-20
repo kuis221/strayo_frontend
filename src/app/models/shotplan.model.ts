@@ -9,9 +9,18 @@ import { listenOn } from '../util/listenOn';
 import { vectorProjection, scalarProjection, vectorRejection } from '../util/osgjsUtil/index';
 import { WebMercator, LonLat } from '../util/projections/index';
 
+export function sortHoles(row: ShotplanRow, holeGeometries: ShotplanHole[]): ShotplanHole[] {
+    return holeGeometries.sort((a, b) => {
+        const [aAlong, aAway] = a.alongAwayFrom(row);
+        const [bAlong, bAway] = b.alongAwayFrom(row);
+        // console.log('comparing', [a.id(), aAlong], [b.id(), bAlong]);
+        return aAlong - bAlong;
+    });
+}
+
 export class ShotplanRowFeature extends ol.Feature {
     static SHOTPLAN_TYPE = 'shotplan_row_feature';
-    private holesSource = new BehaviorSubject<ShotplanHole[]>(null);
+    private holesSource = new BehaviorSubject<ShotplanHole[]>([]);
     public holes$ = this.holesSource.asObservable();
 
     constructor(props) {
@@ -25,12 +34,8 @@ export class ShotplanRowFeature extends ol.Feature {
                 return;
             }
             const holeGeometries = this.getHoles();
-            holeGeometries.sort((a, b) => {
-                const [aAlong, aAway] = a.alongAway(this.getRow());
-                const [bAlong, bAway] = b.alongAway(this.getRow());
-                return aAlong - bAlong;
-            });
-            this.holesSource.next(holeGeometries);
+            // console.log('should sort', this.getHoles(), sortHoles(this.getRow(), holeGeometries));
+            this.holesSource.next(sortHoles(this.getRow(), holeGeometries));
         });
     }
 
@@ -51,8 +56,8 @@ export class ShotplanRowFeature extends ol.Feature {
         const shotplanHole = new ShotplanHole([hole, toe])
             .terrainProvider(this.terrainProvider());
         const col = this.getGeometry() as ol.geom.GeometryCollection;
-        const newCollection = [...col.getGeometries(), shotplanHole];
-        console.log('new Collection', newCollection);
+        const holeGeometries = sortHoles(this.getRow(), [...this.getHoles(), shotplanHole]);
+        const newCollection = [this.getRow(), ...holeGeometries];
         col.setGeometries(newCollection);
         return shotplanHole;
     }
@@ -67,8 +72,26 @@ export class ShotplanRowFeature extends ol.Feature {
     public getHoles(): ShotplanHole[] {
         const holeGeometries: ShotplanHole[] =
             (this.getGeometry() as ol.geom.GeometryCollection)
-            .getGeometries().filter((g: ShotplanHole | ShotplanRow) => g.shotplanType() === ShotplanHole.SHOTPLAN_TYPE) as any;
+                .getGeometries().filter((g: ShotplanHole | ShotplanRow) => g.shotplanType() === ShotplanHole.SHOTPLAN_TYPE) as any;
         return holeGeometries;
+    }
+
+    public removeHole(hole: ShotplanHole) {
+        const holeGeometries = this.getHoles();
+        if (holeGeometries.length === 1) {
+            console.warn('Attempting to remove last hole in row');
+            return;
+        }
+        const index = holeGeometries.findIndex(h => h.id() === hole.id());
+        if (index === -1) {
+            console.warn('Cannot remove hole, not in collection', hole);
+            return;
+        }
+        holeGeometries.splice(index, 1);
+        const r = this.getRow();
+        const newCollection = [r, ...sortHoles(r, holeGeometries)]
+        const col = this.getGeometry() as ol.geom.GeometryCollection;
+        col.setGeometries(newCollection);
     }
 
     public terrainProvider(): TerrainProvider;
@@ -143,10 +166,46 @@ export class ShotplanRow extends ol.geom.LineString {
      */
     public clone(): ShotplanRow {
         const layout = this.getLayout();
-        const clone = new ShotplanRow([this.getFirstCoordinate(), this.getLastCoordinate()], layout)
+        const coords = this.getCoordinates();        
+        const clone = new ShotplanRow([coords[0], coords[coords.length - 1]], layout)
             .id(this.id())
             .terrainProvider(this.terrainProvider());
         return clone;
+    }
+    /**
+     * Translates the point along the along away vectors
+     * Ex: p [5, 5]
+     * returns [5 * along, 5 * away];
+     * 
+     * @param {ol.Coordinate} p 
+     * @returns {ol.Coordinate} 
+     * @memberof ShotplanRow
+     */
+    public alongAway(p: ol.Coordinate): ol.Coordinate;
+    /**
+     * Gets the normalized 2D along and away vectors. Assumes vector is from last to first coordinate
+     * 
+     * @returns {[ol.Coordinate, ol.Coordinate]} 
+     * @memberof ShotplanRow
+     */
+    public alongAway(): [ol.Coordinate, ol.Coordinate];
+    public alongAway(p?: ol.Coordinate): ol.Coordinate | [ol.Coordinate, ol.Coordinate] {
+        const [p1, p2] = this.getWorldCoordinates();
+        const rowVec = osg.Vec2.normalize(osg.Vec2.sub(p2, p1, []), []);
+        const clockWisePerp: [number, number] = [-rowVec[1], rowVec[0]];
+        if (p === undefined) {
+            return [rowVec, clockWisePerp];
+        }
+        const alongVec = osg.Vec2.mult(rowVec, p[0], []);
+        const awayVec = osg.Vec2.mult(clockWisePerp, p[1], []);
+        const totalVec = osg.Vec2.add(alongVec, awayVec, []);
+        return totalVec;
+    }
+
+    public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
+        const p1 = ol.proj.transform(this.getFirstCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        const p2 = ol.proj.transform(this.getLastCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        return [p1, p2];
     }
 
     public recalculate() {
@@ -176,6 +235,20 @@ export class ShotplanRow extends ol.geom.LineString {
         // console.log('new Azimuth', newAzimuth);
         this.azimuthSource.next(newAzimuth.azimuth);
     }
+
+    public setCoordinates(coordinates: ol.Coordinate[], opt_layout: ol.geom.GeometryLayout) {
+        opt_layout = opt_layout || this.getLayout();
+        const terrainProvider = this.terrainProvider();
+        if (terrainProvider) {
+            [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
+                const worldPoint = terrainProvider.getWorldPoint(p);
+                p[2] = worldPoint[2];
+            });
+        } else {
+        }
+        ol.geom.LineString.prototype.setCoordinates.bind(this)([coordinates[0], coordinates[coordinates.length - 1]], opt_layout);
+    }
+
 }
 
 export class ShotplanHole extends ol.geom.MultiPoint {
@@ -187,7 +260,7 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         this.shotplanType(ShotplanHole.SHOTPLAN_TYPE);
         this.id(this.id() || uuid());
         listenOn(this, 'change', () => {
-            console.log('changing hole', this.id());
+            console.log('changing hole', this.id(), this.getCoordinates());
             this.updateSource.next(this);
         });
         this.updateSource.next(this);
@@ -223,40 +296,60 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         return this.get('terrain_provider');
     }
     // Actual functions
+    /**
+     * Calculates the along and away in meters from point
+     * 
+     * @param {ShotplanRow} row 
+     * @returns {[number, number]} 
+     * @memberof ShotplanHole
+     */
+    public alongAwayFrom(row: ShotplanRow): [number, number] {
+        const [rowPoint] = row.getWorldCoordinates();
+        const [holePoint] = this.getWorldCoordinates();
+        const holeVec = osg.Vec2.sub(holePoint, rowPoint, []);
+        const rowVec = row.alongAway();
+        
+        const along = scalarProjection(holeVec, rowVec[0]);
+        const away = scalarProjection(holeVec, rowVec[1]);
+        return [along, away];
+    }
 
-    public alongAway(row: ShotplanRow): [number, number] {
-        const rowVec = osg.Vec2.sub(row.getLastCoordinate(), row.getFirstCoordinate(), []);
-        const holeVec = osg.Vec2.sub(this.getHoleCoord(), row.getFirstCoordinate(), []);
-
-        const alongVec = vectorProjection(holeVec, rowVec);
-        const awayVec = vectorRejection(holeVec, rowVec);
-
-        const alongGeom = new ol.geom.LineString([
-            row.getFirstCoordinate(),
-            osg.Vec2.add(row.getFirstCoordinate(), alongVec, []),
-        ]);
-
-        const awayGeom = new ol.geom.LineString([
-            row.getFirstCoordinate(),
-            osg.Vec2.add(row.getFirstCoordinate(), awayVec, []),
-        ]);
-
-        return [alongGeom.getLength(), awayGeom.getLength()];
+    public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
+        const p1 = ol.proj.transform(this.getFirstCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        const p2 = ol.proj.transform(this.getLastCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        return [p1, p2];
     }
 
     public clone() {
-        const clone = new ShotplanHole([this.getHoleCoord(), this.getToeCoord()], this.getLayout())
+        const coords = this.getCoordinates();
+        const clone = new ShotplanHole([coords[0], coords[coords.length - 1]], this.getLayout())
             .id(this.id())
             .terrainProvider(this.terrainProvider());
         return clone;
     }
 
     public getHoleCoord(): ol.Coordinate {
+        console.log('holeCoord', this.getFirstCoordinate());
         return this.getFirstCoordinate();
     }
 
     public getToeCoord(): ol.Coordinate {
+        console.log('toeCoord', this.getLastCoordinate());
         return this.getLastCoordinate();
+    }
+
+    public setCoordinates(coordinates: ol.Coordinate[], opt_layout: ol.geom.GeometryLayout) {
+        opt_layout = opt_layout || this.getLayout();
+        const terrainProvider = this.terrainProvider();
+        if (terrainProvider) {
+            //TODO: recalculate the toe from toeplane.
+            [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
+                const worldPoint = terrainProvider.getWorldPoint(p);
+                p[2] = worldPoint[2];
+            });
+        } else {
+        }
+        ol.geom.MultiPoint.prototype.setCoordinates.bind(this)([coordinates[0], coordinates[coordinates.length - 1]], opt_layout);
     }
 }
 
@@ -334,6 +427,7 @@ export class Shotplan extends Annotation {
                         return new ShotplanRow([p1, p2])
                             .terrainProvider(this.terrainProvider());
                     } else if (geom.getType() === 'MultiPoint') {
+                        console.log('points', [p1, p2])
                         return new ShotplanHole([p1, p2])
                             .terrainProvider(this.terrainProvider());
                     } else {
@@ -377,10 +471,23 @@ export class Shotplan extends Annotation {
                 rowGeom
             ])
         })
-        .terrainProvider(terrainProvider);
+            .terrainProvider(terrainProvider);
 
         const data = this.data();
         data.push(rowFeature);
         return rowFeature;
+    }
+
+    public removeRow(row: ShotplanRowFeature) {
+        const index = this.data().getArray().findIndex(r => r.getId() === row.getId());
+        if (index === -1) {
+            console.warn('could not find row in shotplan', row);
+            return;
+        }
+        if (index === 0) {
+            console.warn('attempting to remove ab line!', row);
+            return;
+        }
+        this.data().removeAt(index);
     }
 }

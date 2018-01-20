@@ -12,7 +12,7 @@
         <div class="rows clearfix">
           <div class="rowsLeft">Row</div>
           <div class="rowsRight">
-            <a id="toggleRow" class="btnToggle" [ngClass]="{ up: showEndpoints }" (click)="showEndpoints = !showEndpoints" href="javascript:void(0);">
+            <a class="btnToggle" [ngClass]="{ up: showEndpoints }" (click)="showEndpoints = !showEndpoints">
               <img src="/assets/images/BtnRoundArrow.png" alt="">
             </a>
           </div>
@@ -24,8 +24,8 @@
         <div class="rowsWrapper clearfix">
           <div *ngFor="let item of shotplan.rows$ | async; let i = index;" [ngClass]="{ btnRows: true, activeHole: i === selectedRow }"
             (click)="selectRow(i)">
-            <span>{{ (i == 0) ? 'A-B Line' : 'Row ' + i }}</span>
-            <a class="delbtnRows" *ngIf="i != 0"></a>
+            <span>{{ (i == 0) ? 'A-B Line' : 'Row ' + (i + 1) }}</span>
+            <a class="delbtnRows" *ngIf="i != 0" (click)="shotplan.removeRow(item)"></a>
           </div>
         </div>
       </div>
@@ -88,10 +88,10 @@
           </div>
           <div class="addHoleRow clearfix">
             <div class="addHoleCol fLeft">
-              <button type="button" [disabled]="newRowForm.invalid" class="btnBlock" (click)="placeRow(row)">Place Row</button>
+              <button type="button" [disabled]="newRowForm.invalid" [ngClass]="{ disabled: newRowForm.invalid}" class="btnBlock" (click)="placeRow(row)">Place Row</button>
             </div>
             <div class="addHoleCol fRight">
-              <button type="button" [disabled]="newRowForm.invalid" class="btnBlock" (click)="copyRow(row)">Copy Row</button>
+              <button type="button" [disabled]="newRowForm.invalid" [ngClass]="{ disabled: newRowForm.invalid}" class="btnBlock" (click)="copyRow(row)">Copy Row</button>
 
             </div>
           </div>
@@ -113,8 +113,8 @@
         <div class="rows clearfix">
           <div class="rowsLeft">Holes</div>
           <div class="rowsRight">
-            <a id="toggleHole" class="btnToggle" href="javascript:void(0);">
-              <img src="images/BtnRoundArrow.png" alt="">
+            <a class="btnToggle" [ngClass]="{ up: showHoleForm }" (click)="showHoleForm = !showHoleForm">
+              <img src="/assets/images/BtnRoundArrow.png" alt="">
             </a>
           </div>
         </div>
@@ -125,11 +125,40 @@
         <div class="holseWrapper clearfix">
           <div *ngFor="let hole of row.holes$ | async; let i = index;" [ngClass]="{btnHoles: true, activeHole: i === selectedHole}"
             (click)="selectHole(i)">
-            <span class="txtHole">Hole {{i}}</span>
-            <a class="delbtnHoles" href="#"></a>
+            <span class="txtHole">Hole {{i + 1}}</span>
+            <a class="delbtnHoles" (click)="row.removeHole(hole)"></a>
           </div>
         </div>
       </div>
+      <ng-container *ngIf="(shotplan.rows$ | async)[selectedRow]; let row; else nothing">
+        <ng-container *ngIf="(row.holes$ | async)[selectedHole]; let hole; else nothing">
+          <form [formGroup]="newHoleForm" class="dvAddNewHole clearfix">
+            <h5>Add New Hole</h5>
+            <div class="addHoleRow clearfix">
+              <div class="addHoleCol fLeft">
+                <label class="lblHole">Number of Holes</label>
+                <input type="number" class="txtInput2" value="1" formControlName="count">
+              </div>
+              <div class="addHoleCol fRight">
+                <label class="lblHole">Hole Spacing</label>
+                <p class="m">
+                  <input class="txtInput2" value="1" type="number" formControlName="spacing">
+                </p>
+              </div>
+            </div>
+            <div class="addHoleRow clearfix">
+              <div class="addHoleCol fLeft">
+                <button type="button" [disabled]="newHoleForm.invalid" [ngClass]="{ disabled: newHoleForm.invalid }" class="btnBlock" (click)="placeHole(row, hole, -1)">Place Left</button>
+              </div>
+              <div class="addHoleCol fRight">
+                <button type="button" [disabled]="newHoleForm.invalid" [ngClass]="{ disabled: newHoleForm.invalid }" class="btnBlock" (click)="placeHole(row, hole, 1)">Place Right</button>
+              </div>
+            </div>
+          </form>
+
+        </ng-container>
+      </ng-container>
+
     </div>
   </div>
 </div>
@@ -139,5 +168,4 @@
 </ng-template>
 
 <ng-template #nothing>
-  nothing
 </ng-template>

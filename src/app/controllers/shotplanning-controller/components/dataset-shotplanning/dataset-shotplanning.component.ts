@@ -2,9 +2,11 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import * as ol from 'openlayers';
-import { filter, first } from 'rxjs/operators';
+import { filter, first, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
 
-import { Shotplan, IShotplan, ShotplanRow, ShotplanRowFeature } from '../../../../models/shotplan.model';
+import { Shotplan, IShotplan, ShotplanRow, ShotplanRowFeature, ShotplanHole } from '../../../../models/shotplan.model';
 import { Dataset } from '../../../../models/dataset.model';
 import { listenOn } from '../../../../util/listenOn';
 import { subscribeOn } from '../../../../util/subscribeOn';
@@ -19,6 +21,11 @@ interface NewRowForm {
   along: number;
   away: number;
   stagger: boolean;
+}
+
+interface NewHoleForm {
+  count: number;
+  spacing: number;
 }
 
 @Component({
@@ -36,11 +43,13 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   selectedRow = -1;
   selectedHole = -1;
 
+  showHoleForm = false;
   showEndpoints = false;
   endpointOffsetTab: 'offset' | 'endpoint' = 'offset';
   modifyEndpointsInteraction: ol.interaction.Modify;
 
   newRowForm: FormGroup;
+  newHoleForm: FormGroup;
   constructor(private map3dService: Map3dService, private terrainProviderService: TerrainProviderService, private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -58,6 +67,14 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
       };
       this.shotplan = new Shotplan(iShotplan);
       this.shotplan.updateFromInterface();
+      this.shotplan.rows$.pipe(
+        switchMap((rows) => {
+          const holes$ = rows.map(r => r.holes$);
+          return Observable.merge(...holes$);
+        })
+      ).subscribe((holes) => {
+        console.log('hole update', holes.map(h => h.id()))
+      });
       if (this.shotplanLayer) {
         this.map3dService.deregisterLayer(this.shotplanLayer, this.dataset);
       }
@@ -73,6 +90,11 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
       along: [0, Validators.required],
       away: [0, Validators.required],
       stagger: [true],
+    });
+
+    this.newHoleForm = this.fb.group({
+      count: [1, Validators.required],
+      spacing: [1, Validators.required],
     });
   }
 
@@ -125,6 +147,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   moveEndpoints(row: ShotplanRowFeature) {
     if (this.modifyEndpointsInteraction) {
       this.map3dService.removeInteraction(this.modifyEndpointsInteraction);
+      this.modifyEndpointsInteraction = null;
       console.log('stop move endpoints');
       return;
     }
@@ -143,6 +166,33 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     this.map3dService.addInteraction(this.modifyEndpointsInteraction);
   }
 
+  placeHole(row: ShotplanRowFeature, hole: ShotplanHole, direction: number) {
+    const form: NewHoleForm = this.newHoleForm.value;
+    if (!this.newHoleForm.valid) {
+      console.warn('form submitted without validation');
+      return;
+    }
+    
+    direction = Math.sign(direction);
+    // Copy the rows along
+    const r = row.getRow();
+    const [x, y] = hole.alongAwayFrom(r);
+    const along = (direction * form.spacing) + x;
+    const away = y;
+    const totalVec = r.alongAway([along, away]);
+    console.log('hole', hole.id());
+    console.log('spacing', [direction, form.spacing], [x, y], [along, away], totalVec);
+    const [p, _] = r.getWorldCoordinates();
+    console.log('positions', p, totalVec);
+    const newP = osg.Vec2.add(p, totalVec, []);
+    const prevHoles = row.getHoles().map(h => [h.id(), h.alongAwayFrom(r)]);
+    const c = ol.proj.transform(newP, hole.terrainProvider().dataset().projection(), WebMercator);
+    const newHole = row.addHole(c);
+    const currentHoles = row.getHoles().map(h => [h.id(), h.alongAwayFrom(r)]);
+    console.log('current preve holes', currentHoles, prevHoles);
+    this.selectedHole = row.getHoles().findIndex(h => h.id() === newHole.id());
+  }
+
   placeRow(row: ShotplanRowFeature) {
     const form: NewRowForm = this.newRowForm.value;
     if (!this.newRowForm.valid) {
@@ -153,15 +203,9 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     // Use dataset to get stuff in meters.
     // console.log('translating', form);
     // console.log('coords in webmercator', r.getCoordinates());
-    const p1 = ol.proj.transform(r.getFirstCoordinate(), WebMercator, this.shotplan.terrainProvider().dataset().projection());
-    const p2 = ol.proj.transform(r.getLastCoordinate(), WebMercator, this.shotplan.terrainProvider().dataset().projection());
+    const [p1, p2] = r.getWorldCoordinates();
     // console.log('coordinates in meters', p1, p2);
-    const rowVec = osg.Vec2.normalize(osg.Vec2.sub(p2, p1, []), []);
-    const clockWisePerp = [-rowVec[1], rowVec[0]];
-
-    const alongVec = osg.Vec2.mult(rowVec, form.along, []);
-    const awayVec = osg.Vec2.mult(clockWisePerp, form.away, []);
-    const totalVec = osg.Vec2.add(alongVec, awayVec, []);
+    const totalVec = r.alongAway([form.along, form.away]);
     // console.log('along/away Vec', alongVec, awayVec, totalVec);
 
     const newP1 = osg.Vec2.add(p1, totalVec, []);

@@ -83,7 +83,7 @@ The finally annotated json structure of an annotation looks like the following.
             "coordinates": [125.6, 10.1]
         },
         "properties": {
-            "projection": "Always WebMercator",
+            "projection": "Always LonLat",
         }
     },
     "resources": ["http://url.com"]
