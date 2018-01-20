@@ -39,6 +39,19 @@ export class ShotplanRowFeature extends ol.Feature {
         });
     }
 
+    public autoUpdate(): boolean;
+    public autoUpdate(autoUpdate: boolean): this;
+    public autoUpdate(autoUpdate?: boolean): boolean | this {
+        if (autoUpdate !== undefined) {
+            this.set('auto_update', autoUpdate);
+            const r = this.getRow();
+            if (r) r.autoUpdate(autoUpdate);
+            this.getHoles().forEach(h => h.autoUpdate(autoUpdate));
+            return this;
+        }
+        return this.get('auto_update');
+    }
+
     public rowUpdate$(): Observable<ShotplanRow> {
         return this.getRow().update$;
     }
@@ -54,12 +67,19 @@ export class ShotplanRowFeature extends ol.Feature {
             }
         });
         const shotplanHole = new ShotplanHole([hole, toe])
+            .autoUpdate(this.autoUpdate())
             .terrainProvider(this.terrainProvider());
         const col = this.getGeometry() as ol.geom.GeometryCollection;
         const holeGeometries = sortHoles(this.getRow(), [...this.getHoles(), shotplanHole]);
         const newCollection = [this.getRow(), ...holeGeometries];
         col.setGeometries(newCollection);
         return shotplanHole;
+    }
+
+    public forceUpdate() {
+        const r = this.getRow();
+        if (r) r.forceUpdate();
+        this.getHoles().forEach(h => h.forceUpdate());
     }
 
     public getRow(): ShotplanRow {
@@ -101,7 +121,9 @@ export class ShotplanRowFeature extends ol.Feature {
             this.set('terrain_provider', terrainProvider);
             const dataset = terrainProvider.dataset();
             this.set('color', dataset.color());
-            console.log('set color', this.get('color'));
+            const r = this.getRow();
+            if (r) r.terrainProvider(terrainProvider);
+            this.getHoles().forEach(h => h.terrainProvider(terrainProvider));
             return this;
         }
         return this.get('terrain_provider');
@@ -120,6 +142,7 @@ export class ShotplanRow extends ol.geom.LineString {
         super(coordinates, layout);
         this.shotplanType(ShotplanRow.SHOTPLAN_TYPE);
         this.id(this.id() || uuid());
+        this.autoUpdate(true);
         this.recalculate();
         listenOn(this, 'change', (event) => {
             console.log('changing row', this.id());
@@ -127,6 +150,17 @@ export class ShotplanRow extends ol.geom.LineString {
             this.recalculate();
         });
         this.updateSource.next(this);
+    }
+
+    public autoUpdate(): boolean;
+    public autoUpdate(autoUpdate: boolean): this;
+    public autoUpdate(autoUpdate?: boolean): boolean | this {
+        if (autoUpdate !== undefined) {
+            // console.log('autoupdate row', autoUpdate, this.id());
+            this.set('auto_update', autoUpdate);
+            return this;
+        }
+        return this.get('auto_update');
     }
 
     public id(): string;
@@ -166,9 +200,10 @@ export class ShotplanRow extends ol.geom.LineString {
      */
     public clone(): ShotplanRow {
         const layout = this.getLayout();
-        const coords = this.getCoordinates();        
+        const coords = this.getCoordinates();
         const clone = new ShotplanRow([coords[0], coords[coords.length - 1]], layout)
             .id(this.id())
+            .autoUpdate(this.autoUpdate())
             .terrainProvider(this.terrainProvider());
         return clone;
     }
@@ -200,6 +235,10 @@ export class ShotplanRow extends ol.geom.LineString {
         const awayVec = osg.Vec2.mult(clockWisePerp, p[1], []);
         const totalVec = osg.Vec2.add(alongVec, awayVec, []);
         return totalVec;
+    }
+
+    public forceUpdate() {
+        this.setCoordinates(this.getCoordinates(), this.getLayout());
     }
 
     public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
@@ -239,7 +278,7 @@ export class ShotplanRow extends ol.geom.LineString {
     public setCoordinates(coordinates: ol.Coordinate[], opt_layout: ol.geom.GeometryLayout) {
         opt_layout = opt_layout || this.getLayout();
         const terrainProvider = this.terrainProvider();
-        if (terrainProvider) {
+        if (this.autoUpdate() && terrainProvider) {
             [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
                 const worldPoint = terrainProvider.getWorldPoint(p);
                 p[2] = worldPoint[2];
@@ -259,11 +298,24 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         super(coordinates, layout);
         this.shotplanType(ShotplanHole.SHOTPLAN_TYPE);
         this.id(this.id() || uuid());
+        this.autoUpdate(true);
         listenOn(this, 'change', () => {
             console.log('changing hole', this.id(), this.getCoordinates());
             this.updateSource.next(this);
         });
         this.updateSource.next(this);
+    }
+
+    public autoUpdate(): boolean;
+    public autoUpdate(autoUpdate: boolean): this;
+    public autoUpdate(autoUpdate?: boolean): boolean | this {
+        if (autoUpdate !== undefined) {
+            this.set('auto_update', autoUpdate);
+            // console.log('autoupdate hole', autoUpdate, this.id());
+            
+            return this;
+        }
+        return this.get('auto_update');
     }
 
     public id(): string;
@@ -308,7 +360,7 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         const [holePoint] = this.getWorldCoordinates();
         const holeVec = osg.Vec2.sub(holePoint, rowPoint, []);
         const rowVec = row.alongAway();
-        
+
         const along = scalarProjection(holeVec, rowVec[0]);
         const away = scalarProjection(holeVec, rowVec[1]);
         return [along, away];
@@ -321,11 +373,16 @@ export class ShotplanHole extends ol.geom.MultiPoint {
     }
 
     public clone() {
+        // console.log('cloned');
         const coords = this.getCoordinates();
         const clone = new ShotplanHole([coords[0], coords[coords.length - 1]], this.getLayout())
             .id(this.id())
+            .autoUpdate(this.autoUpdate())
             .terrainProvider(this.terrainProvider());
         return clone;
+    }
+    public forceUpdate() {
+        this.setCoordinates(this.getCoordinates(), this.getLayout());
     }
 
     public getHoleCoord(): ol.Coordinate {
@@ -341,8 +398,12 @@ export class ShotplanHole extends ol.geom.MultiPoint {
     public setCoordinates(coordinates: ol.Coordinate[], opt_layout: ol.geom.GeometryLayout) {
         opt_layout = opt_layout || this.getLayout();
         const terrainProvider = this.terrainProvider();
-        if (terrainProvider) {
+        if (this.autoUpdate() && terrainProvider) {
+            // console.log('autoupdating', this.autoUpdate(), this.id());
             //TODO: recalculate the toe from toeplane.
+            // Avoid checks at all cost
+            const c1 = this.getFirstCoordinate();
+            const c2 = this.getLastCoordinate();
             [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
                 const worldPoint = terrainProvider.getWorldPoint(p);
                 p[2] = worldPoint[2];
@@ -382,6 +443,20 @@ export class Shotplan extends Annotation {
 
     constructor(props: IShotplan) {
         super(props);
+        // TODO: Make auto update false on default.
+        this.autoUpdate(true);
+    }
+
+    public autoUpdate(): boolean;
+    public autoUpdate(autoUpdate: boolean): this;
+    public autoUpdate(autoUpdate?: boolean): boolean | this {
+        if (autoUpdate !== undefined) {
+            this.set('auto_update', autoUpdate);
+            // have to check if method exist because data may not be initialized
+            this.data().forEach(r => r.autoUpdate && r.autoUpdate(autoUpdate))
+            return this;
+        }
+        return this.get('auto_update');
     }
 
     public data(): ol.Collection<ShotplanRowFeature>;
@@ -403,9 +478,14 @@ export class Shotplan extends Annotation {
         if (terrainProvider !== undefined) {
             // TODO: Propegate to rows and holes
             this.set('terrain_provider', terrainProvider);
+            this.data().forEach(r => r.terrainProvider(terrainProvider));
             return this;
         }
         return this.get('terrain_provider');
+    }
+
+    public forceUpdate() {
+        this.data().forEach(r => r.forceUpdate());
     }
 
     private init() {
@@ -425,11 +505,11 @@ export class Shotplan extends Annotation {
                     });
                     if (geom.getType() === 'LineString') {
                         return new ShotplanRow([p1, p2])
-                            .terrainProvider(this.terrainProvider());
+                            .terrainProvider(this.terrainProvider())
                     } else if (geom.getType() === 'MultiPoint') {
                         console.log('points', [p1, p2])
                         return new ShotplanHole([p1, p2])
-                            .terrainProvider(this.terrainProvider());
+                            .terrainProvider(this.terrainProvider())
                     } else {
                         console.warn('Unexpected geometry in shotplan', geom.getProperties());
                     }
@@ -438,7 +518,9 @@ export class Shotplan extends Annotation {
             const rowFeature = new ShotplanRowFeature({
                 ...feature.getProperties(),
                 geometry: new ol.geom.GeometryCollection([])
-            }).terrainProvider(this.terrainProvider());
+            })
+                .autoUpdate(this.autoUpdate())
+                .terrainProvider(this.terrainProvider());
             // Do this here to invoke event listenr
             console.log('transformed', transformedGeometries);
             (rowFeature.getGeometry() as ol.geom.GeometryCollection).setGeometries(transformedGeometries);
@@ -468,9 +550,10 @@ export class Shotplan extends Annotation {
         const rowGeom = new ShotplanRow(points).terrainProvider(terrainProvider);
         const rowFeature = new ShotplanRowFeature({
             geometry: new ol.geom.GeometryCollection([
-                rowGeom
-            ])
+                rowGeom,
+            ]),
         })
+            .autoUpdate(this.autoUpdate())
             .terrainProvider(terrainProvider);
 
         const data = this.data();

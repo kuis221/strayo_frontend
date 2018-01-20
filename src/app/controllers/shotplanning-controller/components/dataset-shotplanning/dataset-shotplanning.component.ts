@@ -145,13 +145,17 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   }
 
   moveEndpoints(row: ShotplanRowFeature) {
+    // TODO change move feature to show a plan of where things will move
     if (this.modifyEndpointsInteraction) {
       this.map3dService.removeInteraction(this.modifyEndpointsInteraction);
       this.modifyEndpointsInteraction = null;
+      // this.shotplan.autoUpdate(true);
       console.log('stop move endpoints');
       return;
     }
+
     console.log('start move endpoints');
+    // this.shotplan.autoUpdate(false);
     const r = row.getRow();
     
     this.modifyEndpointsInteraction = new ol.interaction.Modify({
