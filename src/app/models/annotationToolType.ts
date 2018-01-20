@@ -1,4 +1,4 @@
-export type AnnotationToolType = 'Polygon' | 'LineString' | 'Selection' | 'Height';
+export type AnnotationToolType = 'Polygon' | 'LineString' | 'Selection' | 'Height' | string;
 
 
 export const ToolToType = {

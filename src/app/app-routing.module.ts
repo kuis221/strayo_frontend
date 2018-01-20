@@ -12,11 +12,12 @@ import { DatasetLayoutComponent } from './components/dataset-layout/dataset-layo
 
 import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
 
-export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
-  localStorageSync({
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({
     keys: ['users'],
     rehydrate: true,
   })(reducer);
+}
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 const routes: Routes = [

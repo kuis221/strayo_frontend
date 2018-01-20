@@ -4,7 +4,7 @@ import { SitesState, getInitialState } from '../state';
 
 const INITIAL_STATE = getInitialState();
 
-export const reducer = (state: SitesState = INITIAL_STATE, action: sites.SitesActions) => {
+export function reducer(state: SitesState = INITIAL_STATE, action: sites.SitesActions)  {
   switch (action.type) {
     case sites.SitesActionsType.GET_SITES:
       return state.getSites(action.payload);

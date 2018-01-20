@@ -4,7 +4,7 @@ import { UsersState, getInitialState } from '../state';
 
 const INITIAL_STATE = getInitialState();
 
-export const reducer = (state: UsersState = INITIAL_STATE, action: users.UsersActions) => {
+export function reducer(state: UsersState = INITIAL_STATE, action: users.UsersActions) {
   // Map plain state to UsersState after rehydrate from local storage
   if (!(state instanceof UsersState)) {
     state = new UsersState(state);

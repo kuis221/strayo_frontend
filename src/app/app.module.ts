@@ -36,9 +36,6 @@ import { Map3dComponent } from './components/map-3d/map-3d.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 
-import { LoginLayoutComponent } from './users/containers/login-layout/login-layout.component';
-import { SignUpLayoutComponent } from './users/containers/signup-layout/signup-layout.component';
-
 import { AuthGuard } from './users/auth-guard.service';
 import { SitesEffects } from './sites/effects/sites.effects';
 import { SitesService } from './sites/sites.service';
@@ -65,8 +62,8 @@ import { DatasetShotplanningComponent } from './controllers/shotplanning-control
 import { ShotplanningToolComponent } from './controllers/shotplanning-controller/components/shotplanning-tool/shotplanning-tool.component';
 import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
 
-export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionReducer<any> =>
-  localStorageSync({
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({
     keys: [{ users: {
       serialize: state => {
         return {currentUser: state.currentUser && state.currentUser.getProperties(), loggedIn: state.loggedIn}
@@ -74,6 +71,7 @@ export const localStorageSyncReducer = (reducer: ActionReducer<any>): ActionRedu
       deserialize: (update) => new UsersState({currentUser: new User(update.currentUser) || null, loggedIn: update.loggedIn})} }],
     rehydrate: true,
   })(reducer);
+}
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
@@ -88,8 +86,6 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     Map3dComponent,
     HeaderComponent,
     FooterComponent,
-    LoginLayoutComponent,
-    SignUpLayoutComponent,
     SiteDropdownComponent,
     SubHeaderComponent,
     AnnotationsLayersComponent,
