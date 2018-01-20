@@ -12,8 +12,7 @@
         <div class="rows clearfix">
           <div class="rowsLeft">Row</div>
           <div class="rowsRight">
-            <a id="toggleRow" class="btnToggle" [ngClass]="{ up: selectedRow >= 0 }" (click)="selectRow(selectedRow >= 0 ? selectedRow : 0)"
-              href="javascript:void(0);">
+            <a id="toggleRow" class="btnToggle" [ngClass]="{ up: showEndpoints }" (click)="showEndpoints = !showEndpoints" href="javascript:void(0);">
               <img src="/assets/images/BtnRoundArrow.png" alt="">
             </a>
           </div>
@@ -30,62 +29,84 @@
           </div>
         </div>
       </div>
-      <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
-        <div class="holeTabs clearfix">
-          <a class="tabLink activeTab" href="#Offset">Offset</a>
-          <a class="tabLink" href="#Endpoints">Endpoints</a>
-        </div>
-        <div class="tabOuterCont clearfix">
-          <div id="Offset" class="tabCont clearfix" style="display: block;">
-            <p id="txtEndpoints" class="txtSmall">Use
-              <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
-              <span>{{((row.rowUpdate$() | async).azimuth$ | async)}}</span>
-            </p>
-            <div class="clearfix" id="dvRowEdit" style="display: none;">
-              <div class="rowHeading clearfix">
-                <div class="rowHeadingLeft">Distance from
-                  <span>Row 1</span>
-                </div>
-                <div class="rowHeadingRight">1m</div>
+      <div *ngIf="showEndpoints">
+        <tabset *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix" [justified]="true">
+          <tab customClass="tabHeading" (select)="selectEndpointOffsetTab('offset')">
+            <ng-template tabHeading>
+              <div class="holeTabs clearfix">
+                <a [ngClass]="{tabLink: true, activeTab: (endpointOffsetTab === 'offset')}">
+                  Offset
+                </a>
               </div>
-              <div class="addHoleRow clearfix">
-                <div class="addHoleCol fLeft">
-                  <label class="lblHole">Along shotline</label>
-                  <p class="m">
-                    <input type="text" class="txtInput2" name="">
-                  </p>
-                </div>
-                <div class="addHoleCol fRight">
-                  <label class="lblHole">Away from shotline</label>
-                  <input class="txtInput2" type="text" name="">
-                </div>
+            </ng-template>
+            <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
+              <div class="tabOuterCont clearfix">
+                <p id="txtEndpoints" class="txtSmall">Use
+                  <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
+                  <span>{{((row.rowUpdate$() | async).azimuth$ | async)}}°</span>
+                </p>
               </div>
-              <div class="rowHeading clearfix">
-                <div class="rowHeadingLeft">Distance from
-                  <span>Row 2</span>
-                </div>
-                <div class="rowHeadingRight">1m</div>
+            </div>
+          </tab>
+          <tab (select)="selectEndpointOffsetTab('endpoint')">
+            <ng-template tabHeading>
+              <div class="holeTabs clearfix">
+                <a [ngClass]="{tabLink: true, activeTab: (endpointOffsetTab === 'endpoint')}">
+                  Endpoints
+                </a>
               </div>
-              <div class="addHoleRow clearfix">
-                <div class="addHoleCol fLeft">
-                  <label class="lblHole">Along shotline</label>
-                  <p class="m">
-                    <input type="text" class="txtInput2" name="">
-                  </p>
-                </div>
-                <div class="addHoleCol fRight">
-                  <label class="lblHole">Away from shotline</label>
-                  <input class="txtInput2" type="text" name="">
+            </ng-template>
+            <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
+              <div class="tabOuterCont clearfix">
+                <div class="">
+                  <a (click)="moveEndpoints(row)" class="btnBlock">Move End Points</a>
                 </div>
               </div>
             </div>
+          </tab>
+        </tabset>
+      </div>
+      <form *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="dvAddNewRow clearfix" [formGroup]="newRowForm">
+        <div class="clearfix">
+          <h5 class="fLeft">Add New Row</h5>
+          <a class="drawNewRow" (click)="drawNewRow()">Draw new row</a>
+        </div>
+        <div class="clearfix pTop10">
+          <div class="addHoleRow clearfix">
+            <div class="addHoleCol fLeft">
+              <label class="lblHole">Along shotline</label>
+              <p class="m">
+                <input type="number" class="txtInput2" formControlName="along">
+              </p>
+            </div>
+            <div class="addHoleCol fRight">
+              <label class="lblHole">Away from shotline</label>
+              <p class="m">
+                <input class="txtInput2" type="number" formControlName="away">
+              </p>
+            </div>
           </div>
-          <div id="Endpoints" class="tabCont clearfix">
-            <a href="#" class="btnBlock">Move End Points</a>
+          <div class="addHoleRow clearfix">
+            <div class="addHoleCol fLeft">
+              <button type="button" [disabled]="newRowForm.invalid" class="btnBlock" (click)="placeRow(row)">Place Row</button>
+            </div>
+            <div class="addHoleCol fRight">
+              <button type="button" [disabled]="newRowForm.invalid" class="btnBlock" (click)="copyRow(row)">Copy Row</button>
+
+            </div>
           </div>
         </div>
-      </div>
-
+        <div class="dvStagger">
+          <div class="clearfix">
+            <h5 class="fLeft">Stagger new line?</h5>
+            <label class="switch fRight">
+              <input class="switchBtn" type="checkbox" checked formControlName="stagger">
+              <span class="switchSlider round"></span>
+            </label>
+          </div>
+          <p class="txtSmall">When selected, a new line will stagger its position along the A-B line.</p>
+        </div>
+      </form>
     </div>
     <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row; else nothing" class="contentBox noPadding clearfix">
       <div class="clearfix p10">
@@ -118,4 +139,5 @@
 </ng-template>
 
 <ng-template #nothing>
+  nothing
 </ng-template>

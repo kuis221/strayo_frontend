@@ -24,7 +24,7 @@ export class ShotplanRowFeature extends ol.Feature {
                 console.warn('no geometries');
                 return;
             }
-            const holeGeometries: ShotplanHole[] = geometries.filter((g) => g.shotplanType() === ShotplanHole.SHOTPLAN_TYPE) as any;
+            const holeGeometries = this.getHoles();
             holeGeometries.sort((a, b) => {
                 const [aAlong, aAway] = a.alongAway(this.getRow());
                 const [bAlong, bAway] = b.alongAway(this.getRow());
@@ -48,18 +48,27 @@ export class ShotplanRowFeature extends ol.Feature {
                 p[2] = worldPoint[2];
             }
         });
-        const shotplanHole = new ShotplanHole([hole, toe]);
-        shotplanHole.terrainProvider(this.terrainProvider());
+        const shotplanHole = new ShotplanHole([hole, toe])
+            .terrainProvider(this.terrainProvider());
         const col = this.getGeometry() as ol.geom.GeometryCollection;
-        col.setGeometries([...col.getGeometries(), shotplanHole]);
+        const newCollection = [...col.getGeometries(), shotplanHole];
+        console.log('new Collection', newCollection);
+        col.setGeometries(newCollection);
+        return shotplanHole;
     }
 
     public getRow(): ShotplanRow {
         const col = this.getGeometry() as ol.geom.GeometryCollection;
         return col.getGeometries().find((g: ShotplanRow | ShotplanHole) => {
-            console.log('g', g.getProperties());
             return g.shotplanType() === ShotplanRow.SHOTPLAN_TYPE;
         }) as ShotplanRow;
+    }
+
+    public getHoles(): ShotplanHole[] {
+        const holeGeometries: ShotplanHole[] =
+            (this.getGeometry() as ol.geom.GeometryCollection)
+            .getGeometries().filter((g: ShotplanHole | ShotplanRow) => g.shotplanType() === ShotplanHole.SHOTPLAN_TYPE) as any;
+        return holeGeometries;
     }
 
     public terrainProvider(): TerrainProvider;
@@ -88,9 +97,8 @@ export class ShotplanRow extends ol.geom.LineString {
         super(coordinates, layout);
         this.shotplanType(ShotplanRow.SHOTPLAN_TYPE);
         this.id(this.id() || uuid());
-        console.log('coords', this.getCoordinates());
         this.recalculate();
-        listenOn(this, 'change', () => {
+        listenOn(this, 'change', (event) => {
             console.log('changing row', this.id());
             this.updateSource.next(this);
             this.recalculate();
@@ -146,21 +154,26 @@ export class ShotplanRow extends ol.geom.LineString {
         const points = this.getCoordinates().map((c) => {
             const longLat = ol.proj.transform(c, WebMercator, LonLat);
             const toReturn = [longLat[0], longLat[1], c[2]];
-            console.log('toReturn', toReturn);
+            // console.log('toReturn', toReturn);
             return toReturn;
+        });
+        // Sort by easterm most point
+        points.sort((a, b) => {
+            return a[0] - b[0];
         });
         const newAzimuth = calculateAzimuth.azimuth(
             {
-                long: points[0][0],
+                lng: points[0][0],
                 lat: points[0][1],
                 elv: points[0][2],
             },
             {
-                long: points[0][0],
-                lat: points[0][1],
-                elv: points[0][2],
+                lng: points[1][0],
+                lat: points[1][1],
+                elv: points[1][2],
             }
         );
+        // console.log('new Azimuth', newAzimuth);
         this.azimuthSource.next(newAzimuth.azimuth);
     }
 }
@@ -358,13 +371,13 @@ export class Shotplan extends Annotation {
             }
         });
         console.log('points', points);
-        const rowGeom = new ShotplanRow(points);
+        const rowGeom = new ShotplanRow(points).terrainProvider(terrainProvider);
         const rowFeature = new ShotplanRowFeature({
             geometry: new ol.geom.GeometryCollection([
                 rowGeom
             ])
-        });
-        rowGeom.terrainProvider(terrainProvider);
+        })
+        .terrainProvider(terrainProvider);
 
         const data = this.data();
         data.push(rowFeature);
