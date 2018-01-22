@@ -1,5 +1,4 @@
 import * as ol from 'openlayers';
-import vec3 from 'gl-vec3';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { memoize } from 'lodash';
 import { Observable } from 'rxjs/Observable';
@@ -108,8 +107,9 @@ export class ShotplanRowFeature extends ol.Feature {
         const [alongToe, awayToe] = hole.alongAwayFrom(row, true);
 
         // Calculate bearing.
-        const rel = osg.Vec2.sub(p2, p1);
+        const rel = osg.Vec2.sub(p2, p1, []);
         const bearing = Math.atan2(rel[1], rel[0]);
+        console.log('geting bearing', [p1, p2], rel, bearing);
 
         // Calculate the inclination
         const hypothenuse = osg.Vec3.distance(p1, p2);
@@ -130,12 +130,11 @@ export class ShotplanRowFeature extends ol.Feature {
             firstPoint = hole.getFirstCoordinate();
             if (!firstPoint[2]) throw new Error('Unexpected error, hole has NaN elevation');
         }
+        console.log('updating toe');
         const row = this.getRow();
         const firstPointAlongAway = hole.alongAwayFrom(row);
 
         // calculate inclination.
-        this.getGeometry().getGeometries().forEach((g: ShotplanRow | ShotplanHole) => g.toeHeight(toeHeight));
-        // Initialize toeVec to an inclination of 0
         let currentAlongAway = [firstPointAlongAway[0], firstPointAlongAway[1]];
         if (inclination !== 0) {
             // Right triangle where adjacent is depth and opposite is distance frome hole
@@ -168,7 +167,7 @@ export class ShotplanRowFeature extends ol.Feature {
         toePoint[2] = this.toeHeight();
         const prevAutoUpdate = hole.autoUpdate();
         hole.autoUpdate(false);
-        hole.setCoordinates([holePoint, toePoint], hole.getLayout());
+        hole.setCoordinates([firstPoint, toePoint], hole.getLayout());
         hole.autoUpdate(prevAutoUpdate);
         const bi = this.getBearingAndInclination(hole);
         console.log('start, end bearing & inclination', [bearing, inclination], bi);
@@ -321,7 +320,10 @@ export class ShotplanRow extends ol.geom.LineString {
     }
 
     public forceUpdate() {
+        const prevAutoUpdate = this.autoUpdate();
+        this.autoUpdate(true);
         this.setCoordinates(this.getCoordinates(), this.getLayout());
+        this.autoUpdate(prevAutoUpdate);
     }
 
     public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
@@ -475,7 +477,12 @@ public clone() {
         return clone;
     }
     public forceUpdate() {
+        console.log('pre force', this.getCoordinates());
+        const prevAutoUpdate = this.autoUpdate();
+        this.autoUpdate(true);
         this.setCoordinates(this.getCoordinates(), this.getLayout());
+        this.autoUpdate(prevAutoUpdate);
+        console.log('after', this.getCoordinates());
     }
 
     public getHoleCoord(): ol.Coordinate {
@@ -549,9 +556,7 @@ export class Shotplan extends Annotation {
     public data(data: string | ol.Collection<ol.Feature>): this;
     public data(data?: string | ol.Collection<ol.Feature>): ol.Collection<ShotplanRowFeature> | this {
         if (data !== undefined) {
-            if (typeof data === 'string') {
-                data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));
-            }
+            Annotation.prototype.data.call(this, data);
             this.init();
             return this;
         }
@@ -599,6 +604,7 @@ export class Shotplan extends Annotation {
             const row = geometries.getGeometries().find(g => g.getType() === 'LineString') as ol.geom.LineString;
             const holes = geometries.getGeometries().filter(g => g.getType() === 'MultiPoint') as ol.geom.MultiPoint[];
             const rowFeature = this.addRow([row.getFirstCoordinate(), row.getLastCoordinate()]);
+            console.log('init', rowFeature, rowFeature.getRow(), holes)
             holes.forEach((h) => {
                 rowFeature.addHole(h.getFirstCoordinate(), h.getLastCoordinate());
             });
@@ -623,7 +629,6 @@ export class Shotplan extends Annotation {
 
         const rowGeom = (new ShotplanRow(points))
             .terrainProvider(terrainProvider)
-            .toeHeight(toeHeight)
             .autoUpdate(autoUpdate);
 
         const rowFeature = new ShotplanRowFeature({

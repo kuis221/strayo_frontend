@@ -1,6 +1,6 @@
 import * as ol from 'openlayers';
 import * as moment from 'moment';
-
+import { isEmpty } from 'lodash';
 import { Resource, IResource } from './resource.model';
 
 export interface IAnnotation {
@@ -35,7 +35,13 @@ export class Annotation extends ol.Object {
     public data(data?: string | ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | this {
         if (data !== undefined) {
             if (typeof data === 'string') {
-                data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));
+                const parsed = JSON.parse(data);
+                if (!isEmpty(parsed)) {
+                    data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data));
+                } else {
+                    data = new ol.Collection([])
+                }
+                // console.log('data', data, typeof data, JSON.parse(data));
             }
             this.set('data', data);
             return this;

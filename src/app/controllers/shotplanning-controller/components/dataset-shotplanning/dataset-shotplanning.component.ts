@@ -184,7 +184,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     const along = (direction * form.spacing) + x;
     const away = y;
     console.log('hole', hole.id());
-    console.log('spacing', [direction, form.spacing], [x, y], [along, away], totalVec);
+    console.log('spacing', [direction, form.spacing], [x, y], [along, away]);
     const [p, _] = r.getWorldCoordinates();
     const newP = r.alongAway(p, [along, away]);
     const prevHoles = row.getHoles().map(h => [h.id(), h.alongAwayFrom(r)]);
