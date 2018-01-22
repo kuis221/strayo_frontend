@@ -43,7 +43,7 @@
               <div class="tabOuterCont clearfix">
                 <p id="txtEndpoints" class="txtSmall">Use
                   <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
-                  <span>{{((row.rowUpdate$() | async).azimuth$ | async)}}°</span>
+                  <span>{{((row.getRow().update$ | async).azimuth$ | async)}}°</span>
                 </p>
               </div>
             </div>

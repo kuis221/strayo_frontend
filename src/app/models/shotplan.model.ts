@@ -1,5 +1,7 @@
 import * as ol from 'openlayers';
+import vec3 from 'gl-vec3';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { memoize } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import uuid from 'uuid/v4';
 import calculateAzimuth from 'azimuth';
@@ -18,24 +20,27 @@ export function sortHoles(row: ShotplanRow, holeGeometries: ShotplanHole[]): Sho
     });
 }
 
+
 export class ShotplanRowFeature extends ol.Feature {
     static SHOTPLAN_TYPE = 'shotplan_row_feature';
-    private holesSource = new BehaviorSubject<ShotplanHole[]>([]);
+
+    private holesSource = new BehaviorSubject<ShotplanHole[]>(null);
     public holes$ = this.holesSource.asObservable();
+
+    private rowSource = new BehaviorSubject<ShotplanRow>(null);
+    public row$ = this.rowSource.asObservable();
+
+    private _getBearingAndInclinationBehaviorSubject: (id) => BehaviorSubject<[number, number]>;
 
     constructor(props) {
         super(props);
+        this._getBearingAndInclinationBehaviorSubject = memoize((id) => {
+            return new BehaviorSubject<[number, number]>([0, 0])
+        });
         this.setId(this.getId() || uuid());
         listenOn(this.getGeometry(), 'change', (evt) => {
-            const geometries: Array<ShotplanHole | ShotplanRow> = (this.getGeometry() as ol.geom.GeometryCollection).getGeometries() as any;
-            console.log('geometries changed', evt, geometries);
-            if (!geometries) {
-                console.warn('no geometries');
-                return;
-            }
-            const holeGeometries = this.getHoles();
-            // console.log('should sort', this.getHoles(), sortHoles(this.getRow(), holeGeometries));
-            this.holesSource.next(sortHoles(this.getRow(), holeGeometries));
+            this.holesSource.next(this.getHoles());
+            this.rowSource.next(this.getRow());
         });
     }
 
@@ -44,31 +49,47 @@ export class ShotplanRowFeature extends ol.Feature {
     public autoUpdate(autoUpdate?: boolean): boolean | this {
         if (autoUpdate !== undefined) {
             this.set('auto_update', autoUpdate);
-            const r = this.getRow();
-            if (r) r.autoUpdate(autoUpdate);
-            this.getHoles().forEach(h => h.autoUpdate(autoUpdate));
+            this.getGeometry().getGeometries().forEach((g: ShotplanRow | ShotplanHole) => g.autoUpdate(autoUpdate));            
             return this;
         }
         return this.get('auto_update');
     }
 
-    public rowUpdate$(): Observable<ShotplanRow> {
-        return this.getRow().update$;
+    public toeHeight(): number;
+    public toeHeight(toeHeight: number): this;
+    public toeHeight(toeHeight?: number): number | this {
+        if (toeHeight !== undefined) {
+            this.set('toe_height', toeHeight);
+
+            return this;
+        }
+        return this.get('toe_height');
+    }
+
+    public terrainProvider(): TerrainProvider;
+    public terrainProvider(terrainProvider: TerrainProvider): this;
+    public terrainProvider(terrainProvider?: TerrainProvider): TerrainProvider | this {
+        if (terrainProvider !== undefined) {
+            this.set('terrain_provider', terrainProvider);
+            const dataset = terrainProvider.dataset();
+            this.set('color', dataset.color());
+            this.getGeometry().getGeometries().forEach((g: ShotplanRow | ShotplanHole) => g.terrainProvider(terrainProvider));
+            
+            const r = this.getRow();
+            if (r) r.terrainProvider(terrainProvider);
+            this.getHoles().forEach(h => h.terrainProvider(terrainProvider));
+            return this;
+        }
+        return this.get('terrain_provider');
     }
 
     public addHole(hole: ol.Coordinate, toe?: ol.Coordinate) {
+        // TODO, if toe is passed, calculate toeHeight from toe.
         toe = toe || ([...hole] as ol.Coordinate);
-        const points = [hole, toe];
-        points.forEach((p) => {
-            if (!p[2]) {
-                const worldPoint = this.terrainProvider().getWorldPoint(p);
-                if (!worldPoint[2]) console.warn('point has NaN depth');
-                p[2] = worldPoint[2];
-            }
-        });
         const shotplanHole = new ShotplanHole([hole, toe])
             .autoUpdate(this.autoUpdate())
             .terrainProvider(this.terrainProvider());
+        this.updateToe(shotplanHole, 0, 0);
         const col = this.getGeometry() as ol.geom.GeometryCollection;
         const holeGeometries = sortHoles(this.getRow(), [...this.getHoles(), shotplanHole]);
         const newCollection = [this.getRow(), ...holeGeometries];
@@ -76,10 +97,87 @@ export class ShotplanRowFeature extends ol.Feature {
         return shotplanHole;
     }
 
+    public getGeometry(): ol.geom.GeometryCollection {
+        return ol.Feature.prototype.getGeometry.call(this) as ol.geom.GeometryCollection;
+    }
+
+    public getBearingAndInclination(hole: ShotplanHole): [number, number] {
+        const row = this.getRow();
+        const [p1, p2] = hole.getWorldCoordinates();
+        const [alongHole, awayHole] = hole.alongAwayFrom(row);
+        const [alongToe, awayToe] = hole.alongAwayFrom(row, true);
+
+        // Calculate bearing.
+        const rel = osg.Vec2.sub(p2, p1);
+        const bearing = Math.atan2(rel[1], rel[0]);
+
+        // Calculate the inclination
+        const hypothenuse = osg.Vec3.distance(p1, p2);
+        const opposite = osg.Vec2.distance(p1, p2);
+        const inclination = Math.asin(opposite / hypothenuse) * 180 / Math.PI;
+        this._getBearingAndInclinationBehaviorSubject(hole.id()).next([bearing, inclination]);
+        return [bearing, inclination];
+    }
+
+    public getBearingAndInclination$(hole: ShotplanHole): Observable<[number, number]> {
+        return this._getBearingAndInclinationBehaviorSubject(hole.id()).asObservable();
+    }
+
+    public updateToe(hole: ShotplanHole, bearing: number, inclination: number) {
+        let firstPoint = hole.getFirstCoordinate();
+        if (!firstPoint[2]) {
+            hole.forceUpdate();
+            firstPoint = hole.getFirstCoordinate();
+            if (!firstPoint[2]) throw new Error('Unexpected error, hole has NaN elevation');
+        }
+        const row = this.getRow();
+        const firstPointAlongAway = hole.alongAwayFrom(row);
+
+        // calculate inclination.
+        this.getGeometry().getGeometries().forEach((g: ShotplanRow | ShotplanHole) => g.toeHeight(toeHeight));
+        // Initialize toeVec to an inclination of 0
+        let currentAlongAway = [firstPointAlongAway[0], firstPointAlongAway[1]];
+        if (inclination !== 0) {
+            // Right triangle where adjacent is depth and opposite is distance frome hole
+            const depth = Math.abs(this.toeHeight() - firstPoint[2]);
+            const hypothenuse = depth / (Math.cos(inclination * Math.PI / 180));
+            // Inclination is always positive
+            const along = hypothenuse * Math.sin(inclination * Math.PI / 180);
+            const inclinationUpdate = [along, 0];
+            currentAlongAway = osg.Vec2.add(currentAlongAway, inclinationUpdate, []);
+
+            if (bearing !== 0) {
+                // Rotate along and away vector. Need to translate to origin.
+                const translatedToOrigin = [currentAlongAway[0] - firstPointAlongAway[0], currentAlongAway[1] - firstPointAlongAway[1]];
+                const cos = Math.cos(bearing * Math.PI / 180);
+                const sin = Math.sin(bearing * Math.PI / 180);
+                const bearingUpdate = [
+                    (translatedToOrigin[0] * cos) - (translatedToOrigin[1] * sin),
+                    (translatedToOrigin[0] * sin) - (translatedToOrigin[1] * cos)
+                ];
+                currentAlongAway = osg.Vec2.add(currentAlongAway, bearingUpdate, []);
+            }
+        }
+        // translate point
+        const [holePoint] = hole.getWorldCoordinates();
+        const toePoint = ol.proj.transform(
+            row.alongAway(holePoint, currentAlongAway as [number, number]),
+            this.terrainProvider().dataset().projection(),
+            WebMercator
+        );
+        toePoint[2] = this.toeHeight();
+        const prevAutoUpdate = hole.autoUpdate();
+        hole.autoUpdate(false);
+        hole.setCoordinates([holePoint, toePoint], hole.getLayout());
+        hole.autoUpdate(prevAutoUpdate);
+        const bi = this.getBearingAndInclination(hole);
+        console.log('start, end bearing & inclination', [bearing, inclination], bi);
+    }
+
     public forceUpdate() {
-        const r = this.getRow();
-        if (r) r.forceUpdate();
-        this.getHoles().forEach(h => h.forceUpdate());
+        this.getGeometry().getGeometries().forEach((g : ShotplanHole | ShotplanRow) => {
+            g.forceUpdate();
+        });  
     }
 
     public getRow(): ShotplanRow {
@@ -112,21 +210,6 @@ export class ShotplanRowFeature extends ol.Feature {
         const newCollection = [r, ...sortHoles(r, holeGeometries)]
         const col = this.getGeometry() as ol.geom.GeometryCollection;
         col.setGeometries(newCollection);
-    }
-
-    public terrainProvider(): TerrainProvider;
-    public terrainProvider(terrainProvider: TerrainProvider): this;
-    public terrainProvider(terrainProvider?: TerrainProvider): TerrainProvider | this {
-        if (terrainProvider !== undefined) {
-            this.set('terrain_provider', terrainProvider);
-            const dataset = terrainProvider.dataset();
-            this.set('color', dataset.color());
-            const r = this.getRow();
-            if (r) r.terrainProvider(terrainProvider);
-            this.getHoles().forEach(h => h.terrainProvider(terrainProvider));
-            return this;
-        }
-        return this.get('terrain_provider');
     }
 }
 
@@ -209,14 +292,14 @@ export class ShotplanRow extends ol.geom.LineString {
     }
     /**
      * Translates the point along the along away vectors
-     * Ex: p [5, 5]
-     * returns [5 * along, 5 * away];
+     * Ex: p [5, 5], [along, away]
+     * returns [5, 5] + [alongVec * along, awayVec * away];
      * 
      * @param {ol.Coordinate} p 
      * @returns {ol.Coordinate} 
      * @memberof ShotplanRow
      */
-    public alongAway(p: ol.Coordinate): ol.Coordinate;
+    public alongAway(p: ol.Coordinate, a: ol.Coordinate): ol.Coordinate;
     /**
      * Gets the normalized 2D along and away vectors. Assumes vector is from last to first coordinate
      * 
@@ -224,17 +307,17 @@ export class ShotplanRow extends ol.geom.LineString {
      * @memberof ShotplanRow
      */
     public alongAway(): [ol.Coordinate, ol.Coordinate];
-    public alongAway(p?: ol.Coordinate): ol.Coordinate | [ol.Coordinate, ol.Coordinate] {
+    public alongAway(p?: ol.Coordinate, a?: ol.Coordinate): ol.Coordinate | [ol.Coordinate, ol.Coordinate] {
         const [p1, p2] = this.getWorldCoordinates();
         const rowVec = osg.Vec2.normalize(osg.Vec2.sub(p2, p1, []), []);
         const clockWisePerp: [number, number] = [-rowVec[1], rowVec[0]];
         if (p === undefined) {
             return [rowVec, clockWisePerp];
         }
-        const alongVec = osg.Vec2.mult(rowVec, p[0], []);
-        const awayVec = osg.Vec2.mult(clockWisePerp, p[1], []);
+        const alongVec = osg.Vec2.mult(rowVec, a[0], []);
+        const awayVec = osg.Vec2.mult(clockWisePerp, a[1], []);
         const totalVec = osg.Vec2.add(alongVec, awayVec, []);
-        return totalVec;
+        return osg.Vec2.add(p, totalVec, []);
     }
 
     public forceUpdate() {
@@ -244,6 +327,8 @@ export class ShotplanRow extends ol.geom.LineString {
     public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
         const p1 = ol.proj.transform(this.getFirstCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
         const p2 = ol.proj.transform(this.getLastCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        p1[2] = this.getFirstCoordinate()[2];
+        p2[2] = this.getLastCoordinate()[2];
         return [p1, p2];
     }
 
@@ -279,10 +364,10 @@ export class ShotplanRow extends ol.geom.LineString {
         opt_layout = opt_layout || this.getLayout();
         const terrainProvider = this.terrainProvider();
         if (this.autoUpdate() && terrainProvider) {
-            [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
-                const worldPoint = terrainProvider.getWorldPoint(p);
-                p[2] = worldPoint[2];
-            });
+            const w1 = terrainProvider.getWorldPoint(coordinates[0]);
+            coordinates[0][2] = w1[2];
+            const w2 = terrainProvider.getWorldPoint(coordinates[coordinates.length - 1]);
+            coordinates[1][2] = w1[2];
         } else {
         }
         ol.geom.LineString.prototype.setCoordinates.bind(this)([coordinates[0], coordinates[coordinates.length - 1]], opt_layout);
@@ -294,6 +379,7 @@ export class ShotplanHole extends ol.geom.MultiPoint {
     static SHOTPLAN_TYPE = 'shotplan_hole';
     private updateSource = new BehaviorSubject<ShotplanHole>(null);
     public update = this.updateSource.asObservable();
+
     constructor(coordinates: [ol.Coordinate, ol.Coordinate], layout: ol.geom.GeometryLayout = 'XYZ') {
         super(coordinates, layout);
         this.shotplanType(ShotplanHole.SHOTPLAN_TYPE);
@@ -312,7 +398,7 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         if (autoUpdate !== undefined) {
             this.set('auto_update', autoUpdate);
             // console.log('autoupdate hole', autoUpdate, this.id());
-            
+
             return this;
         }
         return this.get('auto_update');
@@ -355,10 +441,11 @@ export class ShotplanHole extends ol.geom.MultiPoint {
      * @returns {[number, number]} 
      * @memberof ShotplanHole
      */
-    public alongAwayFrom(row: ShotplanRow): [number, number] {
+    public alongAwayFrom(row: ShotplanRow, toe?: boolean): [number, number] {
         const [rowPoint] = row.getWorldCoordinates();
-        const [holePoint] = this.getWorldCoordinates();
-        const holeVec = osg.Vec2.sub(holePoint, rowPoint, []);
+        const [holePoint, toePoint] = this.getWorldCoordinates();
+        const point = (toe) ? toePoint : holePoint;
+        const holeVec = osg.Vec2.sub(point, rowPoint, []);
         const rowVec = row.alongAway();
 
         const along = scalarProjection(holeVec, rowVec[0]);
@@ -369,13 +456,19 @@ export class ShotplanHole extends ol.geom.MultiPoint {
     public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
         const p1 = ol.proj.transform(this.getFirstCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
         const p2 = ol.proj.transform(this.getLastCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
+        p1[2] = this.getFirstCoordinate()[2];
+        p2[2] = this.getLastCoordinate()[2];
         return [p1, p2];
     }
-
-    public clone() {
+/**
+ * @overide
+ * 
+ * @returns 
+ * @memberof ShotplanHole
+ */
+public clone() {
         // console.log('cloned');
-        const coords = this.getCoordinates();
-        const clone = new ShotplanHole([coords[0], coords[coords.length - 1]], this.getLayout())
+        const clone = new ShotplanHole([this.getFirstCoordinate(), this.getLastCoordinate()], this.getLayout())
             .id(this.id())
             .autoUpdate(this.autoUpdate())
             .terrainProvider(this.terrainProvider());
@@ -386,12 +479,10 @@ export class ShotplanHole extends ol.geom.MultiPoint {
     }
 
     public getHoleCoord(): ol.Coordinate {
-        console.log('holeCoord', this.getFirstCoordinate());
         return this.getFirstCoordinate();
     }
 
     public getToeCoord(): ol.Coordinate {
-        console.log('toeCoord', this.getLastCoordinate());
         return this.getLastCoordinate();
     }
 
@@ -399,16 +490,8 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         opt_layout = opt_layout || this.getLayout();
         const terrainProvider = this.terrainProvider();
         if (this.autoUpdate() && terrainProvider) {
-            // console.log('autoupdating', this.autoUpdate(), this.id());
-            //TODO: recalculate the toe from toeplane.
-            // Avoid checks at all cost
-            const c1 = this.getFirstCoordinate();
-            const c2 = this.getLastCoordinate();
-            [coordinates[0], coordinates[coordinates.length - 1]].forEach((p) => {
-                const worldPoint = terrainProvider.getWorldPoint(p);
-                p[2] = worldPoint[2];
-            });
-        } else {
+            const w1 = terrainProvider.getWorldPoint(coordinates[0]);
+            coordinates[0][2] = w1[2];
         }
         ol.geom.MultiPoint.prototype.setCoordinates.bind(this)([coordinates[0], coordinates[coordinates.length - 1]], opt_layout);
     }
@@ -423,7 +506,7 @@ export class Shotplan extends Annotation {
     private rowsSource = new BehaviorSubject<ShotplanRowFeature[]>(null);
     public rows$ = this.rowsSource.asObservable();
 
-    private offData: Function;
+    private unsubscribe: Function[] = [];
     static fromABLine(terrainProvider: TerrainProvider, points: [ol.Coordinate, ol.Coordinate]): Shotplan {
         const shotplan = new Shotplan({
             created_at: new Date(),
@@ -444,7 +527,10 @@ export class Shotplan extends Annotation {
     constructor(props: IShotplan) {
         super(props);
         // TODO: Make auto update false on default.
-        this.autoUpdate(true);
+        this.set('auto_update', true);
+        const bounds = this.terrainProvider().getWorldBounds();
+        console.log('world bounds', bounds);
+        this.set('toe_height', bounds._min[2]);
     }
 
     public autoUpdate(): boolean;
@@ -453,7 +539,7 @@ export class Shotplan extends Annotation {
         if (autoUpdate !== undefined) {
             this.set('auto_update', autoUpdate);
             // have to check if method exist because data may not be initialized
-            this.data().forEach(r => r.autoUpdate && r.autoUpdate(autoUpdate))
+            this.data().forEach(r => r.autoUpdate && r.autoUpdate(autoUpdate));
             return this;
         }
         return this.get('auto_update');
@@ -463,7 +549,7 @@ export class Shotplan extends Annotation {
     public data(data: string | ol.Collection<ol.Feature>): this;
     public data(data?: string | ol.Collection<ol.Feature>): ol.Collection<ShotplanRowFeature> | this {
         if (data !== undefined) {
-            if (data === 'string') {
+            if (typeof data === 'string') {
                 data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));
             }
             this.init();
@@ -484,78 +570,70 @@ export class Shotplan extends Annotation {
         return this.get('terrain_provider');
     }
 
+    public toeHeight(): number;
+    public toeHeight(toeHeight: number): this;
+    public toeHeight(toeHeight?: number): number | this {
+        if (toeHeight !== undefined) {
+            this.set('toe_height', toeHeight);
+            // have to check if method exist because data may not be initialized
+            this.data().forEach(r => r.toeHeight && r.toeHeight(toeHeight));
+            return this;
+        }
+        return this.get('toe_height');
+    }
+
     public forceUpdate() {
-        this.data().forEach(r => r.forceUpdate());
+        this.data().forEach(r => r.forceUpdate && r.forceUpdate());
     }
 
     private init() {
         // Convert geojson to shotplan specific versions
+        const backup = this.data().getArray();
+        // Convert to new collection. Add row auto adds to collection.
+        this.set('data', new ol.Collection([]));
         const terrainProvider = this.terrainProvider();
-        const rowFeatures = this.data().getArray().map((feature) => {
+        const toeHeight = this.toeHeight();
+        const autoUpdate = this.autoUpdate();
+        const rowFeatures = backup.map((feature) => {
             const geometries = feature.getGeometry() as ol.geom.GeometryCollection;
-            const transformedGeometries: Array<ShotplanHole | ShotplanRow> =
-                geometries.getGeometries().map((geom: ShotplanHole | ShotplanRow) => {
-                    const [p1, p2] = geom.getCoordinates().map((p) => {
-                        if (!p[2]) {
-                            const worldPoint = terrainProvider.getWorldPoint(p);
-                            if (!worldPoint[2]) console.warn('point has NaN elevation');
-                            p[2] = worldPoint[2];
-                        }
-                        return p;
-                    });
-                    if (geom.getType() === 'LineString') {
-                        return new ShotplanRow([p1, p2])
-                            .terrainProvider(this.terrainProvider())
-                    } else if (geom.getType() === 'MultiPoint') {
-                        console.log('points', [p1, p2])
-                        return new ShotplanHole([p1, p2])
-                            .terrainProvider(this.terrainProvider())
-                    } else {
-                        console.warn('Unexpected geometry in shotplan', geom.getProperties());
-                    }
-                });
-
-            const rowFeature = new ShotplanRowFeature({
-                ...feature.getProperties(),
-                geometry: new ol.geom.GeometryCollection([])
-            })
-                .autoUpdate(this.autoUpdate())
-                .terrainProvider(this.terrainProvider());
-            // Do this here to invoke event listenr
-            console.log('transformed', transformedGeometries);
-            (rowFeature.getGeometry() as ol.geom.GeometryCollection).setGeometries(transformedGeometries);
+            const row = geometries.getGeometries().find(g => g.getType() === 'LineString') as ol.geom.LineString;
+            const holes = geometries.getGeometries().filter(g => g.getType() === 'MultiPoint') as ol.geom.MultiPoint[];
+            const rowFeature = this.addRow([row.getFirstCoordinate(), row.getLastCoordinate()]);
+            holes.forEach((h) => {
+                rowFeature.addHole(h.getFirstCoordinate(), h.getLastCoordinate());
+            });
             return rowFeature;
         });
 
-        this.set('data', new ol.Collection<ShotplanRowFeature>(rowFeatures));
+        this.forceUpdate();
         console.log('Setting rows', rowFeatures);
         this.rowsSource.next(this.data().getArray());
         // Listen for the rest
-        if (this.offData) this.offData();
-        this.offData = listenOn(this.data(), 'change:length', () => {
+        this.unsubscribeAll();
+        const off = listenOn(this.data(), 'change:length', () => {
             this.rowsSource.next(this.data().getArray());
         });
+        this.unsubscribe.push(off);
     }
 
     public addRow(points: [ol.Coordinate, ol.Coordinate]): ShotplanRowFeature {
         const terrainProvider = this.terrainProvider();
-        points.forEach((p) => {
-            if (!p[2]) {
-                const worldPoint = terrainProvider.getWorldPoint(p);
-                if (!worldPoint[2]) console.warn('point has NaN elevation');
-                p[2] = worldPoint[2];
-            }
-        });
-        console.log('points', points);
-        const rowGeom = new ShotplanRow(points).terrainProvider(terrainProvider);
+        const autoUpdate = this.autoUpdate();
+        const toeHeight = this.toeHeight();
+
+        const rowGeom = (new ShotplanRow(points))
+            .terrainProvider(terrainProvider)
+            .toeHeight(toeHeight)
+            .autoUpdate(autoUpdate);
+
         const rowFeature = new ShotplanRowFeature({
+            auto_update: autoUpdate,
+            terrain_provider: terrainProvider,
+            toe_height: toeHeight,
             geometry: new ol.geom.GeometryCollection([
                 rowGeom,
             ]),
-        })
-            .autoUpdate(this.autoUpdate())
-            .terrainProvider(terrainProvider);
-
+        });
         const data = this.data();
         data.push(rowFeature);
         return rowFeature;
@@ -572,5 +650,10 @@ export class Shotplan extends Annotation {
             return;
         }
         this.data().removeAt(index);
+    }
+
+    public unsubscribeAll() {
+        this.unsubscribe.forEach(sub => sub());
+        this.unsubscribe = [];
     }
 }

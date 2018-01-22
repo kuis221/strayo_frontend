@@ -99,6 +99,12 @@ export class TerrainProvider extends ol.Object {
         return [hit.point[0], hit.point[2], -hit.point[1]];
     }
 
+    public getWorldBounds(): osg.BoundingBox {
+        const bounds = Object.assign({}, this.rootNode().getBoundingBox());
+        bounds._max = [bounds._max[0], bounds._max[2], -bounds._max[1]] as any;
+        bounds._min = [bounds._min[0], bounds._min[1], -bounds._min[1]] as any;
+        return bounds;
+    }
     /**
      * Returns the node that contains all child nodes that make up provider
      * EX.

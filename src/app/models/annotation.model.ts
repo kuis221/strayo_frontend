@@ -34,7 +34,7 @@ export class Annotation extends ol.Object {
     public data(data: string| ol.Collection<ol.Feature>): this;
     public data(data?: string | ol.Collection<ol.Feature> | ol.Feature): ol.Collection<ol.Feature> | this {
         if (data !== undefined) {
-            if (data === 'string') {
+            if (typeof data === 'string') {
                 data = new ol.Collection((new ol.format.GeoJSON()).readFeatures(data as string));
             }
             this.set('data', data);

@@ -183,12 +183,10 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     const [x, y] = hole.alongAwayFrom(r);
     const along = (direction * form.spacing) + x;
     const away = y;
-    const totalVec = r.alongAway([along, away]);
     console.log('hole', hole.id());
     console.log('spacing', [direction, form.spacing], [x, y], [along, away], totalVec);
     const [p, _] = r.getWorldCoordinates();
-    console.log('positions', p, totalVec);
-    const newP = osg.Vec2.add(p, totalVec, []);
+    const newP = r.alongAway(p, [along, away]);
     const prevHoles = row.getHoles().map(h => [h.id(), h.alongAwayFrom(r)]);
     const c = ol.proj.transform(newP, hole.terrainProvider().dataset().projection(), WebMercator);
     const newHole = row.addHole(c);
@@ -209,11 +207,11 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     // console.log('coords in webmercator', r.getCoordinates());
     const [p1, p2] = r.getWorldCoordinates();
     // console.log('coordinates in meters', p1, p2);
-    const totalVec = r.alongAway([form.along, form.away]);
     // console.log('along/away Vec', alongVec, awayVec, totalVec);
 
-    const newP1 = osg.Vec2.add(p1, totalVec, []);
-    const newP2 = osg.Vec2.add(p2, totalVec, []);
+    const newP1 = r.alongAway(p1, [form.along, form.away]);
+    const newP2 = r.alongAway(p2, [form.along, form.away]);
+    
     // console.log('new p1 p2 in meters', newP1, newP2);
 
     const c1 = ol.proj.transform(newP1, this.shotplan.terrainProvider().dataset().projection(), WebMercator);
