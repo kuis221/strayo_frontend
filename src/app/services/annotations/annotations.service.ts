@@ -54,6 +54,10 @@ export class AnnotationManager extends ol.Object {
     return this.get('id');
   }
 
+  public isInit() {
+    return this.annotation() && this.dataset();
+  }
+
   public init() {
     this.dispatchEvent({ type: 'init' });
     // called the first time this annotation has to handle a dataset/annotation
@@ -97,8 +101,8 @@ export class AnnotationsService {
           // Do the dispatch once. Then again for the listener
           const listenToAnnotations = listenOn(dataset, 'change:annotations', () => {
             const annotations = dataset.annotations();
-            console.log('annotations changed');
-            // TODO if annotation has an id of -1 save to database.
+            console.log('annotations changed', annotations.map(a => [a.id(), a.type()]));
+            // TODO if annotation has an negative save to database.
             
             // Iterate though all the listeners for ones that match the type.
             annotations.forEach((anno) => {
@@ -149,10 +153,10 @@ export class AnnotationsService {
   dispatchAnnoTo(listener: AnnotationListener, annotation: Annotation, dataset: Dataset) {
     if (listener.annotationType() !== annotation.type()) return;
     const manager = this.memoizedOnAnnotationFound.get(listener)(annotation.id(), dataset.id());
-    const isNew = !manager.annotation() || !manager.dataset();
+    const isNew = manager.isInit();
     manager.annotation(annotation);
     manager.dataset(dataset);
-    if (isNew) {
+    if (!isNew) {
       // Initialize the manager if it isn't already.
       manager.init();
     } else { // it's an update

@@ -63,6 +63,7 @@ import { ShotplanningToolComponent } from './controllers/shotplanning-controller
 import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
 import { AnnotationsService } from './services/annotations/annotations.service';
 import { VisualizationService } from './services/visualization/visualization.service';
+import { MeasurementsService } from './services/measurements/measurements.service';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({
@@ -139,7 +140,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     TerrainProviderService,
     Map3dService,
     AnnotationsService,
-    VisualizationService
+    VisualizationService,
+    MeasurementsService
   ],
   bootstrap: [AppComponent]
 })

@@ -84,11 +84,11 @@ export class AnnotationToolComponent implements OnInit, OnDestroy {
       const newIAnnotation: IAnnotation = {
         created_at: new Date(),
         updated_at: new Date(),
-        id: 0,
+        id: -(Math.floor(Math.random() * 1000000)),
         meta,
         data: new ol.Collection([feature]),
         resources: null,
-        type: 'annotation'
+        type: 'measurement'
       };
       
       const newAnnotation = new Annotation(newIAnnotation);

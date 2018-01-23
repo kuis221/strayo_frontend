@@ -85,13 +85,13 @@ class OrthophotoAnnotationManager extends AnnotationManager {
     orthophotoLayer.setVisible(true);
     this.layer(orthophotoLayer);
     this.map3dService().registerLayer(orthophotoLayer, this.dataset());
-    this.dispatchEvent({ type: 'init' });
+    AnnotationManager.prototype.init.call(this);
   }
 
   public destroy() {
+    AnnotationManager.prototype.destroy.call(this);
     this.map3dService().deregisterLayer(this.layer(), this.dataset());
-    this.dispatchEvent({ type: 'destroy' });
-    console.log('in orthophoto destroy listener');
+    this.layer(null);
   }
 }
 

@@ -7,6 +7,7 @@ import { listenOn } from '../../../../util/listenOn';
 import { Annotation } from '../../../../models/annotation.model';
 import { VisualizationService } from '../../../../services/visualization/visualization.service';
 import { filter, map } from 'rxjs/operators';
+import { subscribeOn } from '../../../../util/subscribeOn';
 
 @Component({
   selector: 'app-dataset-layer',
@@ -24,7 +25,7 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.vizService.orthophotoForDataset$.pipe(
+    const vizListen = this.vizService.orthophotoForDataset$.pipe(
       filter((managers) => {
         const listener = managers.get(this.dataset.id());
         return !!listener;
@@ -43,7 +44,7 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
       });
       this.off.push(listenInit);
     });
-    const group = this.map3DService.getGroupForDataset(this.dataset);
+    this.off.push(subscribeOn(vizListen));
   }
 
   ngOnDestroy() {

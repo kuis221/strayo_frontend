@@ -5,6 +5,7 @@ import { Dataset } from '../../models/dataset.model';
 import { SitesService } from '../../sites/sites.service';
 import { DatasetsService } from '../../datasets/datasets.service';
 import { VisualizationService } from '../../services/visualization/visualization.service';
+import { MeasurementsService } from '../../services/measurements/measurements.service';
 import { List } from 'immutable';
 
 import { listenOn } from '../../util/listenOn';
@@ -37,8 +38,10 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
     private datasetsService: DatasetsService,
     private route: ActivatedRoute,
 
-    // Sevices that help out map3d
-    private vizService: VisualizationService) { }
+    // Sevices that listen to annotations
+    private vizService: VisualizationService,
+    private measurementsservice: MeasurementsService
+  ) { }
 
   ngOnInit() {
     initStrayosJquery($);
