@@ -48,6 +48,7 @@ export class ShotplanningToolComponent implements OnInit {
   newIShotplan(feature: ol.Feature) {
     const row = feature.getGeometry() as ol.geom.LineString;
     const hole = new ol.geom.MultiPoint([row.getFirstCoordinate(), row.getFirstCoordinate()]);
+    // const hole2 = new ol.geom.MultiPoint([row.getLastCoordinate(), row.getLastCoordinate()]);
 
     const meta = {};
     const newIShotplan: IAnnotation = {
@@ -58,7 +59,8 @@ export class ShotplanningToolComponent implements OnInit {
       data: new ol.Collection<ol.Feature>([new ol.Feature({
         geometry: new ol.geom.GeometryCollection([
           row,
-          hole
+          hole,
+          // hole2,
         ])
       })]),
       resources: null,

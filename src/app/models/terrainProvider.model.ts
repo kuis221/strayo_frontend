@@ -72,12 +72,13 @@ export class TerrainProvider extends ol.Object {
     public getWorldPoint(point: ol.Coordinate, proj: ol.ProjectionLike = WebMercator): ol.Coordinate {
         const xy = (proj !== null) ? ol.proj.transform(point, proj, this.dataset().projection()) : point;
         const bounds = this.rootNode().getBoundingBox();
+        console.log('bounds', bounds, this.modelNode().getBoundingBox());
         const min = bounds.getMin();
         const max = bounds.getMax();
         const top = max[2];
         const bottom = min[2];
-        const v1 = osg.Vec3.createAndSet(...xy, top);
-        const v2 = osg.Vec3.createAndSet(...xy, bottom);
+        const v1 = osg.Vec3.createAndSet(xy[0], xy[1], top);
+        const v2 = osg.Vec3.createAndSet(xy[0], xy[1], bottom);
 
         const lsi = new osgUtil.LineSegmentIntersector();
         const iv = new osgUtil.IntersectionVisitor();
@@ -88,17 +89,24 @@ export class TerrainProvider extends ol.Object {
         const hits = lsi.getIntersections();
         if (hits.length === 0) return null;
 
-        const hit = hits[0];
+        const hit = hits.find(h => h.ratio !== NaN);
         const worldPoint = osg.Vec3.create();
         if (!this.reserveMatrixStack) {
             this.reserveMatrixStack = new osg.MatrixMemoryPool();
         }
         this.reserveMatrixStack.reset();
         transformMat4(worldPoint, hit.point, osg.computeLocalToWorld(hit.nodepath.slice(0), true, this.reserveMatrixStack.get()));
+        
         // For OSGJS only. Switch y and z positions negate height.
         return [hit.point[0], hit.point[2], -hit.point[1]];
     }
 
+    public getWorldBounds(): osg.BoundingBox {
+        const bounds = Object.assign({}, this.rootNode().getBoundingBox());
+        // bounds._max = [bounds._max[0], bounds._max[2], -bounds._max[1]] as any;
+        // bounds._min = [bounds._min[0], bounds._min[1], -bounds._min[1]] as any;
+        return bounds;
+    }
     /**
      * Returns the node that contains all child nodes that make up provider
      * EX.
