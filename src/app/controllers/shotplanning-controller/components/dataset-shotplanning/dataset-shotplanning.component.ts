@@ -398,7 +398,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
       console.log('GETTING SELECTED HOLE', hole);
     });
     // create the forms
-    this.createForms();    
+    this.createForms();
 
     // Create the layers
     if (this.shotplanLayer) {
