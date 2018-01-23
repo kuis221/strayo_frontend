@@ -7,6 +7,7 @@ import { TerrainProvider } from '../../../../models/terrainProvider.model';
 import { TerrainProviderService } from '../../../../services/terrainprovider/terrain-provider.service';
 import { Map } from 'immutable';
 import { Map3dService } from '../../../../services/map-3d.service';
+import { subscribeOn } from '../../../../util/subscribeOn';
 
 interface IAnnotationOption {
   annotation: Annotation;
@@ -24,24 +25,27 @@ export class DatasetAnnotationsComponent implements OnInit, OnDestroy {
   providers: Map<number, TerrainProvider>;
   private optionsSource = new BehaviorSubject<IAnnotationOption[]>([]);
   options$ = this.optionsSource.asObservable();
-  off: Function;
+  off: Function[] = [];
+  annotationOff: Function;
   @ViewChild('annotationList', { read: ElementRef }) annotationList: ElementRef;
   constructor(private map3DService: Map3dService, private terrainProviderService: TerrainProviderService) { }
 
   ngOnInit() {
-    this.terrainProviderService.providers.subscribe((providers) => {
-      if (this.off) this.off();
+    const terrainOff = this.terrainProviderService.providers.subscribe((providers) => {
+      if (this.annotationOff) this.annotationOff();
       this.providers = providers;
-      this.off = listenOn(this.dataset, 'change:annotations', () => {
+      this.annotationOff = listenOn(this.dataset, 'change:annotations', () => {
         this.optionsSource.next(this.dataset.annotations()
           .filter(a => a.type() === 'annotation')
           .map((annotation) => ({ annotation, checked: false, provider: providers.get(this.dataset.id()) })));
       });
     });
+    this.off.push(subscribeOn(terrainOff));
   }
 
   ngOnDestroy() {
-    if (this.off) this.off();
+    this.off.forEach(off => off());
+    this.annotationOff();
   }
 
   onChecked(option: IAnnotationOption) {

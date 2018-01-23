@@ -111,5 +111,6 @@ export class SigninSignupLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.off.unsubscribe();
+    this.offUser.unsubscribe();
   }
 }

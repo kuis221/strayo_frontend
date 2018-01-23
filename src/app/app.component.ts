@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { DatasetsService } from './datasets/datasets.service';
 
 import { initOSGJS } from './util/getosgjsworking';
 import { loadProjections } from './util/projections';
+import { subscribeOn } from './util/subscribeOn';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +24,10 @@ import { loadProjections } from './util/projections';
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'app';
   sites$: Observable<List<Site>>;
+  off: Function[] = [];
 
   constructor (
     private http: HttpClient,
@@ -41,7 +43,7 @@ export class AppComponent implements OnInit {
     OSG.globalify();
     loadProjections();
 
-    this.router.events
+    const sub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .map(() => this.activatedRoute)
       .map(route => {
@@ -54,6 +56,13 @@ export class AppComponent implements OnInit {
       .mergeMap(route => route.data)
       .subscribe((event) => this.titleService.setTitle(event['title']));
 
+    this.off.push(subscribeOn(sub));
+
     this.sitesService.loadSites();
+  }
+
+  ngOnDestroy() {
+    this.off.forEach(off => off());
+    this.off = [];
   }
 }

@@ -388,6 +388,6 @@ export class Map3dService {
     }
 
     const provider = this.providers.get(dataset.id());
-    const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
+    // const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
   }
 }

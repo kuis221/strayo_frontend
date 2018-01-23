@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import * as ol from 'openlayers';
 import { debounce } from 'lodash';
 import { first } from 'rxjs/operators';
@@ -14,18 +14,20 @@ import { IAnnotationToolMeta } from '../../../../models/annotationToolMeta';
 import { AnnotationToolType, ToolToThumbnail, ToolToType } from '../../../../models/annotationToolType';
 import { NewAnnotationFormComponent } from '../new-annotation-form/new-annotation-form.component';
 import { annotationInteractionStyle, withStyles } from '../../../../util/layerStyles';
+import { subscribeOn } from '../../../../util/subscribeOn';
 
 @Component({
   selector: 'app-annotation-tool',
   templateUrl: './annotation-tool.component.html',
   styleUrls: ['./annotation-tool.component.css']
 })
-export class AnnotationToolComponent implements OnInit {
+export class AnnotationToolComponent implements OnInit, OnDestroy {
   @Input() tool: string;
   mainDataset: Dataset;
   bsModalRef: BsModalRef; // Reference to new annotation form.
   toolToThumbnail = ToolToThumbnail;
-
+  
+  off: Function[] = [];
   constructor(private map3DService: Map3dService, private datasetsService: DatasetsService, private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -73,7 +75,7 @@ export class AnnotationToolComponent implements OnInit {
   newAnnotationModal(feature: ol.Feature, tool: AnnotationToolType) {
     this.bsModalRef = this.modalService.show(NewAnnotationFormComponent);
     const content = this.bsModalRef.content as NewAnnotationFormComponent;
-    content.submit.pipe(first()).subscribe(({name, notes}) => {
+    const off = content.submit.pipe(first()).subscribe(({name, notes}) => {
       const meta: IAnnotationToolMeta = {
         tool,
         name,
@@ -92,5 +94,10 @@ export class AnnotationToolComponent implements OnInit {
       const newAnnotation = new Annotation(newIAnnotation);
       this.mainDataset.annotations([...(this.mainDataset.annotations() || []), newAnnotation]);
     });
+    this.off.push(subscribeOn(off));
+  }
+
+  ngOnDestroy() {
+    this.off.forEach(off => off());
   }
 }

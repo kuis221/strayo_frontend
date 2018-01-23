@@ -92,7 +92,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.off.forEach(off => {
       off();
-    })
+    });
   }
 
 }
