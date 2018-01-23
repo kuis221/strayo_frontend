@@ -99,7 +99,27 @@ export function shotplanStyle(feature: ol.Feature, resolution: number) {
                 ];
                 return new ol.geom.MultiPoint(coordinates);
             }
-        })]
+        }),
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 3,
+                fill: new ol.style.Fill({
+                    color: 'red',
+                }),
+                stroke: new ol.style.Stroke({
+                    color,
+                })
+            }),
+            geometry: function (feature) {
+                const coordinates = [
+                    ...(geometry as ol.geom.GeometryCollection).getGeometries()
+                        .filter(g => g.getType() === 'MultiPoint')
+                        .map((g: ol.geom.MultiPoint) => g.getLastCoordinate())
+                ];
+                return new ol.geom.MultiPoint(coordinates);
+            }
+        }),
+    ]
 
     // if (geometry.getType() === 'GeometryCollection') {
     //     console.log('here in geometry collection');

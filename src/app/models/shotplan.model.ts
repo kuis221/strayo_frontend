@@ -34,12 +34,14 @@ export class ShotplanRowFeature extends ol.Feature {
     constructor(props) {
         super(props);
         this._getBearingAndInclinationBehaviorSubject = memoize((id) => {
-            return new BehaviorSubject<[number, number]>([0, 0])
+            return new BehaviorSubject<[number, number]>([0, 0]);
         });
         this.setId(this.getId() || uuid());
         listenOn(this.getGeometry(), 'change', (evt) => {
-            this.holesSource.next(this.getHoles());
-            this.rowSource.next(this.getRow());
+            const r = this.getRow();
+
+            this.holesSource.next(sortHoles(r, this.getHoles()));
+            this.rowSource.next(r);
         });
     }
 
@@ -455,6 +457,21 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         return [along, away];
     }
 
+    public getHoleLength(): number {
+        const [p1, p2] = this.getWorldCoordinates();
+        return osg.Vec3.distance(p1, p2);
+    }
+
+    public getToeDepth(): number {
+        const [p1, p2] = this.getWorldCoordinates();
+        return Math.abs(p2[2] - p1[2]);
+    }
+
+    public getToeDisplacement(): number {
+        const [p1, p2] = this.getWorldCoordinates();
+        return osg.Vec2.distance(p1, p2);
+    }
+
     public getWorldCoordinates(): [ol.Coordinate, ol.Coordinate] {
         const p1 = ol.proj.transform(this.getFirstCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
         const p2 = ol.proj.transform(this.getLastCoordinate(), WebMercator, this.terrainProvider().dataset().projection());
@@ -462,6 +479,8 @@ export class ShotplanHole extends ol.geom.MultiPoint {
         p2[2] = this.getLastCoordinate()[2];
         return [p1, p2];
     }
+
+    
 /**
  * @overide
  * 

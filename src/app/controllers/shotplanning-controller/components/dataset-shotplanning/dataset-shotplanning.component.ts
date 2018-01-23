@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import * as ol from 'openlayers';
-import { filter, first, switchMap } from 'rxjs/operators';
+import { filter, first, switchMap, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 
@@ -16,6 +16,10 @@ import { IAnnotation } from '../../../../models/annotation.model';
 import { Map3dService } from '../../../../services/map-3d.service';
 import { shotplanStyle, annotationInteractionStyle } from '../../../../util/layerStyles';
 import { WebMercator } from '../../../../util/projections/index';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { debounce } from 'rxjs/operators/debounce';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 
 interface NewRowForm {
   along: number;
@@ -41,19 +45,33 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   off: Function[] = [];
 
   selectedRow = -1;
-  selectedHole = -1;
+  selectedRowNumberSource = new BehaviorSubject<number>(this.selectedRow);
+  selectedRowNumber$ = this.selectedRowNumberSource.asObservable();
+  selectedShotplanRow$: Observable<ShotplanRowFeature>;
 
-  showHoleForm = false;
-  showEndpoints = false;
+  selectedHole = -1;
+  selectedHoleNumberSource = new BehaviorSubject<number>(this.selectedHole);
+  selectedHoleNumber$ = this.selectedHoleNumberSource.asObservable();
+  selectedShotplanHole$: Observable<[ShotplanRowFeature, ShotplanHole]>;
+
+  showHoleForm = false; // show the forms related to holes
+  showAngle = false; // show the angle form
+  showEndpoints = false; // show the endpoints form
   endpointOffsetTab: 'offset' | 'endpoint' = 'offset';
   modifyEndpointsInteraction: ol.interaction.Modify;
 
   newRowForm: FormGroup;
   newHoleForm: FormGroup;
+  holePositionForm: FormGroup;
+  holeAngleForm: FormGroup;
+
+  formsSub: Function[] = [];
   constructor(private map3dService: Map3dService, private terrainProviderService: TerrainProviderService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.createForms();
+    setInterval(() => {
+      $('.tabCont').slideDown(300);
+    }, 1000);
     const sub = this.terrainProviderService.providers.pipe(
       filter(providers => !!providers.get(this.dataset.id())),
       first()
@@ -65,24 +83,27 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
         ...(shotplanAnnotation[0].getProperties() as IAnnotation),
         terrain_provider: this.provider,
       };
-      this.shotplan = new Shotplan(iShotplan);
-      this.shotplan.updateFromInterface();
-      this.shotplan.rows$.pipe(
-        switchMap((rows) => {
-          const holes$ = rows.map(r => r.holes$);
-          return Observable.merge(...holes$);
-        })
-      ).subscribe((holes) => {
-        console.log('hole update', holes.map(h => h.id()))
-      });
-      if (this.shotplanLayer) {
-        this.map3dService.deregisterLayer(this.shotplanLayer, this.dataset);
-      }
-      this.shotplanLayer = this.makeLayerFromShotplan(this.shotplan);
-      this.map3dService.registerLayer(this.shotplanLayer, this.dataset);
+      this.setupShotplan(iShotplan);
     });
 
     this.off.push(subscribeOn(sub));
+  }
+
+  alongAwayDistance(along: number, away: number) {
+    return Math.sqrt((along**2) + (away**2)); //for template
+  }
+
+  boundsCheck(point: ol.Coordinate) {
+    const bounds = this.shotplan.terrainProvider().getWorldBounds();
+    if (
+      (point[0] < bounds._min[0]) ||
+      (point[0] > bounds._max[0]) || 
+      (point[1] < bounds._min[1]) ||
+      (point[1] > bounds._max[1])
+    ) {
+      return false;
+    }
+    return true;
   }
 
   createForms() {
@@ -96,6 +117,87 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
       count: [1, Validators.required],
       spacing: [1, Validators.required],
     });
+  
+    this.holePositionForm = this.fb.group({
+      lineStartAlong: [0, Validators.required],
+      lineStartAway: [0, Validators.required],
+      lineEndAlong: [0, Validators.required],
+      lineEndAway: [0, Validators.required]
+    })
+
+    this.holeAngleForm = this.fb.group({
+      bearing: [0, Validators.required],
+      inclination: [0, Validators.required]
+    })
+
+    this.formsSub.forEach((sub) => sub());
+    this.formsSub = [];
+
+    // main update for hole
+    const holeupdate = this.selectedShotplanHole$.subscribe(([row, hole]) => {
+      console.log("in selectedShotplanHole subscription")
+      const [bearing, inclination] = row.getBearingAndInclination(hole);
+      const r = row.getRow();
+      const [lineStartAlong, lineStartAway] = hole.alongAwayFrom(r);
+      // get end away
+      const rowLength = r.getLength();
+      const lineEndAlong = lineStartAlong - rowLength;
+
+      this.holeAngleForm.reset({
+        bearing,
+        inclination
+      });
+
+      this.holePositionForm.reset({
+        lineStartAlong,
+        lineStartAway,
+        lineEndAlong,
+        lineEndAway: lineStartAway,
+      });
+    });
+    this.selectedShotplanHole$.pipe(
+      switchMap(([row, hole]) => 
+      this.holePositionForm.get('lineStartAlong').valueChanges.pipe(
+        distinctUntilChanged(),
+        debounceTime(500),
+        map((newAlong: number) => ({row, hole, newAlong}))
+      ))
+    )
+    .subscribe(({row, hole, newAlong}) => {
+      if (this.holePositionForm.pristine) return;
+      if (isNaN(newAlong) || !isFinite(newAlong)) return;
+      if (this.selectedRow === -1 || this.selectedHole === -1) return;
+      if (!row || !hole) {
+        throw new Error('Unexpected error. row and hole do not exist');
+      }
+      const prevCoords = hole.getFirstCoordinate();
+      console.log('prevCoords', prevCoords);
+      const r = row.getRow();
+      const [oldAlong, away] = hole.alongAwayFrom(r);
+      console.log('prevAlongAway', [oldAlong, away]);
+      const [p] = hole.getWorldCoordinates();
+      const newPoint = r.alongAway(p, [newAlong, away]);
+      console.log('newPoint', newPoint)
+      const oldPoint = r.alongAway(p, [oldAlong, away]);
+      console.log('oldPoint', oldPoint);
+      // Check bounds
+      if (!this.boundsCheck(newPoint)) {
+        console.warn('points outside of bounds', newPoint, this.shotplan.terrainProvider().getWorldBounds());
+        return;
+      }
+      this.holePositionForm.markAsPristine();
+      const newCoord = ol.proj.transform(newPoint, this.shotplan.terrainProvider().dataset().projection(), WebMercator);
+      console.log('newCoord', newCoord);
+      const [bearing, inclination] = row.getBearingAndInclination(hole);
+      hole.setCoordinates([newCoord, hole.getToeCoord()], hole.getLayout());
+      console.log('currentCoord', hole.getFirstCoordinate());
+      hole.forceUpdate();
+      row.updateToe(hole, bearing, inclination);
+      this.holePositionForm.markAsPristine();
+      this.map3dService.map2DViewer.renderSync();
+    });
+
+    this.formsSub.push(subscribeOn(holeupdate));
   }
 
   drawNewRow() {
@@ -228,12 +330,14 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     // console.log('coords in webmercator', newRow.getRow().getCoordinates());
   }
 
+
   selectRow(row: number) {
     if (this.selectedRow === row) {
       this.selectedRow = -1;
     } else {
       this.selectedRow = row;
     }
+    this.selectedRowNumberSource.next(this.selectedRow);
   }
 
   selectHole(hole: number) {
@@ -242,11 +346,76 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     } else {
       this.selectedHole = hole;
     }
+    this.selectedHoleNumberSource.next(this.selectedHole);
   }
 
   selectEndpointOffsetTab(tab) {
     this.endpointOffsetTab = tab;
     console.log('selct tab', tab);
+  }
+
+  setupShotplan(IShotplan) {
+    this.shotplan = new Shotplan(IShotplan);
+    this.shotplan.updateFromInterface();
+    // Add subscription
+    this.selectedShotplanRow$ = this.shotplan.rows$.pipe(
+      switchMap((rows) => {
+        return this.selectedRowNumber$.map((selectedRow) => {
+          return rows && rows[selectedRow]
+        })
+      })
+    );
+    // Nested observables are fun
+    this.selectedShotplanHole$ = this.shotplan.rows$.pipe(
+      switchMap((rows) => {
+        return this.selectedRowNumber$.pipe(
+          map((selectedRow) => rows && rows[selectedRow]),
+          filter((row) => !!row),
+          switchMap((row) => {
+            return row.holes$.pipe(
+              switchMap((holes) => {
+                return this.selectedHoleNumber$.pipe(
+                  map((selectedHole) => holes && holes[selectedHole]),
+                  filter((hole) => !!hole),
+                  switchMap((hole) => {
+                    return hole.update.pipe(
+                      tap((update) => {
+                        console.log('row hole', row, update);
+                        console.log('data', this.shotplan.data());
+                      }),
+                      map((update) => ([row, update] as [ShotplanRowFeature, ShotplanHole]))
+                    )
+                  })
+                )
+              })
+            )
+          })
+        )
+      })
+    ) ;
+    // Testing hole subscription
+    this.selectedShotplanHole$.subscribe((hole) => {
+      console.log('GETTING SELECTED HOLE', hole);
+    });
+    // create the forms
+    this.createForms();    
+
+    // Create the layers
+    if (this.shotplanLayer) {
+      this.map3dService.deregisterLayer(this.shotplanLayer, this.dataset);
+    }
+    this.shotplanLayer = this.makeLayerFromShotplan(this.shotplan);
+    this.map3dService.registerLayer(this.shotplanLayer, this.dataset);
+
+    // For debugging
+    this.shotplan.rows$.pipe(
+      switchMap((rows) => {
+        const holes$ = rows.map(r => r.holes$);
+        return Observable.merge(...holes$);
+      })
+    ).subscribe((holes) => {
+      console.log('hole update', holes.map(h => h.id()))
+    });
   }
 
   ngOnDestroy() {
