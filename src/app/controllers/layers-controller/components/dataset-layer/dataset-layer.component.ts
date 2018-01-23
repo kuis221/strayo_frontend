@@ -8,6 +8,8 @@ import { Annotation } from '../../../../models/annotation.model';
 import { VisualizationService } from '../../../../services/visualization/visualization.service';
 import { filter, map } from 'rxjs/operators';
 import { subscribeOn } from '../../../../util/subscribeOn';
+import { TerrainProvider } from '../../../../models/terrainProvider.model';
+import { TerrainProviderService } from '../../../../services/terrainprovider/terrain-provider.service';
 
 @Component({
   selector: 'app-dataset-layer',
@@ -20,8 +22,15 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
   orthophotoVisible = true;
   setOrthophotoVisible: (visible: boolean) => void;
 
+
+  provider: TerrainProvider;
+  providerVisible = true;
   off: Function[] = [];
-  constructor(private map3DService: Map3dService, private vizService: VisualizationService, private cd: ChangeDetectorRef) {
+  constructor(
+    private map3DService: Map3dService,
+    private vizService: VisualizationService,
+    private terrainProviderService: TerrainProviderService,
+    private cd: ChangeDetectorRef) {
   }
 
   async ngOnInit() {
@@ -44,7 +53,34 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
       });
       this.off.push(listenInit);
     });
+
+    const providerListen = this.terrainProviderService.terrainProviderForDataset$.pipe(
+      filter((managers) => {
+        return !!managers.get(this.dataset.id());
+      }),
+      map((managers) => managers.get(this.dataset.id()))
+    )
+    .subscribe((manager) => {
+      const listenInit = listenOn(manager, 'init', () => {
+        this.provider = manager.terrainProvider();
+      })
+      this.off.push(listenInit);
+    })
+    this.off.push(subscribeOn(providerListen));
     this.off.push(subscribeOn(vizListen));
+  }
+
+  setProviderVisible(visible: boolean) {
+    if (visible == this.providerVisible) return;
+    if (visible) {
+      console.log('adding provider')
+      this.map3DService.sceneRoot.addChild(this.provider.rootNode());
+    } else {
+      console.log('removing provider')
+      
+      this.map3DService.sceneRoot.removeChild(this.provider.rootNode());
+    }
+    this.providerVisible = visible;
   }
 
   ngOnDestroy() {

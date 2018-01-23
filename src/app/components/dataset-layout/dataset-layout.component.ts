@@ -13,6 +13,7 @@ import { listenOn } from '../../util/listenOn';
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 import { subscribeOn } from '../../util/subscribeOn';
+import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
 
 // The string option is so the typescript compiler doesn't complain.
 type Panels = 'annotations' | 'shotplanning' | string;
@@ -39,8 +40,9 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
 
     // Sevices that listen to annotations
+    private terrainProvider: TerrainProviderService,
     private vizService: VisualizationService,
-    private measurementsservice: MeasurementsService
+    private measurementsservice: MeasurementsService,
   ) { }
 
   ngOnInit() {

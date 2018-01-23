@@ -69,24 +69,24 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   constructor(private map3dService: Map3dService, private terrainProviderService: TerrainProviderService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    setInterval(() => {
-      $('.tabCont').slideDown(300);
-    }, 1000);
-    const sub = this.terrainProviderService.providers.pipe(
-      filter(providers => !!providers.get(this.dataset.id())),
-      first()
-    ).subscribe(async (providers) => {
-      this.provider = providers.get(this.dataset.id());
-      const shotplanAnnotation = await this.dataset.waitForAnnotations(Shotplan.ANNOTATION_TYPE);
-      console.log('found a shotplan');
-      const iShotplan: IShotplan = {
-        ...(shotplanAnnotation[0].getProperties() as IAnnotation),
-        terrain_provider: this.provider,
-      };
-      this.setupShotplan(iShotplan);
-    });
+    // setInterval(() => {
+    //   $('.tabCont').slideDown(300);
+    // }, 1000);
+    // const sub = this.terrainProviderService.providers.pipe(
+    //   filter(providers => !!providers.get(this.dataset.id())),
+    //   first()
+    // ).subscribe(async (providers) => {
+    //   this.provider = providers.get(this.dataset.id());
+    //   const shotplanAnnotation = await this.dataset.waitForAnnotations(Shotplan.ANNOTATION_TYPE);
+    //   console.log('found a shotplan');
+    //   const iShotplan: IShotplan = {
+    //     ...(shotplanAnnotation[0].getProperties() as IAnnotation),
+    //     terrain_provider: this.provider,
+    //   };
+    //   this.setupShotplan(iShotplan);
+    // });
 
-    this.off.push(subscribeOn(sub));
+    // this.off.push(subscribeOn(sub));
   }
 
   alongAwayDistance(along: number, away: number) {
