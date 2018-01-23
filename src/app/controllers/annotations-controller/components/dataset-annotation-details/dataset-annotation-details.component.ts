@@ -11,6 +11,7 @@ import { sampleHeightsAlong, getCenter, filterVertices, cutMesh, makeVolumeSurfa
 import { AnnotationToolType } from '../../../../models/annotationToolType';
 import { Map3dService } from '../../../../services/map-3d.service';
 import { makePrismSlice } from '../../../../util/osgjsUtil';
+import { MeasurementAnnotationManager } from '../../../../services/measurements/measurements.service';
 
 @Component({
   selector: 'app-dataset-annotation-details',
@@ -18,12 +19,12 @@ import { makePrismSlice } from '../../../../util/osgjsUtil';
   styleUrls: ['./dataset-annotation-details.component.css']
 })
 export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
-  @Input() dataset: Dataset;
-  @Input() annotation: Annotation;
-  @Input() provider: TerrainProvider;
+  @Input() manager: MeasurementAnnotationManager;
 
   @ViewChild('heightGraphCont', { read: ElementRef }) heightGraphCont: ElementRef;
   @ViewChild('heightGraph', { read: ElementRef }) heightGraph: ElementRef;
+  meta: IAnnotationToolMeta;
+  
   name: string;
   tool: AnnotationToolType;
   horizontalLength: string;
@@ -39,20 +40,8 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   constructor(private cd: ChangeDetectorRef, private map3dService: Map3dService) {}
 
   ngOnInit() {
-    this.name = (this.annotation.meta() as IAnnotationToolMeta).name;
-    this.tool = (this.annotation.meta() as IAnnotationToolMeta).tool;
-    
+    this.meta = this.manager.meta();
     this.recalculate();
-
-    this.metaUnsubscribe = listenOn(this.annotation, 'change:meta', () => {
-      this.name = (this.annotation.meta() as IAnnotationToolMeta).name;
-    });
-
-    this.recalculateUnsubscribe = listenOn(this.getGeometry(), 'change', () => {
-      this.recalculate();
-    });
-    this.cd.markForCheck();
-
     // const model = this.provider.modelNode();
     // const bounds = model.getBoundingBox();
     // const min = bounds.getMin();
@@ -133,7 +122,7 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   }
 
   getGeometry() {
-    const feature = this.annotation.data().item(0);
+    const feature = this.manager.annotation().data().item(0);
     const geometry = feature.getGeometry();
     return geometry;
   }
@@ -178,19 +167,19 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   }
 
   samplePoints() {
-    const geometry = this.getGeometry();
-    const samples = sampleHeightsAlong(this.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
-    samples.forEach((point) => {
-      point[2] = Math.abs(point[2]);
-    });
-    this.samples = samples;
-    return samples;
+    // const geometry = this.getGeometry();
+    // const samples = sampleHeightsAlong(this.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
+    // samples.forEach((point) => {
+    //   point[2] = Math.abs(point[2]);
+    // });
+    // this.samples = samples;
+    // return samples;
   }
 
   toggleHeightGraph(show: boolean) {
     if (!this.heightGraphCont) return;
     if (show) {
-      if (!this.heightGraphChart) this.createHeightGraph();
+      // if (!this.heightGraphChart) this.createHeightGraph();
       $(this.heightGraphCont.nativeElement).slideDown(300);
     } else {
       $(this.heightGraphCont.nativeElement).slideUp(300);
@@ -212,8 +201,6 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.metaUnsubscribe();
-    this.recalculateUnsubscribe();
   }
 
 }
