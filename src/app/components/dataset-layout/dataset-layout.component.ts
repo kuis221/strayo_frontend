@@ -13,7 +13,8 @@ import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 import { subscribeOn } from '../../util/subscribeOn';
 
-type Panels = 'annotations' | 'shotplanning';
+// The string option is so the typescript compiler doesn't complain.
+type Panels = 'annotations' | 'shotplanning' | string;
 
 @Component({
   selector: 'app-dataset-layout',
@@ -29,7 +30,7 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel = 'shotplanning';
+  sidepanel: Panels = 'annotations';
   off: Function[] = [];
   constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
 
