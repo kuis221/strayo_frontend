@@ -57,12 +57,11 @@ export class DatasetsState extends datasetRecord {
     }
 
     public setMainDataset(dataset: Dataset): DatasetsState {
-        const exist = this.selectedDatasets.find(d => dataset === d);
-        let state: DatasetsState = this;
-        if (!exist) {
-            state = state.setSelected([dataset]);
-        }
-        return state.set('mainDataset', dataset) as DatasetsState;
+        this.datasets.forEach(d => d.isMain(false));
+        dataset.isMain(true);
+        return this
+            .setSelected([dataset])
+            .set('mainDataset', dataset) as DatasetsState;
     }
 
     public setSelected(datasets: Dataset[]): DatasetsState {

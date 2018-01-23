@@ -138,17 +138,17 @@ export class Map3dService {
       if (mainDataset.annotations()) {
         fetchAnnotationsForMainDataset();
       } else {
-        const progress = await this.datasetsService.loadAnnotations(mainDataset);
-        if (progress.isDone()) {
-          console.log('already done');
-        } else {
-          const off = listenOn(progress, 'change:progress', () => {
-            if (progress.isDone()) {
-              fetchAnnotationsForMainDataset();
-              off();
-            }
-          });
-        }
+        // const progress = await this.datasetsService.loadAnnotations(mainDataset);
+        // if (progress.isDone()) {
+        //   console.log('already done');
+        // } else {
+        //   const off = listenOn(progress, 'change:progress', () => {
+        //     if (progress.isDone()) {
+        //       fetchAnnotationsForMainDataset();
+        //       off();
+        //     }
+        //   });
+        // }
       }
       // Set view
       const extent = await new Promise<ol.Extent>((resolve) => {
@@ -160,34 +160,6 @@ export class Map3dService {
         });
       });
       this.setExtent(extent);
-      // set Orthophoto
-      const orthophotoAnnotation = await new Promise<Annotation>((resolve) => {
-        if (mainDataset.annotations()) {
-          return resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
-        }
-        mainDataset.once('change:annotations', () => {
-          resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
-        });
-      });
-      if (!orthophotoAnnotation) {
-        console.warn('No Orthophoto Annotation Found');
-        return;
-      }
-      const orthophotoResource = orthophotoAnnotation.resources().find(r => r.type() === 'tiles');
-      if (!orthophotoResource) {
-        console.warn('No Tiles Resource Found');
-        return;
-      }
-      const orthophotoLayer = new ol.layer.Tile({
-        source: new ol.source.XYZ({
-          projection: WebMercator,
-          url: orthophotoResource.url()
-        })
-      });
-      orthophotoLayer.set('title', 'Orthophoto');
-      orthophotoLayer.set('group', 'visualization');
-      orthophotoLayer.setVisible(true);
-      this.registerLayer(orthophotoLayer, mainDataset);
     });
   }
 

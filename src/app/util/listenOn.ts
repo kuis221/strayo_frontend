@@ -11,7 +11,10 @@ import * as ol from 'openlayers';
  */
 export function listenOn(obj: ol.Object, event, listener: Function) {
     obj.on(event, listener);
+    let called = false;
     return () => {
+        if (called) return;
         obj.un(event, listener);
+        called = true;
     };
 }
