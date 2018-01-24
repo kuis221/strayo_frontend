@@ -1,4 +1,5 @@
 <div class="dvLeft">
+    <ng-content></ng-content>
   <tabset #staticTabs [justified]='true'>
     <tab heading="Annotations" customClass="my-nav-link" (select)="onTabSwitch()">
       <app-annotations-controller class="tabContent clearfix"></app-annotations-controller>

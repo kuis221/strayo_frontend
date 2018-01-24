@@ -64,6 +64,7 @@ import { SigninSignupLayoutComponent } from './components/signin-signup-layout/s
 import { AnnotationsService } from './services/annotations/annotations.service';
 import { VisualizationService } from './services/visualization/visualization.service';
 import { MeasurementsService } from './services/measurements/measurements.service';
+import { ShotplansService } from './services/shotplans/shotplans.service';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({
@@ -141,7 +142,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     Map3dService,
     AnnotationsService,
     VisualizationService,
-    MeasurementsService
+    MeasurementsService,
+    ShotplansService,
   ],
   bootstrap: [AppComponent]
 })

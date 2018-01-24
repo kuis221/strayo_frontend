@@ -9,6 +9,7 @@ import { IAnnotationToolMeta } from '../../models/annotationToolMeta';
 import { annotationStyle } from '../../util/layerStyles';
 import { listenOn } from '../../util/listenOn';
 import { Map3dService } from '../map-3d.service';
+
 class MeasurementAnnotationListener implements AnnotationListener {
   constructor(private measurementsService: MeasurementsService) { }
   annotationType() {

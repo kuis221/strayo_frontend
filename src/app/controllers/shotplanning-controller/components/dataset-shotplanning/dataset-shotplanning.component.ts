@@ -20,6 +20,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { debounce } from 'rxjs/operators/debounce';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { ShotplansService } from '../../../../services/shotplans/shotplans.service';
 
 interface NewRowForm {
   along: number;
@@ -39,7 +40,6 @@ interface NewHoleForm {
 })
 export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   @Input() dataset: Dataset;
-  provider: TerrainProvider;
   shotplan: Shotplan;
   shotplanLayer: ol.layer.Vector;
   off: Function[] = [];
@@ -66,27 +66,32 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   holeAngleForm: FormGroup;
 
   formsSub: Function[] = [];
-  constructor(private map3dService: Map3dService, private terrainProviderService: TerrainProviderService, private fb: FormBuilder) {}
+  constructor(private map3dService: Map3dService, private shotplansService: ShotplansService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    // setInterval(() => {
-    //   $('.tabCont').slideDown(300);
-    // }, 1000);
-    // const sub = this.terrainProviderService.providers.pipe(
-    //   filter(providers => !!providers.get(this.dataset.id())),
-    //   first()
-    // ).subscribe(async (providers) => {
-    //   this.provider = providers.get(this.dataset.id());
-    //   const shotplanAnnotation = await this.dataset.waitForAnnotations(Shotplan.ANNOTATION_TYPE);
-    //   console.log('found a shotplan');
-    //   const iShotplan: IShotplan = {
-    //     ...(shotplanAnnotation[0].getProperties() as IAnnotation),
-    //     terrain_provider: this.provider,
-    //   };
-    //   this.setupShotplan(iShotplan);
-    // });
+    // Fix this bullshit at somepoint
+    setInterval(() => {
+      $('.tabCont').slideDown(300);
+    }, 1000);
 
-    // this.off.push(subscribeOn(sub));
+    const sub = this.shotplansService.shotplansForDataset$.pipe(
+      filter(managers => !!managers.get(this.dataset.id())),
+      map(managers => managers.get(this.dataset.id())),
+      filter(manager => !manager.isEmpty()),
+      map(manager => manager.get(manager.keySeq().first())) 
+    ).subscribe(async (manager) => {
+      if (manager.shotplan()) {
+        this.shotplan = manager.shotplan();
+        this.setupShotplan();
+      } else {
+        manager.on('init', () => {
+          this.shotplan = manager.shotplan();
+          this.setupShotplan();
+        })
+      }
+    });
+
+    this.off.push(subscribeOn(sub));
   }
 
   alongAwayDistance(along: number, away: number) {
@@ -354,9 +359,8 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
     console.log('selct tab', tab);
   }
 
-  setupShotplan(IShotplan) {
-    this.shotplan = new Shotplan(IShotplan);
-    this.shotplan.updateFromInterface();
+  setupShotplan() {
+    console.log('shotplan', this.shotplan, this.shotplan.data());
     // Add subscription
     this.selectedShotplanRow$ = this.shotplan.rows$.pipe(
       switchMap((rows) => {

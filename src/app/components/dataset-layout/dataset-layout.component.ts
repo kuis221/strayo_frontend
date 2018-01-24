@@ -6,6 +6,7 @@ import { SitesService } from '../../sites/sites.service';
 import { DatasetsService } from '../../datasets/datasets.service';
 import { VisualizationService } from '../../services/visualization/visualization.service';
 import { MeasurementsService } from '../../services/measurements/measurements.service';
+import { ShotplansService } from '../../services/shotplans/shotplans.service';
 import { List } from 'immutable';
 
 import { listenOn } from '../../util/listenOn';
@@ -16,7 +17,7 @@ import { subscribeOn } from '../../util/subscribeOn';
 import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
 
 // The string option is so the typescript compiler doesn't complain.
-type Panels = 'annotations' | 'shotplanning' | string;
+type Panels = 'annotations' | 'shotplanning';
 
 @Component({
   selector: 'app-dataset-layout',
@@ -32,7 +33,7 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel: Panels = 'annotations';
+  sidepanel: Panels = 'shotplanning';
   off: Function[] = [];
   constructor(
     private sitesService: SitesService,
@@ -43,6 +44,7 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
     private terrainProvider: TerrainProviderService,
     private vizService: VisualizationService,
     private measurementsservice: MeasurementsService,
+    private shotplansService: ShotplansService,
   ) { }
 
   ngOnInit() {
