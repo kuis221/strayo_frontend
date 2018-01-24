@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import * as ol from 'openlayers';
+
 import { AnnotationListener, AnnotationManager, AnnotationsService } from '../annotations/annotations.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Map } from 'immutable';

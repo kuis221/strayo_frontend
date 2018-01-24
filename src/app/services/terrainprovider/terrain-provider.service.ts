@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import * as ol from 'openlayers';
 
 import PouchDB from 'pouchdb';
 
