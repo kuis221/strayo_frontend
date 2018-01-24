@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { memoize } from 'lodash';
-import * as ol from 'openlayers';
 import uuid from 'uuid/v4';
 import { DatasetsService } from '../../datasets/datasets.service';
 import { Dataset } from '../../models/dataset.model';
