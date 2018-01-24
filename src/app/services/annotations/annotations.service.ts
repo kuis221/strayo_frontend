@@ -6,6 +6,7 @@ import { Dataset } from '../../models/dataset.model';
 import { Annotation } from '../../models/annotation.model';
 import { List } from 'immutable';
 import { listenOn } from '../../util/listenOn';
+import * as ol from 'openlayers';
 
 type OnAnnotationFound = (annotationId: number, datasetId: number) => AnnotationManager;
 
