@@ -45,7 +45,9 @@
   <ng-sidebar-container>
     <div ng-sidebar-content class="fullHeight">
       <div class="fullHeight">
-        <app-map-3d class="fullHeight"></app-map-3d>
+        <app-map-3d class="fullHeight">
+          <app-timeline></app-timeline>
+        </app-map-3d>
       </div>
     </div>
     <ng-sidebar sidebarClass="sidebar" opened=true mode="push" [ngSwitch]="sidepanel">
