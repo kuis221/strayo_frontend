@@ -71,7 +71,6 @@ export function annotationStyle(feature: ol.Feature, resolution: number) {
 export function shotplanStyle(feature: ol.Feature, resolution: number) {
     const geometry = feature.getGeometry();
     const color = feature.get('color') || 'aquamarine';
-    console.log('style color', color);
     return [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -168,7 +167,6 @@ export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | 
             const newStyle = (style as StyleFunction)(feature, resolution);
             push(newStyle);
         });
-        console.log('toReturn', toReturn);
         return toReturn;
         // return toReturn.reduce(styleReducer, new ol.style.Style);
         // return toReturn.reduce(styleReducer, new ol.style.Style({}));
@@ -177,7 +175,6 @@ export function withStyles(...styles: Array<ol.style.Style | ol.style.Style[] | 
 }
 
 export function styleReducer(acc: ol.style.Style, current: ol.style.Style) {
-    console.log('reducing', acc, current);
     acc.setGeometry(current.getGeometryFunction() || current.getGeometry() || acc.getGeometry() || acc.getGeometryFunction());
     if (current.getFill()) {
         const p = acc.getFill() || nullFill;

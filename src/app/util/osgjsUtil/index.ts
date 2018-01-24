@@ -1,10 +1,8 @@
 import * as ol from 'openlayers';
+export { featureToOSGJS } from './olToOSGJS';
 import { WebMercator } from '../projections/index';
+import { Point, Triangle, GetWorldPoint, Edge } from './types';
 
-export type GetWorldPoint = (point: ol.Coordinate, proj?: ol.ProjectionLike) => [number, number, number];
-export type Point = ol.Coordinate;
-export type Triangle = [Point, Point, Point];
-export type Edge = [Point, Point];
 export interface FacesAndEdges {
     points: Triangle[];
     edges: [Point, Point][];

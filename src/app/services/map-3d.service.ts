@@ -23,6 +23,7 @@ import { stopViewer } from '../util/getosgjsworking';
 import { LonLat, WebMercator } from '../util/projections/index';
 import { withStyles } from '../util/layerStyles';
 import { featureToNode, transformMat4 } from '../util/osgjsUtil';
+import { featureToOSGJS } from '../util/osgjsUtil/olToOSGJS';
 
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
@@ -242,11 +243,17 @@ export class Map3dService {
     }
     if (layer instanceof ol.layer.Vector) {
       const style = layer.getStyle();
-      if (style) {
-        layer.setStyle(withStyles(style, dataset.overwriteStyle()));
-      } else {
-        layer.setStyle(dataset.overwriteStyle());
-      }
+      const newStyle = withStyles(withStyles(style, dataset.overwriteStyle()));
+      layer.setStyle(newStyle);
+      const provider = this.getProviderForDataset(dataset);
+      const getWorldPoint = provider.getWorldPoint.bind(provider);
+      const featureNode = layer.getSource().getFeatures().reduce<osg.Node>((acc, feature) => {
+        const featureNode = featureToOSGJS(newStyle, feature, getWorldPoint);
+        acc.addChild(featureNode);
+        return acc;
+      }, new osg.Node);
+      console.log('featurenode', featureNode)
+      this.registerNode(featureNode, dataset);
     }
     const group = this.getGroupForDataset(dataset.id());
     const exist = group.getLayers().getArray().includes(layer);

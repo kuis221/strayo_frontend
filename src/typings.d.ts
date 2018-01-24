@@ -205,7 +205,8 @@ declare module osg {
 	export class BufferArray extends Array<number>{
 
 		_elements: number[];
-
+		getElements(): number[];
+		setElements(elements: number[]);
 		static ELEMENT_ARRAY_BUFFER: number;
 		static ARRAY_BUFFER:number;
 
@@ -306,6 +307,7 @@ declare module osg {
 	export interface AttributeSet {
 		Vertex: BufferArray;
 		Normal: BufferArray;
+		Color: BufferArray;
 		[k: string]: BufferArray;
 	}
 
@@ -315,7 +317,7 @@ declare module osg {
 		dirty();
 		setVertexAttribArray(attribute: string, array: BufferArray);
 		getPrimitiveSetList(): DrawArrays[];
-		getVertexAttributeList();
+		getVertexAttributeList(): AttributeSet;
 
 		primitives: DrawElements[];
 	}
