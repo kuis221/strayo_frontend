@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Map } from 'immutable';
+import * as ol from 'openlayers';
 import { AnnotationListener, AnnotationManager, AnnotationsService } from '../annotations/annotations.service';
 import { Map3dService } from '../map-3d.service';
 import { WebMercator } from '../../util/projections/index';
