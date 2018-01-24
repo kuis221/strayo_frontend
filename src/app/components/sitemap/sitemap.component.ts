@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import * as ol from 'openlayers';
 import * as us from 'us';
@@ -6,13 +6,14 @@ import * as us from 'us';
 import { SitesService } from '../../sites/sites.service';
 
 import { countryStyle, stateStyle, siteMarkerStyle } from '../../util/layerStyles';
+import { subscribeOn } from '../../util/subscribeOn';
 
 @Component({
   selector: 'app-sitemap',
   templateUrl: './sitemap.component.html',
   styleUrls: ['./sitemap.component.css']
 })
-export class SitemapComponent implements OnInit {
+export class SitemapComponent implements OnInit, OnDestroy {
   map: ol.Map;
   @ViewChild('map', { read: ElementRef }) mapElement: ElementRef;
   @ViewChild('popover', { read: ElementRef }) popoverElement: ElementRef;
@@ -20,6 +21,8 @@ export class SitemapComponent implements OnInit {
   markers: ol.Collection<ol.Feature>;
   hoverInteraction: ol.interaction.Select;
   selectInteraction: ol.interaction.Select;
+
+  off: Function[] = [];
   constructor(private sitesService: SitesService, private router: Router) {
   }
 
@@ -119,7 +122,7 @@ export class SitemapComponent implements OnInit {
 
 
     // Subscribe to changes
-    this.sitesService.sites.subscribe(
+    const off = this.sitesService.sites.subscribe(
       (sites) => {
         this.markers.clear();
         this.markers.extend(sites.map((site) => {
@@ -143,6 +146,11 @@ export class SitemapComponent implements OnInit {
         console.log('points', points);
       }
     );
+    this.off.push(subscribeOn(off));
+  }
+
+  ngOnDestroy() {
+    this.off.forEach(off => off());
   }
 
 }

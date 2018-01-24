@@ -3,7 +3,6 @@ import { Injectable, ElementRef } from '@angular/core';
 import * as ol from 'openlayers';
 
 import { DatasetsService } from '../datasets/datasets.service';
-import { TerrainProviderService } from './terrainprovider/terrain-provider.service';
 import { memoize, uniqBy } from 'lodash';
 
 import { environment } from '../../environments/environment';
@@ -48,17 +47,17 @@ export class Map3dService {
   mainSite: Site;
   mainDataset: Dataset;
   datasets: List<Dataset>;
-  providers: Map<number, TerrainProvider>;
 
   toolTip: ElementRef;
 
   private _groupForDataset: (id: number) => ol.layer.Group;
+  private _providerForDataset: (id: number) => TerrainProvider;
   private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
   private allInteractions = new ol.Collection<ol.interaction.Interaction>();
   private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 });
 
   constructor(private sitesService: SitesService,
-    private datasetsService: DatasetsService, private terrainProviderService: TerrainProviderService) {
+    private datasetsService: DatasetsService) {
     this.sceneRoot = new osg.Node();
     // tslint:disable-next-line:max-line-length
     const mapboxEndpoint = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${environment.mapbox_key}'`;
@@ -104,52 +103,21 @@ export class Map3dService {
     // Get datasets
     this.datasetsService.selectedDatasets.subscribe((datasets) => {
       this.datasets = datasets;
-      this.terrainProviderService.makeProvidersForDatasets(datasets.toJS());
       this.datasets.forEach((dataset) => {
         const group = this.getGroupForDataset(dataset.id());
         group.set('title', dataset.name());
         this.addLayer(group);
-      });
-    });
-    // Get terrain providers
-    let unsubProviders = [];
-    this.terrainProviderService.providers.subscribe((providers) => {
-      this.providers = providers;
-      if (!providers) return;
-      unsubProviders.forEach(off => off());
-      unsubProviders = [];
-      this.providers.forEach((provider) => {
-        this.sceneRoot.addChild(provider.rootNode());
-        unsubProviders.push(listenOn(provider, 'change:model_node', (thing1, thing2, thing3) => {
-          this.sceneRoot.addChild(provider.rootNode());
-        }));
-      });
-    });
 
+        const provider = this.getProviderForDataset(dataset.id());
+        this.sceneRoot.addChild(provider.rootNode());
+      });
+    });
+    
     // Get main Dataset
     this.datasetsService.mainDataset.subscribe(async (mainDataset) => {
       this.mainDataset = mainDataset;
       if (!mainDataset) return;
 
-      const fetchAnnotationsForMainDataset = () => {
-        this.updateTerrainProviderFromAnnotations(this.mainDataset, this.mainDataset.annotations());
-      };
-
-      if (mainDataset.annotations()) {
-        fetchAnnotationsForMainDataset();
-      } else {
-        const progress = await this.datasetsService.loadAnnotations(mainDataset);
-        if (progress.isDone()) {
-          console.log('already done');
-        } else {
-          const off = listenOn(progress, 'change:progress', () => {
-            if (progress.isDone()) {
-              fetchAnnotationsForMainDataset();
-              off();
-            }
-          });
-        }
-      }
       // Set view
       const extent = await new Promise<ol.Extent>((resolve) => {
         if (mainDataset.mapData()) {
@@ -160,34 +128,6 @@ export class Map3dService {
         });
       });
       this.setExtent(extent);
-      // set Orthophoto
-      const orthophotoAnnotation = await new Promise<Annotation>((resolve) => {
-        if (mainDataset.annotations()) {
-          return resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
-        }
-        mainDataset.once('change:annotations', () => {
-          resolve(mainDataset.annotations().find(a => a.type() === 'orthophoto'));
-        });
-      });
-      if (!orthophotoAnnotation) {
-        console.warn('No Orthophoto Annotation Found');
-        return;
-      }
-      const orthophotoResource = orthophotoAnnotation.resources().find(r => r.type() === 'tiles');
-      if (!orthophotoResource) {
-        console.warn('No Tiles Resource Found');
-        return;
-      }
-      const orthophotoLayer = new ol.layer.Tile({
-        source: new ol.source.XYZ({
-          projection: WebMercator,
-          url: orthophotoResource.url()
-        })
-      });
-      orthophotoLayer.set('title', 'Orthophoto');
-      orthophotoLayer.set('group', 'visualization');
-      orthophotoLayer.setVisible(true);
-      this.registerLayer(orthophotoLayer, mainDataset);
     });
   }
 
@@ -248,6 +188,18 @@ export class Map3dService {
     return this._groupForDataset(dataset.id());
   }
 
+  public getProviderForDataset(dataset: Dataset | number): TerrainProvider {
+    if (!this._providerForDataset) {
+      this._providerForDataset = memoize((id: number) => {
+        return new TerrainProvider();
+      });
+    }
+    if (isNumeric(dataset)) {
+      return this._providerForDataset(dataset);
+    }
+    return this._providerForDataset(dataset.id());
+  }
+
   public setGlobalDraw(draw: ol.interaction.Draw): ol.interaction.Draw {
     if (GlobalDraw) {
       this.removeInteraction(GlobalDraw);
@@ -306,7 +258,7 @@ export class Map3dService {
   }
 
   registerNode(node: osg.Node | osg.MatrixTransform, dataset: Dataset) {
-    const provider = this.providers.get(dataset.id());
+    const provider = this.getProviderForDataset(dataset);
     provider.rootNode().addChild(node);
     if (this.map3DViewer) this.map3DViewer.getManipulator().computeHomePosition();
   }
@@ -357,37 +309,5 @@ export class Map3dService {
     if (this.map3DViewer) {
       this.map3DViewer.getManipulator().computeHomePosition();
     }
-  }
-
-  async updateTerrainProviderFromAnnotations(dataset: Dataset, annotations: Annotation[]) {
-    const stereoscopeAnno = annotations.find(anno => anno.type() === 'stereoscope');
-    if (!stereoscopeAnno) {
-      console.warn('No stereoscope annotation found');
-      return;
-    }
-    console.log('stereoscopeAnno', stereoscopeAnno.getProperties());
-    const mtljsResource = stereoscopeAnno.resources().find(r => r.type() === 'mtljs');
-    const smdjsResource = stereoscopeAnno.resources().find(r => r.type() === 'smdjs');
-    if (!(mtljsResource && smdjsResource)) {
-      console.warn('No mtljs/smdjs resources found');
-      return;
-    }
-    let mtljs;
-    let smdjs;
-    try {
-      [
-        mtljs,
-        smdjs
-      ] = await Promise.all([
-        fetch(mtljsResource.url()).then(r => r.json()),
-        fetch(smdjsResource.url()).then(r => r.json()),
-      ]);
-    } catch (e) {
-      console.error(e);
-      return;
-    }
-
-    const provider = this.providers.get(dataset.id());
-    const progress = this.terrainProviderService.loadTerrain(provider, smdjs, mtljs, smdjsResource.url(), 3);
   }
 }

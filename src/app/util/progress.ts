@@ -3,9 +3,15 @@ import * as ol from 'openlayers';
 
 export type ProgressCallback = (index: number, size: number) => void;
 
-export class Progress extends ol.Object {
+export interface IProgress {
+    stage?: string;
+    details?: string;
+    index: number;
+    length: number;
+}
+export class Progress<T = {}> extends ol.Object {
 
-    constructor(props?: { index: number, length: number, [k: string]: any}) {
+    constructor(props?: IProgress) {
         super(props);
         const index = this.get('index') || 0;
         const length = this.get('length') || 1;
@@ -30,6 +36,16 @@ export class Progress extends ol.Object {
             return this;
         }
         return this.get('error');
+    }
+
+    public finalValue(): T;
+    public finalValue(finalValue: T): this;
+    public finalValue(finalValue?: T): T | this {
+        if (finalValue !== undefined) {
+            this.set('final_value', finalValue);
+            return this;
+        }
+        return this.get('final_value');
     }
 
     public progress(): number;
@@ -60,5 +76,13 @@ export class Progress extends ol.Object {
     // Actual methods
     public isDone(): boolean {
         return this.progress() >= 1;
+    }
+
+    public done(obj: T) {
+        console.log('in done', obj);
+        const length = this.get('length');
+        this.finalValue(obj);
+        this.progress(length, length);
+        this.dispatchEvent({ type: 'done', value: obj });
     }
 }

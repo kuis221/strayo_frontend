@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Site } from '../../models/site.model';
 import { Dataset } from '../../models/dataset.model';
 import { SitesService } from '../../sites/sites.service';
 import { DatasetsService } from '../../datasets/datasets.service';
-
+import { VisualizationService } from '../../services/visualization/visualization.service';
+import { MeasurementsService } from '../../services/measurements/measurements.service';
+import { ShotplansService } from '../../services/shotplans/shotplans.service';
 import { List } from 'immutable';
 
 import { listenOn } from '../../util/listenOn';
 
 import { Observable } from 'rxjs/Observable';
 import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
+import { subscribeOn } from '../../util/subscribeOn';
+import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
 
+// The string option is so the typescript compiler doesn't complain.
 type Panels = 'annotations' | 'shotplanning';
 
 @Component({
@@ -19,7 +24,7 @@ type Panels = 'annotations' | 'shotplanning';
   templateUrl: './dataset-layout.component.html',
   styleUrls: ['./dataset-layout.component.css']
 })
-export class DatasetLayoutComponent implements OnInit {
+export class DatasetLayoutComponent implements OnInit, OnDestroy {
   site: Site;
   mainDataset: Dataset;
   datasets: List<Dataset>;
@@ -28,13 +33,24 @@ export class DatasetLayoutComponent implements OnInit {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel = 'shotplanning';
-  constructor(private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) { }
+  sidepanel: Panels = 'shotplanning';
+  off: Function[] = [];
+  constructor(
+    private sitesService: SitesService,
+    private datasetsService: DatasetsService,
+    private route: ActivatedRoute,
+
+    // Sevices that listen to annotations
+    private terrainProvider: TerrainProviderService,
+    private vizService: VisualizationService,
+    private measurementsservice: MeasurementsService,
+    private shotplansService: ShotplansService,
+  ) { }
 
   ngOnInit() {
     initStrayosJquery($);
     // Get the site
-    this.route.params.pipe(
+    const routeSub = this.route.params.pipe(
       switchMap((params) => {
         const site_id = +params.site_id;
         return this.sitesService.sites.pipe(
@@ -48,8 +64,10 @@ export class DatasetLayoutComponent implements OnInit {
       this.sitesService.setMainSite(site);
       this.datasetsService.setDatasets(site.datasets());
     });
+    this.off.push(subscribeOn(routeSub));
+
     // Setting main
-    this.route.params.pipe(
+    const mainSub = this.route.params.pipe(
       switchMap((params) => {
         const dataset_id = +params.dataset_id;
         return this.datasetsService.datasets.pipe(
@@ -62,14 +80,16 @@ export class DatasetLayoutComponent implements OnInit {
       }
       this.datasetsService.setMainDataset(dataset);
     });
+    this.off.push(subscribeOn(mainSub));
 
     // Getting datasets
-    this.datasetsService.datasets.subscribe((datasets) => {
+    const datasetSub = this.datasetsService.datasets.subscribe((datasets) => {
       this.datasets = datasets;
     });
+    this.off.push(subscribeOn(datasetSub));
 
     // Getting main
-    this.datasetsService.mainDataset.subscribe(async (dataset) => {
+    const mainDatasetSub = this.datasetsService.mainDataset.subscribe(async (dataset) => {
       this.mainDataset = dataset;
       if (!dataset) return;
       const progress = await this.datasetsService.loadAnnotations(dataset);
@@ -77,11 +97,17 @@ export class DatasetLayoutComponent implements OnInit {
         off();
       });
     });
+    this.off.push(subscribeOn(mainDatasetSub));
   }
 
   switchPanel(panel: Panels) {
     this.sidepanel = panel;
     initStrayosJquery($);
+  }
+
+  ngOnDestroy() {
+    this.off.forEach(off => off());
+    this.off = [];
   }
 
 }

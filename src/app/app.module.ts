@@ -61,6 +61,10 @@ import { ShotplanningControllerComponent } from './controllers/shotplanning-cont
 import { DatasetShotplanningComponent } from './controllers/shotplanning-controller/components/dataset-shotplanning/dataset-shotplanning.component';
 import { ShotplanningToolComponent } from './controllers/shotplanning-controller/components/shotplanning-tool/shotplanning-tool.component';
 import { SigninSignupLayoutComponent } from './components/signin-signup-layout/signin-signup-layout.component';
+import { AnnotationsService } from './services/annotations/annotations.service';
+import { VisualizationService } from './services/visualization/visualization.service';
+import { MeasurementsService } from './services/measurements/measurements.service';
+import { ShotplansService } from './services/shotplans/shotplans.service';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({
@@ -129,7 +133,18 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       maxAge: 10
     })
   ],
-  providers: [AuthGuard, SitesService, UsersService, DatasetsService, TerrainProviderService, Map3dService],
+  providers: [
+    AuthGuard,
+    SitesService,
+    UsersService,
+    DatasetsService,
+    TerrainProviderService,
+    Map3dService,
+    AnnotationsService,
+    VisualizationService,
+    MeasurementsService,
+    ShotplansService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

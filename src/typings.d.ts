@@ -373,6 +373,7 @@ declare module osgUtil {
 	interface Hit {
 		nodepath: osg.NodePath;
 		point: osg.Vec3;
+		ratio: number;
 	}
 	export class LineSegmentIntersector {
 		set(top: osg.Vec2, bottom: osg.Vec3): void;

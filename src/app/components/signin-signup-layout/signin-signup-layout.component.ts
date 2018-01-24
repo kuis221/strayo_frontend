@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { FormGroup } from '@angular/forms';
-import { FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { UsersService } from '../../users/users.service';
 
 export type SignUpSignIn = 'sign-in' | 'sign-up';
@@ -111,5 +110,6 @@ export class SigninSignupLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.off.unsubscribe();
+    this.offUser.unsubscribe();
   }
 }

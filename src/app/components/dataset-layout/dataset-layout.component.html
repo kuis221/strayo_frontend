@@ -3,14 +3,14 @@
     <img src="/assets/images/backArrowIcon.png" alt="">
   </a>
   <app-site-dropdown></app-site-dropdown>
-  <a href="javascript:void(0);" class="btnMobileNav"></a>
+  <a  class="btnMobileNav"></a>
 </app-header>
 <app-sub-header>
   <div class="location">
     <span sub-header-location>{{(site)?.location()}}</span>
   </div>
   <div class="dvMeasurement">
-    <a href="javascript:void(0);" class="txtMeasurement">Measurement</a>
+    <a  class="txtMeasurement">Measurement</a>
     <a class="exportMeasurement" href="#">Export Measurement</a>
     <div class="dvExportMeasurement">
       <a class="btnCloseExport" href="#">
@@ -49,7 +49,12 @@
       </div>
     </div>
     <ng-sidebar sidebarClass="sidebar" opened=true mode="push" [ngSwitch]="sidepanel">
-      <app-annotations-layers *ngSwitchCase="'annotations'"></app-annotations-layers>
+      <app-annotations-layers *ngSwitchCase="'annotations'">
+          <div class="btnBack clearfix">
+              <a (click)="switchPanel('')"></a>
+              <span>Annotations And Layers</span>
+            </div>
+      </app-annotations-layers>
       <app-shotplanning *ngSwitchCase="'shotplanning'">
         <div class="btnBack clearfix">
           <a (click)="switchPanel('')"></a>
@@ -59,18 +64,18 @@
       <div class="annotationLeftPanel" *ngSwitchDefault>
         <ul class="leftNav clearfix">
           <li>
-            <a class="annotationLayers" href="javascript:void(0)" (click)="switchPanel('annotations')">Annotation &amp; Layers</a>
+            <a class="annotationLayers" (click)="switchPanel('annotations')">Annotation &amp; Layers</a>
           </li>
           <li>
-            <a class="shotPlan subMenu" href="javascript:void(0);">Shot Plan</a>
+            <a class="shotPlan subMenu" (click)="switchPanel('shotplanning')">Shot Plan</a>
             <ul>
               <li>
-                <a href="javascript:void(0)" (click)="switchPanel('annotations')">Shotplan Editor</a>
+                <a  (click)="switchPanel('annotations')">Shotplan Editor</a>
               </li>
             </ul>
           </li>
           <li>
-            <a class="burdenAnalysis subMenu" href="javascript:void(0);">Burden Analysis</a>
+            <a class="burdenAnalysis subMenu" >Burden Analysis</a>
             <ul>
               <li>
                 <a href="#">Sub Analysis</a>

@@ -7,20 +7,22 @@
     </label>
   </div>
   <div #annotationList class="bxSavedAnnotation clearfix">
-    <app-dataset-annotation *ngFor="let option of options$ | async " [dataset]="dataset" [annotation]="option.annotation">
-      <div class="checkbox checkbox-info">
-        <input type="checkbox" name="" id="" [(ngModel)]="option.checked" (change)="onChecked(option)">
-
-        <label></label>
-      </div>
-    </app-dataset-annotation>
+    <ng-container  *ngFor="let option of options$ | async" >
+      <app-dataset-annotation *ngIf="option.ready" [manager]="option.manager">
+        <div class="checkbox checkbox-info">
+          <input #showLayer type="checkbox" [ngModel]="option.checked" (change)="option.onChecked(!option.checked)">
+  
+          <label></label>
+        </div>
+      </app-dataset-annotation>
+    </ng-container>
   </div>
-  <div *ngFor="let option of options$ | async">
-    <div *ngIf="option.checked">
-      <app-dataset-annotation-details *ngIf="option.provider else loading" [dataset]="dataset" [annotation]="option.annotation" [provider]="option.provider">
+  <ng-container *ngFor="let option of options$ | async">
+    <ng-container *ngIf="option.checked && option.ready">
+      <app-dataset-annotation-details [manager]="option.manager">
       </app-dataset-annotation-details>
-    </div>
-  </div>
+    </ng-container>
+  </ng-container>
 </div>
 <ng-template>
   Loading 3D Model...

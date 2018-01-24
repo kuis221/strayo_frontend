@@ -11,7 +11,6 @@ import { ProgressCallback, Progress } from '../../util/progress';
 
 import * as fromRoot from '../../reducers';
 import { Dataset } from '../../models/dataset.model';
-import { AddTerrainProvider, GetTerrain } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
@@ -20,9 +19,10 @@ import { Mtljs } from '../../models/mtljs.model';
 import { OSGJSScene } from '../../models/osgjs.model';
 
 import { b64toBlob } from '../../util/b64toBlob';
+import { AnnotationManager, AnnotationListener, AnnotationsService } from '../annotations/annotations.service';
+import { Map3dService } from '../map-3d.service';
 
 const modelDB = new PouchDB('models');
-
 
 interface FetchModel {
   id: string; // concat of datasetid and modelname so 0_00.osgjs
@@ -40,44 +40,145 @@ interface FetchedModel {
   mesh: OSGJSScene;
 }
 
+class StereoscopeAnnotationListener implements AnnotationListener {
+  constructor(private terrainProviderService: TerrainProviderService) { }
+  annotationType() {
+    return 'stereoscope';
+  }
+
+  onAnnotationFound(annotationId: number, datasetId: number) {
+    console.log('FOUND STEREOSCOPE ANNOTATION')
+    const manager = new TerrainProviderManager({
+      terrain_provider_service: this.terrainProviderService,
+      map3d_service: this.terrainProviderService.map3dService,
+    });
+    const managers = this.terrainProviderService.terrainProviderForDatasetSource.getValue()
+      .set(datasetId, manager);
+    this.terrainProviderService.terrainProviderForDatasetSource.next(managers);
+    return manager;
+  }
+}
+
+interface ITerrainProviderManager {
+  terrain_provider_service: TerrainProviderService;
+  map3d_service: Map3dService;
+  [k: string]: any;
+}
+class TerrainProviderManager extends AnnotationManager {
+  constructor(props: ITerrainProviderManager) {
+    super(props);
+  }
+
+  public map3dService(): Map3dService;
+  public map3dService(map3d_service: Map3dService): this;
+  public map3dService(map3d_service?: Map3dService): Map3dService | this {
+    if (map3d_service !== undefined) {
+      this.set('map3d_service', map3d_service);
+      return this;
+    }
+    return this.get('map3d_service');
+  }
+
+  public terrainProvider(): TerrainProvider;
+  public terrainProvider(terrainProvider: TerrainProvider): this;
+  public terrainProvider(terrainProvider?: TerrainProvider): TerrainProvider | this {
+    if (terrainProvider !== undefined) {
+      this.set('terrain_provider', terrainProvider);
+      return this;
+    }
+    return this.get('terrain_provider');
+  }
+
+  public terrainProviderService(): TerrainProviderService;
+  public terrainProviderService(map3d_service: TerrainProviderService): this;
+  public terrainProviderService(map3d_service?: TerrainProviderService): TerrainProviderService | this {
+    if (map3d_service !== undefined) {
+      this.set('terrain_provider_service', map3d_service);
+      return this;
+    }
+    return this.get('terrain_provider_service');
+  }
+
+  public async init() {
+    const stereoscopeAnno = this.annotation();
+    if (!stereoscopeAnno) {
+      console.warn('No stereoscope annotation found');
+      return;
+    }
+    console.log('stereoscopeAnno', stereoscopeAnno.getProperties());
+    const mtljsResource = stereoscopeAnno.resources().find(r => r.type() === 'mtljs');
+    const smdjsResource = stereoscopeAnno.resources().find(r => r.type() === 'smdjs');
+    if (!(mtljsResource && smdjsResource)) {
+      console.warn('No mtljs/smdjs resources found');
+      return;
+    }
+    let mtljs;
+    let smdjs;
+    try {
+      [
+        mtljs,
+        smdjs
+      ] = await Promise.all([
+        fetch(mtljsResource.url()).then(r => r.json()),
+        fetch(smdjsResource.url()).then(r => r.json()),
+      ]);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+    const options = {
+      smdjs,
+      mtljs,
+      smdjsURL: smdjsResource.url(),
+      quality: 3,
+    };
+    const progress = this.terrainProviderService().loadStereoscope(this.dataset(), options);
+    console.log('attempting to get terrain provider');
+    const terrainProvider = await new Promise<TerrainProvider>((resolve) => {
+      if (progress.finalValue()) {
+        resolve(progress.finalValue());
+      } else {
+        progress.once('done', () => {
+          resolve(progress.finalValue());
+        });
+      }
+    });
+    console.log('got terrian provider', terrainProvider);
+    this.terrainProvider(terrainProvider);
+
+    AnnotationManager.prototype.init.call(this);
+  }
+}
+
+interface IStereoscopeLoader {
+  smdjs: Smdjs;
+  mtljs: Mtljs;
+  smdjsURL: string;
+  quality: number;
+}
+
 @Injectable()
 export class TerrainProviderService {
-  private providersSource = new BehaviorSubject<Map<number, TerrainProvider>>(Map());
-  providers = this.providersSource.asObservable().pipe(distinctUntilChanged());
-  constructor(private store: Store<fromRoot.State>) {
-    this.getState$().subscribe((state) => {
-      if (!state) return;
-      this.providersSource.next(state.providers);
-    });
+  terrainProviderForDatasetSource = new BehaviorSubject<Map<number, TerrainProviderManager>>(Map());
+  terrainProviderForDataset$ = this.terrainProviderForDatasetSource.asObservable();
+
+  // monitors loaders currently in flight;
+  loaders: Map<number, Progress<TerrainProvider>> = Map();
+  constructor(private annotationService: AnnotationsService, public map3dService: Map3dService, private store: Store<fromRoot.State>) {
+    this.annotationService.registerListener(new StereoscopeAnnotationListener(this));
   }
 
-  public getState$() {
-    return this.store.select('terrainProvider');
-  }
-
-  public loadTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3): Progress {
-    const dataset = provider.dataset();
-    const progress = new Progress({
-      stage: `Getting Terrain`,
-      details: `Fetching for dataset: ${dataset.name() || dataset.id()}`,
-      index: 0,
-      length: 1,
-    });
-    this.store.dispatch(new GetTerrain({provider, smdjs, mtljs, smdjsURL, quality, progress}));
-    return progress;
-  }
-
-  // Called by effect
-  async getTerrain(provider: TerrainProvider, smdjs: Smdjs, mtljs: Mtljs, smdjsURL: string, quality: number = 3, progress?: Progress): 
-    Promise<{ modelNode: osg.Node, provider: TerrainProvider, quality: number }> {
-    // 'Have to get all the textures and all the meshes';
+  public async loadOSGJSTerrainProvider(
+    dataset: Dataset, progress: Progress<TerrainProvider>, options: IStereoscopeLoader): Promise<TerrainProvider> {
+    const { smdjs, mtljs, smdjsURL, quality } = options;
+    console.log('in load osg provider')
     const baseURL = smdjsURL.split('100/_smdjs')[0];
     // Get data for fetching
     const sceneImagePairs: FetchModel[] = smdjs.Meshes.map((mesh) => {
       const texture = mtljs[mesh.split('.osgjs')[0]].map_Kd;
       return {
-        id: `${provider.dataset().id()}${mesh}`,
-        dataset_id: `${provider.dataset().id()}_100`, // assume quality level of 100 for now.
+        id: `${dataset.id()}${mesh}`,
+        dataset_id: `${dataset.id()}_100`, // assume quality level of 100 for now.
         mesh,
         texture,
         meshURL: `${baseURL}100/${mesh}`,
@@ -108,21 +209,21 @@ export class TerrainProviderService {
         delete jdata['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Node'].Children[0]['osg.Geometry'].StateSet['osg.StateSet'].RenderingHint;
       }
     });
-    let scenes = [];
+    const scenes = [];
     if (progress) {
       progress.details('Assembling model');
       progress.progress(0, models.length);
     }
-      try {
-        for (let i = 0; i < models.length; i++) {
-          const model = models[i];
-          if (progress) progress.progress(i);
-          scenes.push(await osgDB.parseSceneGraph(model.mesh).then(node => Promise.resolve(node)));
-        }
-      } catch (e) {
-        console.warn('failed to parse output');
-        throw e;
+    try {
+      for (let i = 0; i < models.length; i++) {
+        const model = models[i];
+        if (progress) progress.progress(i);
+        scenes.push(await osgDB.parseSceneGraph(model.mesh).then(node => Promise.resolve(node)));
       }
+    } catch (e) {
+      console.warn('failed to parse output');
+      throw e;
+    }
     const modelNode = new osg.MatrixTransform();
     osg.Matrix.makeRotate(1.5 * Math.PI, 1.0, 0.0, 0.0, modelNode.getMatrix());
     const mtrans = new osg.MatrixTransform();
@@ -148,13 +249,37 @@ export class TerrainProviderService {
     const center = osg.Vec3.create();
     bbox.center(center);
     osg.Matrix.setTrans(mtrans.getMatrix(), -center[0], -center[1], -center[2]);
-    return { modelNode, provider, quality};
+    const provider = this.map3dService.getProviderForDataset(dataset);
+    provider.dataset(dataset);
+    provider.modelNode(modelNode);
+    provider.quality(3);
+    progress.done(provider);
+    return provider;
   }
 
-  public makeProvidersForDatasets(datasets: Dataset[]) {
-    const providers = datasets.map(d => new TerrainProvider({dataset: d}));
-    providers.forEach(p => this.store.dispatch(new AddTerrainProvider(p)));
+  public loadStereoscope(dataset: Dataset, loadOptions: IStereoscopeLoader): Progress<TerrainProvider> {
+    const exist = this.loaders.get(dataset.id());
+    if (exist) {
+      console.log('early exit')
+      return exist;
+    }
+    const progress = new Progress<TerrainProvider>({
+      stage: `Getting Terrain`,
+      details: `Fetching for dataset: ${dataset.name() || dataset.id()}`,
+      index: 0,
+      length: 1,
+    });
+    progress.once('done', () => {
+      console.log('progress done');
+      this.loaders = this.loaders.set(dataset.id(), null);
+    });
+    this.loaders = this.loaders.set(dataset.id(), progress);
+    this.loadOSGJSTerrainProvider(dataset, progress, loadOptions);
+    console.log('late exit')
+    
+    return progress;
   }
+
 
   private async fetchModel(modelsToFetch: FetchModel[], progress?: Progress): Promise<FetchedModel[]> {
     // First check pouchdb to determine if model is already in memory
@@ -165,7 +290,7 @@ export class TerrainProviderService {
       progress.progress(0, 1);
     }
     try {
-      found = await modelDB.get(first.dataset_id, {attachments: true});
+      found = await modelDB.get(first.dataset_id, { attachments: true });
       if (progress) {
         progress.details('Model found offline: Loading');
         progress.progress(0, 1);
@@ -187,7 +312,7 @@ export class TerrainProviderService {
             fetch(toFetch.textureURL).then(r => r.blob()),
             fetch(toFetch.meshURL).then(r => r.blob())
           ]);
-          meshTexturePairs.push({...toFetch, textureBlob, meshBlob});
+          meshTexturePairs.push({ ...toFetch, textureBlob, meshBlob });
           if (progress) {
             progress.progress(i, modelsToFetch.length);
           }
@@ -225,7 +350,7 @@ export class TerrainProviderService {
         return null;
       }
       try {
-        found = await modelDB.get(first.dataset_id, {attachments: true});
+        found = await modelDB.get(first.dataset_id, { attachments: true });
       } catch (e) {
         console.warn('error in get', e);
         // Could not store results

@@ -1,20 +1,20 @@
-<h5>{{name}}</h5>
-<div [ngSwitch]="tool">
+<h5>{{meta.name}}</h5>
+<div [ngSwitch]="meta.tool">
   <ng-container *ngSwitchCase="'Polygon'">
     <div id="dvVolume" class="dvVolume clearfix">
       <a data-target="dvVolume" class="btnExpandMap" href="#">&nbsp;</a>
-      <select id="volume" name="" class="selectpicker volume">
+      <select id="volume" class="selectpicker volume">
         <option>Volume</option>
         <option>Compare Volume</option>
       </select>
       <div class="dvCompareVolume clearfix">
         <div class="compareVolumeCol fLeft">
-          <select name="" class="selectpicker w100">
+          <select  class="selectpicker w100">
             <option>10 August 2017</option>
           </select>
         </div>
         <div class="compareVolumeCol fRight">
-          <select name="" class="selectpicker w100">
+          <select  class="selectpicker w100">
             <option>20 August 2017</option>
           </select>
         </div>
@@ -34,7 +34,7 @@
         </div>
       </div>
       <p>Reference Elevation</p>
-      <select id="ReferenceElevation" name="" class="selectpicker w100">
+      <select id="ReferenceElevation"  class="selectpicker w100">
         <option>Select</option>
         <option>Lowest Fit</option>
         <option>Manual</option>

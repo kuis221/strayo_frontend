@@ -73,6 +73,16 @@ export class Dataset extends ol.Object {
         return this.get('is_phantom');
     }
 
+    public isMain(): boolean;
+    public isMain(isMain: boolean): this;
+    public isMain(isMain?: boolean): boolean | this {
+        if (isMain !== undefined) {
+            this.set('is_main', isMain);
+            return this;
+        }
+        return this.get('is_main');
+    }
+
     public lat(): number;
     public lat(lat: number): this;
     public lat(lat?: number): number | this {
