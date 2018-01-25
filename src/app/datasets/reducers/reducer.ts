@@ -16,6 +16,10 @@ export function reducer(state: DatasetsState = INITIAL_STATE, action: datasets.D
             return state.setMainDataset(action.payload);
         case datasets.DatasetsActionsType.SET_SELECTED_DATASETS:
             return state.setSelected(action.payload);
+        case datasets.DatasetsActionsType.ADD_SELECTED_DATASET:
+            return state.addSelected(action.payload);
+        case datasets.DatasetsActionsType.REMOVE_SELECTED_DATASET:
+            return state.removeSelected(action.payload);
         case datasets.DatasetsActionsType.SET_DATASETS:
             return state.setDatasets(action.payload);
         case datasets.DatasetsActionsType.RESET:

@@ -10,6 +10,8 @@ export enum DatasetsActionsType {
     GET_ANNOTATIONS_ERROR = '[Site] Get Annotations Error',
     SET_DATASETS = '[Dataset] Set datasets',
     SET_MAIN_DATASET = '[Dataset] Set main dataset',
+    ADD_SELECTED_DATASET = '[Dataset] Add selected datasets',
+    REMOVE_SELECTED_DATASET = '[Dataset] Remove selected datasets',
     SET_SELECTED_DATASETS = '[Dataset] Set selected datasets',
     RESET = '[Dataset] Reset',
 }
@@ -38,6 +40,14 @@ export class SetMainDataset implements Action {
     type = DatasetsActionsType.SET_MAIN_DATASET;
     constructor(public payload: Dataset) {}
 }
+export class AddSelectedDataset implements Action {
+    type = DatasetsActionsType.ADD_SELECTED_DATASET;
+    constructor(public payload: Dataset) {}
+}
+export class RemoveSelectedDataset implements Action {
+    type = DatasetsActionsType.REMOVE_SELECTED_DATASET;
+    constructor(public payload: Dataset) {}
+}
 
 export class SetSelectedDatasets implements Action {
     type = DatasetsActionsType.SET_SELECTED_DATASETS;
@@ -53,4 +63,6 @@ export type DatasetsActions = ResetState
 | GetAnnotations
 | GetAnnotationsSuccess
 | GetAnnotationsError
+| AddSelectedDataset
+| RemoveSelectedDataset
 | SetDatasets;

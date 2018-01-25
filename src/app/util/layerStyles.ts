@@ -41,10 +41,10 @@ export const countryStyle = new ol.style.Style({
 
 export const annotationInteractionStyle = new ol.style.Style({
     fill: new ol.style.Fill({
-        color: 'rgba(255, 255, 255, 0.2)'
+        color: 'white'
     }),
     stroke: new ol.style.Stroke({
-        color: 'rgba(0, 0, 0, 0.5)',
+        color: 'white',
         lineDash: [10, 10],
         width: 2
     }),

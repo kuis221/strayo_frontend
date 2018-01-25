@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+import * as toastr from 'toastr';
+import {debounce } from 'lodash';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
@@ -16,7 +18,7 @@ import { DatasetsState } from './state';
 import { Dataset } from '../models/dataset.model';
 
 import * as fromRoot from '../reducers';
-import { SetDatasets, SetMainDataset, GetAnnotations, DatasetsActionsType } from './actions/actions';
+import { SetDatasets, SetMainDataset, GetAnnotations, DatasetsActionsType, AddSelectedDataset, RemoveSelectedDataset } from './actions/actions';
 import { IAnnotation, Annotation } from '../models/annotation.model';
 import { List, Map } from 'immutable';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
@@ -62,18 +64,44 @@ export class DatasetsService {
   pending = this.pendingSource.asObservable().pipe(distinctUntilChanged());
 
   constructor(private store: Store<fromRoot.State>, private apollo: Apollo) {
+    const checkError = debounce((dataset) => {
+      if (dataset.error()) {
+        this.onDatasetError(dataset);
+        return true;
+      }
+      return false;
+    }, 1000);
     this.getState$().subscribe((state) => {
       if (!state) return;
+      // Filter out any errors
+      // Don't filter main dataset if there is an error.
       this.datasetsSource.next(state.datasets);
       this.mainDatasetSource.next(state.mainDataset);
       this.annotationsSource.next(state.annotations);
       this.pendingSource.next(state.pending);
       this.selectedDatasetsSource.next(state.selectedDatasets);
+      console.log('checking selected');
+      state.selectedDatasets.forEach((dataset) => {
+        checkError(dataset);
+      });
     });
   }
 
   public getState$() {
     return this.store.select('datasets');
+  }
+
+  private onDatasetError(dataset) {
+    if (dataset.error()) {
+      toastr.error(`Dataset ${dataset.name()} is missing essential data.\nIt may not display properly.\nWe will deselect it.`,
+        'Dataset Error!');
+      // Force deselect
+      const mainDataset = this.mainDatasetSource.getValue();
+      if (mainDataset && (dataset.id() === mainDataset.id())) {
+        return;
+      }
+      this.removeFromSelected(dataset);
+    }
   }
 
   public setDatasets(datasets: Dataset[]) {
@@ -84,6 +112,14 @@ export class DatasetsService {
 
   public setMainDataset(dataset: Dataset) {
     this.store.dispatch(new SetMainDataset(dataset));
+  }
+
+  public addToSelected(dataset: Dataset) {
+    this.store.dispatch(new AddSelectedDataset(dataset));
+  }
+
+  public removeFromSelected(dataset: Dataset) {
+    this.store.dispatch(new RemoveSelectedDataset(dataset));
   }
 
   public async loadAnnotations(dataset: Dataset): Promise<Progress> {

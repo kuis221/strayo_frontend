@@ -1,0 +1,55 @@
+.myTimelineOuter {
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    flex: 1;
+    overflow: auto;
+    width: 100%;
+}
+.main {
+
+}
+.myTimelineCollapse {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.myTimelineOuter {
+    max-width: 100%;
+    overflow: auto;
+}
+.myTimelineCont {
+    padding: 10px;
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.selected {
+    border: 5px solid yellow;  
+}
+
+.mainSelected {
+    border: 5px solid green;
+}
+
+.keyframe {
+    margin: 10px;
+    background: white;
+    color: black;
+    border-radius: 40px;
+    
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+}
+
+.keyframe-inner {
+    border-radius: 25px;
+    min-width: 175px;
+    height: 50px;
+    display: table-cell;
+    vertical-align: middle;
+}

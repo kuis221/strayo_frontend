@@ -3,7 +3,7 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
 interface NodeModule {
-  id: string;
+	id: string;
 }
 
 declare var jquery: any;
@@ -18,11 +18,11 @@ declare var P: any;
 
 declare var OSG: OSGModule;
 interface OSGModule {
-  globalify: () => void;
+	globalify: () => void;
 }
 
 declare module osg {
-  // vec3 is an object, not a class
+	// vec3 is an object, not a class
 	export var Vec2;
 	export interface Vec2 {
 		create(): osg.Vec2;
@@ -49,7 +49,7 @@ declare module osg {
 		neg(a: osg.Vec3, result: osg.Vec3): osg.Vec3;
 	}
 
-	
+
 	export var Vec4;
 	export interface Vec4 {
 		//createAndSet(x, y, z, w): osg.Vec4;
@@ -88,10 +88,10 @@ declare module osg {
 	export interface Quat {
 		create(): osg.Quat;
 		transformVec3(q: osg.Quat, a: osg.Vec3, result: osg.Vec3): osg.Vec3;
-		makeRotateFromTo( from:osg.Vec3, to:osg.Vec3, out:osg.Quat) : osg.Quat;
+		makeRotateFromTo(from: osg.Vec3, to: osg.Vec3, out: osg.Quat): osg.Quat;
 	}
 
-	
+
 	export var Plane;
 	export interface Plane extends osg.Vec4 {
 		create(): osg.Vec4;
@@ -99,7 +99,7 @@ declare module osg {
 		setNormal(plane: osg.Plane, n: osg.Vec3);
 		setDistance(plane: osg.Plane, d: number);
 	}
-	
+
 	/*
 	export class Plane {
 		//constructor(p:osg.Vec4);
@@ -149,12 +149,12 @@ declare module osg {
 		static BACK: number;
 		static FRONT_AND_BACK: number;
 
-		constructor( mode );
+		constructor(mode);
 	}
 
-	export type BlendFuncType = 
+	export type BlendFuncType =
 		'DISABLE' |
-		'ZERO' | 
+		'ZERO' |
 		'ONE' |
 		'SRC_COLOR' |
 		'ONE_MINUS_SRC_COLOR' |
@@ -198,6 +198,21 @@ declare module osg {
 		indices: BufferArray;
 	}
 
+	export type DepthFunc = number;
+
+	export class Depth {
+		static DISABLE: DepthFunc;
+		static NEVER: DepthFunc;
+		static LESS: DepthFunc;
+		static EQUAL: DepthFunc;
+		static LEQUAL: DepthFunc;
+		static GREATER: DepthFunc;
+		static NOTEQUAL: DepthFunc;
+		static GEQUAL: DepthFunc;
+		static ALWAYS: DepthFunc;
+		constructor(func: DepthFunc);
+	}
+
 	export class DrawArrays {
 		constructor(mode, first, count);
 	}
@@ -208,7 +223,7 @@ declare module osg {
 		getElements(): number[];
 		setElements(elements: number[]);
 		static ELEMENT_ARRAY_BUFFER: number;
-		static ARRAY_BUFFER:number;
+		static ARRAY_BUFFER: number;
 
 		constructor(target, elements, itemSize, preserveArrayType?);
 	}
@@ -229,7 +244,7 @@ declare module osg {
 
 		getOrCreateStateSet(): StateSet;
 
-        addUpdateCallback(cb) : boolean;
+		addUpdateCallback(cb): boolean;
 
 		dirtyBound();
 		accept(NodeVisitor)
@@ -278,7 +293,7 @@ declare module osg {
 		setReferenceFrame(value);
 		setViewport(vp);
 		attachTexture(bufferComponent, texture, textureTarget?);
-		getViewMatrix() : osg.Matrix;
+		getViewMatrix(): osg.Matrix;
 	}
 
 	export class MatrixTransform extends Transform {
@@ -323,7 +338,7 @@ declare module osg {
 	}
 
 	// shapes
-	export function createAxisGeometry(size:number) : osg.Geometry;
+	export function createAxisGeometry(size: number): osg.Geometry;
 	export function createTexturedQuadGeometry(cornerx, cornery, cornerz, wx, wy, wz, hx, hy, hz, l?: number, b?: number, r?: number, t?: number): osg.Geometry;
 	export function createGridGeometry(cx, cy, cz, wx, wy, wz, hx, hy, hz, res1, res2): osg.Geometry;
 	export function createTexturedSphereGeometry(radius, widthSegments?: number, heightSegments?: number, phiStart?: number, phiLength?: number, thetaStart?: number, thetaLength?: number): osg.Geometry;
@@ -350,7 +365,7 @@ declare module osgAnimation {
 }
 
 declare module osgDB {
-	export function parseSceneGraph(node: {}, options?: {}): Promise<osg.Node>; 
+	export function parseSceneGraph(node: {}, options?: {}): Promise<osg.Node>;
 }
 
 declare module osgGA {
@@ -388,9 +403,17 @@ declare module osgUtil {
 }
 
 declare module osgViewer {
-  export class View {
+	type LightingMode = number;
+	interface LightingModeSet {
+		NO_LIGHT: LightingMode
+		HEADLIGHT: LightingMode
+		SKY_LIGHT: LightingMode
+	}
+	export class View {
 
 		getCamera(): osg.Camera;  // this does not follow the original OpenSceneGraph inheritance diagram ( the getCamera should be in the osg.View but that does not exist in osgjs )
+
+		static LightingMode: LightingModeSet;
 	}
 
 	export class Viewer extends osgViewer.View {
@@ -399,11 +422,14 @@ declare module osgViewer {
 		_hmd: any;
 		_eventProxy: any;
 
+
 		constructor(canvas: HTMLElement);
 
 		init();
 		// Essentially stops the rendering
 		contextLost(): void;
+
+		setLightingMode(mode: LightingMode)
 
 		setSceneData(node: osg.Node);
 
@@ -413,7 +439,7 @@ declare module osgViewer {
 
 		getGraphicContext();
 
-		done() : boolean;
+		done(): boolean;
 		frame();
 		run();
 	}

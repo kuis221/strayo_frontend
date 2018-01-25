@@ -24,6 +24,7 @@ import { LonLat, WebMercator } from '../util/projections/index';
 import { withStyles } from '../util/layerStyles';
 import { featureToNode, transformMat4 } from '../util/osgjsUtil';
 import { featureToOSGJS } from '../util/osgjsUtil/olToOSGJS';
+import { waitForMap } from '@angular/router/src/utils/collection';
 
 // using numbers now
 // Use weakmap so we don't run into garbabe collection issues.
@@ -54,8 +55,8 @@ export class Map3dService {
   private _groupForDataset: (id: number) => ol.layer.Group;
   private _providerForDataset: (id: number) => TerrainProvider;
   private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
-  private allInteractions = new ol.Collection<ol.interaction.Interaction>();
-  private view = new ol.View({ center: ol.proj.fromLonLat([0, 0]), zoom: 4 });
+  private allInteractions = new ol.Collection<ol.interaction.Interaction>([]);
+  private view = new ol.View({ center: ol.proj.fromLonLat([37.41, 8.82]), zoom: 4 });
 
   constructor(private sitesService: SitesService,
     private datasetsService: DatasetsService) {
@@ -114,21 +115,21 @@ export class Map3dService {
       });
     });
     
-    // Get main Dataset
-    this.datasetsService.mainDataset.subscribe(async (mainDataset) => {
-      this.mainDataset = mainDataset;
-      if (!mainDataset) return;
+    // Get selected datasets
+    this.datasetsService.selectedDatasets.subscribe(async (datasets) => {
+      if (datasets.count() === 0) return;
 
-      // Set view
-      const extent = await new Promise<ol.Extent>((resolve) => {
-        if (mainDataset.mapData()) {
-          return resolve(mainDataset.calcExtent());
-        }
-        mainDataset.once('change:map_data', () => {
-          resolve(mainDataset.calcExtent());
-        });
-      });
-      this.setExtent(extent);
+      await Promise.all(datasets.map(dataset => dataset.waitForMapData()).toArray());
+      const boundingExtent = datasets.reduce<ol.Extent>((acc, dataset) => {
+        const extent = dataset.calcExtent();
+        return ol.extent.boundingExtent([
+          ol.extent.getBottomLeft(acc),
+          ol.extent.getTopRight(acc),
+          ol.extent.getBottomLeft(extent),
+          ol.extent.getTopRight(extent),
+        ]);
+      }, datasets.get(0).calcExtent());
+      this.setExtent(boundingExtent);
     });
   }
 
@@ -213,12 +214,12 @@ export class Map3dService {
     // this.destroyOpenlayers();
     this.map2DViewer = this.map2DViewer || new ol.Map({
       target: container,
-      interactions: this.allInteractions,
+      // interactions: this.allInteractions,
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
       layers: this.allLayers,
-      view: this.view,
-      controls: ol.control.defaults({ attribution: false })
+      view: new ol.View({center: [0, 0], zoom: 2}),
+      // controls: [new ol.control.Zoom()],//ol.control.defaults({ attribution: false })
     });
   }
 
@@ -232,6 +233,8 @@ export class Map3dService {
     this.map3DViewer.init();
     this.map3DViewer.setSceneData(this.sceneRoot);
     this.map3DViewer.setupManipulator();
+    this.map3DViewer.setLightingMode(osgViewer.View.LightingMode.HEADLIGHT);
+	
     this.map3DViewer.run();
     this.map3DViewer.getManipulator().computeHomePosition();
   }
@@ -289,29 +292,9 @@ export class Map3dService {
     }
   }
 
-  setView(coord?) {
-    if (coord) {
-      this._setView(coord);
-    } else {
-      if (this.datasets) {
-        const coords = this.datasets
-          .filter(d => !d.isPhantom())
-          .map(d => ol.proj.fromLonLat([d.long(), d.lat()]))
-          .toJS();
-        const bounds = ol.extent.boundingExtent(coords);
-        console.log('bounds', bounds);
-        if (!bounds.some(n => !isFinite(n))) {
-          this.setExtent(bounds);
-        }
-      } else {
-        this._setView();
-      }
-    }
-  }
-
   setExtent(extent: ol.Extent) {
     if (this.map2DViewer) {
-      this.view.fit(extent);
+      this.map2DViewer.getView().fit(extent);
     }
     if (this.map3DViewer) {
       this.map3DViewer.getManipulator().computeHomePosition();

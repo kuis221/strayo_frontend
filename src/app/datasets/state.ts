@@ -34,9 +34,16 @@ export class DatasetsState extends datasetRecord {
         const progresses = this.pending.get(dataset.id());
         const progress = progresses.find(p => p.stage() === DatasetsActionsType.GET_ANNOTATIONS && !p.isDone());
         dataset.annotations(annotations);
-        dataset.updateFromAnnotations();
-        progress.stage(DatasetsActionsType.GET_ANNOTATIONS_SUCCESS);
-        progress.progress(annotations.length, annotations.length);
+        dataset.updateFromAnnotations()
+            .then(() => {
+                progress.stage(DatasetsActionsType.GET_ANNOTATIONS_SUCCESS);
+                progress.done(dataset);
+            })
+            .catch(err => {
+                progress.stage(DatasetsActionsType.GET_ANNOTATIONS_ERROR);
+                progress.error(err);
+                progress.done(dataset);
+            });
         // TODO: only do in production
         // return this.setIn(['pending', dataset.id()], progresses.filter(p => p !== progress)) as DatasetsState;
         return this;
@@ -62,6 +69,21 @@ export class DatasetsState extends datasetRecord {
         return this
             .setSelected([dataset])
             .set('mainDataset', dataset) as DatasetsState;
+    }
+
+    public addSelected(dataset: Dataset): DatasetsState {
+        const exist = this.selectedDatasets.find(d => d.id() === dataset.id());
+        if (exist) {
+            return this;
+        }
+        return this.set('selectedDatasets', this.selectedDatasets.push(dataset)) as DatasetsState;
+    }
+    public removeSelected(dataset: Dataset): DatasetsState {
+        if (dataset.id() === this.mainDataset.id()) {
+            console.warn('Attempting to remove main dataset. Not doing that shit');
+            return this;
+        }
+        return this.set('selectedDatasets', this.selectedDatasets.filter(d => d.id() !== dataset.id()).toList()) as DatasetsState;
     }
 
     public setSelected(datasets: Dataset[]): DatasetsState {

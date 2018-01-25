@@ -30,14 +30,14 @@ export class Map3dComponent implements OnInit, OnDestroy {
     this.map3DService.toolTip = this.tooltip;
   }
 
-  @HostListener('mousemove', ['$event']) onmousemove(event) {
-    const tooltip = this.map3DService.toolTip;
-    if (!tooltip) return;
-    $(tooltip.nativeElement).offset({
-      left: event.clientX + 15,
-      top: event.clientY + 15
-    });
-  }
+  // @HostListener('mousemove', ['$event']) onmousemove(event) {
+  //   const tooltip = this.map3DService.toolTip;
+  //   if (!tooltip) return;
+  //   $(tooltip.nativeElement).offset({
+  //     left: event.clientX + 15,
+  //     top: event.clientY + 15
+  //   });
+  // }
 
   changeView(viewer: string) {
     if (this.viewer === viewer) return;

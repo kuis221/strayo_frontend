@@ -16,7 +16,6 @@ import { switchMap, map, share, distinctUntilChanged } from 'rxjs/operators';
 import { subscribeOn } from '../../util/subscribeOn';
 import { TerrainProviderService } from '../../services/terrainprovider/terrain-provider.service';
 
-// The string option is so the typescript compiler doesn't complain.
 type Panels = 'annotations' | 'shotplanning';
 
 @Component({
@@ -33,7 +32,7 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
   mainDataset$: Observable<Dataset>;
   datasets$: Observable<List<Dataset>>;
 
-  sidepanel: Panels = 'shotplanning';
+  sidepanel: Panels = 'annotations';
   off: Function[] = [];
   constructor(
     private sitesService: SitesService,

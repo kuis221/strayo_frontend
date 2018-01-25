@@ -6,10 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'ng-sidebar';
 
 // Botstrap
-import { TabsModule } from 'ngx-bootstrap';
-import { RatingModule } from 'ngx-bootstrap';
-import { ModalModule } from 'ngx-bootstrap';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { TabsModule, RatingModule, ModalModule, BsDropdownModule, CollapseModule } from 'ngx-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -123,6 +120,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     RatingModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
+    CollapseModule.forRoot(),
     GraphQLModule,
     HttpClientModule,
 

@@ -63,6 +63,16 @@ export class Dataset extends ol.Object {
         return this.get('id');
     }
 
+    public error(): any;
+    public error(error: any): this;
+    public error(error?: any): any | this {
+        if (error !== undefined) {
+            this.set('error', error);
+            return this;
+        }
+        return this.get('error');
+    }
+
     public isPhantom(): boolean;
     public isPhantom(isPhantom: boolean): this;
     public isPhantom(isPhantom?: boolean): boolean | this {
@@ -183,7 +193,13 @@ export class Dataset extends ol.Object {
             lineStringStyle
         ];
     }
-
+    /**
+     * Downloads the mapdata for this dataset if available.
+     * Automatically called when dataset annotations are loaded.
+     * 
+     * @returns 
+     * @memberof Dataset
+     */
     async updateFromAnnotations() {
         // Check if you have mapdata
         const mapdataAnno = this.annotations().find(anno => anno.type() === 'mapdata');
@@ -196,8 +212,30 @@ export class Dataset extends ol.Object {
             console.warn('No mapdata resource found');
             return;
         }
-        const mapdata = await fetch(mapdataResource.url()).then(r => r.json());
+        const mapdata = await fetch(mapdataResource.url())
+            .then(r => {
+                if (!r.ok) { throw r; }
+                return r.json();
+            })
+            .catch(err => {
+                return err.text().then( errorMessage => {
+                    console.log('error fetching', err, errorMessage);
+                    this.error(err);
+                    throw err;
+                });
+            });
         this.mapData(mapdata);
+    }
+
+    async waitForMapData(): Promise<MapData> {
+        if (this.mapData()) {
+            return this.mapData();
+        }
+        return new Promise<MapData>((resolve) => {
+            this.once('change:map_data', () => {
+                resolve(this.mapData());
+            });
+        });
     }
 
     async waitForAnnotations(type?: string): Promise<Annotation[]> {

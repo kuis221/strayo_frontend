@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ol from 'openlayers';
+import * as toastr from 'toastr';
 
 import PouchDB from 'pouchdb';
 
@@ -120,11 +121,18 @@ class TerrainProviderManager extends AnnotationManager {
         mtljs,
         smdjs
       ] = await Promise.all([
-        fetch(mtljsResource.url()).then(r => r.json()),
-        fetch(smdjsResource.url()).then(r => r.json()),
+        fetch(mtljsResource.url()).then((r) => {
+          if (!r.ok) throw r;
+          return r.json();
+        }),
+        fetch(smdjsResource.url()).then((r) => {
+          if (!r.ok) throw r;
+          return r.json();
+        }),
       ]);
     } catch (e) {
-      console.error(e);
+      console.warn('Could not get mtljs/smdjs', e, e.text());
+      toastr.error(`Could not find 3D model for ${this.dataset().name()}`, 'Dataset Error !');
       return;
     }
     const options = {

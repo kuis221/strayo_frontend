@@ -19,7 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/toastr/build/toastr.min.css"
+
       ],
       "scripts": [
         "lib/OSG/vendors/bluebird.js",
