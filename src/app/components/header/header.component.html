@@ -17,6 +17,8 @@
     <div *dropdownMenu class="dropdown-menu userAccount" role="menu"> 
       <ul>
         <li>
+          <a>Settings</a>
+          <a>Account</a>
           <a [routerLink]="['/']" (click)="logout()" *ngIf="isAuthenticated$ | async">Logout</a>
         </li>
       </ul>

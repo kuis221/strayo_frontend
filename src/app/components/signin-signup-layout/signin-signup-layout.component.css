@@ -7,3 +7,12 @@
     display: inherit;
     float: initial;
   }
+
+  .btnSubmit[disabled] {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+
+.btnSubmit{
+  transition: 0.25s;
+}
