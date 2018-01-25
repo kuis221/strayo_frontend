@@ -124,7 +124,7 @@
         </div>
         <p class="danger" *ngIf="!signUpForm.pristine && !signUpForm.valid">PLEASE FILL OUT ALL FIELDS</p>
         <div class="submitBtnCont clearfix">
-          <button type="submit" [disabled]="!passwordMatch || signUpForm.pristine || !signUpForm.valid" class="btnSubmit">Sign up!</button>
+          <button type="submit" [disabled]="!passwordMatch || signUpForm.pristine || !signUpForm.valid || !(signUpForm.get('isPolicyAccepted').value) " class="btnSubmit">Sign up!</button>
           <p>Already have an account?
             <a routerLink="/sign-in">Sign in for Strayos</a>
           </p>
