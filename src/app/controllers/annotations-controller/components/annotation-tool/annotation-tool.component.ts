@@ -15,6 +15,7 @@ import { AnnotationToolType, ToolToThumbnail, ToolToType } from '../../../../mod
 import { NewAnnotationFormComponent } from '../new-annotation-form/new-annotation-form.component';
 import { annotationInteractionStyle, withStyles } from '../../../../util/layerStyles';
 import { subscribeOn } from '../../../../util/subscribeOn';
+import { List } from 'immutable';
 
 @Component({
   selector: 'app-annotation-tool',
@@ -23,7 +24,7 @@ import { subscribeOn } from '../../../../util/subscribeOn';
 })
 export class AnnotationToolComponent implements OnInit, OnDestroy {
   @Input() tool: string;
-  mainDataset: Dataset;
+  datasets: List<Dataset>;
   bsModalRef: BsModalRef; // Reference to new annotation form.
   toolToThumbnail = ToolToThumbnail;
   
@@ -31,8 +32,8 @@ export class AnnotationToolComponent implements OnInit, OnDestroy {
   constructor(private map3DService: Map3dService, private datasetsService: DatasetsService, private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.datasetsService.mainDataset.subscribe((dataset) => {
-      this.mainDataset = dataset;
+    this.datasetsService.datasets.subscribe((datasets) => {
+      this.datasets = datasets;
     });
   }
 
@@ -63,10 +64,6 @@ export class AnnotationToolComponent implements OnInit, OnDestroy {
       if (off) off();
       this.map3DService.removeInteraction(draw);
       const sketch = event.feature;
-      const annotations = (this.mainDataset.annotations() || []).filter(a => a.type() === 'annotation');
-      const name = `${this.mainDataset.name()}: Sample Annotation ${annotations.length + 1}`;
-      const tooltip = $(this.map3DService.toolTip.nativeElement);
-      tooltip.html('');
       this.newAnnotationModal(sketch, tool);
     }, 100));
     this.map3DService.addInteraction(draw);
@@ -75,7 +72,7 @@ export class AnnotationToolComponent implements OnInit, OnDestroy {
   newAnnotationModal(feature: ol.Feature, tool: AnnotationToolType) {
     this.bsModalRef = this.modalService.show(NewAnnotationFormComponent);
     const content = this.bsModalRef.content as NewAnnotationFormComponent;
-    const off = content.submit.pipe(first()).subscribe(({name, notes}) => {
+    const off = content.submit.pipe(first()).subscribe(({name, dataset, notes}) => {
       const meta: IAnnotationToolMeta = {
         tool,
         name,
@@ -90,9 +87,12 @@ export class AnnotationToolComponent implements OnInit, OnDestroy {
         resources: null,
         type: 'measurement'
       };
-      
+      const set = this.datasets.find(d => d.id() === +dataset);
+      if (!set) {
+        console.warn('Could not find dataset', dataset);
+      }
       const newAnnotation = new Annotation(newIAnnotation);
-      this.mainDataset.annotations([...(this.mainDataset.annotations() || []), newAnnotation]);
+      set.annotations([...(set.annotations() || []), newAnnotation]);
     });
     this.off.push(subscribeOn(off));
   }

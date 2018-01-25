@@ -21,7 +21,7 @@ import { Dataset } from '../models/dataset.model';
 
 import { UsersState } from '../users/state';
 import * as usersActions from './actions/actions';
-import { GetUsers, SetCurrentUser, SignIn, SignUp } from './actions/actions';
+import { GetUsers, SetCurrentUser, SignIn, SignUp, SignInSuccess, SignInRedirect } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { getUsersState } from '../reducers';
@@ -32,24 +32,10 @@ export class UsersService {
   private usersSource = new BehaviorSubject<List<User>>(List([]));
   users = this.usersSource.asObservable().pipe(distinctUntilChanged());
 
-  private currentUserSource = new BehaviorSubject<User>(null);
+  public currentUserSource = new BehaviorSubject<User>(null);
   currentUser = this.currentUserSource.asObservable().pipe(distinctUntilChanged());
 
-  constructor (private store: Store<fromRoot.State>, private http: HttpClient) {
-    const email = localStorage.getItem('email') || null;
-    const token = localStorage.getItem('token') || null;
-    if (email && token) {
-      this.http.get<IUser>(
-        getFullUrl('v1/me'),
-        { headers: (new HttpHeaders()).set('X-User-Email', email).set('X-User-Token', token)}
-      ).subscribe((iUser) => {
-        if (iUser && !isEmpty(iUser)) {
-          const user = new User(iUser);
-          this.setCurrentUser(user);
-        }
-      });
-    }
-    
+  constructor(private store: Store<fromRoot.State>, private http: HttpClient) {
     this.getState$().subscribe((state) => {
       if (!state) {
         return;
@@ -58,6 +44,26 @@ export class UsersService {
       this.usersSource.next(state.users);
       this.currentUserSource.next(state.currentUser);
     });
+  }
+
+  // Kind of hacky but I'm low on time.
+  public async loginFromToken(email: string, token: string): Promise<User> {
+    let iUser: IUser;
+    try {
+        iUser = await this.http.get<IUser>(
+        getFullUrl('v1/users/me'),
+        { headers: (new HttpHeaders()).set('X-User-Email', email).set('X-User-Token', token) }
+      ).toPromise();
+
+    } catch (e) {
+      return null;
+    }
+    if (iUser && !isEmpty(iUser)) {
+      const user = new User(iUser);
+      this.store.dispatch(new SignInSuccess(user));
+      return user;
+    }
+    return null;
   }
 
   public getState$() {
@@ -78,6 +84,10 @@ export class UsersService {
 
   public makeSignIn(credentials) {
     this.store.dispatch(new SignIn(credentials));
+  }
+
+  public redirectToLogin() {
+    this.store.dispatch(new SignInRedirect({}));
   }
 
   public signIn(credentials) {

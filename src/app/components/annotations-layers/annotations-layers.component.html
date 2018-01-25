@@ -1,15 +1,20 @@
 <div class="dvLeft">
     <ng-content></ng-content>
-  <tabset #staticTabs [justified]='true'>
-    <tab heading="Annotations" customClass="my-nav-link" (select)="onTabSwitch()">
-      <app-annotations-controller class="tabContent clearfix"></app-annotations-controller>
-    </tab>
-    <tab heading="Layers" (select)="onTabSwitch()">
-      <div class="dvAnnotation clearfix">
-        <app-layers-controller class="tabContent clearfix">
-          
-        </app-layers-controller>
+    <div class="tabs clearfix">
+				<a class="btnTab" (click)="onTabSwitch(false)">Annotation</a>
+				<a class="btnTab" (click)="onTabSwitch(true)">Layers</a>
+			</div>
+		<div class="dvLeft">
+      <div *ngIf="!showLayers" class="tabContent clearfix">
+        <app-annotations-controller class="tabContent clearfix"></app-annotations-controller>
+        
       </div>
-    </tab>
-  </tabset>
+      <div *ngIf="showLayers" class="tabContent clearfix">
+          <div class="dvAnnotation clearfix">
+              <app-layers-controller class="tabContent clearfix">
+                
+              </app-layers-controller>
+            </div>
+      </div>
+    </div>
 </div>

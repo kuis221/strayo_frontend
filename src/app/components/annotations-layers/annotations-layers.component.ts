@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import { TabsetComponent } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-annotations-layers',
@@ -8,15 +7,19 @@ import { TabsetComponent } from 'ngx-bootstrap';
   styleUrls: ['./annotations-layers.component.css']
 })
 export class AnnotationsLayersComponent implements OnInit {
-  @ViewChild('staticTabs') staticTabs: TabsetComponent;
+  @ViewChild('staticTabs') staticTabs: ElementRef;
+  showLayers = false;
   constructor() { }
 
   ngOnInit() {
-    $('.tabContent').slideDown();
+    this.onTabSwitch(false);
   }
 
-  onTabSwitch() {
-    $('.tabContent').slideDown();
+  onTabSwitch(showLayers) {
+    this.showLayers = showLayers;
+    setTimeout(() => {
+      $('.tabContent').slideDown();
+    }, 200);
   }
 
 }

@@ -69,11 +69,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
   constructor(private map3dService: Map3dService, private shotplansService: ShotplansService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    // Fix this bullshit at somepoint
-    setInterval(() => {
-      $('.tabCont').slideDown(300);
-    }, 1000);
-
+    
     const sub = this.shotplansService.shotplansForDataset$.pipe(
       filter(managers => !!managers.get(this.dataset.id())),
       map(managers => managers.get(this.dataset.id())),
@@ -87,7 +83,7 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
         manager.on('init', () => {
           this.shotplan = manager.shotplan();
           this.setupShotplan();
-        })
+        });
       }
     });
 
@@ -356,7 +352,16 @@ export class DatasetShotplanningComponent implements OnInit, OnDestroy {
 
   selectEndpointOffsetTab(tab) {
     this.endpointOffsetTab = tab;
+    setTimeout(() => {
+      $('.tabCont').slideDown(300);
+    }, 200);
+
     console.log('selct tab', tab);
+  }
+
+  setShowEndpoints(showEndpoints: boolean) {
+    this.showEndpoints = showEndpoints;
+    this.selectEndpointOffsetTab(this.endpointOffsetTab);
   }
 
   setupShotplan() {

@@ -12,7 +12,7 @@
         <div class="rows clearfix">
           <div class="rowsLeft">Row</div>
           <div class="rowsRight">
-            <a class="btnToggle" [ngClass]="{ up: showEndpoints }" (click)="showEndpoints = !showEndpoints">
+            <a class="btnToggle" [ngClass]="{ up: showEndpoints }" (click)="setShowEndpoints(!showEndpoints)">
               <img src="/assets/images/BtnRoundArrow.png" alt="">
             </a>
           </div>
@@ -29,43 +29,36 @@
           </div>
         </div>
       </div>
-      <div *ngIf="showEndpoints">
-        <tabset *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix" [justified]="true">
-          <tab customClass="tabHeading" (select)="selectEndpointOffsetTab('offset')">
-            <ng-template tabHeading>
-              <div class="holeTabs clearfix">
-                <a [ngClass]="{tabLink: true, activeTab: (endpointOffsetTab === 'offset')}">
-                  Offset
-                </a>
-              </div>
-            </ng-template>
-            <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
-              <div class="tabOuterCont clearfix">
-                <p id="txtEndpoints" class="txtSmall">Use
-                  <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
-                  <span>{{((row.getRow().update$ | async).azimuth$ | async)}}°</span>
-                </p>
-              </div>
-            </div>
-          </tab>
-          <tab (select)="selectEndpointOffsetTab('endpoint')">
-            <ng-template tabHeading>
-              <div class="holeTabs clearfix">
-                <a [ngClass]="{tabLink: true, activeTab: (endpointOffsetTab === 'endpoint')}">
-                  Endpoints
-                </a>
-              </div>
-            </ng-template>
-            <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabBox clearfix">
-              <div class="tabOuterCont clearfix">
-                <div class="">
-                  <a (click)="moveEndpoints(row)" class="btnBlock">Move End Points</a>
+      <ng-container *ngIf="showEndpoints">
+        <div class="tabBox clearfix">
+          <div class="holeTabs clearfix">
+            <a class="tabLink" [ngClass]="{activeTab: endpointOffsetTab == 'offset'}" (click)="selectEndpointOffsetTab('offset')">Offset</a>
+            <a class="tabLink" [ngClass]="{activeTab: endpointOffsetTab == 'endpoint'}" (click)="selectEndpointOffsetTab('endpoint')">Endpoints</a>
+          </div>
+          <div class="tabOuterCont clearfix">
+            <ng-container *ngIf="endpointOffsetTab == 'offset'">
+
+              <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabCont clearfix">
+                <div class="tabOuterCont clearfix">
+                  <p id="txtEndpoints" class="txtSmall">Use
+                    <span>"Endpoints"</span> tab to move the reference line Azimuth based on true north:
+                    <span>{{((row.getRow().update$ | async).azimuth$ | async)}}°</span>
+                  </p>
                 </div>
               </div>
-            </div>
-          </tab>
-        </tabset>
-      </div>
+            </ng-container>
+            <ng-container *ngIf="endpointOffsetTab == 'endpoint'">
+              <div *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="tabCont clearfix">
+                <div class="tabOuterCont clearfix">
+                  <div class="">
+                    <a (click)="moveEndpoints(row)" class="btnBlock">Move End Points</a>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
       <form *ngIf="(shotplan.rows$ | async)[selectedRow]; let row else nothing" class="dvAddNewRow clearfix" [formGroup]="newRowForm">
         <div class="clearfix">
           <h5 class="fLeft">Add New Row</h5>
@@ -132,74 +125,86 @@
       </div>
       <!-- Position and angle stuff  -->
       <ng-container *ngIf="(selectedShotplanHole$ | async); let rowHole; else nothing">
-          <div class="tabBox clearfix">
-            <div class="clearfix">
-              <a class="tabLink" [ngClass]="{activeTab: !showAngle}" (click)="showAngle = false">Position</a>
-              <a class="tabLink" [ngClass]="{activeTab: showAngle}" (click)="showAngle = true">Angle</a>
-            </div>
-            <div class="tabOuterCont clearfix">
-              <form [formGroup]="holePositionForm" class="tabCont clearfix" *ngIf="!showAngle">
-                <div class="rowHeading clearfix">
-                  <div class="rowHeadingLeft">Distance from <span>line start</span></div>
-                  <div class="rowHeadingRight">{{ alongAwayDistance(lineStartAlong.value, lineStartAway.value) }}m</div>
+        <div class="tabBox clearfix">
+          <div class="clearfix">
+            <a class="tabLink" [ngClass]="{activeTab: !showAngle}" (click)="showAngle = false">Position</a>
+            <a class="tabLink" [ngClass]="{activeTab: showAngle}" (click)="showAngle = true">Angle</a>
+          </div>
+          <div class="tabOuterCont clearfix">
+            <form [formGroup]="holePositionForm" class="tabCont clearfix" *ngIf="!showAngle">
+              <div class="rowHeading clearfix">
+                <div class="rowHeadingLeft">Distance from
+                  <span>line start</span>
                 </div>
-                <div class="addHoleRow clearfix">
-                  <div class="addHoleCol fLeft">
-                    <label class="lblHole">Along shotline</label>
-                    <p class="m"><input #lineStartAlong type="number" class="txtInput2" name="" formControlName="lineStartAlong"></p>
-                  </div>
-                  <div class="addHoleCol fRight">
-                    <label class="lblHole">Away from shotline</label>
-                    <p class="m"><input #lineStartAway class="txtInput2" type="number" name="" formControlName="lineStartAway"></p>
-                  </div>
+                <div class="rowHeadingRight">{{ alongAwayDistance(lineStartAlong.value, lineStartAway.value) }}m</div>
+              </div>
+              <div class="addHoleRow clearfix">
+                <div class="addHoleCol fLeft">
+                  <label class="lblHole">Along shotline</label>
+                  <p class="m">
+                    <input #lineStartAlong type="number" class="txtInput2" name="" formControlName="lineStartAlong">
+                  </p>
                 </div>
-                <div class="rowHeading clearfix">
-                  <div class="rowHeadingLeft">Distance from <span>line end</span></div>
-                  <div class="rowHeadingRight">{{ alongAwayDistance(lineEndAlong.value, lineEndAway.value) }}m</div>
+                <div class="addHoleCol fRight">
+                  <label class="lblHole">Away from shotline</label>
+                  <p class="m">
+                    <input #lineStartAway class="txtInput2" type="number" name="" formControlName="lineStartAway">
+                  </p>
                 </div>
-                <div class="addHoleRow clearfix">
-                  <div class="addHoleCol fLeft">
-                    <label class="lblHole">Along shotline</label>
-                    <p class="m"><input #lineEndAlong type="number" class="txtInput2" name="" formControlName="lineEndAway"></p>
-                  </div>
-                  <div class="addHoleCol fRight">
-                    <label class="lblHole">Away from shotline</label>
-                    <p class="m"><input #lineEndAway class="txtInput2" type="number" name="" formControlName="lineEndAway"></p>
-                  </div>
+              </div>
+              <div class="rowHeading clearfix">
+                <div class="rowHeadingLeft">Distance from
+                  <span>line end</span>
                 </div>
-              </form>
-              <div class="tabCont clearfix" *ngIf="showAngle">
-                <div class="rowHeading clearfix">
-                  <div class="rowHeadingLeft">Toe angle</div>
+                <div class="rowHeadingRight">{{ alongAwayDistance(lineEndAlong.value, lineEndAway.value) }}m</div>
+              </div>
+              <div class="addHoleRow clearfix">
+                <div class="addHoleCol fLeft">
+                  <label class="lblHole">Along shotline</label>
+                  <p class="m">
+                    <input #lineEndAlong type="number" class="txtInput2" name="" formControlName="lineEndAway">
+                  </p>
                 </div>
-                <div class="addHoleRow clearfix">
-                  <div class="addHoleCol fLeft">
-                    <label class="lblHole">Bearing</label>
-                    <input value="0.7 °" type="number" class="txtInput2" name="">
-                  </div>
-                  <div class="addHoleCol fRight">
-                    <label class="lblHole">Inclination</label>
-                    <input class="txtInput2" type="number" name="">
-                  </div>
+                <div class="addHoleCol fRight">
+                  <label class="lblHole">Away from shotline</label>
+                  <p class="m">
+                    <input #lineEndAway class="txtInput2" type="number" name="" formControlName="lineEndAway">
+                  </p>
                 </div>
-                <div class="toeData clearfix">
-                  <div class="toeDataRow clearfix">
-                    <div class="toeDataRowLeft">Toe displacement</div>
-                    <div class="toeDataRowRight">-23.33 m°</div>
-                  </div>
-                  <div class="toeDataRow clearfix">
-                    <div class="toeDataRowLeft">Hole Length</div>
-                    <div class="toeDataRowRight">266.64 m</div>
-                  </div>
-                  <div class="toeDataRow clearfix">
-                    <div class="toeDataRowLeft">Toe depth</div>
-                    <div class="toeDataRowRight">266.64 m</div>
-                  </div>
+              </div>
+            </form>
+            <div class="tabCont clearfix" *ngIf="showAngle">
+              <div class="rowHeading clearfix">
+                <div class="rowHeadingLeft">Toe angle</div>
+              </div>
+              <div class="addHoleRow clearfix">
+                <div class="addHoleCol fLeft">
+                  <label class="lblHole">Bearing</label>
+                  <input value="0.7 °" type="number" class="txtInput2" name="">
+                </div>
+                <div class="addHoleCol fRight">
+                  <label class="lblHole">Inclination</label>
+                  <input class="txtInput2" type="number" name="">
+                </div>
+              </div>
+              <div class="toeData clearfix">
+                <div class="toeDataRow clearfix">
+                  <div class="toeDataRowLeft">Toe displacement</div>
+                  <div class="toeDataRowRight">-23.33 m°</div>
+                </div>
+                <div class="toeDataRow clearfix">
+                  <div class="toeDataRowLeft">Hole Length</div>
+                  <div class="toeDataRowRight">266.64 m</div>
+                </div>
+                <div class="toeDataRow clearfix">
+                  <div class="toeDataRowLeft">Toe depth</div>
+                  <div class="toeDataRowRight">266.64 m</div>
                 </div>
               </div>
             </div>
           </div>
-          
+        </div>
+
       </ng-container>
       <!-- Add new holes stuff  -->
       <ng-container *ngIf="(shotplan.rows$ | async)[selectedRow]; let row; else nothing">

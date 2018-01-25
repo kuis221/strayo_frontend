@@ -127,12 +127,15 @@ export class SitemapComponent implements OnInit, OnDestroy {
         this.markers.clear();
         this.markers.extend(sites.map((site) => {
           const dataset = site.getPhantomDataset();
+          if (!dataset) {
+            return null;
+          }
           return new ol.Feature({
             geometry: new ol.geom.Circle(ol.proj.fromLonLat([dataset.long(), dataset.lat()]), 50000),
             name: site.name,
             site,
           });
-        }).toJS());
+        }).filter(d => !!d).toJS());
         // Update view
         const points = this.markers.getArray().map(f => (f.getGeometry() as ol.geom.Circle).getCenter());
         if (points.length > 0) {

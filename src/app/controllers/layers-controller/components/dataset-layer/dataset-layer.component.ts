@@ -34,6 +34,7 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    console.log('listening', this.dataset);
     const vizListen = this.vizService.orthophotoForDataset$.pipe(
       filter((managers) => {
         const listener = managers.get(this.dataset.id());
@@ -42,14 +43,9 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
       map((managers) => managers.get(this.dataset.id())),
     )
     .subscribe((manager) => {
+      if (manager.isInit()) this.onManagerInit(manager);
       const listenInit = listenOn(manager, 'init', () => {
-        this.orthophotoLayer = manager.layer();
-        this.setOrthophotoVisible = this.orthophotoLayer.setVisible.bind(this.orthophotoLayer);
-        const listenVisible = listenOn(this.orthophotoLayer, 'change:visible', () => {
-          this.orthophotoVisible = this.orthophotoLayer.getVisible();
-          this.cd.markForCheck();
-        });
-        this.off.push(listenVisible);
+        this.onManagerInit(manager);
       });
       this.off.push(listenInit);
     });
@@ -63,23 +59,32 @@ export class DatasetLayerComponent implements OnInit, OnDestroy {
     .subscribe((manager) => {
       const listenInit = listenOn(manager, 'init', () => {
         this.provider = manager.terrainProvider();
-      })
+      });
       this.off.push(listenInit);
-    })
+    });
     this.off.push(subscribeOn(providerListen));
     this.off.push(subscribeOn(vizListen));
   }
 
+  onManagerInit(manager) {
+    this.orthophotoLayer = manager.layer();
+    console.log('here in init');
+    this.setOrthophotoVisible = this.orthophotoLayer.setVisible.bind(this.orthophotoLayer);
+    const listenVisible = listenOn(this.orthophotoLayer, 'change:visible', () => {
+      this.orthophotoVisible = this.orthophotoLayer.getVisible();
+      this.cd.markForCheck();
+    });
+    this.off.push(listenVisible);
+  }
   setProviderVisible(visible: boolean) {
     if (visible == this.providerVisible) return;
-    if (visible) {
-      console.log('adding provider')
-      this.map3DService.sceneRoot.addChild(this.provider.rootNode());
-    } else {
-      console.log('removing provider')
-      
-      this.map3DService.sceneRoot.removeChild(this.provider.rootNode());
-    }
+    // if (visible) {
+    //   console.log('adding provider')
+    //   this.map3DService.sceneRoot.addChild(this.provider.rootNode());
+    // } else {
+    //   console.log('removing provider')
+    //   this.map3DService.sceneRoot.removeChild(this.provider.rootNode());
+    // }
     this.providerVisible = visible;
   }
 

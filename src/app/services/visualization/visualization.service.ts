@@ -11,6 +11,7 @@ import { Annotation } from '../../models/annotation.model';
 class OrthophotoAnnotationListener implements AnnotationListener {
   constructor(private visualizationService: VisualizationService) { }
   shouldHandle(annotation: Annotation): boolean {
+    console.log('type', annotation.type(), /orthophoto/.test(annotation.type()));
     return /orthophoto/.test(annotation.type());
   }
   onAnnotationFound(annotationId: number, datasetId: number) {

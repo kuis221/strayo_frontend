@@ -33,6 +33,8 @@ import { waitForMap } from '@angular/router/src/utils/collection';
 // Map3d Service handles syncing of 2D and 3D views
 
 let GlobalDraw: ol.interaction.Draw;
+let currentElementInGetOSGJS; // Probably the worse hack i've ever done but it will work as long 
+// as this never gets put into a webworker.
 
 @Injectable()
 export class Map3dService {
@@ -53,6 +55,7 @@ export class Map3dService {
   toolTip: ElementRef;
 
   private _groupForDataset: (id: number) => ol.layer.Group;
+  private _osgjsForDataset: (id: number) => osgViewer.Viewer;
   private _providerForDataset: (id: number) => TerrainProvider;
   private allLayers = new ol.Collection<ol.layer.Group | ol.layer.Layer>();
   private allInteractions = new ol.Collection<ol.interaction.Interaction>([]);
@@ -110,11 +113,11 @@ export class Map3dService {
         group.set('title', dataset.name());
         this.addLayer(group);
 
-        const provider = this.getProviderForDataset(dataset.id());
-        this.sceneRoot.addChild(provider.rootNode());
+        // const provider = this.getProviderForDataset(dataset.id());
+        // this.sceneRoot.addChild(provider.rootNode());
       });
     });
-    
+
     // Get selected datasets
     this.datasetsService.selectedDatasets.subscribe(async (datasets) => {
       if (datasets.count() === 0) return;
@@ -130,6 +133,14 @@ export class Map3dService {
         ]);
       }, datasets.get(0).calcExtent());
       this.setExtent(boundingExtent);
+    });
+
+    // Get main dataset
+    this.datasetsService.mainDataset.subscribe((dataset) => {
+      if (!dataset) return;
+      const provider = this.getProviderForDataset(dataset);
+      this.sceneRoot.removeChildren();
+      this.sceneRoot.addChild(provider.rootNode());
     });
   }
 
@@ -163,17 +174,18 @@ export class Map3dService {
     this.destroyOsgjs();
   }
 
-  destroyOpenlayers() {
-    if (this.map2DViewer) {
-      this.map2DViewer.setTarget(null);
-      this.map2DViewer = null;
-    }
-  }
-
   destroyOsgjs() {
     if (this.map3DViewer) {
       stopViewer(this.map3DViewer);
       this.map3DViewer = null;
+    }
+  }
+
+
+  destroyOpenlayers() {
+    if (this.map2DViewer) {
+      this.map2DViewer.setTarget(null);
+      this.map2DViewer = null;
     }
   }
 
@@ -224,7 +236,6 @@ export class Map3dService {
   }
 
   initOsgjs(container: HTMLElement) {
-    // this.destroyOsgjs();
     if (this.map3DViewer) return;
     container.addEventListener('webglcontextlost', (event) => {
       console.log('context lost', event);
@@ -255,7 +266,7 @@ export class Map3dService {
         acc.addChild(featureNode);
         return acc;
       }, new osg.Node);
-      console.log('featurenode', featureNode)
+      console.log('featurenode', featureNode);
       this.registerNode(featureNode, dataset);
     }
     const group = this.getGroupForDataset(dataset.id());
@@ -278,27 +289,9 @@ export class Map3dService {
     this.map2DViewer.removeInteraction(interaction);
   }
 
-  private _setView(coord?) {
-    if (!coord) {
-      if (this.map3DViewer) {
-        this.map3DViewer.getManipulator().computeHomePosition();
-      }
-      return;
-    }
-    if (this.map2DViewer) {
-      this.view.setCenter(coord);
-    }
-    if (this.map3DViewer) {
-      this.map3DViewer.getManipulator().computeHomePosition();
-    }
-  }
-
   setExtent(extent: ol.Extent) {
     if (this.map2DViewer) {
       this.view.fit(extent);
-    }
-    if (this.map3DViewer) {
-      this.map3DViewer.getManipulator().computeHomePosition();
     }
   }
 }

@@ -115,6 +115,11 @@ export class DatasetsService {
   }
 
   public addToSelected(dataset: Dataset) {
+    const selected = this.selectedDatasetsSource.getValue();
+    if (selected && selected.count() === 3) {
+      toastr.warning(`Can only select 3 datasets at a time`, 'Cannot Select!');
+      return;
+    }
     this.store.dispatch(new AddSelectedDataset(dataset));
   }
 
