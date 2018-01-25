@@ -23,6 +23,7 @@ import { OSGJSScene } from '../../models/osgjs.model';
 import { b64toBlob } from '../../util/b64toBlob';
 import { AnnotationManager, AnnotationListener, AnnotationsService } from '../annotations/annotations.service';
 import { Map3dService } from '../map-3d.service';
+import { Annotation } from '../../models/annotation.model';
 
 const modelDB = new PouchDB('models');
 
@@ -44,10 +45,11 @@ interface FetchedModel {
 
 class StereoscopeAnnotationListener implements AnnotationListener {
   constructor(private terrainProviderService: TerrainProviderService) { }
-  annotationType() {
-    return 'stereoscope';
+  
+  shouldHandle(annotation: Annotation): boolean {
+    return /stereoscope/.test(annotation.type());
   }
-
+  
   onAnnotationFound(annotationId: number, datasetId: number) {
     console.log('FOUND STEREOSCOPE ANNOTATION')
     const manager = new TerrainProviderManager({

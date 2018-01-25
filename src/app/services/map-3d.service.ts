@@ -140,6 +140,7 @@ export class Map3dService {
       return;
     }
     this.allInteractions.push(interaction);
+    this.map2DViewer.addInteraction(interaction);
   }
 
   addLayer(layer: ol.layer.Group | ol.layer.Layer) {
@@ -214,11 +215,10 @@ export class Map3dService {
     // this.destroyOpenlayers();
     this.map2DViewer = this.map2DViewer || new ol.Map({
       target: container,
-      // interactions: this.allInteractions,
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
       layers: this.allLayers,
-      view: new ol.View({center: [0, 0], zoom: 2}),
+      view: this.view,
       // controls: [new ol.control.Zoom()],//ol.control.defaults({ attribution: false })
     });
   }
@@ -275,6 +275,7 @@ export class Map3dService {
 
   removeInteraction(interaction: ol.interaction.Interaction) {
     this.allInteractions.remove(interaction);
+    this.map2DViewer.removeInteraction(interaction);
   }
 
   private _setView(coord?) {
@@ -294,7 +295,7 @@ export class Map3dService {
 
   setExtent(extent: ol.Extent) {
     if (this.map2DViewer) {
-      this.map2DViewer.getView().fit(extent);
+      this.view.fit(extent);
     }
     if (this.map3DViewer) {
       this.map3DViewer.getManipulator().computeHomePosition();

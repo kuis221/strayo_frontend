@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isEmpty } from 'lodash';
 
 import { Store } from '@ngrx/store';
 
@@ -24,6 +25,7 @@ import { GetUsers, SetCurrentUser, SignIn, SignUp } from './actions/actions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { getUsersState } from '../reducers';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +36,20 @@ export class UsersService {
   currentUser = this.currentUserSource.asObservable().pipe(distinctUntilChanged());
 
   constructor (private store: Store<fromRoot.State>, private http: HttpClient) {
+    const email = localStorage.getItem('email') || null;
+    const token = localStorage.getItem('token') || null;
+    if (email && token) {
+      this.http.get<IUser>(
+        getFullUrl('v1/me'),
+        { headers: (new HttpHeaders()).set('X-User-Email', email).set('X-User-Token', token)}
+      ).subscribe((iUser) => {
+        if (iUser && !isEmpty(iUser)) {
+          const user = new User(iUser);
+          this.setCurrentUser(user);
+        }
+      });
+    }
+    
     this.getState$().subscribe((state) => {
       if (!state) {
         return;

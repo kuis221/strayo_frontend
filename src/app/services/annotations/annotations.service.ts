@@ -11,7 +11,7 @@ import * as ol from 'openlayers';
 type OnAnnotationFound = (annotationId: number, datasetId: number) => AnnotationManager;
 
 export interface AnnotationListener {
-  annotationType: () => string;
+  shouldHandle: (annotation: Annotation) => boolean;
   onAnnotationFound: (annotationId: number, datasetId: number) => AnnotationManager;
 }
 
@@ -152,7 +152,7 @@ export class AnnotationsService {
   }
 
   dispatchAnnoTo(listener: AnnotationListener, annotation: Annotation, dataset: Dataset) {
-    if (listener.annotationType() !== annotation.type()) return;
+    if (!listener.shouldHandle(annotation)) return;
     const manager = this.memoizedOnAnnotationFound.get(listener)(annotation.id(), dataset.id());
     const isNew = manager.isInit();
     manager.annotation(annotation);

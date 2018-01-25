@@ -64,18 +64,6 @@ import { MeasurementsService } from './services/measurements/measurements.servic
 import { ShotplansService } from './services/shotplans/shotplans.service';
 import { TimelineComponent } from './components/timeline/timeline.component';
 
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({
-    keys: [{ users: {
-      serialize: state => {
-        return {currentUser: state.currentUser && state.currentUser.getProperties(), loggedIn: state.loggedIn}
-      },
-      deserialize: (update) => new UsersState({currentUser: new User(update.currentUser) || null, loggedIn: update.loggedIn})} }],
-    rehydrate: true,
-  })(reducer);
-}
-const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,7 +115,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     // HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
     //   apiBase: 'api/'
     // }),
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers),
     EffectsModule.forRoot(Effects),
     StoreDevtoolsModule.instrument({
       maxAge: 10

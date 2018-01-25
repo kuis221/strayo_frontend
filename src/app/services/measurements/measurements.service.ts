@@ -9,11 +9,12 @@ import { IAnnotationToolMeta } from '../../models/annotationToolMeta';
 import { annotationStyle } from '../../util/layerStyles';
 import { listenOn } from '../../util/listenOn';
 import { Map3dService } from '../map-3d.service';
+import { Annotation } from '../../models/annotation.model';
 
 class MeasurementAnnotationListener implements AnnotationListener {
   constructor(private measurementsService: MeasurementsService) { }
-  annotationType() {
-    return 'measurement';
+  shouldHandle(annotation: Annotation): boolean {
+    return /measurement/.test(annotation.type());
   }
   onAnnotationFound(annotationId: number, datasetId: number) {
     const manager = new MeasurementAnnotationManager({

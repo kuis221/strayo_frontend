@@ -6,13 +6,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Map } from 'immutable';
 import { Shotplan, IShotplan } from '../../models/shotplan.model';
 import { Map3dService } from '../map-3d.service';
-import { IAnnotation } from '../../models/annotation.model';
+import { IAnnotation, Annotation } from '../../models/annotation.model';
 
 
 class ShtoplanAnnotationListener implements AnnotationListener {
   constructor(private shotplansService: ShotplansService) {}
-  annotationType() {
-    return Shotplan.ANNOTATION_TYPE;
+  shouldHandle(annotation: Annotation): boolean {
+    return Shotplan.ANNOTATION_TYPE === annotation.type();
   }
   onAnnotationFound(annotationId: number, datasetId: number) {
     const manager = new ShotplanAnnotationManager({

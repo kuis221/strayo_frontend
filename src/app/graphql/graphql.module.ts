@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { graphql, buildSchema } from 'graphql';
 import { print } from 'graphql/language/printer';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 
 import { Apollo, ApolloModule } from 'apollo-angular';
+import { setContext } from 'apollo-link-context';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { ApolloLink, from, Observable } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -30,8 +31,17 @@ import { API_URL, BACKEND_URL, GRAPHQL_URL } from '../util/getApiUrl';
 })
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
+    const http = httpLink.create({ uri: GRAPHQL_URL });
+    const middleware = setContext(() => {
+      const email = localStorage.getItem('email') || null;
+      const token = localStorage.getItem('token') || null;
+      console.log('in apollo fetching with ', email, token);
+      return {
+        headers: new HttpHeaders().set('X-User-Email', email).set('X-User-Token', token)
+      };
+    });
     apollo.create({
-      link: httpLink.create({ uri: GRAPHQL_URL }),
+      link: middleware.concat(http),
       cache: new InMemoryCache()
     });
   }

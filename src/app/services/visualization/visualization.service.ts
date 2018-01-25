@@ -6,12 +6,12 @@ import { Map3dService } from '../map-3d.service';
 import { WebMercator } from '../../util/projections/index';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { Annotation } from '../../models/annotation.model';
 
 class OrthophotoAnnotationListener implements AnnotationListener {
   constructor(private visualizationService: VisualizationService) { }
-
-  annotationType() {
-    return 'orthophoto';
+  shouldHandle(annotation: Annotation): boolean {
+    return /orthophoto/.test(annotation.type());
   }
   onAnnotationFound(annotationId: number, datasetId: number) {
     const manager = new OrthophotoAnnotationManager({

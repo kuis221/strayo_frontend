@@ -38,6 +38,10 @@ export class UsersState extends userRecord {
   }
 
   public signInSuccess(user: User): UsersState {
+    // Bit of confusing, but set the credentials to local storage so always accessible.
+    // TODO: There must be a better way (there are several), but I don't have a time.
+    localStorage.setItem('email', user.email());
+    localStorage.setItem('token', user.authenticationToken());
     return this.set('error', null).set('pending', true).set('loggedIn', true).set('currentUser', user) as UsersState;
   }
 
