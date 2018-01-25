@@ -38,10 +38,10 @@ export class UsersEffects {
       .catch(err => of(new SignInError(err)))
     );
 
-  // @Effect({ dispatch: false })
-  // signInSuccess$ = this.actions$
-  //   .ofType(UsersActionsType.SIGN_IN_SUCCESS)
-  //   .map(() => this.router.navigate(['/']));
+  @Effect({ dispatch: false })
+  signInSuccess$ = this.actions$
+    .ofType(UsersActionsType.SIGN_IN_SUCCESS)
+    .map(() => { if (/sign-in/.test(this.router.url)) this.router.navigate(['/']); });
 
   @Effect({ dispatch: false })
   loginRedirect$ = this.actions$
