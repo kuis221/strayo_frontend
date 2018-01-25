@@ -63,7 +63,6 @@ import { VisualizationService } from './services/visualization/visualization.ser
 import { MeasurementsService } from './services/measurements/measurements.service';
 import { ShotplansService } from './services/shotplans/shotplans.service';
 import { TimelineComponent } from './components/timeline/timeline.component';
-import { Map3dCanvasComponent } from './components/map-3d/map-3d-canvas/map-3d-canvas.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +93,6 @@ import { Map3dCanvasComponent } from './components/map-3d/map-3d-canvas/map-3d-c
     ShotplanningToolComponent,
     SigninSignupLayoutComponent,
     TimelineComponent,
-    Map3dCanvasComponent,
   ],
   entryComponents: [
     NewAnnotationFormComponent

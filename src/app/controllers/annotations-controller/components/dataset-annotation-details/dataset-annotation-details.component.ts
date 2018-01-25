@@ -167,19 +167,20 @@ export class DatasetAnnotationDetailsComponent implements OnInit, OnDestroy {
   }
 
   samplePoints() {
-    // const geometry = this.getGeometry();
-    // const samples = sampleHeightsAlong(this.getCoordinates(), 1, this.provider.getWorldPoint.bind(this.provider));
-    // samples.forEach((point) => {
-    //   point[2] = Math.abs(point[2]);
-    // });
-    // this.samples = samples;
-    // return samples;
+    const geometry = this.getGeometry();
+    const provider = this.map3dService.getProviderForDataset(this.manager.dataset());
+    const samples = sampleHeightsAlong(this.getCoordinates(), 1, provider.getWorldPoint.bind(provider));
+    samples.forEach((point) => {
+      point[2] = Math.abs(point[2]);
+    });
+    this.samples = samples;
+    return samples;
   }
 
   toggleHeightGraph(show: boolean) {
     if (!this.heightGraphCont) return;
     if (show) {
-      // if (!this.heightGraphChart) this.createHeightGraph();
+      if (!this.heightGraphChart) this.createHeightGraph();
       $(this.heightGraphCont.nativeElement).slideDown(300);
     } else {
       $(this.heightGraphCont.nativeElement).slideUp(300);
