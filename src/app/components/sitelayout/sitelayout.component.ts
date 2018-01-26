@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ApplicationRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy, ApplicationRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { List } from 'immutable';
@@ -17,13 +17,12 @@ import { Dataset } from '../../models/dataset.model';
   templateUrl: './sitelayout.component.html',
   styleUrls: ['./sitelayout.component.css'],
 })
-export class SiteLayoutComponent implements OnInit {
+export class SiteLayoutComponent implements OnInit, AfterViewInit {
   site$: Observable<Site>;
   constructor(private ref: ApplicationRef,
     private sitesService: SitesService, private datasetsService: DatasetsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    initStrayosJquery($);
     this.site$ = this.route.params.pipe(
       switchMap((params) => {
         const id = +params.id;
@@ -34,5 +33,9 @@ export class SiteLayoutComponent implements OnInit {
         );
       })
     );
+  }
+
+  ngAfterViewInit() {
+    initStrayosJquery($);    
   }
 }

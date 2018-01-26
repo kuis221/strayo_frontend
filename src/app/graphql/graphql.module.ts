@@ -36,6 +36,9 @@ export class GraphQLModule {
       const email = localStorage.getItem('email') || null;
       const token = localStorage.getItem('token') || null;
       console.log('in apollo fetching with ', email, token);
+      if (!(email && token)) {
+        return {};
+      }
       return {
         headers: new HttpHeaders().set('X-User-Email', email).set('X-User-Token', token)
       };

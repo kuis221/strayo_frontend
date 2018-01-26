@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
@@ -20,7 +20,7 @@ function validateEqualValidator(field: string): ValidatorFn {
   templateUrl: './signin-signup-layout.component.html',
   styleUrls: ['./signin-signup-layout.component.css']
 })
-export class SigninSignupLayoutComponent implements OnInit, OnDestroy {
+export class SigninSignupLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   page: SignUpSignIn = 'sign-in';
   off: Subscription;
@@ -33,7 +33,6 @@ export class SigninSignupLayoutComponent implements OnInit, OnDestroy {
   constructor(private userService: UsersService, private route: ActivatedRoute, private fb: FormBuilder) { }
 
   ngOnInit() {
-    initStrayosJquery($);
     this.createSignInFrom();
     this.createSignUpForm();
     this.off = this.route.url.subscribe((url) => {
@@ -51,6 +50,10 @@ export class SigninSignupLayoutComponent implements OnInit, OnDestroy {
         console.log('got user', user);
       }
     });
+  }
+
+  ngAfterViewInit() {
+    initStrayosJquery($);
   }
 
   createSignInFrom() {

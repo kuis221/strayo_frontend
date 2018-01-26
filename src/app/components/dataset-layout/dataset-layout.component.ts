@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Site } from '../../models/site.model';
 import { Dataset } from '../../models/dataset.model';
@@ -23,7 +23,7 @@ type Panels = 'annotations' | 'shotplanning';
   templateUrl: './dataset-layout.component.html',
   styleUrls: ['./dataset-layout.component.css']
 })
-export class DatasetLayoutComponent implements OnInit, OnDestroy {
+export class DatasetLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   site: Site;
   mainDataset: Dataset;
   datasets: List<Dataset>;
@@ -47,7 +47,6 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    initStrayosJquery($);
     // Get the site
     const routeSub = this.route.params.pipe(
       switchMap((params) => {
@@ -97,6 +96,10 @@ export class DatasetLayoutComponent implements OnInit, OnDestroy {
       });
     });
     this.off.push(subscribeOn(mainDatasetSub));
+  }
+
+  ngAfterViewInit() {
+    initStrayosJquery($);    
   }
 
   switchPanel(panel: Panels) {

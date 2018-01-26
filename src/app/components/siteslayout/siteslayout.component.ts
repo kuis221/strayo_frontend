@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   templateUrl: './siteslayout.component.html',
   styleUrls: ['./siteslayout.component.css'],
 })
-export class SiteslayoutComponent implements OnInit {
+export class SiteslayoutComponent implements OnInit, AfterViewInit {
 
   sites$: Observable<List<Site>>;
   searchedSites$: Observable<List<Site>>;
@@ -32,6 +32,8 @@ export class SiteslayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+  ngAfterViewInit() {
     initStrayosJquery($);
   }
   onSearch(value: string) {

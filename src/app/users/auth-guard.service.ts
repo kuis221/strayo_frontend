@@ -18,8 +18,17 @@ export class AuthGuard implements CanActivate {
     if (currentUser) return true;
     const email = localStorage.getItem('email') || null;
     const token = localStorage.getItem('token') || null;
-    if (!(email && token)) return false;
-    const user = await this.userService.loginFromToken(email, token);
+    if (!(email && token)) {
+      this.userService.redirectToLogin();
+      return false;
+    }
+    let user;
+    try {
+      user = await this.userService.loginFromToken(email, token);
+    } catch (e) {
+      this.userService.redirectToLogin();
+      return false;
+    }
     if (user) {
       return true;
     } else {
